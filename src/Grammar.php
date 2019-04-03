@@ -5,6 +5,10 @@ namespace LaravelFreelancerNL\FluentAQL;
 /*
  * Provides AQL syntax functions
  */
+
+use Exception;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+
 class Grammar
 {
     /**
@@ -35,50 +39,89 @@ class Grammar
 
     protected $rangeOperator = '..';
 
-    function getDataType($value)
+
+    /**
+     * @param $argument
+     * @param $allowedExpressionTypes
+     * @return mixed
+     * @throws Exception
+     */
+    function normalizeArgument($argument, $allowedExpressionTypes)
     {
-        if ($this->is_document($value) ) {
-            return 'document';
+        if ($argument instanceof ExpressionInterface) {
+            return $argument;
         }
-        if (is_array($value)) {
-            return 'list';
+
+        if (is_string($allowedExpressionTypes)) {
+            $allowedExpressionTypes = [$allowedExpressionTypes];
         }
-        if ($this->is_range($value) ) {
-            return 'list';
+
+        //Check if argument matches $allowedExpressionTypes
+        foreach ($allowedExpressionTypes as $allowedExpressionType) {
+            $check = 'is_'.$allowedExpressionType;
+            if ($this->$check($argument)) {
+                $expressionType = $allowedExpressionType;
+                break;
+            }
         }
-        return 'literal';
+
+        if (! isset($expressionType)) {
+            throw new Exception("Not a valid expression type.");
+        }
+
+        //Return expression
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.ucfirst(strtolower($expressionType)).'Expression';
+        return new $expressionClass($argument);
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     function is_document($value) {
+        if (is_iterable($value)) {
+            return false;
+        }
         if (is_object($value)) {
             return true;
         }
+        //Check for string representation of a JSON object
         if (is_string($value)) {
-            $value = trim($value);
-            if (stripos(trim($value), '{') === 0 && stripos($value, '}') === strlen($value)-1) {
-                return true;
-            }
+            return is_object(json_decode($value));
         }
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
     function is_range($value)
     {
-        if (preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value) ) {
+        if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value) ) {
             return true;
         }
         return false;
     }
 
-    function checkVariableNameSyntax($variableName)
+    
+    /**
+     * @param $variableName
+     * @return bool
+     */
+    function is_variable($variableName)
     {
-        if (preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]+$/', $variableName)) {
+        if (is_string($variableName) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $variableName)) {
             return true;
         }
         return false;
     }
 
-    function checkAttributeNameSyntax($attributeName)
+    /**
+     * @param $attributeName
+     * @return bool
+     */
+    function validateAttributeNameSyntax($attributeName)
     {
         if (preg_match('/^[\p{L}0-9_\-@]+$/u', $attributeName)) {
             return true;
@@ -86,11 +129,42 @@ class Grammar
         return false;
     }
 
-    function checkCollectionNameSyntax($collectionName)
+    /**
+     * @param $collectionName
+     * @return bool
+     */
+    function validateCollectionNameSyntax($collectionName)
     {
         if(preg_match('/^[a-zA-Z0-9_-]+$/', $collectionName)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    function is_list($value)
+    {
+        return is_iterable($value);
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    function is_query($value)
+    {
+        return $value instanceof QueryBuilder;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    function is_literal($value)
+    {
+        return is_scalar($value) && ! $this->is_range($value);
     }
 }

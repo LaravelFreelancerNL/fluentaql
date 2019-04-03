@@ -1,7 +1,9 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Functions;
 
-abstract class AqlFunction
+use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
+
+abstract class AqlFunction extends Clause
 {
 
 }

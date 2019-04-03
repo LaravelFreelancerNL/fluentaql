@@ -1,11 +1,13 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL;
 
+
 use LaravelFreelancerNL\FluentAQL\API\hasClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasStatements;
 
-class Query
+
+class QueryBuilder
 {
     use hasStatements, hasClauses, hasFunctions;
 
@@ -23,7 +25,7 @@ class Query
     protected $commands = [];
 
     /**
-     * The AQL Query
+     * The AQL QueryBuilder
      * @var $query
      */
     public $query;
@@ -41,11 +43,21 @@ class Query
      */
     public $collections = ['read' => [], 'write' => []];
 
-    function __construct()
+    protected $isSubQuery = false;
+
+    function __construct($isSubQuery = false)
     {
         $this->grammar = new Grammar();
+
+        $this->isSubQuery = $isSubQuery;
     }
 
+    public function setSubQuery($isSubQuery = true)
+    {
+        $this->isSubQuery = $isSubQuery;
+
+        return $this;
+    }
 
     /**
      * Add an AQL command (statements, clauses, functions and expressions)
@@ -99,12 +111,21 @@ class Query
     }
 
     /**
+     * Clear all commands
+     */
+    public function clearCommands()
+    {
+        $this->commands = [];
+    }
+
+    /**
      * Compile the query with its bindings and collection list.
      *
      * @return mixed
      */
     public function compile() : array
     {
+        $this->query = '';
         foreach ($this->commands as $command) {
             $commandData = $command->compile();
 
@@ -114,6 +135,9 @@ class Query
         }
 
         $this->query = trim($this->query);
+        if ($this->isSubQuery) {
+            $this->query = '('.$this->query.')';
+        }
 
         return [
             'query' => $this->query,
@@ -126,6 +150,9 @@ class Query
     {
         $this->compile();
 
+        //FIXME: temporary
+        $this->clearCommands();
+
         return $this;
     }
 
@@ -134,4 +161,8 @@ class Query
         return $this->compile()['query'];
     }
 
+    function __toString()
+    {
+        return $this->toAql();
+    }
 }

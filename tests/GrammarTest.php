@@ -1,5 +1,8 @@
 <?php
 
+use LaravelFreelancerNL\FluentAQL\Facades\AQB;
+use LaravelFreelancerNL\FluentAQL\Grammar;
+
 /**
  * Class StructureTest
  *
@@ -7,11 +10,40 @@
  */
 class GrammarTest extends TestCase
 {
+
+    /**
+     * All of the available predicate operators.
+     *
+     * @var Grammar
+     */
     protected $grammar;
 
+    /**
+     *
+     */
     public function setUp() : void
     {
-        $this->grammar = new \LaravelFreelancerNL\FluentAQL\Grammar();
+        $this->grammar = new Grammar();
+    }
+
+
+    /**
+     * normalize argument
+     * @test
+     */
+    function normalize_argument()
+    {
+        $result = $this->grammar->normalizeArgument(['col`1'], ['list', 'query', 'literal']);
+        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\ListExpression::class, $result);
+
+        $result = $this->grammar->normalizeArgument('col`1', ['list', 'query', 'literal']);
+        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression::class, $result);
+
+        $result = $this->grammar->normalizeArgument('1..2', ['list', 'query', 'literal', 'range']);
+        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression::class, $result);
+
+        $result = $this->grammar->normalizeArgument(AQB::for('u')->in('users')->return('u'), ['list', 'query', 'literal', 'range']);
+        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
     }
 
     /**
@@ -20,7 +52,7 @@ class GrammarTest extends TestCase
      */
     function is_document()
     {
-        $result = $this->grammar->is_document('{ "is this a document?" }');
+        $result = $this->grammar->is_document('{ "test": "is this a document?" }');
         self::assertTrue($result);
 
         $result = $this->grammar->is_document('{ "this is not a document" } .');
@@ -63,77 +95,94 @@ class GrammarTest extends TestCase
      * is legal variable name
      * @test
      */
-    function check_variable_name_syntax()
+    function validate_variable_name_syntax()
     {
-        $result = $this->grammar->checkVariableNameSyntax('doc');
+        $result = $this->grammar->is_variable('doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('dOc');
+        $result = $this->grammar->is_variable('dOc');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('Doc0');
+        $result = $this->grammar->is_variable('Doc0');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('_doc');
+        $result = $this->grammar->is_variable('_doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('$doc');
+        $result = $this->grammar->is_variable('$doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('$$doc');
+        $result = $this->grammar->is_variable('$$doc');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('$doc$');
+        $result = $this->grammar->is_variable('$doc$');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('doc-eat-dog');
+        $result = $this->grammar->is_variable('doc-eat-dog');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('-doc');
+        $result = $this->grammar->is_variable('-doc');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('d"oc');
+        $result = $this->grammar->is_variable('d"oc');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkVariableNameSyntax('döc');
+        $result = $this->grammar->is_variable('döc');
         self::assertFalse($result);
     }
 
     /**
-     * check collection name syntax
+     * validate collection name syntax
      * @test
      */
-    function check_collection_name_syntax()
+    function validate_collection_name_syntax()
     {
-        $result = $this->grammar->checkCollectionNameSyntax('col');
+        $result = $this->grammar->validateCollectionNameSyntax('col');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('_col');
+        $result = $this->grammar->validateCollectionNameSyntax('_col');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('c_ol');
+        $result = $this->grammar->validateCollectionNameSyntax('c_ol');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('co-l');
+        $result = $this->grammar->validateCollectionNameSyntax('co-l');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('col-');
+        $result = $this->grammar->validateCollectionNameSyntax('col-');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('col-1');
+        $result = $this->grammar->validateCollectionNameSyntax('col-1');
         self::assertTrue($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('@col-1');
+        $result = $this->grammar->validateCollectionNameSyntax('@col-1');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('colö');
+        $result = $this->grammar->validateCollectionNameSyntax('colö');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('col.1');
+        $result = $this->grammar->validateCollectionNameSyntax('col.1');
         self::assertFalse($result);
 
-        $result = $this->grammar->checkCollectionNameSyntax('col`1');
+        $result = $this->grammar->validateCollectionNameSyntax('col`1');
         self::assertFalse($result);
 
     }
+
+    /**
+     * is list
+     * @test
+     */
+    function is_list()
+    {
+        $result = $this->grammar->is_list([1, 2, 3]);
+        self::assertTrue($result);
+
+        $result = $this->grammar->is_list(1);
+        self::assertFalse($result);
+
+        $result = $this->grammar->is_list('a string');
+        self::assertFalse($result);
+    }
+
 }

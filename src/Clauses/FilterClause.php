@@ -1,10 +1,10 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use Closure;
+
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 
-class FilterStatement extends Statement
+class FilterClause extends Clause
 {
 
     protected $filters = [];
@@ -18,8 +18,10 @@ class FilterStatement extends Statement
      * @param  string  $logicalOperator
      * @return $this
      */
-    function __construct($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = 'AND')
+    function __construct($leftOperand, $rightOperand = null, $comparisonOperator = '==', $logicalOperator = 'AND')
     {
+        parent::__construct();
+
         // If the left operand is an array, we will assume it is an array of key-value pairs
         // and can add them each as a where clause. We will maintain the boolean we
         // received when the method was called and pass it into the nested where.

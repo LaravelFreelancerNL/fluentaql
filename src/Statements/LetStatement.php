@@ -1,22 +1,24 @@
 <?php
-namespace LaravelFreelancerNL\FluentAQL\Clauses;
+namespace LaravelFreelancerNL\FluentAQL\Statements;
 
 class ForStatement extends Statement
 {
 
     protected $variableName;
 
-    protected $in;
+    protected $value;
 
-    function __construct($variableName, $in)
+    function __construct($variableName, $value)
     {
+        parent::__construct();
+
         $this->variableName = $variableName;
-        $this->in = $in;
+        $this->value = $value;
     }
 
     public function compile()
     {
-        $query = "FOR {$this->variableName} IN {$this->in}";
+        $query = "LET {$this->variable} = {$this->value}";
         $bindings = [];
         $collections = [];
 
@@ -26,10 +28,4 @@ class ForStatement extends Statement
             'collections' => $collections
         ];
     }
-
-    function __toString()
-    {
-        return $this->compile()['query'];
-    }
-
 }

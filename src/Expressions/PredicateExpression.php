@@ -1,7 +1,7 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-class PredicateExpression extends Expression
+class PredicateExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
     protected $leftOperand = '';
@@ -19,7 +19,7 @@ class PredicateExpression extends Expression
      * @param string $rightOperand
      * @param string $operator
      */
-    function __construct($leftOperand, $rightOperand, $operator = '=')
+    function __construct($leftOperand, $rightOperand, $operator = '==')
     {
         $this->leftOperand = $leftOperand;
         $this->rightOperand= $rightOperand;
@@ -27,11 +27,11 @@ class PredicateExpression extends Expression
     }
 
     /**
-     * Get predicate string
+     * Compile predicate string
      *
      * @return string
      */
-    function __toString()
+    function compile()
     {
         return $this->leftOperand.' '.$this->operator.' '.$this->rightOperand;
     }

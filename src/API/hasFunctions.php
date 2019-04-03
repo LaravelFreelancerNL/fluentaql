@@ -1,6 +1,8 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\API;
 
+use LaravelFreelancerNL\FluentAQL\Functions\DocumentFunction;
+
 /**
  * Trait hasFunctions
  * API calls to add AQL function commands to the builder.
@@ -10,8 +12,10 @@ namespace LaravelFreelancerNL\FluentAQL\API;
 trait hasFunctions
 {
 
-    public function document($collection, $id)
+    public function document($collection, $id = null)
     {
-        return "DOCUMENT($collection, $id)";
+        $this->addCommand(new DocumentFunction($collection, $id));
+
+        return $this;
     }
 }

@@ -4,30 +4,14 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 /**
  * AQL List expression
  */
-class ListExpression extends Expression
+class ListExpression extends Expression implements ExpressionInterface
 {
-
-    /** @var string */
-    protected $expression;
-
-    /**
-     * Create literal expression
-     *
-     * @param string $expression
-     */
-    function __construct($expression)
+    function compile()
     {
-        $this->expression = $expression;
-    }
+        if (is_object($this->expression)) {
+            $this->expression = (array) $this->expression;
+        }
 
-    /**
-     * Get literal expression
-     *
-     * @return string
-     */
-    function __toString()
-    {
         return json_encode($this->expression);
     }
-
 }

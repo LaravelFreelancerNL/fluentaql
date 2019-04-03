@@ -1,9 +1,8 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\API;
 
-use LaravelFreelancerNL\FluentAQL\Clauses\FilterStatement;
-use LaravelFreelancerNL\FluentAQL\Clauses\ForStatement;
-use LaravelFreelancerNL\FluentAQL\Clauses\ReturnStatement;
+use LaravelFreelancerNL\FluentAQL\Statements\ForStatement;
+use LaravelFreelancerNL\FluentAQL\Statements\ReturnStatement;
 
 /**
  * Trait hasStatements
@@ -14,9 +13,9 @@ use LaravelFreelancerNL\FluentAQL\Clauses\ReturnStatement;
 trait hasStatements
 {
 
-    public function for($variableName, $in)
+    public function for($vertexVariableName, $edgeVariableName = null, $pathVariableName = null)
     {
-        $this->addCommand(new ForStatement($variableName, $in));
+        $this->addCommand(new ForStatement($vertexVariableName, $edgeVariableName, $pathVariableName));
 
         return $this;
     }
@@ -28,10 +27,4 @@ trait hasStatements
         return $this;
     }
 
-    public function filter($column, $operator, $value, $boolean)
-    {
-        $this->addCommand(new FilterStatement($column, $operator, $value, $boolean));
-
-        return $this;
-    }
 }

@@ -1,20 +1,23 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 
-class ReturnStatement extends Statement
+class InClause extends Clause
 {
+
     protected $expression;
 
     function __construct($expression)
     {
-        $this->expression = $expression;
+        parent::__construct();
+
+        $this->expression = $this->grammar->normalizeArgument($expression, ['literal', 'range', 'list', 'query']);
     }
+
 
     public function compile()
     {
-        $query = "RETURN {$this->expression}";
+        $query = "IN {$this->expression}";
         $bindings = [];
         $collections = [];
 
@@ -23,11 +26,5 @@ class ReturnStatement extends Statement
             'bindings' => $bindings,
             'collections' => $collections
         ];
-    }
-
-    function __toString()
-    {
-        return 'TEST123';
-//        return $this->compile()['query'];
     }
 }

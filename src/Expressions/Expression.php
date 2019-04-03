@@ -4,7 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 abstract class Expression
 {
 
-    /** @var string */
+    /** @var string |*/
     protected $expression = '';
 
     /**
@@ -17,6 +17,11 @@ abstract class Expression
         $this->expression = $expression;
     }
 
+    function compile()
+    {
+        return $this->expression;
+    }
+
     /**
      * Get expression
      *
@@ -24,6 +29,6 @@ abstract class Expression
      */
     function __toString()
     {
-        return $this->expression;
+        return $this->compile();
     }
 }
