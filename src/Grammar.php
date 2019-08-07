@@ -8,6 +8,7 @@ namespace LaravelFreelancerNL\FluentAQL;
 
 use Exception;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 
 class Grammar
 {
@@ -39,10 +40,51 @@ class Grammar
 
     protected $rangeOperator = '..';
 
+    public function wrap($value)
+    {
+        return '`'.addcslashes($value, '`').'`';
+    }
+
 
     /**
-     * @param $argument
-     * @param $allowedExpressionTypes
+     * @param $data
+     * @return array|false|string
+     * @throws Exception
+     */
+    public function prepareDataToBind($data)
+    {
+        if (is_scalar($data)) {
+            return $data;
+        }
+        if ($data instanceof \DateTime) {
+            return $data->format(\DateTime::ATOM);
+        }
+        if (is_object($data)) {
+            return json_encode($data, JSON_UNESCAPED_SLASHES);
+        }
+        if (is_array($data)) {
+            return array_map([$this, 'prepareDataToBind'], $data);
+        }
+
+        throw new Exception("Data type is not allowed for a binding: scalar, DateTime, object or array.");
+    }
+
+    function normalizeArray($array, $allowedExpressionTypes)
+    {
+        foreach($array as $key => $value) {
+            if (is_array($value)) {
+                $array[$key] = $this->normalizeArray($value, $allowedExpressionTypes);
+            } else {
+                $array[$key] = $this->normalizeArgument($value, $allowedExpressionTypes);
+            }
+        }
+
+        return new ListExpression($array);
+    }
+
+    /**
+     * @param mixed $argument
+     * @param array|string $allowedExpressionTypes
      * @return mixed
      * @throws Exception
      */
@@ -52,11 +94,10 @@ class Grammar
             return $argument;
         }
 
+        //Check if argument matches $allowedExpressionTypes
         if (is_string($allowedExpressionTypes)) {
             $allowedExpressionTypes = [$allowedExpressionTypes];
         }
-
-        //Check if argument matches $allowedExpressionTypes
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
             $check = 'is_'.$allowedExpressionType;
             if ($this->$check($argument)) {
@@ -118,30 +159,6 @@ class Grammar
     }
 
     /**
-     * @param $attributeName
-     * @return bool
-     */
-    function validateAttributeNameSyntax($attributeName)
-    {
-        if (preg_match('/^[\p{L}0-9_\-@]+$/u', $attributeName)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param $collectionName
-     * @return bool
-     */
-    function validateCollectionNameSyntax($collectionName)
-    {
-        if(preg_match('/^[a-zA-Z0-9_-]+$/', $collectionName)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * @param $value
      * @return bool
      */
@@ -167,4 +184,45 @@ class Grammar
     {
         return is_scalar($value) && ! $this->is_range($value);
     }
+
+    /**
+     * @param $attributeName
+     * @return bool
+     */
+    function validateAttributeNameSyntax($attributeName)
+    {
+        if (preg_match('/^[\p{L}0-9_\-@]+$/u', $attributeName)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $collectionName
+     * @return bool
+     */
+    function validateCollectionNameSyntax($collectionName)
+    {
+        if(preg_match('/^[a-zA-Z0-9_-]+$/', $collectionName)) {
+            return true;
+        }
+        return false;
+    }
+
+    function validateBindParameterSyntax($bindParameter)
+    {
+        if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
+            return true;
+        }
+        return false;
+    }
+
+    function is_key($value)
+    {
+        if (preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -1,24 +1,20 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Statements;
 
-class LetStatement extends Statement
+class ReturnStatement extends Statement
 {
+    protected $expression;
 
-    protected $variableName;
-
-    protected $value;
-
-    function __construct($variableName, $value)
+    function __construct($expression)
     {
         parent::__construct();
 
-        $this->variableName = $variableName;
-        $this->value = $value;
+        $this->expression = $expression;
     }
 
     public function compile()
     {
-        $query = "LET {$this->variableName} = {$this->value}";
+        $query = "RETURN {$this->expression}";
         $bindings = [];
         $collections = [];
 

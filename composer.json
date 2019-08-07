@@ -25,7 +25,8 @@
   "require-dev": {
     "triagens/arangodb": "3.4.*",
     "phpunit/phpunit": "8.*",
-    "mockery/mockery": "^1.2"
+    "mockery/mockery": "^1.2",
+    "phpro/grumphp": "dev-master"
   },
   "repositories": [ ],
   "autoload": {

@@ -1,13 +1,12 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class PredicateExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
-    protected $leftOperand = '';
-
-    /** @var string */
-    protected $rightOperand = '';
+    protected $expressions = [];
 
     /** @var string */
     protected $operator = '';
@@ -15,25 +14,26 @@ class PredicateExpression extends Expression implements ExpressionInterface
     /**
      * Create predicate expression
      *
-     * @param string $leftOperand
-     * @param string $rightOperand
+     * @param ExpressionInterface $leftOperand
+     * @param ExpressionInterface $rightOperand
      * @param string $operator
      */
-    function __construct($leftOperand, $rightOperand, $operator = '==')
+    function __construct(ExpressionInterface $leftOperand, ExpressionInterface $rightOperand, $operator = '==')
     {
-        $this->leftOperand = $leftOperand;
-        $this->rightOperand= $rightOperand;
+        $this->expressions['leftOperand'] = $leftOperand;
+        $this->expressions['rightOperand'] = $rightOperand;
         $this->operator = $operator;
     }
 
     /**
      * Compile predicate string
      *
+     * @param QueryBuilder $qb
      * @return string
      */
-    function compile()
+    function compile(QueryBuilder $qb)
     {
-        return $this->leftOperand.' '.$this->operator.' '.$this->rightOperand;
+        return $this->expressions['leftOperand'].' '.$this->operator.' '.$this->expressions['rightOperand'];
     }
 
 }

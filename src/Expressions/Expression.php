@@ -1,6 +1,8 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 abstract class Expression
 {
 
@@ -17,7 +19,7 @@ abstract class Expression
         $this->expression = $expression;
     }
 
-    function compile()
+    function compile(QueryBuilder $qb)
     {
         return $this->expression;
     }

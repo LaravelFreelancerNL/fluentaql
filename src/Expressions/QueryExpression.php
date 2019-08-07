@@ -19,7 +19,7 @@ class QueryExpression extends Expression implements ExpressionInterface
         $this->expression->setSubQuery();
     }
 
-    function compile()
+    function compile(QueryBuilder $qb)
     {
         return $this->expression->compile();
     }

@@ -1,21 +1,39 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\API;
 
-use LaravelFreelancerNL\FluentAQL\Functions\DocumentFunction;
+use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 /**
  * Trait hasFunctions
- * API calls to add AQL function commands to the builder.
+ *
+ * AQL Function API calls.
  *
  * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasFunctions
 {
+    use hasArrayFunctions,
+        hasDateFunctions,
+        hasDocumentFunctions,
+        hasGeoFunctions,
+        hasNumericFunctions,
+        hasMiscellaneousFunctions,
+        hasStringFunctions,
+        hasTypeFunctions,
+        hasFulltextFunctions;
 
-    public function document($collection, $id = null)
+    /**
+     * 'Catch all' method for AQL functions that haven't been implemented directly in this builder.
+     *
+     * @param $functionName
+     * @param mixed ...$parameters
+     * @return FunctionExpression
+     */
+    public function function($functionName, ...$parameters)
     {
-        $this->addCommand(new DocumentFunction($collection, $id));
+        //Normalize input
 
-        return $this;
+        //Return a Function Expression
+        return new FunctionExpression($functionName, $parameters);
     }
 }

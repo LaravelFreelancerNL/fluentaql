@@ -1,12 +1,20 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL;
 
-
+use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\API\hasClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasStatements;
+use LaravelFreelancerNL\FluentAQL\Expressions\BindingExpression;
 
-
+/**
+ * Class QueryBuilder
+ * Fluent ArangoDB AQL Query Builder.
+ * Creates and compiles AQL queries. Returns all data necessary to run the query,
+ * including bindings and a list of used read/write collections.
+ *
+ * @package LaravelFreelancerNL\FluentAQL
+ */
 class QueryBuilder
 {
     use hasStatements, hasClauses, hasFunctions;
@@ -16,25 +24,46 @@ class QueryBuilder
      *
      * @var \LaravelFreelancerNL\FluentAQL\Grammar
      */
-    public $grammar;
+    protected $grammar;
 
     /**
-      * List of commands to be compiled into a query
+      * List of clauses to be compiled into a query
       *
       */
-    protected $commands = [];
+    protected $clauses = [];
 
     /**
-     * The AQL QueryBuilder
+     * The AQL query
      * @var $query
      */
-    public $query;
+    protected $query;
+
+    /**
+     * ID of the query
+     * Used as prefix for automatically generated bindings.
+     * @var int $bindPrefix
+     */
+    protected $queryId = 1;
+
+    /**
+     * Total number of (sub)queries, including this one.
+     *
+     * @var int
+     */
+    protected $queryCount = 1;
 
     /**
      * Bindings for $query
      * @var $bindings
      */
-    public $bindings = [];
+    protected $bindings = [];
+
+    /**
+     * Prefix for collections
+     *
+     * @var string
+     */
+    protected $collectionPrefix = '';
 
     /**
      * List of read/write collections necessary for transactions
@@ -45,11 +74,13 @@ class QueryBuilder
 
     protected $isSubQuery = false;
 
-    function __construct($isSubQuery = false)
+    function __construct($isSubQuery = false, $queryId = 1)
     {
         $this->grammar = new Grammar();
 
         $this->isSubQuery = $isSubQuery;
+
+        $this->queryId = $queryId;
     }
 
     public function setSubQuery($isSubQuery = true)
@@ -62,34 +93,33 @@ class QueryBuilder
     /**
      * Add an AQL command (statements, clauses, functions and expressions)
      *
-     * @param object $command
+     * @param Clause $clause
      */
-    public function addCommand($command)
+    public function addClause(Clause $clause)
     {
-        $this->commands[] = $command;
+        $this->clauses[] = $clause;
     }
 
     /**
-     * Get the command list.
+     * Get the clause list.
      * @return mixed
      */
-    public function getCommands()
+    public function getClauses()
     {
-        return $this->commands;
+        return $this->clauses;
     }
 
     /**
-     * Get the last or a specified command
+     * Get the last or a specific clause
      * @param int|null $index
      * @return mixed
      */
-    public function getCommand(int $index = null)
+    public function getClause(int $index = null)
     {
         if ($index === null) {
-            return end($this->commands);
+            return end($this->clauses);
         }
-        return $this->commands[$index];
-
+        return $this->clauses[$index];
     }
 
     /**
@@ -98,13 +128,13 @@ class QueryBuilder
      * @param null $index
      * @return bool
      */
-    public function removeCommand($index = null) : bool
+    public function removeClause($index = null) : bool
     {
         if ($index === null) {
-            return (array_pop($this->commands)) ? true : false;
+            return (array_pop($this->clauses)) ? true : false;
         }
-        if (isset($this->commands[$index])) {
-            unset($this->commands[$index]);
+        if (isset($this->clauses[$index])) {
+            unset($this->clauses[$index]);
             return true;
         }
         return false;
@@ -113,25 +143,48 @@ class QueryBuilder
     /**
      * Clear all commands
      */
-    public function clearCommands()
+    public function clearClauses()
     {
-        $this->commands = [];
+        $this->clauses = [];
+    }
+
+    public function bind($data, $to = null, $type = 'variable')
+    {
+        $data = $this->grammar->prepareDataToBind($data);
+
+
+        if ($to == null) {
+            $to  = count($this->bindings) + 1;
+        } else {
+            if (!$this->grammar->validateBindParameterSyntax($to)) {
+                throw new \Exception("Invalid bind parameter.");
+            }
+        }
+        $this->bindings[$to] = $data;
+
+        return new BindingExpression($to, $type);
+    }
+
+    public function getBindings()
+    {
+        return $this->bindings;
     }
 
     /**
      * Compile the query with its bindings and collection list.
      *
+     * @param QueryBuilder|null $parentQueryBuilder
      * @return mixed
      */
-    public function compile() : array
+    public function compile(QueryBuilder $parentQueryBuilder = null) : array
     {
         $this->query = '';
-        foreach ($this->commands as $command) {
-            $commandData = $command->compile();
+        foreach ($this->clauses as $clause) {
+            $compiledData = $clause->compile($this);
 
-            $this->query .=  ' '.$commandData['query'];
-            $this->bindings = array_merge($this->bindings, $commandData['bindings']);
-            $this->collections = array_merge_recursive($this->collections, $commandData['collections']);
+            $this->query .=  ' '.$compiledData['query'];
+            $this->bindings = array_merge($this->bindings, $compiledData['bindings']);
+            $this->collections = array_merge_recursive($this->collections, $compiledData['collections']);
         }
 
         $this->query = trim($this->query);
@@ -150,12 +203,12 @@ class QueryBuilder
     {
         $this->compile();
 
-        //FIXME: temporary
-        $this->clearCommands();
-
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function toAql()
     {
         return $this->compile()['query'];

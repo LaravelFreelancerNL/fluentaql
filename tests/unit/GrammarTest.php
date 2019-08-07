@@ -42,8 +42,8 @@ class GrammarTest extends TestCase
         $result = $this->grammar->normalizeArgument('1..2', ['list', 'query', 'literal', 'range']);
         self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression::class, $result);
 
-        $result = $this->grammar->normalizeArgument(AQB::for('u')->in('users')->return('u'), ['list', 'query', 'literal', 'range']);
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
+//        $result = $this->grammar->normalizeArgument(AQB::for('u')->in('users')->return('u'), ['list', 'query', 'literal', 'range']);
+//        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
     }
 
     /**
@@ -184,5 +184,35 @@ class GrammarTest extends TestCase
         $result = $this->grammar->is_list('a string');
         self::assertFalse($result);
     }
+
+    /**
+     * prepareDataToBind
+     * @test
+     */
+    function prepare_data_to_bind()
+    {
+        $data = 'shizzle';
+        $preparedData = $this->grammar->prepareDataToBind($data);
+        self::assertEquals('shizzle', $preparedData);
+
+        $data = 666;
+        $preparedData = $this->grammar->prepareDataToBind($data);
+        self::assertEquals(666, $preparedData);
+
+        $data = [1, 2];
+        $preparedData = $this->grammar->prepareDataToBind($data);
+        self::assertEquals($data, $preparedData);
+
+        $data = (object) ['locations/123-456', 'locations/234-567', 'locations/345-678'];
+        $preparedData = $this->grammar->prepareDataToBind($data);
+        self::assertEquals('{"0":"locations/123-456","1":"locations/234-567","2":"locations/345-678"}', $preparedData);
+
+        $data = [1, 2, (object) [ 'attribute 1' => "One piece!!!", 'attribute 2' => "` backtick party"]];
+        $preparedData = $this->grammar->prepareDataToBind($data);
+        $controlData = [1, 2, '{"attribute 1":"One piece!!!","attribute 2":"` backtick party"}'];
+        self::assertNotEquals($data, $preparedData);
+        self::assertEquals($controlData, $preparedData);
+    }
+
 
 }

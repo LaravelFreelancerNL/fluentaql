@@ -54,7 +54,7 @@ class FilterClause extends Clause
 
     public function compile()
     {
-        $filters = $this->removeLastLogicalOperator();
+        $this->removeLastLogicalOperator();
         foreach ($this->filters as $filter) {
             $compiledFilters[] = implode(' ', $filter);
         }

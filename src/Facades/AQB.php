@@ -7,6 +7,10 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  *
  * @method static QueryBuilder setSubQuery()
  *
+ * @method static QueryBuilder bind($data, $to = null, $type = 'variable')
+ * @method static QueryBuilder getBindings()
+ * @method static QueryBuilder prepareDataToBind($data)
+ *
  * Statements:
  * @method static QueryBuilder for($variableName, $edgeVariableName = null, $pathVariableName = null)
  * @method static QueryBuilder return($expression)

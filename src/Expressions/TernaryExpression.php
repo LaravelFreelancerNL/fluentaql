@@ -1,6 +1,8 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class TernaryExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
@@ -31,7 +33,7 @@ class TernaryExpression extends Expression implements ExpressionInterface
      *
      * @return string
      */
-    function compile()
+    function compile(QueryBuilder $qb)
     {
         return $this->if.' ? '.$this->then.' : '.$this->else;
     }

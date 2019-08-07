@@ -1,17 +1,19 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class ConditionalExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
     protected $parameters = [];
 
     /**
-     * Create predicate expression
+     * Create conditional expression
      *
-     * @param $if
-     * @param $then
-     * @param $else
+     * @param Expression $if
+     * @param Expression $then
+     * @param Expression $else
      */
     function __construct($if, $then, $else = null)
     {
@@ -20,7 +22,7 @@ class ConditionalExpression extends Expression implements ExpressionInterface
         $this->parameters['else'] = $else;
     }
 
-    function compile()
+    function compile(QueryBuilder $qb)
     {
         return $this->parameters['if'].' ? '.$this->parameters['then'].' : '.$this->parameters['else'];
     }
