@@ -26,9 +26,11 @@ class FunctionExpression extends Expression implements ExpressionInterface
      * @param string $functionName
      * @param ExpressionInterface[] $parameters
      */
-    function __construct(string $functionName, $parameters)
+    public function __construct(string $functionName, $parameters)
     {
         parent::__construct($parameters);
+
+        $this->functionName = $functionName;
 
         if (is_string($parameters)) {
             $parameters[] = $parameters;
@@ -36,10 +38,8 @@ class FunctionExpression extends Expression implements ExpressionInterface
         $this->parameters = $parameters;
     }
 
-    function compile(QueryBuilder $qb)
+    public function compile()
     {
-        $function = $this->functionName.'('.implode(', ', $this->arguments).')';
-
-        return $function;
+        return strtoupper($this->functionName).'('.implode(', ', $this->parameters).')';
     }
 }

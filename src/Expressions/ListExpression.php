@@ -8,12 +8,12 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 class ListExpression extends Expression implements ExpressionInterface
 {
-    function compile(QueryBuilder $qb)
+    public function compile()
     {
         if (is_object($this->expression)) {
-            $this->expression = (array) $this->expression;
+            return json_encode($this->expression, JSON_UNESCAPED_SLASHES);
         }
 
-        return json_encode($this->expression);
+        return '['.implode(', ', $this->expression).']';
     }
 }

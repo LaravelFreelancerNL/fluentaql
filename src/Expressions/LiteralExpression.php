@@ -6,5 +6,4 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
  */
 class LiteralExpression extends Expression implements ExpressionInterface
 {
-
 }

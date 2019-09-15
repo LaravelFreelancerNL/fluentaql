@@ -2,19 +2,25 @@
 namespace LaravelFreelancerNL\FluentAQL\Facades;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 /**
  * Facade for a more fluent access to the ArangoDB Query Builder
  *
+ * @method static QueryBuilder get()
  * @method static QueryBuilder setSubQuery()
  *
  * @method static QueryBuilder bind($data, $to = null, $type = 'variable')
  * @method static QueryBuilder getBindings()
  * @method static QueryBuilder prepareDataToBind($data)
  *
- * Statements:
+ * Query Clauses:
  * @method static QueryBuilder for($variableName, $edgeVariableName = null, $pathVariableName = null)
  * @method static QueryBuilder return($expression)
  * @method static QueryBuilder filter($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = 'AND')
+ *
+ * Functions:
+ * Miscellaneous functions
+ * @method static QueryBuilder document(...$arguments)
  */
 
 class AQB

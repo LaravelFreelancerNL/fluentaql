@@ -12,14 +12,14 @@ class BindingExpression extends Expression implements ExpressionInterface
 
     protected $type;
 
-    function __construct($expression, $type = 'variable')
+    public function __construct($expression, $type = 'variable')
     {
         parent::__construct($expression);
 
         $this->type = $type;
     }
 
-    function compile(QueryBuilder $qb)
+    public function compile()
     {
         $binding = $this->expression;
 
@@ -31,9 +31,6 @@ class BindingExpression extends Expression implements ExpressionInterface
         if ($this->type == 'collection') {
             $prefix = '@@';
         }
-        $binding = $prefix.$binding;
-
-        return $binding;
+        return $prefix.$binding;
     }
 }
-

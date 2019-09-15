@@ -12,15 +12,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  */
 trait hasFunctions
 {
-    use hasArrayFunctions,
-        hasDateFunctions,
-        hasDocumentFunctions,
-        hasGeoFunctions,
-        hasNumericFunctions,
-        hasMiscellaneousFunctions,
-        hasStringFunctions,
-        hasTypeFunctions,
-        hasFulltextFunctions;
+    use hasMiscellaneousFunctions;
 
     /**
      * 'Catch all' method for AQL functions that haven't been implemented directly in this builder.

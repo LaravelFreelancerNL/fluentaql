@@ -1,0 +1,20 @@
+parameters:
+    bin_dir: "./vendor/bin"
+    git_dir: "."
+    process_timeout: 120
+    tasks:
+        phpcsfixer2: ~
+        phpunit:
+            testsuite: Unit
+            metadata:
+                priority: 100
+        composer:
+            no_check_lock: true
+        composer_normalize: ~
+        jsonlint: ~
+        yamllint:
+            ignore_patterns:
+                - "#test/(.*).yml#"
+    testsuites:
+        git_pre_commit:
+            tasks: [phpcsfixer2, phpunit, composer, composer_normalize, jsonlint, yamllint]

@@ -31,7 +31,7 @@ class GrammarTest extends TestCase
      * normalize argument
      * @test
      */
-    function normalize_argument()
+    public function normalize_argument()
     {
         $result = $this->grammar->normalizeArgument(['col`1'], ['list', 'query', 'literal']);
         self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\ListExpression::class, $result);
@@ -50,7 +50,7 @@ class GrammarTest extends TestCase
      * is document
      * @test
      */
-    function is_document()
+    public function is_document()
     {
         $result = $this->grammar->is_document('{ "test": "is this a document?" }');
         self::assertTrue($result);
@@ -66,7 +66,7 @@ class GrammarTest extends TestCase
      * is range
      * @test
      */
-    function is_range()
+    public function is_range()
     {
         $result = $this->grammar->is_range('0..1');
         self::assertTrue($result);
@@ -88,14 +88,13 @@ class GrammarTest extends TestCase
 
         $result = $this->grammar->is_range('a..1');
         self::assertFalse($result);
-
     }
 
     /**
      * is legal variable name
      * @test
      */
-    function validate_variable_name_syntax()
+    public function validate_variable_name_syntax()
     {
         $result = $this->grammar->is_variable('doc');
         self::assertTrue($result);
@@ -135,7 +134,7 @@ class GrammarTest extends TestCase
      * validate collection name syntax
      * @test
      */
-    function validate_collection_name_syntax()
+    public function validate_collection_name_syntax()
     {
         $result = $this->grammar->validateCollectionNameSyntax('col');
         self::assertTrue($result);
@@ -166,14 +165,13 @@ class GrammarTest extends TestCase
 
         $result = $this->grammar->validateCollectionNameSyntax('col`1');
         self::assertFalse($result);
-
     }
 
     /**
      * is list
      * @test
      */
-    function is_list()
+    public function is_list()
     {
         $result = $this->grammar->is_list([1, 2, 3]);
         self::assertTrue($result);
@@ -189,7 +187,7 @@ class GrammarTest extends TestCase
      * prepareDataToBind
      * @test
      */
-    function prepare_data_to_bind()
+    public function prepare_data_to_bind()
     {
         $data = 'shizzle';
         $preparedData = $this->grammar->prepareDataToBind($data);
@@ -213,6 +211,4 @@ class GrammarTest extends TestCase
         self::assertNotEquals($data, $preparedData);
         self::assertEquals($controlData, $preparedData);
     }
-
-
 }

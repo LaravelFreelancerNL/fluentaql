@@ -21,7 +21,7 @@ class TernaryExpression extends Expression implements ExpressionInterface
      * @param string $then
      * @param string $else
      */
-    function __construct($if, $then, $else = null)
+    public function __construct($if, $then, $else = null)
     {
         $this->if = $if;
         $this->then= $then;
@@ -33,9 +33,8 @@ class TernaryExpression extends Expression implements ExpressionInterface
      *
      * @return string
      */
-    function compile(QueryBuilder $qb)
+    public function compile()
     {
         return $this->if.' ? '.$this->then.' : '.$this->else;
     }
-
 }

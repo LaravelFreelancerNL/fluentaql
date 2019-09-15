@@ -1,8 +1,8 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-
 use LaravelFreelancerNL\FluentAQL\Grammar;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Class Clause
@@ -12,16 +12,15 @@ use LaravelFreelancerNL\FluentAQL\Grammar;
  */
 abstract class Clause
 {
-
     protected $grammar;
 
-    function __construct()
+    public function __construct()
     {
         $this->grammar = new Grammar();
     }
 
-    function __toString()
+    public function __toString()
     {
-        return $this->compile()['query'];
+        return $this->compile();
     }
 }

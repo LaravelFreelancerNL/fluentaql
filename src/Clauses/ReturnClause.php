@@ -1,7 +1,7 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-class InClause extends Clause
+class ReturnClause extends Clause
 {
     protected $expression;
 
@@ -9,11 +9,11 @@ class InClause extends Clause
     {
         parent::__construct();
 
-        $this->expression = $this->grammar->normalizeArgument($expression, ['literal', 'range', 'list', 'query']);
+        $this->expression = $expression;
     }
 
     public function compile()
     {
-        return "IN {$this->expression}";
+        return "RETURN {$this->expression}";
     }
 }

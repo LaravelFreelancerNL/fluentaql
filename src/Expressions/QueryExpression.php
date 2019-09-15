@@ -11,7 +11,7 @@ class QueryExpression extends Expression implements ExpressionInterface
     /** @var QueryBuilder */
     protected $expression;
 
-    function __construct(QueryBuilder $expression)
+    public function __construct(QueryBuilder $expression)
     {
         parent::__construct($expression);
 
@@ -19,13 +19,13 @@ class QueryExpression extends Expression implements ExpressionInterface
         $this->expression->setSubQuery();
     }
 
-    function compile(QueryBuilder $qb)
-    {
-        return $this->expression->compile();
-    }
-
-    function __toString()
+    public function compile()
     {
         return $this->expression->toAql();
+    }
+
+    public function __toString()
+    {
+        return $this->compile();
     }
 }

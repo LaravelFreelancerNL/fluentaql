@@ -19,10 +19,10 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
      * @param string $rightOperand
      * @param string $operator
      */
-    function __construct($leftOperand, $rightOperand, $operator = '+')
+    public function __construct($leftOperand, $rightOperand, $operator = '+')
     {
         $this->leftOperand = $leftOperand;
-        $this->rightOperand= $rightOperand;
+        $this->rightOperand = $rightOperand;
         $this->operator = $operator;
     }
 }

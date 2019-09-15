@@ -1,12 +1,10 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 
 class FilterClause extends Clause
 {
-
     protected $filters = [];
 
     /**
@@ -18,7 +16,7 @@ class FilterClause extends Clause
      * @param  string  $logicalOperator
      * @return $this
      */
-    function __construct($leftOperand, $rightOperand = null, $comparisonOperator = '==', $logicalOperator = 'AND')
+    public function __construct($leftOperand, $rightOperand = null, $comparisonOperator = '==', $logicalOperator = 'AND')
     {
         parent::__construct();
 
@@ -42,7 +40,10 @@ class FilterClause extends Clause
         }
 
         $this->filters[] = compact(
-            'leftOperand', 'comparisonOperator ', 'rightOperand', 'logicalOperator'
+            'leftOperand',
+            'comparisonOperator ',
+            'rightOperand',
+            'logicalOperator'
         );
 
         if (! $rightOperand instanceof Expression) {
@@ -63,9 +64,8 @@ class FilterClause extends Clause
     public function removeLastLogicalOperator()
     {
         $filters = $this->filters;
-        unset(end($filters['logicalOperator']));
+        end($filters['logicalOperator']);
+        unset($filters['logicalOperator']);
         $this->filters = $filters;
     }
-
-
 }

@@ -14,14 +14,19 @@ abstract class Expression
      *
      * @param string $expression
      */
-    function __construct($expression)
+    public function __construct($expression)
     {
         $this->expression = $expression;
     }
 
-    function compile(QueryBuilder $qb)
+    /**
+     * Compile expression output
+     *
+     * @return string
+     */
+    public function compile()
     {
-        return $this->expression;
+        return (string) $this->expression;
     }
 
     /**
@@ -29,7 +34,7 @@ abstract class Expression
      *
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->compile();
     }

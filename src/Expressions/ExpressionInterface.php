@@ -3,7 +3,7 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
-Interface ExpressionInterface
+interface ExpressionInterface
 {
-    function compile(QueryBuilder $qb);
+    public function compile();
 }

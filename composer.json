@@ -19,16 +19,21 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "ext-json": "*"
   },
   "require-dev": {
-    "triagens/arangodb": "3.4.*",
-    "phpunit/phpunit": "8.*",
+    "friendsofphp/php-cs-fixer": "^2.16@dev",
+    "localheinz/composer-normalize": "^2.0@dev",
     "mockery/mockery": "^1.2",
-    "phpro/grumphp": "dev-master"
+    "nikic/php-parser": "^4.2@dev",
+    "phpmd/phpmd": "dev-master",
+    "phpro/grumphp": "dev-master",
+    "phpstan/phpstan": "^0.12.0@dev",
+    "phpunit/phpunit": "8.*",
+    "sebastian/phpcpd": "^5.0@dev",
+    "triagens/arangodb": "3.5.*"
   },
-  "repositories": [ ],
   "autoload": {
     "psr-4": {
       "LaravelFreelancerNL\\FluentAQL\\": "src"
@@ -39,5 +44,6 @@
       "tests/TestCase.php"
     ]
   },
+  "repositories": [],
   "minimum-stability": "dev"
 }

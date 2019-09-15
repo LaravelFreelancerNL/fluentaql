@@ -2,9 +2,10 @@
 namespace LaravelFreelancerNL\FluentAQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
-use LaravelFreelancerNL\FluentAQL\API\hasClauses;
+use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasStatements;
+use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindingExpression;
 
 /**
@@ -17,26 +18,26 @@ use LaravelFreelancerNL\FluentAQL\Expressions\BindingExpression;
  */
 class QueryBuilder
 {
-    use hasStatements, hasClauses, hasFunctions;
+    use hasQueryClauses, hasFunctions;
 
     /**
      * The database query grammar instance.
      *
-     * @var \LaravelFreelancerNL\FluentAQL\Grammar
+     * @var Grammar
      */
     protected $grammar;
 
     /**
-      * List of clauses to be compiled into a query
+      * List of commands to be compiled into a query
       *
       */
-    protected $clauses = [];
+    protected $commands = [];
 
     /**
      * The AQL query
      * @var $query
      */
-    protected $query;
+    public $query;
 
     /**
      * ID of the query
@@ -56,7 +57,7 @@ class QueryBuilder
      * Bindings for $query
      * @var $bindings
      */
-    protected $bindings = [];
+    public $bindings = [];
 
     /**
      * Prefix for collections
@@ -74,11 +75,9 @@ class QueryBuilder
 
     protected $isSubQuery = false;
 
-    function __construct($isSubQuery = false, $queryId = 1)
+    public function __construct($queryId = 1)
     {
         $this->grammar = new Grammar();
-
-        $this->isSubQuery = $isSubQuery;
 
         $this->queryId = $queryId;
     }
@@ -91,35 +90,35 @@ class QueryBuilder
     }
 
     /**
-     * Add an AQL command (statements, clauses, functions and expressions)
+     * Add an AQL command (raw AQL, clauses, query builders and expressions)
      *
-     * @param Clause $clause
+     * @param Clause|QueryBuilder $clause
      */
-    public function addClause(Clause $clause)
+    public function addCommand($clause)
     {
-        $this->clauses[] = $clause;
+        $this->commands[] = $clause;
     }
 
     /**
-     * Get the clause list.
+     * Get the command list.
      * @return mixed
      */
-    public function getClauses()
+    public function getCommands()
     {
-        return $this->clauses;
+        return $this->commands;
     }
 
     /**
-     * Get the last or a specific clause
+     * Get the last or a specific command
      * @param int|null $index
      * @return mixed
      */
-    public function getClause(int $index = null)
+    public function getCommand(int $index = null)
     {
         if ($index === null) {
-            return end($this->clauses);
+            return end($this->commands);
         }
-        return $this->clauses[$index];
+        return $this->commands[$index];
     }
 
     /**
@@ -128,13 +127,13 @@ class QueryBuilder
      * @param null $index
      * @return bool
      */
-    public function removeClause($index = null) : bool
+    public function removeCommand($index = null) : bool
     {
         if ($index === null) {
-            return (array_pop($this->clauses)) ? true : false;
+            return (array_pop($this->commands)) ? true : false;
         }
-        if (isset($this->clauses[$index])) {
-            unset($this->clauses[$index]);
+        if (isset($this->commands[$index])) {
+            unset($this->commands[$index]);
             return true;
         }
         return false;
@@ -143,9 +142,9 @@ class QueryBuilder
     /**
      * Clear all commands
      */
-    public function clearClauses()
+    public function clearCommands()
     {
-        $this->clauses = [];
+        $this->commands = [];
     }
 
     public function bind($data, $to = null, $type = 'variable')
@@ -176,27 +175,18 @@ class QueryBuilder
      * @param QueryBuilder|null $parentQueryBuilder
      * @return mixed
      */
-    public function compile(QueryBuilder $parentQueryBuilder = null) : array
+    public function compile(QueryBuilder $parentQueryBuilder = null) : string
     {
         $this->query = '';
-        foreach ($this->clauses as $clause) {
-            $compiledData = $clause->compile($this);
-
-            $this->query .=  ' '.$compiledData['query'];
-            $this->bindings = array_merge($this->bindings, $compiledData['bindings']);
-            $this->collections = array_merge_recursive($this->collections, $compiledData['collections']);
+        foreach ($this->commands as $command) {
+            $this->query .=  $command->compile($this);
         }
 
-        $this->query = trim($this->query);
         if ($this->isSubQuery) {
             $this->query = '('.$this->query.')';
         }
 
-        return [
-            'query' => $this->query,
-            'bindings' => $this->bindings,
-            'collections' => $this->collections
-        ];
+        return $this->query;
     }
 
     public function get()
@@ -214,7 +204,7 @@ class QueryBuilder
         return $this->compile()['query'];
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->toAql();
     }

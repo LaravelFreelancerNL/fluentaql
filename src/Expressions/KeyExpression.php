@@ -8,8 +8,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 class KeyExpression extends Expression implements ExpressionInterface
 {
-
-    function compile(QueryBuilder $qb)
+    public function compile()
     {
         return '"'.$this->expression.'"';
     }

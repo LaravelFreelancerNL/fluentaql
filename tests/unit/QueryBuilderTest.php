@@ -11,17 +11,17 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class QueryBuilderTest extends TestCase
 {
 
-//    /**
-//     * facade
-//     * @test
-//     */
-//    function facade()
-//    {
-//        $aqb = AQB::for('u')->in('users')->return('u')->get();
-//
-//        self::assertInstanceOf(QueryBuilder::class, $aqb);
-//    }
-//
+    /**
+     * facade
+     * @test
+     */
+    public function facade()
+    {
+        $aqb = AQB::get();
+
+        self::assertInstanceOf(QueryBuilder::class, $aqb);
+    }
+
 //    /**
 //     * get
 //     * @test
@@ -76,5 +76,4 @@ class QueryBuilderTest extends TestCase
 //        self::assertEquals('@@aBindName', $bind);
 //
 //    }
-
 }

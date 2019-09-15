@@ -6,5 +6,4 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
  */
 class RangeExpression extends Expression implements ExpressionInterface
 {
-
 }
