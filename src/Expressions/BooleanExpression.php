@@ -4,7 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 /**
  * AQL literal expression
  */
-class LiteralExpression extends Expression implements ExpressionInterface
+class BooleanExpression extends Expression implements ExpressionInterface
 {
     /**
      * Compile expression output
@@ -13,6 +13,6 @@ class LiteralExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return (string) $this->expression;
+        return ($this->expression) ? 'true' : 'false';
     }
 }

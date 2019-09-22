@@ -5,26 +5,25 @@ use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 
 class RawClause extends Clause
 {
-    protected $expression;
+    protected $aql;
 
-    protected $bindings = [];
-
-    protected $collections = [];
-
-    public function __construct($aql, $bindings = [], $collections = [])
+    /**
+     * RawClause constructor.
+     * @param string $aql
+     */
+    public function __construct(string $aql)
     {
         parent::__construct();
 
-        $this->expression = new LiteralExpression($aql);
-
-        $this->bindings = $bindings;
-
-        $this->collections = $collections;
+        $this->aql = $aql;
     }
 
-
+    /**
+     * Generate output
+     * @return string
+     */
     public function compile()
     {
-        return $this->expression;
+        return (string) $this->aql;
     }
 }

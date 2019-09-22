@@ -6,6 +6,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\InClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\WithClause;
 
 /**
  * Trait hasQueryClauses
@@ -19,29 +20,50 @@ trait hasQueryClauses
     /**
      * Use with extreme caution, as no safety checks are done at all!
      * You HAVE TO prepare user input yourself or be open to injection attacks.
-     * @param $aql
+     * @param string $aql
      * @param null $bindings
      * @param null $collections
      * @return $this
      */
-    public function raw($aql, $bindings = [], $collections = [])
+    public function raw(string $aql, $bindings = [], $collections = [])
     {
-        $this->addCommand(new RawClause($aql, $bindings, $collections));
+        $this->addCommand(new RawClause($aql));
 
         return $this;
     }
 
-
-    public function for($vertexVariableName, $edgeVariableName = null, $pathVariableName = null)
+    public function with()
     {
-        $this->addCommand(new ForClause($vertexVariableName, $edgeVariableName, $pathVariableName));
+        $collections = func_get_args();
+        foreach ($collections as $key => $collection) {
+            $collections[$key] = $this->normalizeArgument($collection, 'collection');
+        }
+
+        $this->addCommand(new WithClause($collections));
 
         return $this;
     }
 
-    public function in($list)
+    /**
+     * Create a for clause
+     *
+     * @param string|array $variableName
+     * @param mixed $in
+     * @return $this
+     */
+    public function for($variableName, $in)
     {
-        $this->addCommand(new InClause($list));
+        if (! is_array($variableName)) {
+            $variableName = [$variableName];
+        }
+
+        foreach ($variableName as $key => $value) {
+            $variableName[$key] = $this->normalizeArgument($value, 'variable');
+        }
+
+        $in = $this->normalizeArgument($in, ['collection', 'range', 'list', 'function', 'query']);
+
+        $this->addCommand(new ForClause($variableName, $in));
 
         return $this;
     }
@@ -53,9 +75,9 @@ trait hasQueryClauses
         return $this;
     }
 
-    public function return($expression)
+    public function return($expression, $distinct = false)
     {
-        $this->addCommand(new ReturnClause($expression));
+        $this->addCommand(new ReturnClause($expression, $distinct));
 
         return $this;
     }

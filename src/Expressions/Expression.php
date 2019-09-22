@@ -6,13 +6,13 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 abstract class Expression
 {
 
-    /** @var string |*/
-    protected $expression = '';
+    /** @var mixed*/
+    protected $expression;
 
     /**
      * Create an expression
      *
-     * @param string $expression
+     * @param mixed $expression
      */
     public function __construct($expression)
     {

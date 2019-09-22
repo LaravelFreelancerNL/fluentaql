@@ -1,12 +1,16 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL;
 
+use Exception;
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
-use LaravelFreelancerNL\FluentAQL\API\hasStatements;
-use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
-use LaravelFreelancerNL\FluentAQL\Expressions\BindingExpression;
+use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
+use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 
 /**
  * Class QueryBuilder
@@ -18,7 +22,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\BindingExpression;
  */
 class QueryBuilder
 {
-    use hasQueryClauses, hasFunctions;
+    use hasQueryClauses, hasStatementClauses, hasFunctions;
 
     /**
      * The database query grammar instance.
@@ -48,16 +52,15 @@ class QueryBuilder
 
     /**
      * Total number of (sub)queries, including this one.
-     *
      * @var int
      */
     protected $queryCount = 1;
 
     /**
      * Bindings for $query
-     * @var $bindings
+     * @var $binds
      */
-    public $bindings = [];
+    public $binds = [];
 
     /**
      * Prefix for collections
@@ -82,9 +85,49 @@ class QueryBuilder
         $this->queryId = $queryId;
     }
 
-    public function setSubQuery($isSubQuery = true)
+    public function normalizeArgument($argument, $allowedExpressionTypes)
     {
-        $this->isSubQuery = $isSubQuery;
+        $expressionType = null;
+
+        $expressionType = $this->determineExpressionType($argument, $allowedExpressionTypes);
+
+        //Handle bindings. Replace argument data with bind variable.
+        if ($expressionType == 'bind') {
+            $argument = $this->bind($argument);
+        }
+
+        if (!isset($expressionType)) {
+            throw new ExpressionTypeException("Not a valid expression type.");
+        }
+        //Return expression
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . ucfirst(strtolower($expressionType)) . 'Expression';
+        return new $expressionClass($argument);
+    }
+
+    /**
+     * Return the first matching expression type for the argument from the allowed types
+     *
+     * @param string|iterable $argument
+     * @param $allowedExpressionTypes
+     * @return mixed
+     */
+    private function determineExpressionType($argument, $allowedExpressionTypes)
+    {
+        if (is_string($allowedExpressionTypes)) {
+            $allowedExpressionTypes = [$allowedExpressionTypes];
+        }
+
+        foreach ($allowedExpressionTypes as $allowedExpressionType) {
+            $check = 'is_'.$allowedExpressionType;
+            if ($this->grammar->$check($argument)) {
+                return $allowedExpressionType;
+            }
+        }
+    }
+
+    public function setSubQuery()
+    {
+        $this->isSubQuery = true;
 
         return $this;
     }
@@ -147,26 +190,27 @@ class QueryBuilder
         $this->commands = [];
     }
 
-    public function bind($data, $to = null, $type = 'variable')
+    public function bind($data, $to = null, $collection = false)
     {
         $data = $this->grammar->prepareDataToBind($data);
 
-
         if ($to == null) {
-            $to  = count($this->bindings) + 1;
+            $to  = $this->queryId.'_'.(count($this->binds)+1);
         } else {
             if (!$this->grammar->validateBindParameterSyntax($to)) {
-                throw new \Exception("Invalid bind parameter.");
+                throw new BindException("Invalid bind parameter.");
             }
         }
-        $this->bindings[$to] = $data;
+        $this->binds[$to] = $data;
 
-        return new BindingExpression($to, $type);
+        $to = $this->grammar->formatBind($to, $collection);
+
+        return new BindExpression($to);
     }
 
-    public function getBindings()
+    public function getBinds()
     {
-        return $this->bindings;
+        return $this->binds;
     }
 
     /**
@@ -178,9 +222,8 @@ class QueryBuilder
     public function compile(QueryBuilder $parentQueryBuilder = null) : string
     {
         $this->query = '';
-        foreach ($this->commands as $command) {
-            $this->query .=  $command->compile($this);
-        }
+
+        $this->query =  implode(' ', $this->commands);
 
         if ($this->isSubQuery) {
             $this->query = '('.$this->query.')';
@@ -189,6 +232,9 @@ class QueryBuilder
         return $this->query;
     }
 
+    /**
+     * @return QueryBuilder $this
+     */
     public function get()
     {
         $this->compile();

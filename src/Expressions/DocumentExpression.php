@@ -2,9 +2,9 @@
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 /**
- * List expression
+ * Key expression
  */
-class ListExpression extends Expression implements ExpressionInterface
+class DocumentExpression extends Expression implements ExpressionInterface
 {
     public function compile()
     {

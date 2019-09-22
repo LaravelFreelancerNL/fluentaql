@@ -4,7 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * AQL literal expression
+ * Query expression
  */
 class QueryExpression extends Expression implements ExpressionInterface
 {

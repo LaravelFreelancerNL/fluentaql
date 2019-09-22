@@ -6,6 +6,8 @@ namespace LaravelFreelancerNL\FluentAQL;
  */
 
 use Exception;
+use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 
@@ -53,82 +55,42 @@ class Grammar
      */
     public function prepareDataToBind($data)
     {
+        $bind = false;
+
         if (is_scalar($data)) {
-            return $data;
+            $bind = true;
         }
         if ($data instanceof \DateTime) {
-            return $data->format(\DateTime::ATOM);
+            $data = $data->format(\DateTime::ATOM);
+            $bind = true;
         }
         if (is_object($data)) {
-            return json_encode($data, JSON_UNESCAPED_SLASHES);
+            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
+            $bind = true;
         }
         if (is_array($data)) {
-            return array_map([$this, 'prepareDataToBind'], $data);
+            $data = array_map([$this, 'prepareDataToBind'], $data);
+            $bind = true;
         }
 
-        throw new Exception("'Data type is not allowed for a binding (scalar, DateTime, object or array): ".var_export($data, true));
-    }
-
-    public function normalizeArray($array, $allowedExpressionTypes)
-    {
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $array[$key] = $this->normalizeArray($value, $allowedExpressionTypes);
-            } else {
-                $array[$key] = $this->normalizeArgument($value, $allowedExpressionTypes);
-            }
+        if ($bind) {
+            return $data;
         }
 
-        return new ListExpression($array);
-    }
-
-    /**
-     * @param mixed $argument
-     * @param array|string $allowedExpressionTypes
-     * @return mixed
-     * @throws Exception
-     */
-    public function normalizeArgument($argument, $allowedExpressionTypes)
-    {
-        if ($argument instanceof ExpressionInterface) {
-            return $argument;
-        }
-
-        //Check if argument matches $allowedExpressionTypes
-        if (is_string($allowedExpressionTypes)) {
-            $allowedExpressionTypes = [$allowedExpressionTypes];
-        }
-        foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is_'.$allowedExpressionType;
-            if ($this->$check($argument)) {
-                $expressionType = $allowedExpressionType;
-                break;
-            }
-        }
-
-        if (! isset($expressionType)) {
-            throw new Exception("Not a valid expression type.");
-        }
-        //Return expression
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.ucfirst(strtolower($expressionType)).'Expression';
-        return new $expressionClass($argument);
+        throw new BindException("'Data type is not allowed for a binding (scalar, DateTime, object or array): ".var_export($data, true));
     }
 
     /**
      * @param $value
      * @return bool
      */
-    public function is_document($value)
+    public function is_bind($value)
     {
-        if (is_iterable($value)) {
-            return false;
+        if (is_string($value)) {
+            return true;
         }
         if (is_object($value)) {
             return true;
-        }
-        //Check for string representation of a JSON object
-        if (is_string($value)) {
-            return is_object(json_decode($value));
         }
         return false;
     }
@@ -145,6 +107,14 @@ class Grammar
         return false;
     }
 
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function is_numeric($value)
+    {
+        return is_numeric($value);
+    }
     
     /**
      * @param $variableName
@@ -164,7 +134,7 @@ class Grammar
      */
     public function is_list($value)
     {
-        return is_iterable($value);
+        return is_array($value) && $this->arrayIsNumeric($value);
     }
 
     /**
@@ -176,14 +146,6 @@ class Grammar
         return $value instanceof QueryBuilder;
     }
 
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function is_literal($value)
-    {
-        return is_scalar($value) && ! $this->is_range($value);
-    }
 
     /**
      * @param $attributeName
@@ -201,7 +163,7 @@ class Grammar
      * @param $collectionName
      * @return bool
      */
-    public function validateCollectionNameSyntax($collectionName)
+    public function is_collection($collectionName)
     {
         if (preg_match('/^[a-zA-Z0-9_-]+$/', $collectionName)) {
             return true;
@@ -223,5 +185,46 @@ class Grammar
             return true;
         }
         return false;
+    }
+
+    /**
+     * Check if the array is associative
+     *
+     * @param array $array
+     * @return bool
+     */
+    public function arrayIsAssociative(array $array)
+    {
+        if (empty($array)) {
+            return true;
+        }
+        return !ctype_digit(implode('', array_keys($array)));
+    }
+
+    /**
+     * Check if the array is numeric
+     *
+     * @param array $array
+     * @return bool
+     */
+    public function arrayIsNumeric(array $array)
+    {
+        if (empty($array)) {
+            return true;
+        }
+        return ctype_digit(implode('', array_keys($array)));
+    }
+
+    public function formatBind(string $bindVariableName, bool $collection = null)
+    {
+        if (stripos($bindVariableName, '@') === 0) {
+            $bindVariableName = $this->wrap($bindVariableName);
+        }
+
+        $prefix = '@';
+        if ($collection) {
+            $prefix = '@@';
+        }
+        return $prefix.$bindVariableName;
     }
 }

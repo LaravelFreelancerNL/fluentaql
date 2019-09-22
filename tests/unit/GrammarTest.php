@@ -1,7 +1,12 @@
 <?php
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
+use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\Grammar;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Class StructureTest
@@ -26,41 +31,6 @@ class GrammarTest extends TestCase
         $this->grammar = new Grammar();
     }
 
-
-    /**
-     * normalize argument
-     * @test
-     */
-    public function normalize_argument()
-    {
-        $result = $this->grammar->normalizeArgument(['col`1'], ['list', 'query', 'literal']);
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\ListExpression::class, $result);
-
-        $result = $this->grammar->normalizeArgument('col`1', ['list', 'query', 'literal']);
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression::class, $result);
-
-        $result = $this->grammar->normalizeArgument('1..2', ['list', 'query', 'literal', 'range']);
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression::class, $result);
-
-//        $result = $this->grammar->normalizeArgument(AQB::for('u')->in('users')->return('u'), ['list', 'query', 'literal', 'range']);
-//        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
-    }
-
-    /**
-     * is document
-     * @test
-     */
-    public function is_document()
-    {
-        $result = $this->grammar->is_document('{ "test": "is this a document?" }');
-        self::assertTrue($result);
-
-        $result = $this->grammar->is_document('{ "this is not a document" } .');
-        self::assertFalse($result);
-
-        $result = $this->grammar->is_document((object)[]);
-        self::assertTrue($result);
-    }
 
     /**
      * is range
@@ -134,36 +104,36 @@ class GrammarTest extends TestCase
      * validate collection name syntax
      * @test
      */
-    public function validate_collection_name_syntax()
+    public function is_collection()
     {
-        $result = $this->grammar->validateCollectionNameSyntax('col');
+        $result = $this->grammar->is_collection('col');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('_col');
+        $result = $this->grammar->is_collection('_col');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('c_ol');
+        $result = $this->grammar->is_collection('c_ol');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('co-l');
+        $result = $this->grammar->is_collection('co-l');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('col-');
+        $result = $this->grammar->is_collection('col-');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('col-1');
+        $result = $this->grammar->is_collection('col-1');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('@col-1');
+        $result = $this->grammar->is_collection('@col-1');
         self::assertFalse($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('colö');
+        $result = $this->grammar->is_collection('colö');
         self::assertFalse($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('col.1');
+        $result = $this->grammar->is_collection('col.1');
         self::assertFalse($result);
 
-        $result = $this->grammar->validateCollectionNameSyntax('col`1');
+        $result = $this->grammar->is_collection('col`1');
         self::assertFalse($result);
     }
 
@@ -180,6 +150,41 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
 
         $result = $this->grammar->is_list('a string');
+        self::assertFalse($result);
+    }
+
+    /**
+     * formatBind
+     * @test
+     */
+    public function format_bind()
+    {
+        $result = $this->grammar->formatBind('aBindName');
+        self::assertEquals('@aBindName', $result);
+
+        $result = $this->grammar->formatBind('@aBindName');
+        self::assertEquals('@`@aBindName`', $result);
+
+        $result = $this->grammar->formatBind('aCollection', true);
+        self::assertEquals('@@aCollection', $result);
+    }
+
+    /**
+     * validateBindParameterSyntax
+     * @test
+     */
+    public function validate_bind_parameter_syntax()
+    {
+        $result = $this->grammar->validateBindParameterSyntax('aBindVariableName');
+        self::assertTrue($result);
+
+        $result = $this->grammar->validateBindParameterSyntax('@aBindVariableName');
+        self::assertTrue($result);
+
+        $result = $this->grammar->validateBindParameterSyntax('a-faultybind-variable-name');
+        self::assertFalse($result);
+
+        $result = $this->grammar->validateBindParameterSyntax('@@aBindVariableName');
         self::assertFalse($result);
     }
 
@@ -210,5 +215,77 @@ class GrammarTest extends TestCase
         $controlData = [1, 2, '{"attribute 1":"One piece!!!","attribute 2":"` backtick party"}'];
         self::assertNotEquals($data, $preparedData);
         self::assertEquals($controlData, $preparedData);
+    }
+
+    /**
+     * is array associative or numeric
+     * @test
+     */
+    public function is_array_associative()
+    {
+        $emptyArray = [];
+        $numericArray = [
+            0 => 'Varys',
+            "1" => 'Petyr Baelish',
+            '2' => 'The Onion Knight'
+        ];
+        $associativeArray = [
+            'name' => 'Drogon',
+            'race' => 'dragon',
+            'color' => 'black'
+        ];
+        $mixedArray = [
+            "name" => 'Varys',
+            "01" => 'Eunuch',
+            "employer" => 'The Realm'
+        ];
+
+        $result = $this->grammar->arrayIsAssociative($emptyArray);
+        self::assertTrue($result);
+
+        $result = $this->grammar->arrayIsAssociative($associativeArray);
+        self::assertTrue($result);
+
+        $result = $this->grammar->arrayIsAssociative($mixedArray);
+        self::assertTrue($result);
+
+        $result = $this->grammar->arrayIsAssociative($numericArray);
+        self::assertFalse($result);
+    }
+
+    /**
+     * is array numeric
+     * @test
+     */
+    public function is_array_associative_or_numeric()
+    {
+        $emptyArray = [];
+        $numericArray = [
+            0 => 'Varys',
+            "1" => 'Petyr Baelish',
+            '2' => 'The Onion Knight'
+        ];
+        $associativeArray = [
+            'name' => 'Drogon',
+            'race' => 'dragon',
+            'color' => 'black'
+        ];
+        $mixedArray = [
+            "name" => 'Varys',
+            "01" => 'Eunuch',
+            "employer" => 'The Realm'
+        ];
+
+        $result = $this->grammar->arrayIsNumeric($emptyArray);
+        self::assertTrue($result);
+
+        $result = $this->grammar->arrayIsNumeric($associativeArray);
+        self::assertFalse($result);
+
+        $result = $this->grammar->arrayIsNumeric($mixedArray);
+        self::assertFalse($result);
+
+        $result = $this->grammar->arrayIsNumeric($numericArray);
+        self::assertTrue($result);
     }
 }

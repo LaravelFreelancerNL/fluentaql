@@ -9,7 +9,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 /**
  * Trait hasFunctions
  *
- * Miscellaneous function.
+ * Miscellaneous AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html
  * @package LaravelFreelancerNL\FluentAQL\API
  */
@@ -33,15 +33,10 @@ trait hasMiscellaneousFunctions
             $collection = null;
         }
 
-        if ($collection !== null && $this->grammar->validateCollectionNameSyntax($collection)) {
-            $arguments['collection'] = new LiteralExpression($collection);
+        if ($collection !== null) {
+            $arguments['collection'] = $this->normalizeArgument($collection, ['collection']);
         }
-        if (! is_array($id)) {
-            $arguments['id'] = $this->grammar->normalizeArgument($id, ['query', 'key']);
-        }
-        if (is_array($id)) {
-            $arguments['id'] = $this->grammar->normalizeArray($id, ['query', 'key']);
-        }
+        $arguments['id'] = $this->normalizeArgument($id, ['query', 'list', 'key']);
 
         return new FunctionExpression('DOCUMENT', $arguments);
     }

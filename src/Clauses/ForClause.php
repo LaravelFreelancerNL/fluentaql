@@ -1,24 +1,37 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+
 class ForClause extends Clause
 {
     protected $variables;
 
-    public function __construct($variableName, $edgeVariableName = null, $pathVariableName = null)
+    protected $in;
+
+    /**
+     * ForClause constructor.
+     * @param array $variableName
+     * @param ExpressionInterface $in
+     */
+    public function __construct($variableName, $in)
     {
         parent::__construct();
 
-        $this->variables[] = $this->grammar->normalizeArgument($variableName, 'variable');
-        $this->variables[] = $edgeVariableName;
-        $this->variables[] = $pathVariableName;
-        $this->variables = array_filter($this->variables);
+        $this->variables = $variableName;
+
+        $this->in = $in;
     }
 
     public function compile()
     {
-        $expression = implode(', ', $this->variables);
+        $variableExpression = implode(', ', $this->variables);
 
-        return "FOR {$expression}";
+        $inExpression = (string) $this->in;
+        if (is_array($this->in)) {
+            $inExpression = '['.implode(', ', $this->in).']';
+        }
+
+        return "FOR {$variableExpression} IN {$inExpression}";
     }
 }

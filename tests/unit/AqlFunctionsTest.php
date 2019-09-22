@@ -24,15 +24,15 @@ class AqlFunctionsTest extends TestCase
         self::assertEquals('DOCUMENT(users, "john")', (string) $functionExpression);
 
         $functionExpression = AQB::document('users', ['users/john', 'users/amy']);
-        self::assertEquals('DOCUMENT(users, ["users/john", "users/amy"])', (string) $functionExpression);
+        self::assertEquals('DOCUMENT(users, ["users/john","users/amy"])', (string) $functionExpression);
 
         $functionExpression = AQB::document('users', ['john', 'amy']);
-        self::assertEquals('DOCUMENT(users, ["john", "amy"])', (string) $functionExpression);
+        self::assertEquals('DOCUMENT(users, ["john","amy"])', (string) $functionExpression);
 
         $functionExpression = AQB::document('users/john');
         self::assertEquals('DOCUMENT("users/john")', (string) $functionExpression);
 
         $functionExpression = AQB::document(['users/john', 'users/amy']);
-        self::assertEquals('DOCUMENT(["users/john", "users/amy"])', (string) $functionExpression);
+        self::assertEquals('DOCUMENT(["users/john","users/amy"])', (string) $functionExpression);
     }
 }

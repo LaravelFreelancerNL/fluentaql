@@ -1,15 +1,9 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-
 /**
- * AQL List expression
+ * Key expression
  */
-class KeyExpression extends Expression implements ExpressionInterface
+class KeyExpression extends StringExpression implements ExpressionInterface
 {
-    public function compile()
-    {
-        return '"'.$this->expression.'"';
-    }
 }

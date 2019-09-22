@@ -5,18 +5,18 @@ class LetClause extends Clause
 {
     protected $variableName;
 
-    protected $value;
+    protected $expression;
 
-    public function __construct($variableName, $value)
+    public function __construct($variableName, $expression)
     {
         parent::__construct();
 
         $this->variableName = $variableName;
-        $this->value = $value;
+        $this->expression = $expression;
     }
 
     public function compile()
     {
-        return "LET {$this->variableName} = {$this->value}";
+        return "LET {$this->variableName} = {$this->expression}";
     }
 }
