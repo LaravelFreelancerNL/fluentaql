@@ -35,6 +35,38 @@ class QueryClausesTest extends TestCase
     }
 
     /**
+     * filter clause syntax
+     * @test
+     */
+    function filter_clause_syntax()
+    {
+        $result = AQB::filter('u.active', '==', 'true')->get();
+        self::assertEquals('FILTER @1_1 == @1_2', $result->query);
+
+        $result = AQB::filter('u.active', '==', 'true', 'OR')->get();
+        self::assertEquals('FILTER @1_1 == @1_2', $result->query);
+
+        $result = AQB::filter('u.active', 'true')->get();
+        self::assertEquals('FILTER @1_1 == @1_2', $result->query);
+
+        $result = AQB::filter('u.active')->get();
+        self::assertEquals('FILTER @1_1 == @1_2', $result->query);
+
+        $result = AQB::filter([['u.active', '==', 'true'], ['u.age']])->get();
+        self::assertEquals('FILTER @1_1 == @1_2 AND @1_3 == @1_4', $result->query);
+
+        //FIXME: Embedded filters
+//        $result = AQB::filter(
+//            [
+//                ['u.active', '==', 'true'], ['u.age'],
+//                ['u.name', '==', 'Brandon'], ['u.surname', 'Stark'],
+//            ]
+//        )->get();
+//        self::assertEquals('FILTER @1_1 == @1_2 AND @1_3 == @1_4', $result->query);
+    }
+
+
+    /**
      * sort clause syntax
      * @test
      */

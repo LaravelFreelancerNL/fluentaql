@@ -41,32 +41,6 @@ class QueryBuilderTest extends TestCase
 
 
     /**
-     * normalize argument
-     * @test
-     */
-    public function normalize_argument()
-    {
-        $result = AQB::normalizeArgument(['col`1'], ['list', 'query']);
-        self::assertInstanceOf(ListExpression::class, $result);
-
-        $result = AQB::normalizeArgument('col`1', ['list', 'query', 'bind']);
-        self::assertInstanceOf(BindExpression::class, $result);
-
-        $result = AQB::normalizeArgument('1..2', ['list', 'query', 'range']);
-        self::assertInstanceOf(RangeExpression::class, $result);
-
-        $result = AQB::normalizeArgument(50, ['list', 'numeric', 'range']);
-        self::assertInstanceOf(NumericExpression::class, $result);
-
-        $result = AQB::normalizeArgument(+0123.45e6, ['list', 'numeric', 'range']);
-        self::assertInstanceOf(NumericExpression::class, $result);
-
-
-        $result = AQB::normalizeArgument(AQB::for('u', 'users')->return('u'), ['list', 'query', 'range']);
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
-    }
-
-      /**
      * clear commands
      * @test
      */

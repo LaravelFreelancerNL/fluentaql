@@ -9,6 +9,7 @@ use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 
 /**
  * Class QueryBuilder
@@ -76,7 +77,7 @@ class QueryBuilder
         $this->queryId = $queryId;
     }
 
-    public function normalizeArgument($argument, $allowedExpressionTypes)
+    protected function normalizeArgument($argument, $allowedExpressionTypes)
     {
         $expressionType = null;
 
@@ -116,13 +117,81 @@ class QueryBuilder
     }
 
     /**
+     * @param array $predicates
+     * @return array
+     */
+    protected function normalizePredicates($predicates) : array
+    {
+        $normalizedPredicates = [];
+        foreach ($predicates as $predicate) {
+            if (is_array($predicate[0])) {
+                $normalizedPredicates = $this->normalizePredicates($predicate);
+            }
+
+            if (is_array($predicate) && is_string($predicate[0])) {
+                $logicalOperator = null;
+
+                $lastElement = end($predicate);
+                if ($this->grammar->is_logicalOperator($lastElement)) {
+                    array_pop($predicate);
+                    $logicalOperator = $lastElement;
+                }
+                $normalizedPredicates[] = $this->normalizePredicate($predicate);
+                $normalizedPredicates['logicalOperator'] = $logicalOperator;
+            }
+        }
+
+        return $normalizedPredicates;
+    }
+
+    protected function normalizePredicate($predicate)
+    {
+        $normalizedPredicate = [];
+        $attribute = $predicate[0];
+        $value = null;
+        $operator = '==';
+        $value = null;
+
+        if (isset($predicate[1])) {
+            $operator = $predicate[1];
+        }
+        if (isset($predicate[2])) {
+            $value  = $predicate[2];
+        }
+
+        // if $rightOperand is empty and $comparisonOperator is not a valid operate, then the operation defaults to '=='
+        if (! $this->grammar->is_comparisonOperator($operator) && $value == null) {
+            $value = $operator;
+            $operator = '==';
+        }
+
+        if ($this->grammar->is_comparisonOperator($operator) && $value == null) {
+            $operator = '==';
+            $value = 'null';
+        }
+
+        // leftOperands can only be attributes
+
+        // rightOperands can be any type of data: attributes, values, queries etc
+        $attribute = $this->normalizeArgument($attribute, 'bind');
+        $value = $this->normalizeArgument($value, 'bind');
+
+        $normalizedPredicate[] = new PredicateExpression($attribute, $operator, $value);
+        if (isset($predicate['logicalOperator'])) {
+            $normalizedPredicate['logicalOperator'] = $predicate['logicalOperator'];
+        }
+
+        return $normalizedPredicate;
+    }
+
+    /**
      * Return the first matching expression type for the argument from the allowed types
      *
      * @param string|iterable $argument
      * @param $allowedExpressionTypes
      * @return mixed
      */
-    private function determineExpressionType($argument, $allowedExpressionTypes)
+    protected function determineExpressionType($argument, $allowedExpressionTypes)
     {
         if (is_string($allowedExpressionTypes)) {
             $allowedExpressionTypes = [$allowedExpressionTypes];
@@ -144,7 +213,7 @@ class QueryBuilder
     }
 
     /**
-     * Add an AQL command (raw AQL, clauses, query builders and expressions)
+     * Add an AQL command (raw AQL and clauses
      *
      * @param Clause|QueryBuilder $clause
      */

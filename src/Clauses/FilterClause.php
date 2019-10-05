@@ -2,74 +2,52 @@
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 
 class FilterClause extends Clause
 {
-    protected $filters = [];
+    protected $predicates = [];
+
+    protected $defaultLogicalOperator = 'AND';
 
     /**
      * Filter statement.
      *
-     * @param  string|array|\Closure  $leftOperand
-     * @param  mixed   $comparisonOperator
-     * @param  mixed   $rightOperand
-     * @param  string  $logicalOperator
-     * @return $this
+     * @param  array $predicates
      */
-    public function __construct($leftOperand, $rightOperand = null, $comparisonOperator = '==', $logicalOperator = 'AND')
+    public function __construct($predicates)
     {
         parent::__construct();
 
-        // If the left operand is an array, we will assume it is an array of key-value pairs
-        // and can add them each as a where clause. We will maintain the boolean we
-        // received when the method was called and pass it into the nested where.
-        if (is_array($leftOperand)) {
-            return $this->addMultipleFilters($leftOperand, $logicalOperator);
-        }
-
-        // Here we will make some assumptions about the operator. If only 2 values are
-        // passed to the method, we will assume that the operator is a double equals sign
-        // and keep going. Otherwise, we'll require the operator to be passed in.
-        [$rightOperand, $comparisonOperator] = $this->prepareValueAndOperator($rightOperand, $comparisonOperator, func_num_args() === 2);
-
-        // If the given operator is not found in the list of valid operators we will
-        // assume that the developer is just short-cutting the '==' operators and
-        // we will set the operators to '==' and set the values appropriately.
-        if ($this->invalidOperator($comparisonOperator)) {
-            [$rightOperand, $comparisonOperator] = [$comparisonOperator, '='];
-        }
-
-        $this->filters[] = compact(
-            'leftOperand',
-            'comparisonOperator ',
-            'rightOperand',
-            'logicalOperator'
-        );
-
-        if (! $rightOperand instanceof Expression) {
-            $this->addBinding($rightOperand, 'where');
-        }
-
-        return $this;
+        $this->predicates = $predicates;
     }
 
     public function compile()
     {
-        $this->removeLastLogicalOperator();
-
-        $compiledFilters = [];
-        foreach ($this->filters as $filter) {
-            $compiledFilters[] = implode(' ', $filter);
-        }
-
-        return 'FILTER '.implode($this->logicalOperator, $compiledFilters);
+        $compiledPredicates = $this->compilePredicates($this->predicates);
+        return 'FILTER '.rtrim($compiledPredicates);
     }
 
-    public function removeLastLogicalOperator()
+    protected function compilePredicates($predicates, $compiledPredicates = '')
     {
-        $filters = $this->filters;
-        end($filters['logicalOperator']);
-        unset($filters['logicalOperator']);
-        $this->filters = $filters;
+        $currentLogicalOperator = $this->defaultLogicalOperator;
+        foreach ($predicates as $predicate) {
+            if ($predicate instanceof PredicateExpression) {
+                if ($compiledPredicates != '' && $compiledPredicates != '(' ) {
+                    $compiledPredicates .= ' '.$currentLogicalOperator.' ';
+                }
+                $compiledPredicates .= $predicate;
+            }
+
+            if (is_array($predicate)) {
+                $currentLogicalOperator = $this->defaultLogicalOperator;
+                if (isset($predicate['logicalOperator'])) {
+                    $currentLogicalOperator = $predicate['logicalOperator'];
+                }
+                $compiledPredicates = $this->compilePredicates($predicate, $compiledPredicates);
+            }
+        }
+
+        return $compiledPredicates;
     }
 }

@@ -146,6 +146,16 @@ class Grammar
         return $value instanceof QueryBuilder;
     }
 
+    public function is_logicalOperator($operator)
+    {
+        return in_array($operator, $this->logicalOperators);
+    }
+
+    public function is_comparisonOperator($operator)
+    {
+        return in_array($operator, $this->comparisonOperators);
+    }
+
     public function is_sortDirection($value)
     {
         if (preg_match('/asc|desc/i', $value)) {

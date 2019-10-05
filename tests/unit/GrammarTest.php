@@ -205,6 +205,22 @@ class GrammarTest extends TestCase
     }
 
     /**
+     * is logical operator
+     * @test
+     */
+    function is_logical_operator()
+    {
+        $result = $this->grammar->is_logicalOperator('AND');
+        self::assertTrue($result);
+
+        $result = $this->grammar->is_logicalOperator('!');
+        self::assertTrue($result);
+
+        $result = $this->grammar->is_logicalOperator('whatever');
+        self::assertFalse($result);
+    }
+
+    /**
      * prepareDataToBind
      * @test
      */

@@ -63,17 +63,25 @@ trait hasQueryClauses
 
     /**
      * Filter results from a for clause.
-     * @link https://www.arangodb.com/docs/3.4/aql/operations-filter.html
      *
-     * @param $leftOperand
-     * @param null $rightOperand
+     * @link https://www.arangodb.com/docs/stable/aql/operations-filter.html
+     *
+     * @param string $attribute
      * @param string $comparisonOperator
+     * @param mixed $value
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function filter($leftOperand, $rightOperand = null, $comparisonOperator = '==', $logicalOperator = 'AND') : QueryBuilder
+    public function filter($attribute, $comparisonOperator = '==', $value = null,  $logicalOperator = 'AND') : QueryBuilder
     {
-        $this->addCommand(new FilterClause($leftOperand, $rightOperand, $comparisonOperator, $logicalOperator));
+        //create array of predicates if $leftOperand isn't an array already
+        if (is_string($attribute)) {
+            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+        }
+
+        $predicates = $this->normalizePredicates($attribute);
+
+        $this->addCommand(new FilterClause($predicates));
 
         return $this;
     }
