@@ -146,6 +146,13 @@ class Grammar
         return $value instanceof QueryBuilder;
     }
 
+    public function is_sortDirection($value)
+    {
+        if (preg_match('/asc|desc/i', $value)) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * @param $attributeName

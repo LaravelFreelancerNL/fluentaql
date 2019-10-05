@@ -7,23 +7,26 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 /**
  * Facade for a more fluent access to the ArangoDB Query Builder
  *
- *
+ * Query Builder commands:
  * @method static QueryBuilder get()
- * @method static QueryBuilder setSubQuery()
- * @method static QueryBuilder normalizeArgument($argument, $allowedExpressionTypes)
+ * @method static registerCollections($collection, $mode = 'write')
  *
  * @method static QueryBuilder bind($data, $to = null, $collection = false)
  * @method static QueryBuilder getBindings()
  * @method static QueryBuilder prepareDataToBind($data)
+ * @method static array normalizeSortExpression($sortExpression = null, $direction = null)
  *
  * Query Clauses:
- * @method static QueryBuilder with()
+ * @method static QueryBuilder raw(string $aql, $bindings = [], $collections = [])
  * @method static QueryBuilder for($variableName, $in)
  * @method static QueryBuilder return($expression)
  * @method static QueryBuilder filter($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = 'AND')
  *
  * Statement Clauses:
  * @method static hasStatementClauses let($variableName, $expression)
+ *
+ * Graph Clauses:
+ * @method static QueryBuilder with()
  *
  * Functions:
  * Miscellaneous functions

@@ -22,10 +22,10 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * 'for' statement syntax
+     * 'for' clause syntax
      * @test
      */
-    public function for_statement_syntax()
+    public function for_clause_syntax()
     {
         $result = AQB::for('u', 'users')->get();
         self::assertEquals('FOR u IN users', $result->query);
@@ -35,10 +35,41 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * 'return' statement Syntax
+     * sort clause syntax
      * @test
      */
-    public function return_statement_syntax()
+    function sort_clause_syntax()
+    {
+        $result  = AQB::sort('u.name', 'DESC')->get();
+        self::assertEquals('SORT u.name DESC', $result->query);
+
+        $result  = AQB::sort('null')->get();
+        self::assertEquals('SORT null', $result->query);
+
+        $result  = AQB::sort()->get();
+        self::assertEquals('SORT null', $result->query);
+
+        $result  = AQB::sort(['u.name'])->get();
+        self::assertEquals('SORT u.name', $result->query);
+
+        $result  = AQB::sort(['u.name', 'u.age'])->get();
+        self::assertEquals('SORT u.name, u.age', $result->query);
+
+        $result  = AQB::sort([['u.age', 'DESC']])->get();
+        self::assertEquals('SORT u.age DESC', $result->query);
+
+        $result  = AQB::sort(['u.name', ['u.age', 'DESC']])->get();
+        self::assertEquals('SORT u.name, u.age DESC', $result->query);
+
+        $result  = AQB::sort(['u.name', 'DESC'])->get();
+        self::assertNotEquals('SORT u.name DESC', $result->query);
+    }
+
+    /**
+     * 'return' clause Syntax
+     * @test
+     */
+    public function return_clause_syntax()
     {
         $result = AQB::return('u.name')->get();
         self::assertEquals('RETURN u.name', $result->query);
@@ -48,15 +79,5 @@ class QueryClausesTest extends TestCase
 
         $result = AQB::return("1 + 1", true)->get();
         self::assertEquals('RETURN DISTINCT 1 + 1', $result->query);
-    }
-
-    /**
-     * 'with' statement syntax
-     * @test
-     */
-    public function _with_statement_syntax()
-    {
-        $result = AQB::with('Characters', 'ChildOf', 'Locations', 'Traits')->get();
-        self::assertEquals('WITH Characters, ChildOf, Locations, Traits', $result->query);
     }
 }

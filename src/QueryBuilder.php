@@ -1,7 +1,7 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL;
 
-use Exception;
+use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
@@ -9,8 +9,6 @@ use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 
 /**
  * Class QueryBuilder
@@ -22,7 +20,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
  */
 class QueryBuilder
 {
-    use hasQueryClauses, hasStatementClauses, hasFunctions;
+    use hasQueryClauses, hasStatementClauses, hasGraphClauses, hasFunctions;
 
     /**
      * The database query grammar instance.
@@ -63,18 +61,11 @@ class QueryBuilder
     public $binds = [];
 
     /**
-     * Prefix for collections
+     * List of read/write/exclusive collections necessary for transactions
      *
-     * @var string
+     * @var array $collections
      */
-    protected $collectionPrefix = '';
-
-    /**
-     * List of read/write collections necessary for transactions
-     *
-     * @var $collections
-     */
-    public $collections = ['read' => [], 'write' => []];
+    public $collections;
 
     protected $isSubQuery = false;
 
@@ -102,6 +93,26 @@ class QueryBuilder
         //Return expression
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . ucfirst(strtolower($expressionType)) . 'Expression';
         return new $expressionClass($argument);
+    }
+
+    protected function normalizeSortExpression($sortExpression = null, $direction = null) : array
+    {
+        if (is_string($sortExpression)) {
+            $sortExpression = [$sortExpression];
+            if ($direction) {
+                $sortExpression[] = $direction;
+            }
+            return $sortExpression;
+        }
+        if (is_array($sortExpression) && ! empty($sortExpression)) {
+            $sortExpression[0] = $sortExpression[0];
+            if (isset($sortExpression[1]) && ! $this->grammar->is_sortDirection($sortExpression[1])) {
+                unset($sortExpression[1]);
+            }
+            return $sortExpression;
+        }
+
+        return ['null'];
     }
 
     /**
@@ -190,7 +201,23 @@ class QueryBuilder
         $this->commands = [];
     }
 
-    public function bind($data, $to = null, $collection = false)
+    /**
+     * @param mixed $collections
+     * @param string $mode
+     * @return QueryBuilder
+     */
+    public function registerCollections($collections, $mode = 'write') : QueryBuilder
+    {
+        if (! is_array($collections)) {
+            $collections = [$collections];
+        }
+
+        $this->collections[$mode] = array_unique(array_merge($collections));
+
+        return $this;
+    }
+
+    public function bind($data, $to = null, $collection = false) : BindExpression
     {
         $data = $this->grammar->prepareDataToBind($data);
 
@@ -208,28 +235,37 @@ class QueryBuilder
         return new BindExpression($to);
     }
 
-    public function getBinds()
-    {
-        return $this->binds;
-    }
-
     /**
      * Compile the query with its bindings and collection list.
      *
      * @param QueryBuilder|null $parentQueryBuilder
      * @return mixed
      */
-    public function compile(QueryBuilder $parentQueryBuilder = null) : string
+    public function compile() : QueryBuilder
     {
         $this->query = '';
 
-        $this->query =  implode(' ', $this->commands);
+        foreach ($this->commands as $command) {
+            $result = $command->compile();
+            $this->query .=  ' '.$result;
+
+            if ($command instanceof QueryBuilder) {
+                // Extract binds
+                $this->binds = array_unique(array_merge($this->binds, $command->binds));
+
+                // Extract collections
+                foreach ($command->collections as $mode) {
+                    $this->registerCollections($command->collections[$mode], $mode);
+                }
+            }
+        }
+        $this->query = trim($this->query);
 
         if ($this->isSubQuery) {
             $this->query = '('.$this->query.')';
         }
 
-        return $this->query;
+        return $this;
     }
 
     /**

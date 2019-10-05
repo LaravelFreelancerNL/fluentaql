@@ -189,6 +189,22 @@ class GrammarTest extends TestCase
     }
 
     /**
+     * is sort direction
+     * @test
+     */
+    function is_sort_direction()
+    {
+       $result = $this->grammar->is_sortDirection('asc');
+       self::assertTrue($result);
+       $result = $this->grammar->is_sortDirection('csa');
+        self::assertFalse($result);
+       $result = $this->grammar->is_sortDirection('aSc');
+        self::assertTrue($result);
+       $result = $this->grammar->is_sortDirection('desc');
+        self::assertTrue($result);
+    }
+
+    /**
      * prepareDataToBind
      * @test
      */

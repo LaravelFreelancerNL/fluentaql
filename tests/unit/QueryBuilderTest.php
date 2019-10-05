@@ -39,20 +39,6 @@ class QueryBuilderTest extends TestCase
         self::assertInstanceOf(QueryBuilder::class, $result);
     }
 
-    /**
-     * is sub query
-     * @test
-     */
-    public function is_sub_query()
-    {
-        $query = AQB::for('u', 'users')->return('u');
-        $result = $query->get();
-        self::assertEquals('FOR u IN users RETURN u', $result->query);
-
-        $query->setSubQuery();
-        $result = $query->get();
-        self::assertEquals('(FOR u IN users RETURN u)', $result->query);
-    }
 
     /**
      * normalize argument
@@ -80,7 +66,7 @@ class QueryBuilderTest extends TestCase
         self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression::class, $result);
     }
 
-    /**
+      /**
      * clear commands
      * @test
      */
@@ -112,12 +98,45 @@ class QueryBuilderTest extends TestCase
     "C"
   ]
 }');
-        self::assertInstanceOf(\LaravelFreelancerNL\FluentAQL\Expressions\BindExpression::class, $bind);
+        self::assertInstanceOf(BindExpression::class, $bind);
         self::assertEquals('@1_1', (string) $bind);
         
-        $bindings = $qb->getBinds();
         self::arrayHasKey('1_1');
-        self::assertIsString($bindings['1_1']);
-        self::assertEquals(121, strlen($bindings['1_1']));
+        self::assertIsString($qb->binds['1_1']);
+        self::assertEquals(121, strlen($qb->binds['1_1']));
+    }
+
+    /**
+     * register collection
+     * @test
+     */
+    function register_collections()
+    {
+        $qb = AQB::registerCollections('Characters');
+        self::assertArrayHasKey('write', $qb->collections);
+        self::assertContains('Characters', $qb->collections['write']);
+
+        $qb = $qb->registerCollections('Traits', 'read');
+        self::assertArrayHasKey('read', $qb->collections);
+        self::assertContains('Traits', $qb->collections['read']);
+
+        $qb = $qb->registerCollections('Traits', 'exclusive');
+        self::assertArrayHasKey('exclusive', $qb->collections);
+        self::assertContains('Traits', $qb->collections['exclusive']);
+    }
+
+    /**
+     * is sub query
+     * @test
+     */
+    public function is_sub_query()
+    {
+        $query = AQB::for('u', 'users')->return('u');
+        $result = $query->get();
+        self::assertEquals('FOR u IN users RETURN u', $result->query);
+
+        $query->setSubQuery();
+        $result = $query->get();
+        self::assertEquals('(FOR u IN users RETURN u)', $result->query);
     }
 }

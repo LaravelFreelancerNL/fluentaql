@@ -21,11 +21,12 @@ class QueryExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        return $this->expression->toAql();
+        $this->expression = $this->expression->compile();
+        return $this->expression;
     }
 
     public function __toString()
     {
-        return $this->compile();
+        return $this->compile()->query;
     }
 }

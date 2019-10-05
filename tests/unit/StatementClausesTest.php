@@ -38,7 +38,6 @@ class StatementClausesTest extends TestCase
         $object->traits = ['D', 'H', 'C'];
         $result = $qb->let('x', $object)->get();
         self::assertEquals('LET x = @1_1', $result->query);
-        $binds = $qb->getBinds();
 
         $result = AQB::let('x', 'y')->get();
         self::assertEquals('LET x = @1_1', $result->query);

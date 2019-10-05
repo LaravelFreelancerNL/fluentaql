@@ -7,6 +7,15 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 class NullExpression extends Expression implements ExpressionInterface
 {
     /**
+     * Create an expression
+     *
+     * @param mixed $expression
+     */
+    public function __construct()
+    {}
+
+
+    /**
      * Compile expression output
      *
      * @return string
