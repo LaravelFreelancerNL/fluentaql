@@ -98,6 +98,19 @@ class QueryClausesTest extends TestCase
     }
 
     /**
+     * limit clause syntax
+     * @test
+     */
+    function limit_clause_syntax()
+    {
+        $result = AQB::limit(4)->get();
+        self::assertEquals('LIMIT 4', $result->query);
+
+        $result = AQB::limit(4, 5)->get();
+        self::assertEquals('LIMIT 4, 5', $result->query);
+    }
+
+    /**
      * 'return' clause Syntax
      * @test
      */

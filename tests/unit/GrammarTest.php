@@ -154,6 +154,22 @@ class GrammarTest extends TestCase
     }
 
     /**
+     * is_number
+     * @test
+     */
+    function is_numeric()
+    {
+        $result = $this->grammar->is_numeric(4);
+        self::assertTrue($result);
+
+        $result = $this->grammar->is_numeric(4.4);
+        self::assertTrue($result);
+
+        $result = $this->grammar->is_numeric('string');
+        self::assertFalse($result);
+    }
+
+    /**
      * formatBind
      * @test
      */

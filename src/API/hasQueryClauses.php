@@ -3,6 +3,7 @@ namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\InClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
@@ -115,8 +116,28 @@ trait hasQueryClauses
     }
 
     /**
+     * Limit results
+     * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
+     *
+     * @param $offsetOrCount
+     * @param null $count
+     * @return $this
+     */
+    public function limit($offsetOrCount, $count = null)
+    {
+        $offsetOrCount = $this->normalizeArgument($offsetOrCount, 'numeric');
+        if ($count !== null) {
+            $count = $this->normalizeArgument($count, 'numeric');
+        }
+
+        $this->addCommand(new LimitClause($offsetOrCount, $count));
+
+        return $this;
+    }
+
+    /**
      * Return data
-     * @link https://www.arangodb.com/docs/3.4/aql/operations-return.html
+     * @link https://www.arangodb.com/docs/stable/aql/operations-return.html
      *
      * @param $expression
      * @param bool $distinct
