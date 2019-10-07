@@ -19,8 +19,10 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  * Query Clauses:
  * @method static QueryBuilder raw(string $aql, $bindings = [], $collections = [])
  * @method static QueryBuilder for($variableName, $in)
- * @method static QueryBuilder return($expression)
  * @method static QueryBuilder filter($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = 'AND')
+ * @method static QueryBuilder sort($sortBy = null, $direction = null)
+ * @method static QueryBuilder limit($offsetOrCount, $count = null)
+ * @method static QueryBuilder return($expression)
  *
  * Statement Clauses:
  * @method static hasStatementClauses let($variableName, $expression)

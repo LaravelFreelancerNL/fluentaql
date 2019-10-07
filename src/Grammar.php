@@ -113,7 +113,6 @@ class Grammar
      */
     public function is_numeric($value)
     {
-        var_dump($value);
         return is_numeric($value);
     }
     
