@@ -7,9 +7,7 @@ namespace LaravelFreelancerNL\FluentAQL;
 
 use Exception;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
-use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 class Grammar
 {
@@ -36,9 +34,11 @@ class Grammar
     protected $rangeOperator = '..';
 
     protected $keywords = [
-        'AGGREGATE', 'ALL', 'AND', 'ANY', 'ASC', 'COLLECT', 'DESC', 'DISTINCT', 'FALSE', 'FILTER', 'FOR', 'GRAPH', 'IN',
-        'INBOUND', 'INSERT', 'INTO', 'LET', 'LIMIT', 'NONE', 'NOT', 'NULL', 'OR', 'OUTBOUND', 'REMOVE', 'REPLACE',
-        'RETURN', 'SHORTEST_PATH', 'SORT', 'TRUE', 'UPDATE', 'UPSERT', 'WITH'
+        'FOR', 'FILTER', 'SEARCH', 'SORT', 'ASC', 'DESC', 'LIMIT', 'COLLECT', 'INTO', 'AGGREGATE', 'RETURN', 'DISTINCT',
+        'WITH', 'GRAPH', 'INBOUND', 'OUTBOUND', 'ANY', 'SHORTEST_PATH', 'K_SHORTEST_PATH', 'PRUNE',
+        'LET', 'INSERT', 'UPDATE', 'REPLACE', 'UPSERT', 'REMOVE',
+        'ALL', 'NONE', 'AND', 'OR', 'NOT', 'LIKE', 'IN',
+        'FALSE',  'TRUE', 'NULL',
     ];
 
 
@@ -64,12 +64,12 @@ class Grammar
             $data = $data->format(\DateTime::ATOM);
             $bind = true;
         }
-        if (is_object($data)) {
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
+        if (is_iterable($data)) {
+            $data = array_map([$this, 'prepareDataToBind'], $data);
             $bind = true;
         }
-        if (is_array($data)) {
-            $data = array_map([$this, 'prepareDataToBind'], $data);
+        if (is_object($data)) {
+            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
             $bind = true;
         }
 
@@ -117,18 +117,6 @@ class Grammar
     }
     
     /**
-     * @param $variableName
-     * @return bool
-     */
-    public function is_variable($variableName)
-    {
-        if (is_string($variableName) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $variableName)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * @param $value
      * @return bool
      */
@@ -164,25 +152,86 @@ class Grammar
         return false;
     }
 
-    /**
-     * @param $attributeName
-     * @return bool
-     */
-    public function validateAttributeNameSyntax($attributeName)
+    public function is_direction($value)
     {
-        if (preg_match('/^[\p{L}0-9_\-@]+$/u', $attributeName)) {
+        if (preg_match('/outbound|inbound|any/i', $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function is_function($value) : bool
+    {
+        if ($value instanceof FunctionExpression) {
             return true;
         }
         return false;
     }
 
     /**
-     * @param $collectionName
+     * @param $value
      * @return bool
      */
-    public function is_collection($collectionName)
+    public function is_collection($value)
     {
-        if (preg_match('/^[a-zA-Z0-9_-]+$/', $collectionName)) {
+        if (is_string($value) && preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function is_graph($value)
+    {
+        return $this->is_collection($value);
+    }
+
+    public function is_key($value)
+    {
+        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function is_id($value)
+    {
+        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function is_variable($value)
+    {
+        if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function is_attribute($value)
+    {
+        if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function is_document($value)
+    {
+        if (is_object($value) || (is_array($value) && $this->arrayIsAssociative($value))) {
             return true;
         }
         return false;
@@ -191,14 +240,6 @@ class Grammar
     public function validateBindParameterSyntax($bindParameter)
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function is_key($value)
-    {
-        if (preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
         }
         return false;

@@ -21,7 +21,7 @@ trait hasFunctions
      * @param mixed ...$parameters
      * @return FunctionExpression
      */
-    public function function($functionName, ...$parameters)
+    protected function function($functionName, ...$parameters)
     {
         //Normalize input
 

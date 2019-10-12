@@ -1,6 +1,8 @@
 # FluentAQL
 
-PHP query builder for the [ArangoDB](https://www.arangodb.com) Query Language (AQL).
+PHP query builder for the [ArangoDB](https://www.arangodb.com) Query Language ([AQL](https://www.arangodb.com/docs/stable/aql/)).
+
+> Version 0.1.x: DO NOT USE IN PRODUCTION YET
 
 ## Installation
 You may use composer to install FluentAQL:

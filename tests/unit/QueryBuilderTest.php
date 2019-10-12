@@ -5,6 +5,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\NumericExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\DirectionExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -54,6 +55,16 @@ class QueryBuilderTest extends TestCase
     }
 
     /**
+     * toAql
+     * @test
+     */
+    public function to_aql()
+    {
+        $query = AQB::for('u', 'users')->return('u')->toAql();
+        self::assertEquals('FOR u IN users RETURN u', $query);
+    }
+
+    /**
      * bind
      * @test
      */
@@ -84,7 +95,7 @@ class QueryBuilderTest extends TestCase
      * register collection
      * @test
      */
-    function register_collections()
+    public function register_collections()
     {
         $qb = AQB::registerCollections('Characters');
         self::assertArrayHasKey('write', $qb->collections);
@@ -97,20 +108,5 @@ class QueryBuilderTest extends TestCase
         $qb = $qb->registerCollections('Traits', 'exclusive');
         self::assertArrayHasKey('exclusive', $qb->collections);
         self::assertContains('Traits', $qb->collections['exclusive']);
-    }
-
-    /**
-     * is sub query
-     * @test
-     */
-    public function is_sub_query()
-    {
-        $query = AQB::for('u', 'users')->return('u');
-        $result = $query->get();
-        self::assertEquals('FOR u IN users RETURN u', $result->query);
-
-        $query->setSubQuery();
-        $result = $query->get();
-        self::assertEquals('(FOR u IN users RETURN u)', $result->query);
     }
 }

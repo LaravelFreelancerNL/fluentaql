@@ -33,7 +33,7 @@ class FilterClause extends Clause
         $currentLogicalOperator = $this->defaultLogicalOperator;
         foreach ($predicates as $predicate) {
             if ($predicate instanceof PredicateExpression) {
-                if ($compiledPredicates != '' && $compiledPredicates != '(' ) {
+                if ($compiledPredicates != '' && $compiledPredicates != '(') {
                     $compiledPredicates .= ' '.$currentLogicalOperator.' ';
                 }
                 $compiledPredicates .= $predicate;

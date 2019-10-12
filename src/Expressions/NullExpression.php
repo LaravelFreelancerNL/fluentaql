@@ -12,7 +12,8 @@ class NullExpression extends Expression implements ExpressionInterface
      * @param mixed $expression
      */
     public function __construct()
-    {}
+    {
+    }
 
 
     /**

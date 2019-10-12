@@ -24,6 +24,25 @@ class QueryBuilder
     use hasQueryClauses, hasStatementClauses, hasGraphClauses, hasFunctions;
 
     /**
+     * The AQL query
+     * @var $query
+     */
+    public $query;
+
+    /**
+     * Bindings for $query
+     * @var $binds
+     */
+    public $binds = [];
+
+    /**
+     * List of read/write/exclusive collections required for transactions
+     *
+     * @var array $collections
+     */
+    public $collections;
+
+    /**
      * The database query grammar instance.
      *
      * @var Grammar
@@ -35,12 +54,6 @@ class QueryBuilder
       *
       */
     protected $commands = [];
-
-    /**
-     * The AQL query
-     * @var $query
-     */
-    public $query;
 
     /**
      * ID of the query
@@ -55,18 +68,6 @@ class QueryBuilder
      */
     protected $queryCount = 1;
 
-    /**
-     * Bindings for $query
-     * @var $binds
-     */
-    public $binds = [];
-
-    /**
-     * List of read/write/exclusive collections necessary for transactions
-     *
-     * @var array $collections
-     */
-    public $collections;
 
     protected $isSubQuery = false;
 
@@ -106,7 +107,7 @@ class QueryBuilder
             return $sortExpression;
         }
         if (is_array($sortExpression) && ! empty($sortExpression)) {
-            $sortExpression[0] = $sortExpression[0];
+            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'attribute');
             if (isset($sortExpression[1]) && ! $this->grammar->is_sortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
@@ -114,6 +115,23 @@ class QueryBuilder
         }
 
         return ['null'];
+    }
+
+    protected function normalizeEdgeCollections($edgeCollection) : array
+    {
+        if (is_string($edgeCollection)) {
+            $edgeCollection = [$this->normalizeArgument($edgeCollection, 'collection')];
+            return $edgeCollection;
+        }
+        if (is_array($edgeCollection) && ! empty($edgeCollection)) {
+            $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'collection');
+            if (isset($edgeCollection[1]) && ! $this->grammar->is_direction($edgeCollection[1])) {
+                unset($edgeCollection[1]);
+            }
+            return $edgeCollection;
+        }
+
+        return [];
     }
 
     /**
@@ -170,11 +188,11 @@ class QueryBuilder
             $value = 'null';
         }
 
-        // leftOperands can only be attributes
 
+        // leftOperands can only be attributes
+        $attribute = $this->normalizeArgument($attribute, ['attribute', 'bind']);
         // rightOperands can be any type of data: attributes, values, queries etc
-        $attribute = $this->normalizeArgument($attribute, 'bind');
-        $value = $this->normalizeArgument($value, 'bind');
+        $value = $this->normalizeArgument($value, ['attribute', 'query', 'function', 'bind']);
 
         $normalizedPredicate[] = new PredicateExpression($attribute, $operator, $value);
         if (isset($predicate['logicalOperator'])) {
@@ -205,7 +223,7 @@ class QueryBuilder
         }
     }
 
-    public function setSubQuery()
+    protected function setSubQuery()
     {
         $this->isSubQuery = true;
 
@@ -352,7 +370,7 @@ class QueryBuilder
      */
     public function toAql()
     {
-        return $this->compile()['query'];
+        return $this->get()->query;
     }
 
     public function __toString()

@@ -14,7 +14,7 @@ class ForClause extends Clause
      * @param array $variableName
      * @param ExpressionInterface $in
      */
-    public function __construct($variableName, $in)
+    public function __construct($variableName, $in = null)
     {
         parent::__construct();
 

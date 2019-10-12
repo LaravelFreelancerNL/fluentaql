@@ -34,9 +34,9 @@ trait hasMiscellaneousFunctions
         }
 
         if ($collection !== null) {
-            $arguments['collection'] = $this->normalizeArgument($collection, ['collection']);
+            $arguments['collection'] = $this->normalizeArgument($collection, ['collection', 'id']);
         }
-        $arguments['id'] = $this->normalizeArgument($id, ['query', 'list', 'key']);
+        $arguments['id'] = $this->normalizeArgument($id, ['query', 'list', 'key', 'id']);
 
         return new FunctionExpression('DOCUMENT', $arguments);
     }
