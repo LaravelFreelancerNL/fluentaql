@@ -4,3 +4,4 @@ composer.lock
 phpunit.phar
 /vendor
 .cache
+*.cache*
