@@ -1,0 +1,37 @@
+language: php
+
+sudo: required
+
+services:
+  - docker
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+# Note: The ArangoDB version includes the colon (:), that way we can test pre-releases (i.e. '-preview:3.4.0-rc.4a').
+env:
+  - ARANGODB_VERSION=":3.5.0"
+
+addons:
+  hosts:
+    - arangodb
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+    - $HOME/.local
+
+# Pull in ArangoDB first as it needs some time before you can connect after it starts.
+# In the mean time Composer can do its thing.
+before_script:
+  - docker pull arangodb/arangodb${ARANGODB_VERSION}
+  - docker run -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb/arangodb${ARANGODB_VERSION}
+  - travis_retry composer self-update
+  - travis_retry composer install --prefer-source --no-interaction
+  - composer require --dev "orchestra/testbench:${ORCHESTRA_VERSION}" --no-update;
+  - composer update
+
+script:
+  - ./vendor/bin/phpunit

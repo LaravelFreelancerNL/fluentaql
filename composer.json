@@ -1,0 +1,49 @@
+{
+  "name": "laravel-freelancer-nl/aql-query-builder",
+  "description": "PHP AQL Query Builder",
+  "keywords": [
+    "fluentaql",
+    "arangodb",
+    "multi-model database",
+    "document database",
+    "graph database",
+    "aql",
+    "aql query",
+    "query builder"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Laravel Freelancer",
+      "email": "info@laravel-freelancer.nl"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.16@dev",
+    "localheinz/composer-normalize": "^2.0@dev",
+    "mockery/mockery": "^1.2",
+    "nikic/php-parser": "^4.2@dev",
+    "phpmd/phpmd": "dev-master",
+    "phpro/grumphp": "dev-master",
+    "phpstan/phpstan": "^0.12.0@dev",
+    "phpunit/phpunit": "8.*",
+    "sebastian/phpcpd": "^5.0@dev",
+    "triagens/arangodb": "3.5.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "LaravelFreelancerNL\\FluentAQL\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "classmap": [
+      "tests/TestCase.php"
+    ]
+  },
+  "repositories": [],
+  "minimum-stability": "dev"
+}
