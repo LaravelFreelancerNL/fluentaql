@@ -6,13 +6,13 @@ services:
   - docker
 
 php:
-  - 7.1
   - 7.2
   - 7.3
 
 # Note: The ArangoDB version includes the colon (:), that way we can test pre-releases (i.e. '-preview:3.4.0-rc.4a').
 env:
   - ARANGODB_VERSION=":3.5.0"
+  - ARANGODB_VERSION=":latest"
 
 addons:
   hosts:
