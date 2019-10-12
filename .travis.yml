@@ -30,7 +30,6 @@ before_script:
   - docker run -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb/arangodb${ARANGODB_VERSION}
   - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction
-  - composer require --dev "orchestra/testbench:${ORCHESTRA_VERSION}" --no-update;
   - composer update
 
 script:
