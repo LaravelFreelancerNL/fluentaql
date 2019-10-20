@@ -130,7 +130,7 @@ class QueryClausesTest extends TestCase
         $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true', 'OR')->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter('u.active', 'true')->get();
+        $result = AQB::for('u', 'Users')->filter('u.active','true')->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
         $result = AQB::for('u', 'Users')->filter('u.active')->get();
@@ -138,6 +138,40 @@ class QueryClausesTest extends TestCase
 
         $result = AQB::for('u', 'Users')->filter([['u.active', '==', 'true'], ['u.age']])->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true AND u.age == null', $result->query);
+    }
+
+    /**
+     * filters can use logical operators other than equals
+     * @test
+     */
+    function filtering_on_null_values_can_use_all_logical_operators()
+    {
+        $result = AQB::for('doc', 'documents')
+            ->filter('doc.attribute', '!=')
+            ->return('doc')
+            ->get();
+        self::assertEquals('FOR doc IN documents FILTER doc.attribute != null RETURN doc', $result->query);
+
+        $result = AQB::for('doc', 'documents')
+            ->filter([['doc.attribute1', '!='], ['doc.attribute2', '!='], ['doc.attribute3', '!=']])
+            ->return('doc')
+            ->get();
+        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null AND doc.attribute3 != null RETURN doc', $result->query);
+    }
+
+    /**
+     * filters are seperated by comparison operators
+     * @test
+     */
+    function filters_are_separated_by_comparison_operators()
+    {
+        $filter = [
+            ['doc.attribute1', '!=', 'null', 'OR'],
+            ['doc.attribute2', '!=', 'null', 'OR'],
+            ['doc.attribute3', '!=', 'null', 'OR']
+        ];
+        $result = AQB::for('doc', 'documents')->filter($filter)->get();
+        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
     }
 
     /**

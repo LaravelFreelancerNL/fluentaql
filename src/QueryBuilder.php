@@ -199,18 +199,7 @@ class QueryBuilder
             if (is_array($predicate[0])) {
                 $normalizedPredicates = $this->normalizePredicates($predicate);
             }
-
-            if (is_array($predicate) && is_string($predicate[0])) {
-                $logicalOperator = null;
-
-                $lastElement = end($predicate);
-                if ($this->grammar->isLogicalOperator($lastElement)) {
-                    array_pop($predicate);
-                    $logicalOperator = $lastElement;
-                }
-                $normalizedPredicates[] = $this->normalizePredicate($predicate);
-                $normalizedPredicates['logicalOperator'] = $logicalOperator;
-            }
+            $normalizedPredicates[] = $this->normalizePredicate($predicate);
         }
 
         return $normalizedPredicates;
@@ -219,39 +208,34 @@ class QueryBuilder
     protected function normalizePredicate($predicate)
     {
         $normalizedPredicate = [];
-        $attribute = $predicate[0];
+        $comparisonOperator = '==';
         $value = null;
-        $operator = '==';
-        $value = null;
+        $logicalOperator = 'AND';
 
+        $attribute = $predicate[0];
         if (isset($predicate[1])) {
-            $operator = $predicate[1];
+            $comparisonOperator = $predicate[1];
         }
         if (isset($predicate[2])) {
             $value  = $predicate[2];
         }
-
-        // if $rightOperand is empty and $comparisonOperator is not a valid operate, then the operation defaults to '=='
-        if (! $this->grammar->isComparisonOperator($operator) && $value == null) {
-            $value = $operator;
-            $operator = '==';
+        if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
+            $logicalOperator  = $predicate[3];
         }
 
-        if ($this->grammar->isComparisonOperator($operator) && $value == null) {
-            $operator = '==';
+        // if $rightOperand is empty and $logicalOperator is not a valid operate, then the operation defaults to '=='
+        if ($this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
             $value = 'null';
         }
-
-
-        // leftOperands can only be attributes
-        $attribute = $this->normalizeArgument($attribute, ['VariableAttribute', 'Bind']);
-        // rightOperands can be any type of data: attributes, values, queries etc
-        $value = $this->normalizeArgument($value, ['VariableAttribute', 'Boolean', 'Null', 'Query', 'Function', 'Bind']);
-
-        $normalizedPredicate[] = new PredicateExpression($attribute, $operator, $value);
-        if (isset($predicate['logicalOperator'])) {
-            $normalizedPredicate['logicalOperator'] = $predicate['logicalOperator'];
+        if (! $this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
+            $value = $comparisonOperator;
+            $comparisonOperator = '==';
         }
+
+        $attribute = $this->normalizeArgument($attribute, ['VariableAttribute']);
+        $value = $this->normalizeArgument($value, ['Boolean', 'Null', 'VariableAttribute', 'Query', 'Function', 'Bind']);
+
+        $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
 
         return $normalizedPredicate;
     }

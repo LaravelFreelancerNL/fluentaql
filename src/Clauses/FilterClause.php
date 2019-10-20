@@ -32,17 +32,13 @@ class FilterClause extends Clause
         $currentLogicalOperator = $this->defaultLogicalOperator;
         foreach ($predicates as $predicate) {
             if ($predicate instanceof PredicateExpression) {
-                if ($compiledPredicates != '' && $compiledPredicates != '(') {
-                    $compiledPredicates .= ' '.$currentLogicalOperator.' ';
+                if ($compiledPredicates != '' && $compiledPredicates !== '(') {
+                    $compiledPredicates .= ' '.$predicate->logicalOperator.' ';
                 }
                 $compiledPredicates .= $predicate;
             }
 
             if (is_array($predicate)) {
-                $currentLogicalOperator = $this->defaultLogicalOperator;
-                if (isset($predicate['logicalOperator'])) {
-                    $currentLogicalOperator = $predicate['logicalOperator'];
-                }
                 $compiledPredicates = $this->compilePredicates($predicate, $compiledPredicates);
             }
         }

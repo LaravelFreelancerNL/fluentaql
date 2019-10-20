@@ -301,7 +301,7 @@ trait hasQueryClauses
      */
     public function return($expression, $distinct = false) : QueryBuilder
     {
-        $expression = $this->normalizeArgument($expression, ['Variable', 'VariableAttribute', 'Object',  'Function', 'Query', 'Bind']);
+        $expression = $this->normalizeArgument($expression, ['Boolean', 'Object', 'List', 'Function', 'Variable', 'VariableAttribute', 'Query', 'Bind']);
 
         $this->addCommand(new ReturnClause($expression, $distinct));
 

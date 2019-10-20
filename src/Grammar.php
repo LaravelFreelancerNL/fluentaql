@@ -113,9 +113,10 @@ class Grammar
     protected $defaultAllowedExpressionTypes = [
         'Number' => 'Number',
         'Boolean' => 'Boolean',
-        'VariableAttribute' => 'VariableAttribute',
+        'Null',
         'Id' => 'Id',
         'Key' => 'Key',
+        'VariableAttribute' => 'VariableAttribute',
         'Bind' => 'Bind'
     ];
 
