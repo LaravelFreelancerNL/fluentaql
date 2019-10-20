@@ -109,15 +109,15 @@ class Grammar
     /*
      * List of default allowed Data Types
      * The order matters in the compilation of the data
-     * String should always go last to trap any remaining unrecognized data in a bind.
+     * String should always go last to trap unrecognized syntax in a bind.
      */
     protected $defaultAllowedExpressionTypes = [
         'Number' => 'Number',
         'Boolean' => 'Boolean',
-        'Null',
+        'Null' => 'Null',
+        'VariableAttribute' => 'VariableAttribute',
         'Id' => 'Id',
         'Key' => 'Key',
-        'VariableAttribute' => 'VariableAttribute',
         'Bind' => 'Bind'
     ];
 

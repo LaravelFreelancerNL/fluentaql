@@ -110,8 +110,6 @@ class QueryBuilder
     {
         $argumentType = $this->determineArgumentType($argument, $allowedExpressionTypes);
 
-        //        $argument = $this->handleArgumentByType($argument, $argumentType);
-
         return $this->createExpression($argument, $argumentType);
     }
 
@@ -233,7 +231,7 @@ class QueryBuilder
         }
 
         $attribute = $this->normalizeArgument($attribute, ['VariableAttribute']);
-        $value = $this->normalizeArgument($value, ['Boolean', 'Null', 'VariableAttribute', 'Query', 'Function', 'Bind']);
+        $value = $this->normalizeArgument($value);
 
         $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
 
