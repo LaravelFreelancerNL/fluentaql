@@ -98,6 +98,7 @@ class Grammar
         'Name' => 'String',
         'Number' => 'Literal',
         'Null' => 'Literal',
+        'RegisteredVariable' => 'Literal',
         'Variable' => 'Literal',
         'VariableAttribute' => 'Literal',
         'Object' => 'Object',
@@ -279,6 +280,12 @@ class Grammar
         }
         return false;
     }
+
+    public function isRegisteredVariable($value, $registeredVariables = []) : bool
+    {
+        return isset($registeredVariables[$value]);
+    }
+
 
     /**
      * @param $value

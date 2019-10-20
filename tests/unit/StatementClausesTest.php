@@ -69,8 +69,8 @@ class StatementClausesTest extends TestCase
      */
     public function update()
     {
-        $result = AQB::update('u', '{ name: CONCAT(u.firstName, " ", u.lastName) }', 'users')->get();
-        self::assertEquals('UPDATE u WITH @1_1 IN users', $result->query);
+        $result = AQB::for('u', 'users')->update('u', '{ name: CONCAT(u.firstName, " ", u.lastName) }', 'users')->get();
+        self::assertEquals('FOR u IN users UPDATE u WITH @1_1 IN users', $result->query);
     }
 
     /**
@@ -79,8 +79,8 @@ class StatementClausesTest extends TestCase
      */
     public function replace()
     {
-        $result = AQB::replace('u', '{ _key: u._key, name: CONCAT(u.firstName, u.lastName), status: u.status }', 'users')->get();
-        self::assertEquals('REPLACE u WITH @1_1 IN users', $result->query);
+        $result = AQB::for('u', 'users')->replace('u', '{ _key: u._key, name: CONCAT(u.firstName, u.lastName), status: u.status }', 'users')->get();
+        self::assertEquals('FOR u IN users REPLACE u WITH @1_1 IN users', $result->query);
     }
 
     /**
@@ -89,8 +89,8 @@ class StatementClausesTest extends TestCase
      */
     public function remove()
     {
-        $result = AQB::remove('u', 'users')->get();
-        self::assertEquals('REMOVE u IN users', $result->query);
+        $result = AQB::for('u', 'users')->remove('u', 'users')->get();
+        self::assertEquals('FOR u IN users REMOVE u IN users', $result->query);
 
         $result = AQB::remove('john', 'users')->get();
         self::assertEquals('REMOVE "john" IN users', $result->query);

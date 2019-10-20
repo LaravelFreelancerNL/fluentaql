@@ -264,6 +264,11 @@ class QueryBuilder
                     return $allowedExpressionType;
                 }
             }
+            if ($allowedExpressionType == 'RegisteredVariable') {
+                if ($this->grammar->$check($argument, $this->variables)) {
+                    return $allowedExpressionType;
+                }
+            }
             if ($this->grammar->$check($argument)) {
                 return $allowedExpressionType;
             }
