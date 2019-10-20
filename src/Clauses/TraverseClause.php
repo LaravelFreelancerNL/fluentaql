@@ -1,7 +1,7 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\IdExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 
 class TraverseClause extends Clause
 {
@@ -10,7 +10,7 @@ class TraverseClause extends Clause
     protected $toVertex;
     protected $kShortestPaths = false;
 
-    public function __construct(IdExpression $startVertex, $direction = 'outbound', $toVertex = null, bool $kShortestPaths = false)
+    public function __construct(StringExpression $startVertex, $direction = 'outbound', $toVertex = null, bool $kShortestPaths = false)
     {
         $this->direction = $direction;
         $this->startVertex = $startVertex;

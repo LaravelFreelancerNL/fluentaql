@@ -2,9 +2,7 @@
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\KeyExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 
 /**
  * Trait hasFunctions
@@ -21,7 +19,7 @@ trait hasMiscellaneousFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
      *
      * @param $collection
-     * @param null|string|array|KeyExpression|ListExpression $id
+     * @param null|string|array|ListExpression $id
      * @return FunctionExpression
      */
     public function document($collection, $id = null)
@@ -34,9 +32,9 @@ trait hasMiscellaneousFunctions
         }
 
         if ($collection !== null) {
-            $arguments['collection'] = $this->normalizeArgument($collection, ['collection', 'id']);
+            $arguments['collection'] = $this->normalizeArgument($collection, ['Collection', 'Id']);
         }
-        $arguments['id'] = $this->normalizeArgument($id, ['query', 'list', 'key', 'id']);
+        $arguments['id'] = $this->normalizeArgument($id, ['Id', 'Key', 'Query', 'List']);
 
         return new FunctionExpression('DOCUMENT', $arguments);
     }

@@ -1,9 +1,6 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-use LaravelFreelancerNL\FluentAQL\Expressions\VariableExpression;
-
 class AggregateClause extends Clause
 {
     protected $variableName;

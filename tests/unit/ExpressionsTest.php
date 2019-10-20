@@ -1,6 +1,7 @@
 <?php
 
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 
 /**
  * Class StructureTest
@@ -10,19 +11,34 @@ use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 class ExpressionsTest extends TestCase
 {
     /**
-     * document function
+     * list expression returns proper json formatted list
      * @test
      */
     public function ListExpression()
     {
-        $expression = new ListExpression([1, 2, 'You know nothing John Snow']);
-        self::assertInstanceOf(ListExpression::class, $expression);
+        $expression = new ListExpression([1,2,'"You know nothing John Snow"']);
         self::assertEquals('[1,2,"You know nothing John Snow"]', (string) $expression);
 
-        $expression = new ListExpression([1, [2, 3]]);
-        self::assertEquals('[1,[2,3]]', (string) $expression);
-
-        $expression = new ListExpression(['users/john', 'users/amy']);
+        $expression = new ListExpression(['"users/john"', '"users/amy"']);
         self::assertEquals('["users/john","users/amy"]', (string) $expression);
+    }
+
+    /**
+     * string expression returns proper json encoded string
+     * @test
+     */
+    public function StringExpression()
+    {
+        $expression = new StringExpression('You know nothing John Snow');
+        self::assertEquals('"You know nothing John Snow"', (string) $expression);
+
+        $expression = new StringExpression('You know\ nothing John Snow');
+        self::assertEquals('"You know\\\ nothing John Snow"', (string) $expression);
+
+        $expression = new StringExpression('users/JohnSnow');
+        self::assertEquals('"users/JohnSnow"', (string) $expression);
+
+        $expression = new StringExpression('and Ned Stark said: "Winter is coming"');
+        self::assertEquals('"and Ned Stark said: \"Winter is coming\""', (string) $expression);
     }
 }

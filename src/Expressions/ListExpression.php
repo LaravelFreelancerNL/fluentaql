@@ -6,8 +6,16 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
  */
 class ListExpression extends Expression implements ExpressionInterface
 {
+    /**
+     * @param array $expression
+     */
+    public function __construct(array $expression)
+    {
+        $this->expression = $expression;
+    }
+
     public function compile()
     {
-        return json_encode($this->expression, JSON_UNESCAPED_SLASHES);
+        return '['.implode(',', $this->expression).']';
     }
 }

@@ -5,8 +5,6 @@ namespace LaravelFreelancerNL\FluentAQL;
  * Provides AQL syntax functions
  */
 
-use Exception;
-use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 class Grammar
@@ -17,18 +15,55 @@ class Grammar
      * @var array
      */
     protected $comparisonOperators = [
-        '==', '!=', '<', '>', '<=', '>=', 'IN', 'NOT IN', 'LIKE', '~', '!~',
-        'ALL ==', 'ALL !=', 'ALL <', 'ALL >', 'ALL <=', 'ALL >=', 'ALL IN',
-        'ANY ==', 'ANY !=', 'ANY <', 'ANY >', 'ANY <=', 'ANY >=', 'ANY IN',
-        'NONE ==', 'NONE !=', 'NONE <', 'NONE >', 'NONE <=', 'NONE >=', 'NONE IN'
+        '==' => 1,
+        '!=' => 1,
+        '<' => 1,
+        '>' => 1,
+        '<=' => 1,
+        '>=' => 1,
+        'IN' => 1,
+        'NOT IN' => 1,
+        'LIKE' => 1,
+        '~' => 1,
+        '!~' => 1,
+        'ALL ==' => 1,
+        'ALL !=' => 1,
+        'ALL <' => 1,
+        'ALL >' => 1,
+        'ALL <=' => 1,
+        'ALL >=' => 1,
+        'ALL IN' => 1,
+        'ANY ==' => 1,
+        'ANY !=' => 1,
+        'ANY <' => 1,
+        'ANY >' => 1,
+        'ANY <=' => 1,
+        'ANY >=' => 1,
+        'ANY IN' => 1,
+        'NONE ==' => 1,
+        'NONE !=' => 1,
+        'NONE <' => 1,
+        'NONE >' => 1,
+        'NONE <=' => 1,
+        'NONE >=' => 1,
+        'NONE IN' => 1
     ];
 
     protected $arithmeticOperators = [
-        '+', '-', '*', '/', '%'
+        '+' => 1,
+        '-' => 1,
+        '*' => 1,
+        '/' => 1,
+        '%' => 1
     ];
 
     protected $logicalOperators = [
-        'AND', '&&', 'OR', '||', 'NOT', '!'
+        'AND' => 1,
+        '&&' => 1,
+        'OR' => 1,
+        '||' => 1,
+        'NOT' => 1,
+        '!' => 1
     ];
 
     protected $rangeOperator = '..';
@@ -41,50 +76,64 @@ class Grammar
         'FALSE',  'TRUE', 'NULL',
     ];
 
+    /*
+     * List of recognizable data and the accompanying Expression type it will be mapped too.
+     * Strings of an unrecognized nature are always bound.
+     */
+    protected $argumentTypeExpressionMap = [
+        'AssociativeArray' => 'Object',
+        'Attribute' => 'Literal',
+        'Bind'  => 'Bind',
+        'Boolean' => 'Boolean',
+        'Collection' => 'Literal',
+        'Constant' => 'Constant',
+        'Direction' => 'Constant',
+        'Document' => 'Object',
+        'Function' => 'Function',
+        'Graph' => 'String',
+        'Id' => 'String',
+        'IndexedArray' => 'List',
+        'Key' => 'String',
+        'List' => 'List',
+        'Name' => 'String',
+        'Number' => 'Literal',
+        'Null' => 'Literal',
+        'Variable' => 'Literal',
+        'VariableAttribute' => 'Literal',
+        'Object' => 'Object',
+        'Range' => 'Literal',
+        'String' => 'Bind',
+    ];
 
-    public function wrap($value)
+    /*
+     * List of default allowed Data Types
+     * The order matters in the compilation of the data
+     * String should always go last to trap any remaining unrecognized data in a bind.
+     */
+    protected $defaultAllowedExpressionTypes = [
+        'Number' => 'Number',
+        'Boolean' => 'Boolean',
+        'VariableAttribute' => 'VariableAttribute',
+        'Id' => 'Id',
+        'Key' => 'Key',
+        'Bind' => 'Bind'
+    ];
+
+    public function wrap($value) : string
     {
         return '`'.addcslashes($value, '`').'`';
     }
 
-
-    /**
-     * @param $data
-     * @return array|false|string
-     * @throws Exception
-     */
-    public function prepareDataToBind($data)
+    public function mapArgumentTypeToExpressionType($argumentType) : string
     {
-        $bind = false;
-
-        if (is_scalar($data)) {
-            $bind = true;
-        }
-        if ($data instanceof \DateTime) {
-            $data = $data->format(\DateTime::ATOM);
-            $bind = true;
-        }
-        if (is_iterable($data)) {
-            $data = array_map([$this, 'prepareDataToBind'], $data);
-            $bind = true;
-        }
-        if (is_object($data)) {
-            $data = json_encode($data, JSON_UNESCAPED_SLASHES);
-            $bind = true;
-        }
-
-        if ($bind) {
-            return $data;
-        }
-
-        throw new BindException("'Data type is not allowed for a binding (scalar, DateTime, object or array): ".var_export($data, true));
+        return $this->argumentTypeExpressionMap[$argumentType];
     }
 
     /**
      * @param $value
      * @return bool
      */
-    public function is_bind($value)
+    public function isBind($value)
     {
         if (is_string($value)) {
             return true;
@@ -99,7 +148,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_range($value)
+    public function isRange($value) : bool
     {
         if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {
             return true;
@@ -111,7 +160,26 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_numeric($value)
+    public function isBoolean($value) : bool
+    {
+        return (is_bool($value) || $value === 'true' ||  $value === 'false');
+    }
+
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function isNull($value) : bool
+    {
+        return ($value === null || $value == 'null');
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function isNumber($value) : bool
     {
         return is_numeric($value);
     }
@@ -120,31 +188,37 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_list($value)
+    public function isList($value) : bool
     {
-        return is_array($value) && $this->arrayIsNumeric($value);
+        return is_array($value) && $this->isIndexedArray($value);
     }
 
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function is_query($value)
+    public function isQuery($value) : bool
     {
         return $value instanceof QueryBuilder;
     }
 
-    public function is_logicalOperator($operator)
+    public function isFunction($value) : bool
     {
-        return in_array($operator, $this->logicalOperators);
+        return $value instanceof FunctionExpression;
     }
 
-    public function is_comparisonOperator($operator)
+    public function isLogicalOperator($operator) : bool
     {
-        return in_array($operator, $this->comparisonOperators);
+        return isset($this->logicalOperators[$operator]);
     }
 
-    public function is_sortDirection($value)
+    public function isComparisonOperator($operator) : bool
+    {
+        return isset($this->comparisonOperators[$operator]);
+    }
+
+    public function isArithmeticOperators($operator) : bool
+    {
+        return isset($this->arithmeticOperators[$operator]);
+    }
+
+    public function isSortDirection($value) : bool
     {
         if (preg_match('/asc|desc/i', $value)) {
             return true;
@@ -152,17 +226,9 @@ class Grammar
         return false;
     }
 
-    public function is_direction($value)
+    public function isDirection($value) : bool
     {
         if (preg_match('/outbound|inbound|any/i', $value)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function is_function($value) : bool
-    {
-        if ($value instanceof FunctionExpression) {
             return true;
         }
         return false;
@@ -172,7 +238,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_collection($value)
+    public function isCollection($value) : bool
     {
         if (is_string($value) && preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
             return true;
@@ -180,12 +246,12 @@ class Grammar
         return false;
     }
 
-    public function is_graph($value)
+    public function isGraph($value) : bool
     {
-        return $this->is_collection($value);
+        return $this->isCollection($value);
     }
 
-    public function is_key($value)
+    public function isKey($value) : bool
     {
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
@@ -193,7 +259,7 @@ class Grammar
         return false;
     }
 
-    public function is_id($value)
+    public function isId($value) : bool
     {
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
@@ -205,7 +271,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_variable($value)
+    public function isVariable($value)
     {
         if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
             return true;
@@ -217,7 +283,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function is_attribute($value)
+    public function isAttribute($value) : bool
     {
         if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
             return true;
@@ -225,19 +291,41 @@ class Grammar
         return false;
     }
 
+
     /**
-     * @param $value
+     * @param mixed $value
+     * @param array $registeredVariables
      * @return bool
      */
-    public function is_document($value)
+    public function isVariableAttribute($value, $registeredVariables = []) : bool
     {
-        if (is_object($value) || (is_array($value) && $this->arrayIsAssociative($value))) {
+        if (empty($registeredVariables)) {
+            return false;
+        }
+        $variables = implode('|', $registeredVariables);
+        if (
+            is_string($value)
+            && preg_match('/^('.$variables.')(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+        ) {
             return true;
         }
         return false;
     }
 
-    public function validateBindParameterSyntax($bindParameter)
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public function isObject($value) : bool
+    {
+        if (is_object($value) || (is_array($value) && $this->isAssociativeArray($value))) {
+            return true;
+        }
+        return false;
+    }
+
+    public function validateBindParameterSyntax($bindParameter) : bool
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
             return true;
@@ -251,7 +339,7 @@ class Grammar
      * @param array $array
      * @return bool
      */
-    public function arrayIsAssociative(array $array)
+    public function isAssociativeArray(array $array)
     {
         if (empty($array)) {
             return true;
@@ -265,7 +353,7 @@ class Grammar
      * @param array $array
      * @return bool
      */
-    public function arrayIsNumeric(array $array)
+    public function isIndexedArray(array $array)
     {
         if (empty($array)) {
             return true;
@@ -284,5 +372,10 @@ class Grammar
             $prefix = '@@';
         }
         return $prefix.$bindVariableName;
+    }
+
+    public function getAllowedExpressionTypes()
+    {
+        return $this->defaultAllowedExpressionTypes;
     }
 }

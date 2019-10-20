@@ -29,7 +29,7 @@ trait hasGraphClauses
         $collections = func_get_args();
         foreach ($collections as $key => $collection) {
             $this->registerCollections($collection, 'read');
-            $collections[$key] = $this->normalizeArgument($collection, 'collection');
+            $collections[$key] = $this->normalizeArgument($collection, 'Collection');
         }
 
         $this->addCommand(new WithClause($collections));
@@ -50,11 +50,11 @@ trait hasGraphClauses
      */
     public function traverse($fromVertex, $inDirection = 'outbound', $toVertex = null, $kShortestPaths = false) : QueryBuilder
     {
-        $fromVertex = $this->normalizeArgument($fromVertex, 'id');
-        $inDirection = $this->normalizeArgument($inDirection, 'direction');
+        $fromVertex = $this->normalizeArgument($fromVertex, 'Id');
+        $inDirection = $this->normalizeArgument($inDirection, 'Direction');
 
         if ($toVertex !== null) {
-            $toVertex = $this->normalizeArgument($toVertex, 'id');
+            $toVertex = $this->normalizeArgument($toVertex, 'Id');
         }
 
 
@@ -105,7 +105,7 @@ trait hasGraphClauses
      */
     public function graph(string $graphName) : QueryBuilder
     {
-        $graphName = $this->normalizeArgument($graphName, 'graph');
+        $graphName = $this->normalizeArgument($graphName, 'Graph');
 
         $this->addCommand(new GraphClause($graphName));
 

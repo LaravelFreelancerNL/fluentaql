@@ -37,7 +37,7 @@ class StatementClausesTest extends TestCase
         $object->age = 40;
         $object->traits = ['D', 'H', 'C'];
         $result = $qb->let('x', $object)->get();
-        self::assertEquals('LET x = @1_1', $result->query);
+        self::assertEquals('LET x = {"name":"Catelyn","surname":"Stark","alive":false,"age":40,"traits":[@1_1,@1_2,@1_3]}', $result->query);
 
         $result = AQB::let('x', 'y')->get();
         self::assertEquals('LET x = @1_1', $result->query);

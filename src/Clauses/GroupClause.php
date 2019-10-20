@@ -1,8 +1,6 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-
 class GroupClause extends Clause
 {
     protected $groupsVariable;

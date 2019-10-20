@@ -93,19 +93,19 @@ class GraphClausesTest extends TestCase
      */
     public function prune_clause_syntax()
     {
-        $result = AQB::prune('u.active', '==', 'true')->get();
-        self::assertEquals('PRUNE u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->prune('u.active', '==', 'true')->get();
+        self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::prune('u.active', '==', 'true', 'OR')->get();
-        self::assertEquals('PRUNE u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->prune('u.active', '==', 'true', 'OR')->get();
+        self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::prune('u.active', 'true')->get();
-        self::assertEquals('PRUNE u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->prune('u.active', 'true')->get();
+        self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::prune('u.active')->get();
-        self::assertEquals('PRUNE u.active == null', $result->query);
+        $result = AQB::for('u', 'Users')->prune('u.active')->get();
+        self::assertEquals('FOR u IN Users PRUNE u.active == null', $result->query);
 
-        $result = AQB::prune([['u.active', '==', 'true'], ['u.age']])->get();
-        self::assertEquals('PRUNE u.active == true AND u.age == null', $result->query);
+        $result = AQB::for('u', 'Users')->prune([['u.active', '==', 'true'], ['u.age']])->get();
+        self::assertEquals('FOR u IN Users PRUNE u.active == true AND u.age == null', $result->query);
     }
 }

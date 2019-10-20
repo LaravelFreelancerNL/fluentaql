@@ -1,9 +1,6 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-use LaravelFreelancerNL\FluentAQL\Expressions\NumericExpression;
-
 class LimitClause extends Clause
 {
     protected $count;
@@ -13,10 +10,10 @@ class LimitClause extends Clause
     /**
      * ForClause constructor.
      *
-     * @param NumericExpression $offsetOrCount
-     * @param NumericExpression|null $count
+     * @param int $offsetOrCount
+     * @param int|null $count
      */
-    public function __construct(NumericExpression $offsetOrCount, NumericExpression $count = null)
+    public function __construct(int $offsetOrCount, int $count = null)
     {
         if ($count === null) {
             $this->count = $offsetOrCount;

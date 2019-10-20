@@ -1,11 +1,6 @@
 <?php
 
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\NumericExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\DirectionExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -88,7 +83,7 @@ class QueryBuilderTest extends TestCase
         
         self::arrayHasKey('1_1');
         self::assertIsString($qb->binds['1_1']);
-        self::assertEquals(121, strlen($qb->binds['1_1']));
+        self::assertEquals(153, strlen($qb->binds['1_1']));
     }
 
     /**

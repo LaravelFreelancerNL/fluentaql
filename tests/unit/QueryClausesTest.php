@@ -31,10 +31,10 @@ class QueryClausesTest extends TestCase
         self::assertEquals('COLLECT', $result->query);
 
         $result = AQB::collect('doc', 'expression')->get();
-        self::assertEquals('COLLECT doc = expression', $result->query);
+        self::assertEquals('COLLECT doc = @1_1', $result->query);
 
-        $result = AQB::collect('hometown', 'u.city')->get();
-        self::assertEquals('COLLECT hometown = u.city', $result->query);
+        $result = AQB::for('u', 'Users')->collect('hometown', 'u.city')->get();
+        self::assertEquals('FOR u IN Users COLLECT hometown = u.city', $result->query);
     }
 
     /**
@@ -47,7 +47,7 @@ class QueryClausesTest extends TestCase
         self::assertEquals('INTO groupsVariable', $result->query);
 
         $result = AQB::group('groupsVariable', 'projectionExpression')->get();
-        self::assertEquals('INTO groupsVariable = projectionExpression', $result->query);
+        self::assertEquals('INTO groupsVariable = @1_1', $result->query);
 
         $result = AQB::group('groupsVariable', '{ 
     "name" : u.name, 
@@ -63,7 +63,7 @@ class QueryClausesTest extends TestCase
     public function aggregate_clause()
     {
         $result = AQB::aggregate('variableName', 'aggregateExpression')->get();
-        self::assertEquals('AGGREGATE variableName = aggregateExpression', $result->query);
+        self::assertEquals('AGGREGATE variableName = @1_1', $result->query);
     }
 
     /**
@@ -111,7 +111,7 @@ class QueryClausesTest extends TestCase
         $result = AQB::for('u', 'users')->get();
         self::assertEquals('FOR u IN users', $result->query);
 
-        $result = AQB::for('u', )->get();
+        $result = AQB::for('u')->get();
         self::assertEquals('FOR u IN', $result->query);
 
         $result = AQB::for(['v', 'e', 'p'], 'graph')->get();
@@ -124,20 +124,20 @@ class QueryClausesTest extends TestCase
      */
     public function filter_clause_syntax()
     {
-        $result = AQB::filter('u.active', '==', 'true')->get();
-        self::assertEquals('FILTER u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true')->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::filter('u.active', '==', 'true', 'OR')->get();
-        self::assertEquals('FILTER u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true', 'OR')->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::filter('u.active', 'true')->get();
-        self::assertEquals('FILTER u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->filter('u.active', 'true')->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::filter('u.active')->get();
-        self::assertEquals('FILTER u.active == null', $result->query);
+        $result = AQB::for('u', 'Users')->filter('u.active')->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == null', $result->query);
 
-        $result = AQB::filter([['u.active', '==', 'true'], ['u.age']])->get();
-        self::assertEquals('FILTER u.active == true AND u.age == null', $result->query);
+        $result = AQB::for('u', 'Users')->filter([['u.active', '==', 'true'], ['u.age']])->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true AND u.age == null', $result->query);
     }
 
     /**
@@ -146,20 +146,20 @@ class QueryClausesTest extends TestCase
      */
     public function search_clause_syntax()
     {
-        $result = AQB::search('u.active', '==', 'true')->get();
-        self::assertEquals('SEARCH u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->search('u.active', '==', 'true')->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::search('u.active', '==', 'true', 'OR')->get();
-        self::assertEquals('SEARCH u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->search('u.active', '==', 'true', 'OR')->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::search('u.active', 'true')->get();
-        self::assertEquals('SEARCH u.active == true', $result->query);
+        $result = AQB::for('u', 'Users')->search('u.active', 'true')->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::search('u.active')->get();
-        self::assertEquals('SEARCH u.active == null', $result->query);
+        $result = AQB::for('u', 'Users')->search('u.active')->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == null', $result->query);
 
-        $result = AQB::search([['u.active', '==', 'true'], ['u.age']])->get();
-        self::assertEquals('SEARCH u.active == true AND u.age == null', $result->query);
+        $result = AQB::for('u', 'Users')->search([['u.active', '==', 'true'], ['u.age']])->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
     }
 
 
@@ -169,8 +169,8 @@ class QueryClausesTest extends TestCase
      */
     public function sort_clause_syntax()
     {
-        $result  = AQB::sort('u.name', 'DESC')->get();
-        self::assertEquals('SORT u.name DESC', $result->query);
+        $result  = AQB::for('u', 'Users')->sort('u.name', 'DESC')->get();
+        self::assertEquals('FOR u IN Users SORT u.name DESC', $result->query);
 
         $result  = AQB::sort('null')->get();
         self::assertEquals('SORT null', $result->query);
@@ -178,20 +178,20 @@ class QueryClausesTest extends TestCase
         $result  = AQB::sort()->get();
         self::assertEquals('SORT null', $result->query);
 
-        $result  = AQB::sort(['u.name'])->get();
-        self::assertEquals('SORT u.name', $result->query);
+        $result  = AQB::for('u', 'Users')->sort(['u.name'])->get();
+        self::assertEquals('FOR u IN Users SORT u.name', $result->query);
 
-        $result  = AQB::sort(['u.name', 'u.age'])->get();
-        self::assertEquals('SORT u.name, u.age', $result->query);
+        $result  = AQB::for('u', 'Users')->sort(['u.name', 'u.age'])->get();
+        self::assertEquals('FOR u IN Users SORT u.name, u.age', $result->query);
 
-        $result  = AQB::sort([['u.age', 'DESC']])->get();
-        self::assertEquals('SORT u.age DESC', $result->query);
+        $result  = AQB::for('u', 'Users')->sort([['u.age', 'DESC']])->get();
+        self::assertEquals('FOR u IN Users SORT u.age DESC', $result->query);
 
-        $result  = AQB::sort(['u.name', ['u.age', 'DESC']])->get();
-        self::assertEquals('SORT u.name, u.age DESC', $result->query);
+        $result  = AQB::for('u', 'Users')->sort(['u.name', ['u.age', 'DESC']])->get();
+        self::assertEquals('FOR u IN Users SORT u.name, u.age DESC', $result->query);
 
-        $result  = AQB::sort(['u.name', 'DESC'])->get();
-        self::assertNotEquals('SORT u.name DESC', $result->query);
+        $result  = AQB::for('u', 'Users')->sort(['u.name', 'DESC'])->get();
+        self::assertNotEquals('FOR u IN Users SORT u.name DESC', $result->query);
     }
 
     /**
@@ -214,12 +214,15 @@ class QueryClausesTest extends TestCase
     public function return_clause_syntax()
     {
         $result = AQB::return('u.name')->get();
-        self::assertEquals('RETURN u.name', $result->query);
+        self::assertEquals('RETURN @1_1', $result->query);
+
+        $result = AQB::for('u', 'Users')->return('u.name')->get();
+        self::assertEquals('FOR u IN Users RETURN u.name', $result->query);
 
         $result = AQB::return("1 + 1")->get();
-        self::assertEquals('RETURN 1 + 1', $result->query);
+        self::assertEquals('RETURN @1_1', $result->query);
 
         $result = AQB::return("1 + 1", true)->get();
-        self::assertEquals('RETURN DISTINCT 1 + 1', $result->query);
+        self::assertEquals('RETURN DISTINCT @1_1', $result->query);
     }
 }

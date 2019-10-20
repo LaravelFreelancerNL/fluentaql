@@ -9,7 +9,12 @@ use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\NullExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\ObjectExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 
 /**
  * Class QueryBuilder
@@ -51,9 +56,13 @@ class QueryBuilder
 
     /**
       * List of commands to be compiled into a query
-      *
       */
     protected $commands = [];
+
+    /**
+     * Registry of variable names used in this query
+     */
+    protected $variables = [];
 
     /**
      * ID of the query
@@ -71,6 +80,8 @@ class QueryBuilder
 
     protected $isSubQuery = false;
 
+
+
     public function __construct($queryId = 1)
     {
         $this->grammar = new Grammar();
@@ -78,23 +89,66 @@ class QueryBuilder
         $this->queryId = $queryId;
     }
 
-    protected function normalizeArgument($argument, $allowedExpressionTypes)
+    protected function normalizeArgument($argument, $allowedExpressionTypes = null)
     {
-        $expressionType = null;
+        if (is_scalar($argument)) {
+            return $this->normalizeScalar($argument, $allowedExpressionTypes);
+        }
+        if (is_null($argument) && isset($allowedExpressionTypes['null'])) {
+            return new NullExpression();
+        }
+        return $this->normalizeCompound($argument, $allowedExpressionTypes);
+    }
 
-        $expressionType = $this->determineExpressionType($argument, $allowedExpressionTypes);
+    /**
+     * @param $argument
+     * @param $allowedExpressionTypes
+     * @return BindExpression
+     * @throws ExpressionTypeException
+     */
+    protected function normalizeScalar($argument, $allowedExpressionTypes)
+    {
+        $argumentType = $this->determineArgumentType($argument, $allowedExpressionTypes);
 
-        //Handle bindings. Replace argument data with bind variable.
-        if ($expressionType == 'bind') {
-            $argument = $this->bind($argument);
+        //        $argument = $this->handleArgumentByType($argument, $argumentType);
+
+        return $this->createExpression($argument, $argumentType);
+    }
+
+    protected function createExpression($argument, $argumentType)
+    {
+        $expressionType = $this->grammar->mapArgumentTypeToExpressionType($argumentType);
+
+        if ($expressionType == 'Bind') {
+            return $this->bind($argument);
         }
 
-        if (!isset($expressionType)) {
-            throw new ExpressionTypeException("Not a valid expression type.");
-        }
-        //Return expression
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . ucfirst(strtolower($expressionType)) . 'Expression';
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
         return new $expressionClass($argument);
+    }
+
+    protected function normalizeCompound($argument, $allowedExpressionTypes = null)
+    {
+        if (is_array($argument)) {
+            return $this->normalizeArray($argument, $allowedExpressionTypes);
+        }
+        if (! is_iterable($argument)) {
+            return $this->normalizeObject($argument, $allowedExpressionTypes);
+        }
+        return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
+    }
+
+    /**
+     * @param array|object $argument
+     * @param null $allowedExpressionTypes
+     * @return array
+     */
+    protected function normalizeIterable($argument, $allowedExpressionTypes = null)
+    {
+        foreach ($argument as $attribute => $value) {
+            $argument[$attribute] = $this->normalizeArgument($value);
+        }
+        return $argument;
     }
 
     protected function normalizeSortExpression($sortExpression = null, $direction = null) : array
@@ -107,8 +161,8 @@ class QueryBuilder
             return $sortExpression;
         }
         if (is_array($sortExpression) && ! empty($sortExpression)) {
-            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'attribute');
-            if (isset($sortExpression[1]) && ! $this->grammar->is_sortDirection($sortExpression[1])) {
+            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'VariableAttribute');
+            if (isset($sortExpression[1]) && ! $this->grammar->isSortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
             return $sortExpression;
@@ -120,12 +174,12 @@ class QueryBuilder
     protected function normalizeEdgeCollections($edgeCollection) : array
     {
         if (is_string($edgeCollection)) {
-            $edgeCollection = [$this->normalizeArgument($edgeCollection, 'collection')];
+            $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
             return $edgeCollection;
         }
         if (is_array($edgeCollection) && ! empty($edgeCollection)) {
-            $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'collection');
-            if (isset($edgeCollection[1]) && ! $this->grammar->is_direction($edgeCollection[1])) {
+            $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'Collection');
+            if (isset($edgeCollection[1]) && ! $this->grammar->isDirection($edgeCollection[1])) {
                 unset($edgeCollection[1]);
             }
             return $edgeCollection;
@@ -150,7 +204,7 @@ class QueryBuilder
                 $logicalOperator = null;
 
                 $lastElement = end($predicate);
-                if ($this->grammar->is_logicalOperator($lastElement)) {
+                if ($this->grammar->isLogicalOperator($lastElement)) {
                     array_pop($predicate);
                     $logicalOperator = $lastElement;
                 }
@@ -178,21 +232,21 @@ class QueryBuilder
         }
 
         // if $rightOperand is empty and $comparisonOperator is not a valid operate, then the operation defaults to '=='
-        if (! $this->grammar->is_comparisonOperator($operator) && $value == null) {
+        if (! $this->grammar->isComparisonOperator($operator) && $value == null) {
             $value = $operator;
             $operator = '==';
         }
 
-        if ($this->grammar->is_comparisonOperator($operator) && $value == null) {
+        if ($this->grammar->isComparisonOperator($operator) && $value == null) {
             $operator = '==';
             $value = 'null';
         }
 
 
         // leftOperands can only be attributes
-        $attribute = $this->normalizeArgument($attribute, ['attribute', 'bind']);
+        $attribute = $this->normalizeArgument($attribute, ['VariableAttribute', 'Bind']);
         // rightOperands can be any type of data: attributes, values, queries etc
-        $value = $this->normalizeArgument($value, ['attribute', 'query', 'function', 'bind']);
+        $value = $this->normalizeArgument($value, ['VariableAttribute', 'Boolean', 'Null', 'Query', 'Function', 'Bind']);
 
         $normalizedPredicate[] = new PredicateExpression($attribute, $operator, $value);
         if (isset($predicate['logicalOperator'])) {
@@ -208,19 +262,35 @@ class QueryBuilder
      * @param string|iterable $argument
      * @param $allowedExpressionTypes
      * @return mixed
+     * @throws ExpressionTypeException
      */
-    protected function determineExpressionType($argument, $allowedExpressionTypes)
+    protected function determineArgumentType($argument, $allowedExpressionTypes = null)
     {
         if (is_string($allowedExpressionTypes)) {
             $allowedExpressionTypes = [$allowedExpressionTypes];
         }
+        if ($allowedExpressionTypes == null) {
+            $allowedExpressionTypes = $this->grammar->getAllowedExpressionTypes();
+        }
 
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is_'.$allowedExpressionType;
+            $check = 'is'.$allowedExpressionType;
+            if ($allowedExpressionType == 'VariableAttribute') {
+                if ($this->grammar->$check($argument, $this->variables)) {
+                    return $allowedExpressionType;
+                }
+            }
             if ($this->grammar->$check($argument)) {
                 return $allowedExpressionType;
             }
         }
+
+        //Fallback to BindExpression if allowed
+        if (isset($allowedExpressionTypes['Bind'])) {
+            return 'Bind';
+        }
+
+        throw new ExpressionTypeException("This data does not match one of these expression types: ".implode(', ', $allowedExpressionTypes).'.');
     }
 
     protected function setSubQuery()
@@ -304,9 +374,22 @@ class QueryBuilder
         return $this;
     }
 
+    /**
+     * Register variables on declaration for later data normalization.
+     *
+     * @param string $variableName
+     * @return QueryBuilder
+     */
+    protected function registerVariable(string $variableName) : QueryBuilder
+    {
+        $this->variables[$variableName] = $variableName;
+
+        return $this;
+    }
+
     public function bind($data, $to = null, $collection = false) : BindExpression
     {
-        $data = $this->grammar->prepareDataToBind($data);
+        $data = json_encode($data, JSON_UNESCAPED_SLASHES);
 
         if ($to == null) {
             $to  = $this->queryId.'_'.(count($this->binds)+1);
@@ -376,5 +459,40 @@ class QueryBuilder
     public function __toString()
     {
         return $this->toAql();
+    }
+
+    public function wrap($value)
+    {
+        return $this->grammar->wrap($value);
+    }
+
+    /**
+     * @param $argument
+     * @param $allowedExpressionTypes
+     * @return ListExpression|ObjectExpression
+     */
+    protected function normalizeArray($argument, $allowedExpressionTypes)
+    {
+        if ($this->grammar->isAssociativeArray($argument)) {
+            return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
+        }
+        return new ListExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
+    }
+
+    /**
+     * @param $argument
+     * @param $allowedExpressionTypes
+     * @return ObjectExpression|StringExpression
+     */
+    protected function normalizeObject($argument, $allowedExpressionTypes)
+    {
+        if ($argument instanceof \DateTimeInterface) {
+            return new StringExpression($argument->format(\DateTime::ATOM));
+        }
+        if ($argument instanceof ExpressionInterface) {
+            //Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
+            return $argument;
+        }
+        return new ObjectExpression($this->normalizeIterable((array)$argument, $allowedExpressionTypes));
     }
 }

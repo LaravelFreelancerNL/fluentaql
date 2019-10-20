@@ -1,7 +1,6 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 
 class FilterClause extends Clause

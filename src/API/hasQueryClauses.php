@@ -5,7 +5,6 @@ use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\CollectClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GroupClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\InClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\KeepClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause;
@@ -14,9 +13,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SearchClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SortClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\WithClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
-use LaravelFreelancerNL\FluentAQL\Expressions\NullExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -33,12 +30,23 @@ trait hasQueryClauses
      * You HAVE TO prepare user input yourself or be open to injection attacks.
      *
      * @param string $aql
-     * @param null $bindings
-     * @param null $collections
-     * @return $this
+     * @param null $binds
+     * @param array|null $collections
+     * @return QueryBuilder
      */
-    public function raw(string $aql, $bindings = [], $collections = []) : QueryBuilder
+    public function raw(string $aql, $binds = null, $collections = null) : QueryBuilder
     {
+        if (is_array($binds)) {
+            foreach ($binds as $key => $value) {
+                $this->bind($value, $key);
+            }
+        }
+        if (is_array($binds)) {
+            foreach ($collections as $mode => $modeCollections) {
+                $this->registerCollections($modeCollections, $mode);
+            }
+        }
+
         $this->addCommand(new RawClause($aql));
 
         return $this;
@@ -46,7 +54,7 @@ trait hasQueryClauses
 
     public function options($options) : QueryBuilder
     {
-        $options = $this->normalizeArgument($options, 'document');
+        $options = $this->normalizeArgument($options, 'Object');
 
         $this->addCommand(new OptionsClause($options));
 
@@ -56,7 +64,7 @@ trait hasQueryClauses
 
     /**
      * Create a for clause
-     * @link https://www.arangodb.com/docs/3.4/aql/operations-for.html
+     * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
      * @param string|array $variableName
      * @param mixed $in
@@ -69,11 +77,12 @@ trait hasQueryClauses
         }
 
         foreach ($variableName as $key => $value) {
-            $variableName[$key] = $this->normalizeArgument($value, 'variable');
+            $variableName[$key] = $this->normalizeArgument($value, 'Variable');
+            $this->registerVariable($variableName[$key]);
         }
 
         if ($in !== null) {
-            $in = $this->normalizeArgument($in, ['collection', 'range', 'list', 'query']);
+            $in = $this->normalizeArgument($in, ['Collection', 'Range', 'List', 'Query']);
         }
 
         $this->addCommand(new ForClause($variableName, $in));
@@ -142,10 +151,10 @@ trait hasQueryClauses
     public function collect($variableName = null, $expression = null) : QueryBuilder
     {
         if (isset($variableName)) {
-            $variableName = $this->normalizeArgument($variableName, 'variable');
+            $variableName = $this->normalizeArgument($variableName, 'Variable');
         }
         if (isset($expression)) {
-            $expression = $this->normalizeArgument($expression, ['attribute', 'function', 'query', 'bind']);
+            $expression = $this->normalizeArgument($expression, ['VariableAttribute', 'Function', 'Query', 'Bind']);
         }
 
         $this->addCommand(new CollectClause($variableName, $expression));
@@ -164,9 +173,11 @@ trait hasQueryClauses
      */
     public function group($groupsVariable, $projectionExpression = null) : QueryBuilder
     {
-        $groupsVariable = $this->normalizeArgument($groupsVariable, 'variable');
+        $groupsVariable = $this->normalizeArgument($groupsVariable, 'Variable');
+        $this->registerVariable($groupsVariable);
+
         if (isset($projectionExpression)) {
-            $projectionExpression = $this->normalizeArgument($projectionExpression, ['attribute', 'document', 'function', 'query', 'bind']);
+            $projectionExpression = $this->normalizeArgument($projectionExpression, ['VariableAttribute', 'Object', 'Function', 'Query', 'Bind']);
         }
 
         $this->addCommand(new GroupClause($groupsVariable, $projectionExpression));
@@ -184,7 +195,8 @@ trait hasQueryClauses
      */
     public function keep($keepVariable) : QueryBuilder
     {
-        $keepVariable = $this->normalizeArgument($keepVariable, 'variable');
+        $keepVariable = $this->normalizeArgument($keepVariable, 'Variable');
+        $this->registerVariable($keepVariable);
 
         $this->addCommand(new KeepClause($keepVariable));
 
@@ -203,7 +215,8 @@ trait hasQueryClauses
      */
     public function withCount($countVariableName) : QueryBuilder
     {
-        $countVariableName = $this->normalizeArgument($countVariableName, 'variable');
+        $countVariableName = $this->normalizeArgument($countVariableName, 'Variable');
+        $this->registerVariable($countVariableName);
 
         $this->addCommand(new WithCountClause($countVariableName));
 
@@ -221,8 +234,10 @@ trait hasQueryClauses
      */
     public function aggregate($variableName, $aggregateExpression) : QueryBuilder
     {
-        $variableName = $this->normalizeArgument($variableName, 'variable');
-        $aggregateExpression = $this->normalizeArgument($aggregateExpression, 'attribute', 'function', 'query', 'bind');
+        $variableName = $this->normalizeArgument($variableName, 'Variable');
+        $this->registerVariable($variableName);
+
+        $aggregateExpression = $this->normalizeArgument($aggregateExpression, ['VariableAttribute', 'Function', 'Query', 'Bind']);
 
         $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
@@ -261,15 +276,14 @@ trait hasQueryClauses
      * Limit results
      * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
      *
-     * @param $offsetOrCount
-     * @param null $count
+     * @param int $offsetOrCount
+     * @param int $count
      * @return $this
      */
-    public function limit($offsetOrCount, $count = null)
+    public function limit(int $offsetOrCount, int $count = null)
     {
-        $offsetOrCount = $this->normalizeArgument($offsetOrCount, 'numeric');
         if ($count !== null) {
-            $count = $this->normalizeArgument($count, 'numeric');
+            $count = (int) $count;
         }
 
         $this->addCommand(new LimitClause($offsetOrCount, $count));
@@ -287,6 +301,8 @@ trait hasQueryClauses
      */
     public function return($expression, $distinct = false) : QueryBuilder
     {
+        $expression = $this->normalizeArgument($expression, ['Variable', 'VariableAttribute', 'Object',  'Function', 'Query', 'Bind']);
+
         $this->addCommand(new ReturnClause($expression, $distinct));
 
         return $this;

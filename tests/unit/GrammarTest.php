@@ -38,25 +38,25 @@ class GrammarTest extends TestCase
      */
     public function is_range()
     {
-        $result = $this->grammar->is_range('0..1');
+        $result = $this->grammar->isRange('0..1');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_range('2..1');
+        $result = $this->grammar->isRange('2..1');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_range('00..111');
+        $result = $this->grammar->isRange('00..111');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_range('0.1..1');
+        $result = $this->grammar->isRange('0.1..1');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_range('0.1.');
+        $result = $this->grammar->isRange('0.1.');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_range('0..1.');
+        $result = $this->grammar->isRange('0..1.');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_range('a..1');
+        $result = $this->grammar->isRange('a..1');
         self::assertFalse($result);
     }
 
@@ -66,34 +66,34 @@ class GrammarTest extends TestCase
      */
     public function is_collection()
     {
-        $result = $this->grammar->is_collection('col');
+        $result = $this->grammar->isCollection('col');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('_col');
+        $result = $this->grammar->isCollection('_col');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('c_ol');
+        $result = $this->grammar->isCollection('c_ol');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('co-l');
+        $result = $this->grammar->isCollection('co-l');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('col-');
+        $result = $this->grammar->isCollection('col-');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('col-1');
+        $result = $this->grammar->isCollection('col-1');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_collection('@col-1');
+        $result = $this->grammar->isCollection('@col-1');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_collection('colö');
+        $result = $this->grammar->isCollection('colö');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_collection('col.1');
+        $result = $this->grammar->isCollection('col.1');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_collection('col`1');
+        $result = $this->grammar->isCollection('col`1');
         self::assertFalse($result);
     }
 
@@ -103,19 +103,19 @@ class GrammarTest extends TestCase
      */
     public function is_key()
     {
-        $result = $this->grammar->is_key('_key');
+        $result = $this->grammar->isKey('_key');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_key('_key');
+        $result = $this->grammar->isKey('_key');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_key('100');
+        $result = $this->grammar->isKey('100');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_key('Aݔ');
+        $result = $this->grammar->isKey('Aݔ');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_key('Aä');
+        $result = $this->grammar->isKey('Aä');
         self::assertFalse($result);
     }
 
@@ -125,22 +125,22 @@ class GrammarTest extends TestCase
      */
     public function is_id()
     {
-        $result = $this->grammar->is_id('Characters/BranStark');
+        $result = $this->grammar->isId('Characters/BranStark');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_id('col-1/Aa');
+        $result = $this->grammar->isId('col-1/Aa');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_id('col/_key');
+        $result = $this->grammar->isId('col/_key');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_id('col1-1/100');
+        $result = $this->grammar->isId('col1-1/100');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_id('@col-1/_key');
+        $result = $this->grammar->isId('@col-1/_key');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_id('col/Aä');
+        $result = $this->grammar->isId('col/Aä');
         self::assertFalse($result);
     }
 
@@ -150,37 +150,37 @@ class GrammarTest extends TestCase
      */
     public function validate_variable_name_syntax()
     {
-        $result = $this->grammar->is_variable('doc');
+        $result = $this->grammar->isVariable('doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_variable('dOc');
+        $result = $this->grammar->isVariable('dOc');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_variable('Doc0');
+        $result = $this->grammar->isVariable('Doc0');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_variable('_doc');
+        $result = $this->grammar->isVariable('_doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_variable('$doc');
+        $result = $this->grammar->isVariable('$doc');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_variable('$$doc');
+        $result = $this->grammar->isVariable('$$doc');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_variable('$doc$');
+        $result = $this->grammar->isVariable('$doc$');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_variable('doc-eat-dog');
+        $result = $this->grammar->isVariable('doc-eat-dog');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_variable('-doc');
+        $result = $this->grammar->isVariable('-doc');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_variable('d"oc');
+        $result = $this->grammar->isVariable('d"oc');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_variable('döc');
+        $result = $this->grammar->isVariable('döc');
         self::assertFalse($result);
     }
 
@@ -190,75 +190,94 @@ class GrammarTest extends TestCase
      */
     public function is_attribute()
     {
-        $result = $this->grammar->is_attribute('`_key`');
+        $result = $this->grammar->isAttribute('`_key`');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('@shizzle');
+        $result = $this->grammar->isAttribute('@shizzle');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('shizzle%');
+        $result = $this->grammar->isAttribute('shizzle%');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_attribute('@shizzle%');
+        $result = $this->grammar->isAttribute('@shizzle%');
         self::assertFalse($result);
 
-        $result = $this->grammar->is_attribute('`FOR`[whatever]');
+        $result = $this->grammar->isAttribute('`FOR`[whatever]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('`KEYWORD`[whatever][*][*]');
+        $result = $this->grammar->isAttribute('`KEYWORD`[whatever][*][*]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('`KEYWORD`[`.fgdfg.`]');
+        $result = $this->grammar->isAttribute('`KEYWORD`[`.fgdfg.`]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('`KEYWORD`[whatever][*][*].what');
+        $result = $this->grammar->isAttribute('`KEYWORD`[whatever][*][*].what');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('_from[*]');
+        $result = $this->grammar->isAttribute('_from[*]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('_from[**]');
+        $result = $this->grammar->isAttribute('_from[**]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('_key[2]');
+        $result = $this->grammar->isAttribute('_key[2]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('_from[*][**]');
+        $result = $this->grammar->isAttribute('_from[*][**]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.active');
+        $result = $this->grammar->isAttribute('u.active');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.@active');
+        $result = $this->grammar->isAttribute('u.@active');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.@active.age');
+        $result = $this->grammar->isAttribute('u.@active.age');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.@active.@age');
+        $result = $this->grammar->isAttribute('u.@active.@age');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.`@active`');
+        $result = $this->grammar->isAttribute('u.`@active`');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.`@active`.@age');
+        $result = $this->grammar->isAttribute('u.`@active`.@age');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('doc.text[2]');
+        $result = $this->grammar->isAttribute('doc.text[2]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('doc.@text[2]');
+        $result = $this->grammar->isAttribute('doc.@text[2]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('doc[name]');
+        $result = $this->grammar->isAttribute('doc[name]');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('attributes[*].name');
+        $result = $this->grammar->isAttribute('attributes[*].name');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_attribute('u.friends[*][*].name');
+        $result = $this->grammar->isAttribute('u.friends[*][*].name');
         self::assertTrue($result);
     }
+
+    /**
+     * is variableAttribute
+     * @test
+     */
+    public function is_variable_attribute()
+    {
+        $registeredVariables = ['doc', 'u'];
+
+        $result = $this->grammar->isVariableAttribute('doc[name]', $registeredVariables);
+        self::assertTrue($result);
+
+        $result = $this->grammar->isVariableAttribute('u.[*]', $registeredVariables);
+        self::assertTrue($result);
+
+        $result = $this->grammar->isVariableAttribute('smurf[name]', $registeredVariables);
+        self::assertFalse($result);
+    }
+
 
     /**
      * is document
@@ -268,17 +287,17 @@ class GrammarTest extends TestCase
     {
         $doc = new stdClass();
         $doc->attribute1 = 'test';
-        $result = $this->grammar->is_document($doc);
+        $result = $this->grammar->isObject($doc);
         self::assertTrue($result);
 
         $associativeArray = [
             'attribute1' => 'test'
         ];
-        $result = $this->grammar->is_document($associativeArray);
+        $result = $this->grammar->isObject($associativeArray);
         self::assertTrue($result);
 
         $listArray = ['test'];
-        $result = $this->grammar->is_document($listArray);
+        $result = $this->grammar->isObject($listArray);
         self::assertFalse($result);
     }
 
@@ -288,13 +307,13 @@ class GrammarTest extends TestCase
      */
     public function is_list()
     {
-        $result = $this->grammar->is_list([1, 2, 3]);
+        $result = $this->grammar->isList([1, 2, 3]);
         self::assertTrue($result);
 
-        $result = $this->grammar->is_list(1);
+        $result = $this->grammar->isList(1);
         self::assertFalse($result);
 
-        $result = $this->grammar->is_list('a string');
+        $result = $this->grammar->isList('a string');
         self::assertFalse($result);
     }
 
@@ -304,13 +323,13 @@ class GrammarTest extends TestCase
      */
     public function is_numeric()
     {
-        $result = $this->grammar->is_numeric(4);
+        $result = $this->grammar->isNumber(4);
         self::assertTrue($result);
 
-        $result = $this->grammar->is_numeric(4.4);
+        $result = $this->grammar->isNumber(4.4);
         self::assertTrue($result);
 
-        $result = $this->grammar->is_numeric('string');
+        $result = $this->grammar->isNumber('string');
         self::assertFalse($result);
     }
 
@@ -355,13 +374,13 @@ class GrammarTest extends TestCase
      */
     public function is_sort_direction()
     {
-        $result = $this->grammar->is_sortDirection('asc');
+        $result = $this->grammar->isSortDirection('asc');
         self::assertTrue($result);
-        $result = $this->grammar->is_sortDirection('csa');
+        $result = $this->grammar->isSortDirection('csa');
         self::assertFalse($result);
-        $result = $this->grammar->is_sortDirection('aSc');
+        $result = $this->grammar->isSortDirection('aSc');
         self::assertTrue($result);
-        $result = $this->grammar->is_sortDirection('desc');
+        $result = $this->grammar->isSortDirection('desc');
         self::assertTrue($result);
     }
 
@@ -371,16 +390,16 @@ class GrammarTest extends TestCase
      */
     public function is_graph_direction()
     {
-        $result = $this->grammar->is_direction('outbound');
+        $result = $this->grammar->isDirection('outbound');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_direction('inbound');
+        $result = $this->grammar->isDirection('inbound');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_direction('ANY');
+        $result = $this->grammar->isDirection('ANY');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_direction('dfhdrf');
+        $result = $this->grammar->isDirection('dfhdrf');
         self::assertFalse($result);
     }
 
@@ -390,7 +409,7 @@ class GrammarTest extends TestCase
      */
     public function is_function()
     {
-        $result = $this->grammar->is_function(AQB::document('Characters/123'));
+        $result = $this->grammar->isFunction(AQB::document('Characters/123'));
         self::assertTrue($result);
     }
 
@@ -400,43 +419,14 @@ class GrammarTest extends TestCase
      */
     public function is_logical_operator()
     {
-        $result = $this->grammar->is_logicalOperator('AND');
+        $result = $this->grammar->isLogicalOperator('AND');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_logicalOperator('!');
+        $result = $this->grammar->isLogicalOperator('!');
         self::assertTrue($result);
 
-        $result = $this->grammar->is_logicalOperator('whatever');
+        $result = $this->grammar->isLogicalOperator('whatever');
         self::assertFalse($result);
-    }
-
-    /**
-     * prepareDataToBind
-     * @test
-     */
-    public function prepare_data_to_bind()
-    {
-        $data = 'shizzle';
-        $preparedData = $this->grammar->prepareDataToBind($data);
-        self::assertEquals('shizzle', $preparedData);
-
-        $data = 666;
-        $preparedData = $this->grammar->prepareDataToBind($data);
-        self::assertEquals(666, $preparedData);
-
-        $data = [1, 2];
-        $preparedData = $this->grammar->prepareDataToBind($data);
-        self::assertEquals($data, $preparedData);
-
-        $data = (object) ['locations/123-456', 'locations/234-567', 'locations/345-678'];
-        $preparedData = $this->grammar->prepareDataToBind($data);
-        self::assertEquals('{"0":"locations/123-456","1":"locations/234-567","2":"locations/345-678"}', $preparedData);
-
-        $data = [1, 2, (object) [ 'attribute 1' => "One piece!!!", 'attribute 2' => "` backtick party"]];
-        $preparedData = $this->grammar->prepareDataToBind($data);
-        $controlData = [1, 2, '{"attribute 1":"One piece!!!","attribute 2":"` backtick party"}'];
-        self::assertNotEquals($data, $preparedData);
-        self::assertEquals($controlData, $preparedData);
     }
 
     /**
@@ -462,16 +452,16 @@ class GrammarTest extends TestCase
             "employer" => 'The Realm'
         ];
 
-        $result = $this->grammar->arrayIsAssociative($emptyArray);
+        $result = $this->grammar->isAssociativeArray($emptyArray);
         self::assertTrue($result);
 
-        $result = $this->grammar->arrayIsAssociative($associativeArray);
+        $result = $this->grammar->isAssociativeArray($associativeArray);
         self::assertTrue($result);
 
-        $result = $this->grammar->arrayIsAssociative($mixedArray);
+        $result = $this->grammar->isAssociativeArray($mixedArray);
         self::assertTrue($result);
 
-        $result = $this->grammar->arrayIsAssociative($numericArray);
+        $result = $this->grammar->isAssociativeArray($numericArray);
         self::assertFalse($result);
     }
 
@@ -498,16 +488,16 @@ class GrammarTest extends TestCase
             "employer" => 'The Realm'
         ];
 
-        $result = $this->grammar->arrayIsNumeric($emptyArray);
+        $result = $this->grammar->isIndexedArray($emptyArray);
         self::assertTrue($result);
 
-        $result = $this->grammar->arrayIsNumeric($associativeArray);
+        $result = $this->grammar->isIndexedArray($associativeArray);
         self::assertFalse($result);
 
-        $result = $this->grammar->arrayIsNumeric($mixedArray);
+        $result = $this->grammar->isIndexedArray($mixedArray);
         self::assertFalse($result);
 
-        $result = $this->grammar->arrayIsNumeric($numericArray);
+        $result = $this->grammar->isIndexedArray($numericArray);
         self::assertTrue($result);
     }
 }

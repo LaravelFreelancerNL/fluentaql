@@ -13,6 +13,6 @@ class StringExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return '"'.$this->expression.'"';
+        return json_encode($this->expression, JSON_UNESCAPED_SLASHES);
     }
 }

@@ -1,8 +1,6 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
-
 class RawClause extends Clause
 {
     protected $aql;
