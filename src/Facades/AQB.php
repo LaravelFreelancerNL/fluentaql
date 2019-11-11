@@ -2,10 +2,11 @@
 namespace LaravelFreelancerNL\FluentAQL\Facades;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
-use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\API\hasNumericFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasMiscellaneousFunctions;
+use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
+use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
 
 /**
  * Facade for a more fluent access to the ArangoDB Query Builder
@@ -49,6 +50,9 @@ use LaravelFreelancerNL\FluentAQL\API\hasMiscellaneousFunctions;
  * AQL Functions:
  * Miscellaneous functions:
  * @method static hasMiscellaneousFunctions document($collection, $id = null)
+ *
+ * Numeric functions:
+ * @method static hasNumericFunctions max($value)
  *
  * Supporting clauses:
  * @method static hasQueryClauses raw(string $aql, $bindings = [], $collections = [])

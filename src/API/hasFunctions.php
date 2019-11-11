@@ -12,7 +12,8 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  */
 trait hasFunctions
 {
-    use hasMiscellaneousFunctions;
+    use hasMiscellaneousFunctions,
+        hasNumericFunctions;
 
     /**
      * 'Catch all' method for AQL functions that haven't been implemented directly in this builder.
