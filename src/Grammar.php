@@ -207,12 +207,12 @@ class Grammar
 
     public function isLogicalOperator($operator) : bool
     {
-        return isset($this->logicalOperators[$operator]);
+        return isset($this->logicalOperators[strtoupper($operator)]);
     }
 
     public function isComparisonOperator($operator) : bool
     {
-        return isset($this->comparisonOperators[$operator]);
+        return isset($this->comparisonOperators[strtoupper($operator)]);
     }
 
     public function isArithmeticOperators($operator) : bool

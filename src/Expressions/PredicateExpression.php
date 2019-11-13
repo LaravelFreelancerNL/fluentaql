@@ -26,9 +26,9 @@ class PredicateExpression extends Expression implements ExpressionInterface
     public function __construct(ExpressionInterface $leftOperand, $comparisonOperator = '==', ExpressionInterface $rightOperand = null, $logicalOperator = null)
     {
         $this->leftOperand = $leftOperand;
-        $this->comparisonOperator = $comparisonOperator;
+        $this->comparisonOperator = strtoupper($comparisonOperator);
         $this->rightOperand = $rightOperand;
-        $this->logicalOperator = $logicalOperator;
+        $this->logicalOperator = strtoupper($logicalOperator);
     }
 
     /**
