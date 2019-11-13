@@ -276,6 +276,12 @@ class GrammarTest extends TestCase
 
         $result = $this->grammar->isVariableAttribute('smurf[name]', $registeredVariables);
         self::assertFalse($result);
+
+        $result = $this->grammar->isVariableAttribute('NEW[name]', $registeredVariables);
+        self::assertTrue($result);
+
+        $result = $this->grammar->isVariableAttribute('OLD.attribute', $registeredVariables);
+        self::assertTrue($result);
     }
 
 

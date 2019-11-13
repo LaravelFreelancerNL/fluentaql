@@ -19,14 +19,14 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * @var Expression[] $parameters
      */
-    protected $parameters;
+    protected $parameters = [];
 
     /**
      * FunctionExpression constructor.
      * @param string $functionName
-     * @param ExpressionInterface[] $parameters
+     * @param array|string|null $parameters
      */
-    public function __construct(string $functionName, $parameters)
+    public function __construct(string $functionName, $parameters = [])
     {
         parent::__construct($parameters);
 
@@ -35,11 +35,22 @@ class FunctionExpression extends Expression implements ExpressionInterface
         if (is_string($parameters)) {
             $parameters[] = $parameters;
         }
+        if ($parameters === null) {
+            $parameters = [];
+        }
         $this->parameters = $parameters;
     }
 
     public function compile()
     {
-        return strtoupper($this->functionName).'('.implode(', ', $this->parameters).')';
+        $output =  strtoupper($this->functionName).'(';
+        $implosion = '';
+        foreach ($this->parameters as $parameter) {
+            $implosion .= ', '. (string) $parameter;
+        };
+        if ($implosion != '') {
+            $output .= ltrim($implosion, ', ');
+        }
+        return $output.')';
     }
 }

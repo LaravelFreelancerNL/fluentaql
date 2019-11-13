@@ -311,9 +311,10 @@ class Grammar
             return false;
         }
         $variables = implode('|', $registeredVariables);
+
         if (
             is_string($value)
-            && preg_match('/^('.$variables.')(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+            && preg_match('/^('.$variables.'|NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
         ) {
             return true;
         }

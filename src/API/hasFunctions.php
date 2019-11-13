@@ -12,21 +12,14 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  */
 trait hasFunctions
 {
-    use hasMiscellaneousFunctions,
+    use hasArrayFunctions,
+        hasDateFunctions,
+        hasGeoFunctions,
+        hasMiscellaneousFunctions,
         hasNumericFunctions;
 
-    /**
-     * 'Catch all' method for AQL functions that haven't been implemented directly in this builder.
-     *
-     * @param $functionName
-     * @param mixed ...$parameters
-     * @return FunctionExpression
-     */
     protected function function($functionName, ...$parameters)
     {
-        //Normalize input
-
-        //Return a Function Expression
         return new FunctionExpression($functionName, $parameters);
     }
 }

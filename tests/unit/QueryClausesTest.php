@@ -130,7 +130,7 @@ class QueryClausesTest extends TestCase
         $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true', 'OR')->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter('u.active','true')->get();
+        $result = AQB::for('u', 'Users')->filter('u.active', 'true')->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
         $result = AQB::for('u', 'Users')->filter('u.active')->get();
@@ -144,7 +144,7 @@ class QueryClausesTest extends TestCase
      * filters can use logical operators other than equals
      * @test
      */
-    function filtering_on_null_values_can_use_all_logical_operators()
+    public function filtering_on_null_values_can_use_all_logical_operators()
     {
         $result = AQB::for('doc', 'documents')
             ->filter('doc.attribute', '!=')
@@ -163,7 +163,7 @@ class QueryClausesTest extends TestCase
      * filters are seperated by comparison operators
      * @test
      */
-    function filters_are_separated_by_comparison_operators()
+    public function filters_are_separated_by_comparison_operators()
     {
         $filter = [
             ['doc.attribute1', '!=', 'null', 'OR'],
@@ -173,6 +173,22 @@ class QueryClausesTest extends TestCase
         $result = AQB::for('doc', 'documents')->filter($filter)->get();
         self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
     }
+
+    /**
+     * filters are seperated by comparison operators
+     * @test
+     */
+    public function filters_with_case_insensitive_logical_operators()
+    {
+        $filter = [
+            ['doc.attribute1', '!=', 'null', 'or'],
+            ['doc.attribute2', '!=', 'null', 'Or'],
+            ['doc.attribute3', '!=', 'null', 'OR']
+        ];
+        $result = AQB::for('doc', 'documents')->filter($filter)->get();
+        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
+    }
+
 
     /**
      * Search clause syntax

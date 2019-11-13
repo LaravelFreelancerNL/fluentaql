@@ -1,6 +1,9 @@
 <?php
 namespace LaravelFreelancerNL\FluentAQL\Facades;
 
+use LaravelFreelancerNL\FluentAQL\API\hasArrayFunctions;
+use LaravelFreelancerNL\FluentAQL\API\hasDateFunctions;
+use LaravelFreelancerNL\FluentAQL\API\hasGeoFunctions;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasNumericFunctions;
@@ -48,11 +51,37 @@ use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
  * @method static hasGraphClauses prune($attribute, $comparisonOperator = '==', $value = null,  $logicalOperator = 'AND')
  *
  * AQL Functions:
+ * Array functions:
+ * @method static hasArrayFunctions countDistinct($value)
+ * @method static hasArrayFunctions first($value)
+ * @method static hasArrayFunctions last($value)
+ * @method static hasArrayFunctions length($value)
+ *
+ * Date functions:
+ * @method static hasDateFunctions dateNow()
+ * @method static hasDateFunctions dateIso8601()
+ * @method static hasDateFunctions dateTimestamp()
+ * @method static hasDateFunctions dateYear($date)
+ * @method static hasDateFunctions dateMonth($date)
+ * @method static hasDateFunctions dateDay($date)
+ * @method static hasDateFunctions dateHour($date)
+ * @method static hasDateFunctions dateMinute($date)
+ * @method static hasDateFunctions dateSecond($date)
+ * @method static hasDateFunctions dateMillisecond($date)
+ *
+ * Geo functions:
+ * @method static hasGeoFunctions distance($latitude1, $longitude1, $latitude2, $longitude2)
+ *
  * Miscellaneous functions:
  * @method static hasMiscellaneousFunctions document($collection, $id = null)
  *
  * Numeric functions:
+ * @method static hasNumericFunctions average($value)
+ * @method static hasNumericFunctions avg($value)
  * @method static hasNumericFunctions max($value)
+ * @method static hasNumericFunctions min($value)
+ * @method static hasNumericFunctions rand()
+ * @method static hasNumericFunctions sum($value)
  *
  * Supporting clauses:
  * @method static hasQueryClauses raw(string $aql, $bindings = [], $collections = [])

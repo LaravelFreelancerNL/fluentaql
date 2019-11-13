@@ -212,13 +212,13 @@ class QueryBuilder
 
         $attribute = $predicate[0];
         if (isset($predicate[1])) {
-            $comparisonOperator = $predicate[1];
+            $comparisonOperator = strtoupper($predicate[1]);
         }
         if (isset($predicate[2])) {
             $value  = $predicate[2];
         }
-        if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
-            $logicalOperator  = $predicate[3];
+        if (isset($predicate[3]) && $this->grammar->isLogicalOperator(strtoupper($predicate[3]))) {
+            $logicalOperator  = strtoupper($predicate[3]);
         }
 
         // if $rightOperand is empty and $logicalOperator is not a valid operate, then the operation defaults to '=='
@@ -277,7 +277,7 @@ class QueryBuilder
             return 'Bind';
         }
 
-        throw new ExpressionTypeException("This data does not match one of these expression types: ".implode(', ', $allowedExpressionTypes).'.');
+        throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: ".implode(', ', $allowedExpressionTypes).'.');
     }
 
     protected function setSubQuery()
@@ -395,7 +395,6 @@ class QueryBuilder
     /**
      * Compile the query with its bindings and collection list.
      *
-     * @param QueryBuilder|null $parentQueryBuilder
      * @return mixed
      */
     public function compile() : QueryBuilder
