@@ -83,7 +83,7 @@ class QueryBuilderTest extends TestCase
         
         self::arrayHasKey('1_1');
         self::assertIsString($qb->binds['1_1']);
-        self::assertEquals(153, strlen($qb->binds['1_1']));
+        self::assertEquals(121, strlen($qb->binds['1_1']));
     }
 
     /**

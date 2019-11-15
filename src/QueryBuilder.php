@@ -376,8 +376,6 @@ class QueryBuilder
 
     public function bind($data, $to = null, $collection = false) : BindExpression
     {
-        $data = json_encode($data, JSON_UNESCAPED_SLASHES);
-
         if ($to == null) {
             $to  = $this->queryId.'_'.(count($this->binds)+1);
         } else {
