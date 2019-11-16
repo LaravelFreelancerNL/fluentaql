@@ -121,6 +121,16 @@ class Grammar
         'Bind' => 'Bind'
     ];
 
+    /**
+     * Get the format for database stored dates.
+     *
+     * @return string
+     */
+    public function getDateFormat()
+    {
+        return 'Y-m-d\TH:i:s.vZ';
+    }
+
     public function wrap($value) : string
     {
         return '`'.addcslashes($value, '`').'`';
