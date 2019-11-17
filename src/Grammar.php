@@ -128,7 +128,7 @@ class Grammar
      */
     public function getDateFormat()
     {
-        return 'Y-m-d\TH:i:s.vZ';
+        return 'Y-m-d\TH:i:s.v\Z';
     }
 
     public function wrap($value) : string
@@ -193,7 +193,7 @@ class Grammar
      */
     public function isNumber($value) : bool
     {
-        return is_numeric($value);
+        return is_numeric($value) && ! is_string($value);
     }
     
     /**
