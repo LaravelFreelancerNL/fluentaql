@@ -15,7 +15,7 @@ class EdgeCollectionsClause extends Clause
 
     public function compile()
     {
-        return implode(', ', array_map(function ($expression) {
+        return implode(', ', array_map(function($expression) {
             $output = '';
             if (isset($expression[1])) {
                 $output = $expression[1].' ';

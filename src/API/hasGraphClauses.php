@@ -130,7 +130,7 @@ trait hasGraphClauses
 
         if (is_array($edgeCollection)) {
             //Wandel door de array
-            $collections = array_map(function ($expression) {
+            $collections = array_map(function($expression) {
                 return $this->normalizeEdgeCollections($expression);
             }, $edgeCollection);
         }
@@ -154,7 +154,7 @@ trait hasGraphClauses
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
         }
 
         $predicates = $this->normalizePredicates($attribute);

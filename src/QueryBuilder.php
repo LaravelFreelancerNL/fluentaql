@@ -128,7 +128,7 @@ class QueryBuilder
         if (is_array($argument)) {
             return $this->normalizeArray($argument, $allowedExpressionTypes);
         }
-        if (! is_iterable($argument)) {
+        if (!is_iterable($argument)) {
             return $this->normalizeObject($argument, $allowedExpressionTypes);
         }
 
@@ -159,9 +159,9 @@ class QueryBuilder
 
             return $sortExpression;
         }
-        if (is_array($sortExpression) && ! empty($sortExpression)) {
+        if (is_array($sortExpression) && !empty($sortExpression)) {
             $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'VariableAttribute');
-            if (isset($sortExpression[1]) && ! $this->grammar->isSortDirection($sortExpression[1])) {
+            if (isset($sortExpression[1]) && !$this->grammar->isSortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
 
@@ -178,9 +178,9 @@ class QueryBuilder
 
             return $edgeCollection;
         }
-        if (is_array($edgeCollection) && ! empty($edgeCollection)) {
+        if (is_array($edgeCollection) && !empty($edgeCollection)) {
             $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollection[1]) && ! $this->grammar->isDirection($edgeCollection[1])) {
+            if (isset($edgeCollection[1]) && !$this->grammar->isDirection($edgeCollection[1])) {
                 unset($edgeCollection[1]);
             }
 
@@ -359,7 +359,7 @@ class QueryBuilder
      */
     public function registerCollections($collections, $mode = 'write') : self
     {
-        if (! is_array($collections)) {
+        if (!is_array($collections)) {
             $collections = [$collections];
         }
 

@@ -67,9 +67,9 @@ trait hasQueryClauses
      * @param mixed $in
      * @return QueryBuilder
      */
-    public function for($variableName, $in = null) : QueryBuilder
+    public function for ($variableName, $in = null) : QueryBuilder
     {
-        if (! is_array($variableName)) {
+        if (!is_array($variableName)) {
             $variableName = [$variableName];
         }
 
@@ -102,7 +102,7 @@ trait hasQueryClauses
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
         }
 
         $predicates = $this->normalizePredicates($attribute);
@@ -127,7 +127,7 @@ trait hasQueryClauses
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
         }
 
         $predicates = $this->normalizePredicates($attribute);
@@ -259,7 +259,7 @@ trait hasQueryClauses
 
         if (is_array($sortBy)) {
             //Wandel door de array
-            $sortExpressions = array_map(function ($expression) {
+            $sortExpressions = array_map(function($expression) {
                 return $this->normalizeSortExpression($expression);
             }, $sortBy);
         }

@@ -74,7 +74,7 @@ class Grammar
         'WITH', 'GRAPH', 'INBOUND', 'OUTBOUND', 'ANY', 'SHORTEST_PATH', 'K_SHORTEST_PATH', 'PRUNE',
         'LET', 'INSERT', 'UPDATE', 'REPLACE', 'UPSERT', 'REMOVE',
         'ALL', 'NONE', 'AND', 'OR', 'NOT', 'LIKE', 'IN',
-        'FALSE',  'TRUE', 'NULL',
+        'FALSE', 'TRUE', 'NULL',
     ];
 
     /*
@@ -195,7 +195,7 @@ class Grammar
      */
     public function isNumber($value) : bool
     {
-        return is_numeric($value) && ! is_string($value);
+        return is_numeric($value) && !is_string($value);
     }
 
     /**
