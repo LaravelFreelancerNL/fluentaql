@@ -10,7 +10,7 @@ class ArrayFunctionsTest extends TestCase
 {
     public function test_count()
     {
-        $qb = AQB::let('x', [1,2,3,4]);
+        $qb = AQB::let('x', [1, 2, 3, 4]);
         $functionExpression = $qb->count('x');
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('LENGTH(x)', (string) $functionExpression);
@@ -24,10 +24,9 @@ class ArrayFunctionsTest extends TestCase
         self::assertEquals('COUNT_DISTINCT(x)', (string) $functionExpression);
     }
 
-
     public function test_first()
     {
-        $qb = AQB::let('x', [1,2,3,4]);
+        $qb = AQB::let('x', [1, 2, 3, 4]);
         $functionExpression = $qb->first('x');
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('FIRST(x)', (string) $functionExpression);
@@ -35,7 +34,7 @@ class ArrayFunctionsTest extends TestCase
 
     public function test_last()
     {
-        $qb = AQB::let('x', [1,2,3,4]);
+        $qb = AQB::let('x', [1, 2, 3, 4]);
         $functionExpression = $qb->last('x');
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('LAST(x)', (string) $functionExpression);
@@ -43,7 +42,7 @@ class ArrayFunctionsTest extends TestCase
 
     public function test_length()
     {
-        $qb = AQB::let('x', [1,2,3,4]);
+        $qb = AQB::let('x', [1, 2, 3, 4]);
         $functionExpression = $qb->length('x');
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('LENGTH(x)', (string) $functionExpression);

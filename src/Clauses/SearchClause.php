@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class SearchClause extends FilterClause
@@ -10,6 +11,7 @@ class SearchClause extends FilterClause
     public function compile()
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
+
         return 'SEARCH '.rtrim($compiledPredicates);
     }
 }

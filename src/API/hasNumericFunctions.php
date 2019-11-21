@@ -1,14 +1,14 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 /**
- * Trait hasNumericFunctions
+ * Trait hasNumericFunctions.
  *
  * Numeric AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasNumericFunctions
 {
@@ -61,7 +61,7 @@ trait hasNumericFunctions
 
     /**
      * Return a pseudo-random number between 0 and 1.
-     * https://www.arangodb.com/docs/stable/aql/functions-numeric.html#rand
+     * https://www.arangodb.com/docs/stable/aql/functions-numeric.html#rand.
      *
      * @return FunctionExpression
      */

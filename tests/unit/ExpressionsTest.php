@@ -4,19 +4,19 @@ use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses
  */
 class ExpressionsTest extends TestCase
 {
     /**
-     * list expression returns proper json formatted list
+     * list expression returns proper json formatted list.
      * @test
      */
     public function ListExpression()
     {
-        $expression = new ListExpression([1,2,'"You know nothing John Snow"']);
+        $expression = new ListExpression([1, 2, '"You know nothing John Snow"']);
         self::assertEquals('[1,2,"You know nothing John Snow"]', (string) $expression);
 
         $expression = new ListExpression(['"users/john"', '"users/amy"']);
@@ -24,7 +24,7 @@ class ExpressionsTest extends TestCase
     }
 
     /**
-     * string expression returns proper json encoded string
+     * string expression returns proper json encoded string.
      * @test
      */
     public function StringExpression()

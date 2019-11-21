@@ -1,10 +1,11 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * Query expression
+ * Query expression.
  */
 class QueryExpression extends Expression implements ExpressionInterface
 {
@@ -22,6 +23,7 @@ class QueryExpression extends Expression implements ExpressionInterface
     public function compile()
     {
         $this->expression = $this->expression->compile();
+
         return $this->expression;
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class AggregateClause extends Clause

@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class WithCountClause extends Clause
@@ -12,6 +13,6 @@ class WithCountClause extends Clause
 
     public function compile()
     {
-        return "WITH COUNT INTO ".$this->countVariableName;
+        return 'WITH COUNT INTO '.$this->countVariableName;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
@@ -6,7 +7,6 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 /**
  * Geo AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-geo.html
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasGeoFunctions
 {

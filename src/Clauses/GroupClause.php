@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class GroupClause extends Clause
@@ -18,6 +19,7 @@ class GroupClause extends Clause
         if (isset($this->projectionExpression)) {
             $output .= ' = '.$this->projectionExpression;
         }
+
         return $output;
     }
 }

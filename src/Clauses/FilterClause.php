@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
@@ -24,6 +25,7 @@ class FilterClause extends Clause
     public function compile()
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
+
         return 'FILTER '.rtrim($compiledPredicates);
     }
 

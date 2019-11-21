@@ -3,14 +3,14 @@
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\API\hasQueryClauses.php
  */
 class GraphClausesTest extends TestCase
 {
     /**
-     * 'with' statement syntax
+     * 'with' statement syntax.
      * @test
      */
     public function _with_statement_syntax()
@@ -20,7 +20,7 @@ class GraphClausesTest extends TestCase
     }
 
     /**
-     * traverse clause
+     * traverse clause.
      * @test
      */
     public function traverse_clause()
@@ -30,7 +30,7 @@ class GraphClausesTest extends TestCase
     }
 
     /**
-     * shortest_path clause
+     * shortest_path clause.
      * @test
      */
     public function shortest_path()
@@ -43,7 +43,7 @@ class GraphClausesTest extends TestCase
     }
 
     /**
-     * k shortest path clause
+     * k shortest path clause.
      * @test
      */
     public function k_shortest_path()
@@ -56,7 +56,7 @@ class GraphClausesTest extends TestCase
     }
 
     /**
-     * graph clause
+     * graph clause.
      * @test
      */
     public function graph_clause()
@@ -66,7 +66,7 @@ class GraphClausesTest extends TestCase
     }
 
     /**
-     * Edge Collection list clause
+     * Edge Collection list clause.
      * @test
      */
     public function edge_collection_list_clause()
@@ -86,9 +86,9 @@ class GraphClausesTest extends TestCase
         $result = AQB::edgeCollections(['ChildOf', ['KilledBy', 'ANY'], 'SucceededBy'])->get();
         self::assertEquals('ChildOf, ANY KilledBy, SucceededBy', $result->query);
     }
-    
+
     /**
-     * Prune clause syntax
+     * Prune clause syntax.
      * @test
      */
     public function prune_clause_syntax()

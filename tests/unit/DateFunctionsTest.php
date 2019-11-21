@@ -1,6 +1,5 @@
 <?php
 
-use LaravelFreelancerNL\FluentAQL\Exceptions\NotEmptyException as NotEmptyException;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 

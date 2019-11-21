@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class ReturnClause extends Clause
@@ -16,10 +17,11 @@ class ReturnClause extends Clause
 
     public function compile()
     {
-        $output = "RETURN";
+        $output = 'RETURN';
         if ($this->distinct) {
-            $output .= " DISTINCT";
+            $output .= ' DISTINCT';
         }
+
         return $output.' '.$this->expression;
     }
 }

@@ -1,11 +1,12 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL;
 
-use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
-use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
-use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
+use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
+use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
@@ -21,29 +22,27 @@ use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
  * Fluent ArangoDB AQL Query Builder.
  * Creates and compiles AQL queries. Returns all data necessary to run the query,
  * including bindings and a list of used read/write collections.
- *
- * @package LaravelFreelancerNL\FluentAQL
  */
 class QueryBuilder
 {
     use hasQueryClauses, hasStatementClauses, hasGraphClauses, hasFunctions;
 
     /**
-     * The AQL query
-     * @var $query
+     * The AQL query.
+     * @var
      */
     public $query;
 
     /**
-     * Bindings for $query
-     * @var $binds
+     * Bindings for $query.
+     * @var
      */
     public $binds = [];
 
     /**
-     * List of read/write/exclusive collections required for transactions
+     * List of read/write/exclusive collections required for transactions.
      *
-     * @var array $collections
+     * @var array
      */
     public $collections;
 
@@ -55,19 +54,19 @@ class QueryBuilder
     protected $grammar;
 
     /**
-      * List of commands to be compiled into a query
-      */
+     * List of commands to be compiled into a query.
+     */
     protected $commands = [];
 
     /**
-     * Registry of variable names used in this query
+     * Registry of variable names used in this query.
      */
     protected $variables = [];
 
     /**
      * ID of the query
      * Used as prefix for automatically generated bindings.
-     * @var int $bindPrefix
+     * @var int
      */
     protected $queryId = 1;
 
@@ -77,10 +76,7 @@ class QueryBuilder
      */
     protected $queryCount = 1;
 
-
     protected $isSubQuery = false;
-
-
 
     public function __construct($queryId = 1)
     {
@@ -97,6 +93,7 @@ class QueryBuilder
         if (is_null($argument) && isset($allowedExpressionTypes['null'])) {
             return new NullExpression();
         }
+
         return $this->normalizeCompound($argument, $allowedExpressionTypes);
     }
 
@@ -122,6 +119,7 @@ class QueryBuilder
         }
 
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
+
         return new $expressionClass($argument);
     }
 
@@ -133,6 +131,7 @@ class QueryBuilder
         if (! is_iterable($argument)) {
             return $this->normalizeObject($argument, $allowedExpressionTypes);
         }
+
         return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
     }
 
@@ -146,6 +145,7 @@ class QueryBuilder
         foreach ($argument as $attribute => $value) {
             $argument[$attribute] = $this->normalizeArgument($value);
         }
+
         return $argument;
     }
 
@@ -156,6 +156,7 @@ class QueryBuilder
             if ($direction) {
                 $sortExpression[] = $direction;
             }
+
             return $sortExpression;
         }
         if (is_array($sortExpression) && ! empty($sortExpression)) {
@@ -163,6 +164,7 @@ class QueryBuilder
             if (isset($sortExpression[1]) && ! $this->grammar->isSortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
+
             return $sortExpression;
         }
 
@@ -173,6 +175,7 @@ class QueryBuilder
     {
         if (is_string($edgeCollection)) {
             $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
+
             return $edgeCollection;
         }
         if (is_array($edgeCollection) && ! empty($edgeCollection)) {
@@ -180,6 +183,7 @@ class QueryBuilder
             if (isset($edgeCollection[1]) && ! $this->grammar->isDirection($edgeCollection[1])) {
                 unset($edgeCollection[1]);
             }
+
             return $edgeCollection;
         }
 
@@ -215,10 +219,10 @@ class QueryBuilder
             $comparisonOperator = $predicate[1];
         }
         if (isset($predicate[2])) {
-            $value  = $predicate[2];
+            $value = $predicate[2];
         }
         if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
-            $logicalOperator  = $predicate[3];
+            $logicalOperator = $predicate[3];
         }
 
         // if $rightOperand is empty and $logicalOperator is not a valid operate, then the operation defaults to '=='
@@ -239,7 +243,7 @@ class QueryBuilder
     }
 
     /**
-     * Return the first matching expression type for the argument from the allowed types
+     * Return the first matching expression type for the argument from the allowed types.
      *
      * @param string|iterable $argument
      * @param $allowedExpressionTypes
@@ -288,7 +292,7 @@ class QueryBuilder
     }
 
     /**
-     * Add an AQL command (raw AQL and clauses
+     * Add an AQL command (raw AQL and clauses.
      *
      * @param Clause|QueryBuilder $clause
      */
@@ -307,7 +311,7 @@ class QueryBuilder
     }
 
     /**
-     * Get the last or a specific command
+     * Get the last or a specific command.
      * @param int|null $index
      * @return mixed
      */
@@ -316,11 +320,12 @@ class QueryBuilder
         if ($index === null) {
             return end($this->commands);
         }
+
         return $this->commands[$index];
     }
 
     /**
-     * Remove the last or a specified command
+     * Remove the last or a specified command.
      *
      * @param null $index
      * @return bool
@@ -332,13 +337,15 @@ class QueryBuilder
         }
         if (isset($this->commands[$index])) {
             unset($this->commands[$index]);
+
             return true;
         }
+
         return false;
     }
 
     /**
-     * Clear all commands
+     * Clear all commands.
      */
     public function clearCommands()
     {
@@ -350,7 +357,7 @@ class QueryBuilder
      * @param string $mode
      * @return QueryBuilder
      */
-    public function registerCollections($collections, $mode = 'write') : QueryBuilder
+    public function registerCollections($collections, $mode = 'write') : self
     {
         if (! is_array($collections)) {
             $collections = [$collections];
@@ -367,7 +374,7 @@ class QueryBuilder
      * @param string $variableName
      * @return QueryBuilder
      */
-    protected function registerVariable(string $variableName) : QueryBuilder
+    protected function registerVariable(string $variableName) : self
     {
         $this->variables[$variableName] = $variableName;
 
@@ -377,10 +384,10 @@ class QueryBuilder
     public function bind($data, $to = null, $collection = false) : BindExpression
     {
         if ($to == null) {
-            $to  = $this->queryId.'_'.(count($this->binds)+1);
+            $to = $this->queryId.'_'.(count($this->binds) + 1);
         } else {
-            if (!$this->grammar->validateBindParameterSyntax($to)) {
-                throw new BindException("Invalid bind parameter.");
+            if (! $this->grammar->validateBindParameterSyntax($to)) {
+                throw new BindException('Invalid bind parameter.');
             }
         }
         $this->binds[$to] = $data;
@@ -395,15 +402,15 @@ class QueryBuilder
      *
      * @return mixed
      */
-    public function compile() : QueryBuilder
+    public function compile() : self
     {
         $this->query = '';
 
         foreach ($this->commands as $command) {
             $result = $command->compile();
-            $this->query .=  ' '.$result;
+            $this->query .= ' '.$result;
 
-            if ($command instanceof QueryBuilder) {
+            if ($command instanceof self) {
                 // Extract binds
                 $this->binds = array_unique(array_merge($this->binds, $command->binds));
 
@@ -460,6 +467,7 @@ class QueryBuilder
         if ($this->grammar->isAssociativeArray($argument)) {
             return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
         }
+
         return new ListExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
     }
 
@@ -477,6 +485,7 @@ class QueryBuilder
             //Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
             return $argument;
         }
-        return new ObjectExpression($this->normalizeIterable((array)$argument, $allowedExpressionTypes));
+
+        return new ObjectExpression($this->normalizeIterable((array) $argument, $allowedExpressionTypes));
     }
 }

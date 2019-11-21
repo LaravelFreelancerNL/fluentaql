@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL;
 
 /*
@@ -46,7 +47,7 @@ class Grammar
         'NONE >' => 1,
         'NONE <=' => 1,
         'NONE >=' => 1,
-        'NONE IN' => 1
+        'NONE IN' => 1,
     ];
 
     protected $arithmeticOperators = [
@@ -54,7 +55,7 @@ class Grammar
         '-' => 1,
         '*' => 1,
         '/' => 1,
-        '%' => 1
+        '%' => 1,
     ];
 
     protected $logicalOperators = [
@@ -63,7 +64,7 @@ class Grammar
         'OR' => 1,
         '||' => 1,
         'NOT' => 1,
-        '!' => 1
+        '!' => 1,
     ];
 
     protected $rangeOperator = '..';
@@ -118,7 +119,7 @@ class Grammar
         'VariableAttribute' => 'VariableAttribute',
         'Id' => 'Id',
         'Key' => 'Key',
-        'Bind' => 'Bind'
+        'Bind' => 'Bind',
     ];
 
     /**
@@ -153,6 +154,7 @@ class Grammar
         if (is_object($value)) {
             return true;
         }
+
         return false;
     }
 
@@ -165,6 +167,7 @@ class Grammar
         if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -174,9 +177,8 @@ class Grammar
      */
     public function isBoolean($value) : bool
     {
-        return (is_bool($value) || $value === 'true' ||  $value === 'false');
+        return is_bool($value) || $value === 'true' || $value === 'false';
     }
-
 
     /**
      * @param $value
@@ -184,7 +186,7 @@ class Grammar
      */
     public function isNull($value) : bool
     {
-        return ($value === null || $value == 'null');
+        return $value === null || $value == 'null';
     }
 
     /**
@@ -195,7 +197,7 @@ class Grammar
     {
         return is_numeric($value) && ! is_string($value);
     }
-    
+
     /**
      * @param $value
      * @return bool
@@ -235,6 +237,7 @@ class Grammar
         if (preg_match('/asc|desc/i', $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -243,6 +246,7 @@ class Grammar
         if (preg_match('/outbound|inbound|any/i', $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -255,6 +259,7 @@ class Grammar
         if (is_string($value) && preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -268,6 +273,7 @@ class Grammar
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -276,6 +282,7 @@ class Grammar
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -288,6 +295,7 @@ class Grammar
         if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
             return true;
         }
+
         return false;
     }
 
@@ -295,7 +303,6 @@ class Grammar
     {
         return isset($registeredVariables[$value]);
     }
-
 
     /**
      * @param $value
@@ -306,9 +313,9 @@ class Grammar
         if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
             return true;
         }
+
         return false;
     }
-
 
     /**
      * @param mixed $value
@@ -328,9 +335,9 @@ class Grammar
         ) {
             return true;
         }
+
         return false;
     }
-
 
     /**
      * @param $value
@@ -341,6 +348,7 @@ class Grammar
         if (is_object($value) || (is_array($value) && $this->isAssociativeArray($value))) {
             return true;
         }
+
         return false;
     }
 
@@ -349,11 +357,12 @@ class Grammar
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
             return true;
         }
+
         return false;
     }
 
     /**
-     * Check if the array is associative
+     * Check if the array is associative.
      *
      * @param array $array
      * @return bool
@@ -363,11 +372,12 @@ class Grammar
         if (empty($array)) {
             return true;
         }
-        return !ctype_digit(implode('', array_keys($array)));
+
+        return ! ctype_digit(implode('', array_keys($array)));
     }
 
     /**
-     * Check if the array is numeric
+     * Check if the array is numeric.
      *
      * @param array $array
      * @return bool
@@ -377,6 +387,7 @@ class Grammar
         if (empty($array)) {
             return true;
         }
+
         return ctype_digit(implode('', array_keys($array)));
     }
 
@@ -390,6 +401,7 @@ class Grammar
         if ($collection) {
             $prefix = '@@';
         }
+
         return $prefix.$bindVariableName;
     }
 

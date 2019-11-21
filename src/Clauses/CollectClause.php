@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
@@ -20,6 +21,7 @@ class CollectClause extends Clause
         if (isset($this->variableName) && isset($this->expression)) {
             $output .= ' '.$this->variableName.' = '.$this->expression;
         }
+
         return $output;
     }
 }

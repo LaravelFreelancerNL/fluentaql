@@ -1,13 +1,14 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 /**
- * AQL literal expression
+ * AQL literal expression.
  */
 class LiteralExpression extends Expression implements ExpressionInterface
 {
     /**
-     * Compile expression output
+     * Compile expression output.
      *
      * @return string
      */
