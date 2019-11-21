@@ -15,7 +15,7 @@ class SortClause extends Clause
 
     public function compile()
     {
-        $sortBy = implode(', ', array_map(function($expression) {
+        $sortBy = implode(', ', array_map(function ($expression) {
             return implode(' ', $expression);
         }, $this->by));
 
