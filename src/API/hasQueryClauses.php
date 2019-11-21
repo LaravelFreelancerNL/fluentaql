@@ -1,15 +1,16 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\CollectClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GroupClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\KeepClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SearchClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SortClause;
@@ -19,12 +20,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 /**
  * Trait hasQueryClauses
  * API calls to add clause commands to the builder.
- *
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasQueryClauses
 {
-
     /**
      * Use with extreme caution, as no safety checks are done at all!
      * You HAVE TO prepare user input yourself or be open to injection attacks.
@@ -61,9 +59,8 @@ trait hasQueryClauses
         return $this;
     }
 
-
     /**
-     * Create a for clause
+     * Create a for clause.
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
      * @param string|array $variableName
@@ -141,7 +138,7 @@ trait hasQueryClauses
     }
 
     /**
-     * Collect clause
+     * Collect clause.
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
      * @param string|null $variableName
@@ -164,7 +161,7 @@ trait hasQueryClauses
 
     /**
      * Group clause:
-     * Creates the INTO clause of a collect clause
+     * Creates the INTO clause of a collect clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#grouping-syntaxes
      * @param $groupsVariable
@@ -225,7 +222,7 @@ trait hasQueryClauses
 
     /**
      * Aggregate clause
-     * Creates the INTO clause of a collect clause
+     * Creates the INTO clause of a collect clause.
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#aggregation
      *
      * @param $variableName
@@ -245,7 +242,7 @@ trait hasQueryClauses
     }
 
     /**
-     * Sort documents to return
+     * Sort documents to return.
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      * @param null $sortBy
      * @param null $direction
@@ -273,7 +270,7 @@ trait hasQueryClauses
     }
 
     /**
-     * Limit results
+     * Limit results.
      * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
      *
      * @param int $offsetOrCount
@@ -292,7 +289,7 @@ trait hasQueryClauses
     }
 
     /**
-     * Return data
+     * Return data.
      * @link https://www.arangodb.com/docs/stable/aql/operations-return.html
      *
      * @param $expression

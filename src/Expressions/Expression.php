@@ -1,16 +1,14 @@
 <?php
-namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 abstract class Expression
 {
-
-    /** @var mixed*/
+    /** @var mixed */
     protected $expression;
 
     /**
-     * Create an expression
+     * Create an expression.
      *
      * @param mixed $expression
      */
@@ -20,7 +18,7 @@ abstract class Expression
     }
 
     /**
-     * Compile expression output
+     * Compile expression output.
      *
      * @return string
      */
@@ -30,7 +28,7 @@ abstract class Expression
     }
 
     /**
-     * Get expression
+     * Get expression.
      *
      * @return string
      */

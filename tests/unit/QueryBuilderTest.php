@@ -5,15 +5,14 @@ use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\QueryBuilder
  */
 class QueryBuilderTest extends TestCase
 {
-
     /**
-     * facade
+     * facade.
      * @test
      */
     public function facade()
@@ -23,9 +22,8 @@ class QueryBuilderTest extends TestCase
         self::assertInstanceOf(QueryBuilder::class, $aqb);
     }
 
-
     /**
-     * get
+     * get.
      * @test
      */
     public function get()
@@ -35,9 +33,8 @@ class QueryBuilderTest extends TestCase
         self::assertInstanceOf(QueryBuilder::class, $result);
     }
 
-
     /**
-     * clear commands
+     * clear commands.
      * @test
      */
     public function clear_commands()
@@ -50,7 +47,7 @@ class QueryBuilderTest extends TestCase
     }
 
     /**
-     * toAql
+     * toAql.
      * @test
      */
     public function to_aql()
@@ -60,7 +57,7 @@ class QueryBuilderTest extends TestCase
     }
 
     /**
-     * bind
+     * bind.
      * @test
      */
     public function bind()
@@ -80,14 +77,14 @@ class QueryBuilderTest extends TestCase
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
         self::assertEquals('@1_1', (string) $bind);
-        
+
         self::arrayHasKey('1_1');
         self::assertIsString($qb->binds['1_1']);
         self::assertEquals(121, strlen($qb->binds['1_1']));
     }
 
     /**
-     * register collection
+     * register collection.
      * @test
      */
     public function register_collections()

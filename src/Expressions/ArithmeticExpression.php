@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 class ArithmeticExpression extends PredicateExpression implements ExpressionInterface
@@ -13,7 +14,7 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
     protected $operator = '';
 
     /**
-     * Create predicate expression
+     * Create predicate expression.
      *
      * @param string $leftOperand
      * @param string $rightOperand

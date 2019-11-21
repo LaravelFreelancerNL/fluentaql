@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\InsertClause;
@@ -12,8 +13,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 /**
  * Trait hasStatementClauses
  * API calls to add data modification commands to the builder.
- *
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasStatementClauses
 {
@@ -38,7 +37,7 @@ trait hasStatementClauses
     }
 
     /**
-     * Insert a document in a collection
+     * Insert a document in a collection.
      * @link https://www.arangodb.com/docs/stable/aql/operations-insert.html
      *
      * @param $document
@@ -58,7 +57,7 @@ trait hasStatementClauses
     }
 
     /**
-     * Update a document in a collection with the supplied data
+     * Update a document in a collection with the supplied data.
      * @link https://www.arangodb.com/docs/stable/aql/operations-update.html
      *
      * @param $document
@@ -79,7 +78,7 @@ trait hasStatementClauses
     }
 
     /**
-     * Replace a document in a collection with the supplied data
+     * Replace a document in a collection with the supplied data.
      * @link https://www.arangodb.com/docs/stable/aql/operations-replace.html
      *
      * @param $document
@@ -124,7 +123,7 @@ trait hasStatementClauses
     }
 
     /**
-     * Remove a document from a collection
+     * Remove a document from a collection.
      * @link https://www.arangodb.com/docs/stable/aql/operations-remove.html
      *
      * @param mixed $document

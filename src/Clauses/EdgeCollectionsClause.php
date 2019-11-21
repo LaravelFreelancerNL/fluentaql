@@ -1,10 +1,10 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class EdgeCollectionsClause extends Clause
 {
     protected $edgeCollections;
-
 
     public function __construct(array $edgeCollections)
     {
@@ -20,6 +20,7 @@ class EdgeCollectionsClause extends Clause
             if (isset($expression[1])) {
                 $output = $expression[1].' ';
             }
+
             return $output.$expression[0];
         }, $this->edgeCollections));
     }

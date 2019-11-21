@@ -1,8 +1,9 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 /**
- * List expression
+ * List expression.
  */
 class ListExpression extends Expression implements ExpressionInterface
 {

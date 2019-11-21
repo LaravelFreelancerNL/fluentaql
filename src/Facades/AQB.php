@@ -1,18 +1,19 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Facades;
 
 use LaravelFreelancerNL\FluentAQL\API\hasArrayFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasDateFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasGeoFunctions;
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
-use LaravelFreelancerNL\FluentAQL\API\hasNumericFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasMiscellaneousFunctions;
+use LaravelFreelancerNL\FluentAQL\API\hasNumericFunctions;
 use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * Facade for a more fluent access to the ArangoDB Query Builder
+ * Facade for a more fluent access to the ArangoDB Query Builder.
  *
  * Query Builder commands:
  * @method static QueryBuilder get()
@@ -89,7 +90,6 @@ use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
  */
 class AQB
 {
-
     /**
      * The object instances.
      *

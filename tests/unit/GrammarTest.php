@@ -1,21 +1,15 @@
 <?php
 
-use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
-use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\RangeExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\Grammar;
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Grammar
  */
 class GrammarTest extends TestCase
 {
-
     /**
      * All of the available predicate operators.
      *
@@ -23,17 +17,13 @@ class GrammarTest extends TestCase
      */
     protected $grammar;
 
-    /**
-     *
-     */
     public function setUp() : void
     {
         $this->grammar = new Grammar();
     }
 
-
     /**
-     * is range
+     * is range.
      * @test
      */
     public function is_range()
@@ -61,7 +51,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * validate collection name syntax
+     * validate collection name syntax.
      * @test
      */
     public function is_collection()
@@ -98,7 +88,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is key
+     * is key.
      * @test
      */
     public function is_key()
@@ -120,7 +110,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is id
+     * is id.
      * @test
      */
     public function is_id()
@@ -145,7 +135,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is legal variable name
+     * is legal variable name.
      * @test
      */
     public function validate_variable_name_syntax()
@@ -185,7 +175,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is attribute
+     * is attribute.
      * @test
      */
     public function is_attribute()
@@ -261,7 +251,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is variableAttribute
+     * is variableAttribute.
      * @test
      */
     public function is_variable_attribute()
@@ -284,9 +274,8 @@ class GrammarTest extends TestCase
         self::assertTrue($result);
     }
 
-
     /**
-     * is document
+     * is document.
      * @test
      */
     public function is_document()
@@ -297,7 +286,7 @@ class GrammarTest extends TestCase
         self::assertTrue($result);
 
         $associativeArray = [
-            'attribute1' => 'test'
+            'attribute1' => 'test',
         ];
         $result = $this->grammar->isObject($associativeArray);
         self::assertTrue($result);
@@ -308,7 +297,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is list
+     * is list.
      * @test
      */
     public function is_list()
@@ -324,7 +313,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is_number
+     * is_number.
      * @test
      */
     public function is_numeric()
@@ -340,7 +329,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * formatBind
+     * formatBind.
      * @test
      */
     public function format_bind()
@@ -356,7 +345,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * validateBindParameterSyntax
+     * validateBindParameterSyntax.
      * @test
      */
     public function validate_bind_parameter_syntax()
@@ -375,7 +364,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is sort direction
+     * is sort direction.
      * @test
      */
     public function is_sort_direction()
@@ -391,7 +380,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is graph direction
+     * is graph direction.
      * @test
      */
     public function is_graph_direction()
@@ -410,7 +399,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is function
+     * is function.
      * @test
      */
     public function is_function()
@@ -420,7 +409,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is logical operator
+     * is logical operator.
      * @test
      */
     public function is_logical_operator()
@@ -436,7 +425,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is array associative or numeric
+     * is array associative or numeric.
      * @test
      */
     public function is_array_associative()
@@ -444,18 +433,18 @@ class GrammarTest extends TestCase
         $emptyArray = [];
         $numericArray = [
             0 => 'Varys',
-            "1" => 'Petyr Baelish',
-            '2' => 'The Onion Knight'
+            '1' => 'Petyr Baelish',
+            '2' => 'The Onion Knight',
         ];
         $associativeArray = [
             'name' => 'Drogon',
             'race' => 'dragon',
-            'color' => 'black'
+            'color' => 'black',
         ];
         $mixedArray = [
-            "name" => 'Varys',
-            "01" => 'Eunuch',
-            "employer" => 'The Realm'
+            'name' => 'Varys',
+            '01' => 'Eunuch',
+            'employer' => 'The Realm',
         ];
 
         $result = $this->grammar->isAssociativeArray($emptyArray);
@@ -472,7 +461,7 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is array numeric
+     * is array numeric.
      * @test
      */
     public function is_array_associative_or_numeric()
@@ -480,18 +469,18 @@ class GrammarTest extends TestCase
         $emptyArray = [];
         $numericArray = [
             0 => 'Varys',
-            "1" => 'Petyr Baelish',
-            '2' => 'The Onion Knight'
+            '1' => 'Petyr Baelish',
+            '2' => 'The Onion Knight',
         ];
         $associativeArray = [
             'name' => 'Drogon',
             'race' => 'dragon',
-            'color' => 'black'
+            'color' => 'black',
         ];
         $mixedArray = [
-            "name" => 'Varys',
-            "01" => 'Eunuch',
-            "employer" => 'The Realm'
+            'name' => 'Varys',
+            '01' => 'Eunuch',
+            'employer' => 'The Realm',
         ];
 
         $result = $this->grammar->isIndexedArray($emptyArray);

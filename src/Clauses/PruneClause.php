@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class PruneClause extends FilterClause
@@ -10,6 +11,7 @@ class PruneClause extends FilterClause
     public function compile()
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
+
         return 'PRUNE '.rtrim($compiledPredicates);
     }
 }
