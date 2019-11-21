@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class GraphClause extends Clause
@@ -12,6 +13,6 @@ class GraphClause extends Clause
 
     public function compile()
     {
-        return "GRAPH ".$this->graphName;
+        return 'GRAPH '.$this->graphName;
     }
 }

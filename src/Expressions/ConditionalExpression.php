@@ -1,7 +1,6 @@
 <?php
-namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 class ConditionalExpression extends Expression implements ExpressionInterface
 {
@@ -9,7 +8,7 @@ class ConditionalExpression extends Expression implements ExpressionInterface
     protected $parameters = [];
 
     /**
-     * Create conditional expression
+     * Create conditional expression.
      *
      * @param Expression $if
      * @param Expression $then

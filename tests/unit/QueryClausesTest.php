@@ -3,14 +3,14 @@
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\API\hasQueryClauses.php
  */
 class QueryClausesTest extends TestCase
 {
     /**
-     * raw AQL
+     * raw AQL.
      * @test
      */
     public function raw_aql()
@@ -22,9 +22,9 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-    * collect clause
-    * @test
-    */
+     * collect clause.
+     * @test
+     */
     public function collect_clause()
     {
         $result = AQB::collect()->get();
@@ -38,7 +38,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * group clause
+     * group clause.
      * @test
      */
     public function group_clause()
@@ -57,7 +57,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * aggregate clause
+     * aggregate clause.
      * @test
      */
     public function aggregate_clause()
@@ -67,7 +67,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * keep clause
+     * keep clause.
      * @test
      */
     public function keep_clause()
@@ -77,7 +77,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * count clause
+     * count clause.
      * @test
      */
     public function count_clause()
@@ -87,7 +87,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * options clause
+     * options clause.
      * @test
      */
     public function options_clause()
@@ -97,13 +97,13 @@ class QueryClausesTest extends TestCase
         $result = AQB::options($options)->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
 
-        $options =['method' => 'sorted'];
+        $options = ['method' => 'sorted'];
         $result = AQB::options($options)->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
     }
 
     /**
-     * 'for' clause syntax
+     * 'for' clause syntax.
      * @test
      */
     public function for_clause_syntax()
@@ -119,7 +119,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * filter clause syntax
+     * filter clause syntax.
      * @test
      */
     public function filter_clause_syntax()
@@ -141,7 +141,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * filters can use logical operators other than equals
+     * filters can use logical operators other than equals.
      * @test
      */
     public function filtering_on_null_values_can_use_all_logical_operators()
@@ -160,7 +160,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * filters are seperated by comparison operators
+     * filters are seperated by comparison operators.
      * @test
      */
     public function filters_are_separated_by_comparison_operators()
@@ -168,14 +168,14 @@ class QueryClausesTest extends TestCase
         $filter = [
             ['doc.attribute1', '!=', 'null', 'OR'],
             ['doc.attribute2', '!=', 'null', 'OR'],
-            ['doc.attribute3', '!=', 'null', 'OR']
+            ['doc.attribute3', '!=', 'null', 'OR'],
         ];
         $result = AQB::for('doc', 'documents')->filter($filter)->get();
         self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
     }
 
     /**
-     * filters are seperated by comparison operators
+     * filters are seperated by comparison operators.
      * @test
      */
     public function filters_with_case_insensitive_logical_operators()
@@ -183,15 +183,14 @@ class QueryClausesTest extends TestCase
         $filter = [
             ['doc.attribute1', '!=', 'null', 'or'],
             ['doc.attribute2', '!=', 'null', 'Or'],
-            ['doc.attribute3', '!=', 'null', 'OR']
+            ['doc.attribute3', '!=', 'null', 'OR'],
         ];
         $result = AQB::for('doc', 'documents')->filter($filter)->get();
         self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
     }
 
-
     /**
-     * Search clause syntax
+     * Search clause syntax.
      * @test
      */
     public function search_clause_syntax()
@@ -212,40 +211,39 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
     }
 
-
     /**
-     * sort clause syntax
+     * sort clause syntax.
      * @test
      */
     public function sort_clause_syntax()
     {
-        $result  = AQB::for('u', 'Users')->sort('u.name', 'DESC')->get();
+        $result = AQB::for('u', 'Users')->sort('u.name', 'DESC')->get();
         self::assertEquals('FOR u IN Users SORT u.name DESC', $result->query);
 
-        $result  = AQB::sort('null')->get();
+        $result = AQB::sort('null')->get();
         self::assertEquals('SORT null', $result->query);
 
-        $result  = AQB::sort()->get();
+        $result = AQB::sort()->get();
         self::assertEquals('SORT null', $result->query);
 
-        $result  = AQB::for('u', 'Users')->sort(['u.name'])->get();
+        $result = AQB::for('u', 'Users')->sort(['u.name'])->get();
         self::assertEquals('FOR u IN Users SORT u.name', $result->query);
 
-        $result  = AQB::for('u', 'Users')->sort(['u.name', 'u.age'])->get();
+        $result = AQB::for('u', 'Users')->sort(['u.name', 'u.age'])->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age', $result->query);
 
-        $result  = AQB::for('u', 'Users')->sort([['u.age', 'DESC']])->get();
+        $result = AQB::for('u', 'Users')->sort([['u.age', 'DESC']])->get();
         self::assertEquals('FOR u IN Users SORT u.age DESC', $result->query);
 
-        $result  = AQB::for('u', 'Users')->sort(['u.name', ['u.age', 'DESC']])->get();
+        $result = AQB::for('u', 'Users')->sort(['u.name', ['u.age', 'DESC']])->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age DESC', $result->query);
 
-        $result  = AQB::for('u', 'Users')->sort(['u.name', 'DESC'])->get();
+        $result = AQB::for('u', 'Users')->sort(['u.name', 'DESC'])->get();
         self::assertNotEquals('FOR u IN Users SORT u.name DESC', $result->query);
     }
 
     /**
-     * limit clause syntax
+     * limit clause syntax.
      * @test
      */
     public function limit_clause_syntax()
@@ -258,7 +256,7 @@ class QueryClausesTest extends TestCase
     }
 
     /**
-     * 'return' clause Syntax
+     * 'return' clause Syntax.
      * @test
      */
     public function return_clause_syntax()
@@ -269,10 +267,10 @@ class QueryClausesTest extends TestCase
         $result = AQB::for('u', 'Users')->return('u.name')->get();
         self::assertEquals('FOR u IN Users RETURN u.name', $result->query);
 
-        $result = AQB::return("1 + 1")->get();
+        $result = AQB::return('1 + 1')->get();
         self::assertEquals('RETURN @1_1', $result->query);
 
-        $result = AQB::return("1 + 1", true)->get();
+        $result = AQB::return('1 + 1', true)->get();
         self::assertEquals('RETURN DISTINCT @1_1', $result->query);
     }
 }

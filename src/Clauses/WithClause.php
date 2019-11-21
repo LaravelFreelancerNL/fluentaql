@@ -1,6 +1,5 @@
 <?php
 
-
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class WithClause extends Clause

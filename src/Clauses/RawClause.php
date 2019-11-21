@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class RawClause extends Clause
@@ -17,7 +18,7 @@ class RawClause extends Clause
     }
 
     /**
-     * Generate output
+     * Generate output.
      * @return string
      */
     public function compile()

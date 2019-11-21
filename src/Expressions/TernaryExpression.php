@@ -1,7 +1,6 @@
 <?php
-namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 class TernaryExpression extends Expression implements ExpressionInterface
 {
@@ -15,7 +14,7 @@ class TernaryExpression extends Expression implements ExpressionInterface
     protected $else = '';
 
     /**
-     * Create predicate expression
+     * Create predicate expression.
      *
      * @param string $if
      * @param string $then
@@ -24,12 +23,12 @@ class TernaryExpression extends Expression implements ExpressionInterface
     public function __construct($if, $then, $else = null)
     {
         $this->if = $if;
-        $this->then= $then;
+        $this->then = $then;
         $this->else = $else;
     }
 
     /**
-     * Compile predicate string
+     * Compile predicate string.
      *
      * @return string
      */

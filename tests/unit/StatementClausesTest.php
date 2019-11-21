@@ -4,14 +4,14 @@ use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\API\hasStatementClauses.php
  */
 class StatementClausesTest extends TestCase
 {
     /**
-     * Let statement
+     * Let statement.
      * @test
      */
     public function let_statement()
@@ -44,7 +44,7 @@ class StatementClausesTest extends TestCase
     }
 
     /**
-     * insert
+     * insert.
      * @test
      */
     public function insert()
@@ -64,7 +64,7 @@ class StatementClausesTest extends TestCase
     }
 
     /**
-     * Update
+     * Update.
      * @test
      */
     public function update()
@@ -74,7 +74,7 @@ class StatementClausesTest extends TestCase
     }
 
     /**
-     * replace
+     * replace.
      * @test
      */
     public function replace()
@@ -84,7 +84,7 @@ class StatementClausesTest extends TestCase
     }
 
     /**
-     * remove
+     * remove.
      * @test
      */
     public function remove()
@@ -100,7 +100,7 @@ class StatementClausesTest extends TestCase
     }
 
     /**
-     * Upsert
+     * Upsert.
      * @test
      */
     public function upsert()

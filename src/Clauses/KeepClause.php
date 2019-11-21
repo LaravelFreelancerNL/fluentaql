@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class KeepClause extends Clause
@@ -12,6 +13,6 @@ class KeepClause extends Clause
 
     public function compile()
     {
-        return "KEEP ".$this->keepVariable;
+        return 'KEEP '.$this->keepVariable;
     }
 }

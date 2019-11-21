@@ -1,23 +1,21 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-
 /**
- * AQL literal expression
+ * AQL literal expression.
  */
 class FunctionExpression extends Expression implements ExpressionInterface
 {
-
     /**
-     * name of the function
+     * name of the function.
      *
      * @string $functionName
      */
     protected $functionName;
 
     /**
-     * @var Expression[] $parameters
+     * @var Expression[]
      */
     protected $parameters = [];
 
@@ -43,14 +41,15 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        $output =  strtoupper($this->functionName).'(';
+        $output = strtoupper($this->functionName).'(';
         $implosion = '';
         foreach ($this->parameters as $parameter) {
-            $implosion .= ', '. (string) $parameter;
-        };
+            $implosion .= ', '.(string) $parameter;
+        }
         if ($implosion != '') {
             $output .= ltrim($implosion, ', ');
         }
+
         return $output.')';
     }
 }

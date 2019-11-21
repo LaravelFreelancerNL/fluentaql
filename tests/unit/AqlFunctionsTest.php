@@ -4,14 +4,14 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 
 /**
- * Class StructureTest
+ * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses
  */
 class AqlFunctionsTest extends TestCase
 {
     /**
-     * document function
+     * document function.
      * @test
      */
     public function document_function()

@@ -1,14 +1,13 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 /**
- * Trait hasFunctions
+ * Trait hasFunctions.
  *
  * AQL Function API calls.
- *
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasFunctions
 {

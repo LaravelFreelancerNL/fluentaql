@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 class OptionsClause extends Clause
@@ -12,6 +13,6 @@ class OptionsClause extends Clause
 
     public function compile()
     {
-        return "OPTIONS ".$this->options;
+        return 'OPTIONS '.$this->options;
     }
 }

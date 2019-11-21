@@ -1,12 +1,11 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 /**
- * Class Clause
+ * Class Clause.
  *
  * Data & formatting objects for AQL clauses.
- *
- * @package LaravelFreelancerNL\FluentAQL\Clauses
  */
 abstract class Clause
 {

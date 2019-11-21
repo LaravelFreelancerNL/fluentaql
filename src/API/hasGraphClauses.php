@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
@@ -11,15 +12,12 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 /**
  * Trait hasGraphClauses
  * API calls to add clause commands to the builder.
- *
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasGraphClauses
 {
-
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
-     * This is required in clusters
+     * This is required in clusters.
      * @link https://www.arangodb.com/docs/stable/aql/operations-with.html
      *
      * @return QueryBuilder
@@ -57,14 +55,13 @@ trait hasGraphClauses
             $toVertex = $this->normalizeArgument($toVertex, 'Id');
         }
 
-
         $this->addCommand(new TraverseClause($fromVertex, $inDirection, $toVertex, $kShortestPaths));
 
         return $this;
     }
 
     /**
-     * Shortest path alias for traverse
+     * Shortest path alias for traverse.
      * @link arangodb.com/docs/stable/aql/graphs-shortest-path.html
      *
      * @param $fromVertex
@@ -80,7 +77,7 @@ trait hasGraphClauses
     }
 
     /**
-     * K Shortest Paths alias for traverse
+     * K Shortest Paths alias for traverse.
      * @link https://www.arangodb.com/docs/stable/aql/graphs-kshortest-paths.html
      *
      * @param $fromVertex
@@ -97,7 +94,7 @@ trait hasGraphClauses
 
     /**
      * Named Graph clause
-     * Only usable after traverse/shortestPath/kShortestPaths clauses
+     * Only usable after traverse/shortestPath/kShortestPaths clauses.
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string $graphName
@@ -115,7 +112,7 @@ trait hasGraphClauses
     /**
      * EdgeCollections Clause for unnamed graphs
      * Generates a list of edge collections to traverse through.
-     * Only usable after traverse/shortestPath/kShortestPaths clauses
+     * Only usable after traverse/shortestPath/kShortestPaths clauses.
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string|array $edgeCollection
@@ -137,7 +134,6 @@ trait hasGraphClauses
                 return $this->normalizeEdgeCollections($expression);
             }, $edgeCollection);
         }
-
 
         $this->addCommand(new EdgeCollectionsClause($collections));
 

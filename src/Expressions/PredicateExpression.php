@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
 class PredicateExpression extends Expression implements ExpressionInterface
@@ -16,7 +17,7 @@ class PredicateExpression extends Expression implements ExpressionInterface
     public $logicalOperator;
 
     /**
-     * Create predicate expression
+     * Create predicate expression.
      *
      * @param ExpressionInterface $leftOperand
      * @param string $comparisonOperator
@@ -32,7 +33,7 @@ class PredicateExpression extends Expression implements ExpressionInterface
     }
 
     /**
-     * Compile predicate string
+     * Compile predicate string.
      *
      * @return string
      */

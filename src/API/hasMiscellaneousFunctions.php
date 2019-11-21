@@ -1,19 +1,18 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\API;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 
 /**
- * Trait hasFunctions
+ * Trait hasFunctions.
  *
  * Miscellaneous AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html
- * @package LaravelFreelancerNL\FluentAQL\API
  */
 trait hasMiscellaneousFunctions
 {
-
     /**
      * Return one or more specific documents from a collection.
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
