@@ -130,7 +130,7 @@ trait hasGraphClauses
 
         if (is_array($edgeCollection)) {
             //Wandel door de array
-            $collections = array_map(function($expression) {
+            $collections = array_map(function ($expression) {
                 return $this->normalizeEdgeCollections($expression);
             }, $edgeCollection);
         }
