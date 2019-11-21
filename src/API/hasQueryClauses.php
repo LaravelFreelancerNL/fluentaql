@@ -102,7 +102,7 @@ trait hasQueryClauses
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
         }
 
         $predicates = $this->normalizePredicates($attribute);
@@ -127,7 +127,7 @@ trait hasQueryClauses
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value,  $logicalOperator]];
+            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
         }
 
         $predicates = $this->normalizePredicates($attribute);
