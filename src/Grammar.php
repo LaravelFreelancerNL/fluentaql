@@ -132,12 +132,12 @@ class Grammar
         return 'Y-m-d\TH:i:s.v\Z';
     }
 
-    public function wrap($value) : string
+    public function wrap($value): string
     {
         return '`'.addcslashes($value, '`').'`';
     }
 
-    public function mapArgumentTypeToExpressionType($argumentType) : string
+    public function mapArgumentTypeToExpressionType($argumentType): string
     {
         return $this->argumentTypeExpressionMap[$argumentType];
     }
@@ -162,7 +162,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isRange($value) : bool
+    public function isRange($value): bool
     {
         if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {
             return true;
@@ -175,7 +175,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isBoolean($value) : bool
+    public function isBoolean($value): bool
     {
         return is_bool($value) || $value === 'true' || $value === 'false';
     }
@@ -184,7 +184,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isNull($value) : bool
+    public function isNull($value): bool
     {
         return $value === null || $value == 'null';
     }
@@ -193,7 +193,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isNumber($value) : bool
+    public function isNumber($value): bool
     {
         return is_numeric($value) && ! is_string($value);
     }
@@ -202,37 +202,37 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isList($value) : bool
+    public function isList($value): bool
     {
         return is_array($value) && $this->isIndexedArray($value);
     }
 
-    public function isQuery($value) : bool
+    public function isQuery($value): bool
     {
         return $value instanceof QueryBuilder;
     }
 
-    public function isFunction($value) : bool
+    public function isFunction($value): bool
     {
         return $value instanceof FunctionExpression;
     }
 
-    public function isLogicalOperator($operator) : bool
+    public function isLogicalOperator($operator): bool
     {
         return isset($this->logicalOperators[strtoupper($operator)]);
     }
 
-    public function isComparisonOperator($operator) : bool
+    public function isComparisonOperator($operator): bool
     {
         return isset($this->comparisonOperators[strtoupper($operator)]);
     }
 
-    public function isArithmeticOperators($operator) : bool
+    public function isArithmeticOperators($operator): bool
     {
         return isset($this->arithmeticOperators[$operator]);
     }
 
-    public function isSortDirection($value) : bool
+    public function isSortDirection($value): bool
     {
         if (preg_match('/asc|desc/i', $value)) {
             return true;
@@ -241,7 +241,7 @@ class Grammar
         return false;
     }
 
-    public function isDirection($value) : bool
+    public function isDirection($value): bool
     {
         if (preg_match('/outbound|inbound|any/i', $value)) {
             return true;
@@ -254,7 +254,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isCollection($value) : bool
+    public function isCollection($value): bool
     {
         if (is_string($value) && preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
             return true;
@@ -263,12 +263,12 @@ class Grammar
         return false;
     }
 
-    public function isGraph($value) : bool
+    public function isGraph($value): bool
     {
         return $this->isCollection($value);
     }
 
-    public function isKey($value) : bool
+    public function isKey($value): bool
     {
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
@@ -277,7 +277,7 @@ class Grammar
         return false;
     }
 
-    public function isId($value) : bool
+    public function isId($value): bool
     {
         if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
             return true;
@@ -299,7 +299,7 @@ class Grammar
         return false;
     }
 
-    public function isRegisteredVariable($value, $registeredVariables = []) : bool
+    public function isRegisteredVariable($value, $registeredVariables = []): bool
     {
         return isset($registeredVariables[$value]);
     }
@@ -308,7 +308,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isAttribute($value) : bool
+    public function isAttribute($value): bool
     {
         if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
             return true;
@@ -322,7 +322,7 @@ class Grammar
      * @param array $registeredVariables
      * @return bool
      */
-    public function isVariableAttribute($value, $registeredVariables = []) : bool
+    public function isVariableAttribute($value, $registeredVariables = []): bool
     {
         if (empty($registeredVariables)) {
             return false;
@@ -343,7 +343,7 @@ class Grammar
      * @param $value
      * @return bool
      */
-    public function isObject($value) : bool
+    public function isObject($value): bool
     {
         if (is_object($value) || (is_array($value) && $this->isAssociativeArray($value))) {
             return true;
@@ -352,7 +352,7 @@ class Grammar
         return false;
     }
 
-    public function validateBindParameterSyntax($bindParameter) : bool
+    public function validateBindParameterSyntax($bindParameter): bool
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
             return true;

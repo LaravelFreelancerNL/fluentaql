@@ -44,7 +44,7 @@ trait hasStatementClauses
      * @param string $collection
      * @return QueryBuilder
      */
-    public function insert($document, string $collection) : QueryBuilder
+    public function insert($document, string $collection): QueryBuilder
     {
         $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Object', 'Bind']);
 
@@ -65,7 +65,7 @@ trait hasStatementClauses
      * @param $collection
      * @return QueryBuilder
      */
-    public function update($document, $with, $collection) : QueryBuilder
+    public function update($document, $with, $collection): QueryBuilder
     {
         $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
         $with = $this->normalizeArgument($with, ['Object', 'Bind']);
@@ -86,7 +86,7 @@ trait hasStatementClauses
      * @param $collection
      * @return QueryBuilder
      */
-    public function replace($document, $with, string $collection) : QueryBuilder
+    public function replace($document, $with, string $collection): QueryBuilder
     {
         $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
         $with = $this->normalizeArgument($with, ['Object', 'Bind']);
@@ -109,7 +109,7 @@ trait hasStatementClauses
      * @param bool $replace
      * @return QueryBuilder
      */
-    public function upsert($search, $insert, $with, string $collection, bool $replace = false) : QueryBuilder
+    public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
     {
         $search = $this->normalizeArgument($search, ['RegisteredVariable', 'Key', 'Bind']);
         $insert = $this->normalizeArgument($insert, ['RegisteredVariable', 'Key', 'Bind']);
@@ -130,7 +130,7 @@ trait hasStatementClauses
      * @param string $collection
      * @return QueryBuilder
      */
-    public function remove($document, string $collection) : QueryBuilder
+    public function remove($document, string $collection): QueryBuilder
     {
         $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
         $this->registerCollections($collection);

@@ -22,7 +22,7 @@ trait hasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function with() : QueryBuilder
+    public function with(): QueryBuilder
     {
         $collections = func_get_args();
         foreach ($collections as $key => $collection) {
@@ -46,7 +46,7 @@ trait hasGraphClauses
      * @param bool $kShortestPaths
      * @return QueryBuilder
      */
-    public function traverse($fromVertex, $inDirection = 'outbound', $toVertex = null, $kShortestPaths = false) : QueryBuilder
+    public function traverse($fromVertex, $inDirection = 'outbound', $toVertex = null, $kShortestPaths = false): QueryBuilder
     {
         $fromVertex = $this->normalizeArgument($fromVertex, 'Id');
         $inDirection = $this->normalizeArgument($inDirection, 'Direction');
@@ -69,7 +69,7 @@ trait hasGraphClauses
      * @param string $toVertex
      * @return QueryBuilder
      */
-    public function shortestPath($fromVertex, $inDirection, $toVertex) : QueryBuilder
+    public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
         $this->traverse($fromVertex, $inDirection, $toVertex);
 
@@ -85,7 +85,7 @@ trait hasGraphClauses
      * @param string $toVertex
      * @return QueryBuilder
      */
-    public function kShortestPaths($fromVertex, $inDirection, $toVertex) : QueryBuilder
+    public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
         $this->traverse($fromVertex, $inDirection, $toVertex, true);
 
@@ -100,7 +100,7 @@ trait hasGraphClauses
      * @param string $graphName
      * @return QueryBuilder
      */
-    public function graph(string $graphName) : QueryBuilder
+    public function graph(string $graphName): QueryBuilder
     {
         $graphName = $this->normalizeArgument($graphName, 'Graph');
 
@@ -119,7 +119,7 @@ trait hasGraphClauses
      * @param string|null $direction
      * @return QueryBuilder
      */
-    public function edgeCollections($edgeCollection) : QueryBuilder
+    public function edgeCollections($edgeCollection): QueryBuilder
     {
         $collections = [];
 
@@ -150,7 +150,7 @@ trait hasGraphClauses
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function prune($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND') : QueryBuilder
+    public function prune($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
