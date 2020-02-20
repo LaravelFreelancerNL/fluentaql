@@ -90,7 +90,8 @@ class QueryBuilder
         if (is_scalar($argument)) {
             return $this->normalizeScalar($argument, $allowedExpressionTypes);
         }
-        if (is_null($argument) && isset($allowedExpressionTypes['null'])) {
+
+        if (is_null($argument)) {
             return new NullExpression();
         }
 

@@ -111,4 +111,18 @@ class StatementClausesTest extends TestCase
         $result = AQB::upsert('{ name: "superuser" }', '{ name: "superuser", logins: 1, dateCreated: DATE_NOW() }', '{ logins: OLD.logins + 1 }', 'users', true)->get();
         self::assertEquals('UPSERT @1_1 INSERT @1_2 REPLACE @1_3 IN users', $result->query);
     }
+
+    /**
+     * Update.
+     * @test
+     */
+    public function updateMaintainsNullValue()
+    {
+        $data = new stdClass();
+        $data->name['first_name'] = null;
+        $data->name['last_name'] = null;
+        $result = AQB::for('u', 'users')->update('u', $data, 'users')->get();
+        self::assertEquals('FOR u IN users UPDATE u WITH {"name":{"first_name":null,"last_name":null}} IN users', $result->query);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
+use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 
 /**
  * Class StructureTest.
