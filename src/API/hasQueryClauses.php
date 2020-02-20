@@ -32,7 +32,7 @@ trait hasQueryClauses
      * @param array|null $collections
      * @return QueryBuilder
      */
-    public function raw(string $aql, $binds = null, $collections = null) : QueryBuilder
+    public function raw(string $aql, $binds = null, $collections = null): QueryBuilder
     {
         if (is_array($binds)) {
             foreach ($binds as $key => $value) {
@@ -50,7 +50,7 @@ trait hasQueryClauses
         return $this;
     }
 
-    public function options($options) : QueryBuilder
+    public function options($options): QueryBuilder
     {
         $options = $this->normalizeArgument($options, 'Object');
 
@@ -67,7 +67,7 @@ trait hasQueryClauses
      * @param mixed $in
      * @return QueryBuilder
      */
-    public function for($variableName, $in = null) : QueryBuilder
+    public function for($variableName, $in = null): QueryBuilder
     {
         if (! is_array($variableName)) {
             $variableName = [$variableName];
@@ -98,7 +98,7 @@ trait hasQueryClauses
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function filter($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND') : QueryBuilder
+    public function filter($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
@@ -123,7 +123,7 @@ trait hasQueryClauses
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function search($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND') : QueryBuilder
+    public function search($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
     {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
@@ -145,7 +145,7 @@ trait hasQueryClauses
      * @param null $expression
      * @return QueryBuilder
      */
-    public function collect($variableName = null, $expression = null) : QueryBuilder
+    public function collect($variableName = null, $expression = null): QueryBuilder
     {
         if (isset($variableName)) {
             $variableName = $this->normalizeArgument($variableName, 'Variable');
@@ -168,7 +168,7 @@ trait hasQueryClauses
      * @param null $projectionExpression
      * @return QueryBuilder
      */
-    public function group($groupsVariable, $projectionExpression = null) : QueryBuilder
+    public function group($groupsVariable, $projectionExpression = null): QueryBuilder
     {
         $groupsVariable = $this->normalizeArgument($groupsVariable, 'Variable');
         $this->registerVariable($groupsVariable);
@@ -190,7 +190,7 @@ trait hasQueryClauses
      * @param $keepVariable
      * @return QueryBuilder
      */
-    public function keep($keepVariable) : QueryBuilder
+    public function keep($keepVariable): QueryBuilder
     {
         $keepVariable = $this->normalizeArgument($keepVariable, 'Variable');
         $this->registerVariable($keepVariable);
@@ -210,7 +210,7 @@ trait hasQueryClauses
      * @param $countVariableName
      * @return QueryBuilder
      */
-    public function withCount($countVariableName) : QueryBuilder
+    public function withCount($countVariableName): QueryBuilder
     {
         $countVariableName = $this->normalizeArgument($countVariableName, 'Variable');
         $this->registerVariable($countVariableName);
@@ -229,7 +229,7 @@ trait hasQueryClauses
      * @param $aggregateExpression
      * @return QueryBuilder
      */
-    public function aggregate($variableName, $aggregateExpression) : QueryBuilder
+    public function aggregate($variableName, $aggregateExpression): QueryBuilder
     {
         $variableName = $this->normalizeArgument($variableName, 'Variable');
         $this->registerVariable($variableName);
@@ -248,7 +248,7 @@ trait hasQueryClauses
      * @param null $direction
      * @return QueryBuilder
      */
-    public function sort($sortBy = null, $direction = null) : QueryBuilder
+    public function sort($sortBy = null, $direction = null): QueryBuilder
     {
         $sortExpressions = [];
 
@@ -296,7 +296,7 @@ trait hasQueryClauses
      * @param bool $distinct
      * @return QueryBuilder
      */
-    public function return($expression, $distinct = false) : QueryBuilder
+    public function return($expression, $distinct = false): QueryBuilder
     {
         $expression = $this->normalizeArgument($expression, ['Boolean', 'Object', 'List', 'Function', 'Variable', 'VariableAttribute', 'Query', 'Bind']);
 

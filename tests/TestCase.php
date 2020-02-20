@@ -7,7 +7,7 @@ abstract class TestCase extends PhpUnitTestCase
 {
     protected $aqb;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         $this->aqb = new QueryBuilder();
     }

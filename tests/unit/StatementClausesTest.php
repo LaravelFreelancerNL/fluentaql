@@ -124,5 +124,4 @@ class StatementClausesTest extends TestCase
         $result = AQB::for('u', 'users')->update('u', $data, 'users')->get();
         self::assertEquals('FOR u IN users UPDATE u WITH {"name":{"first_name":null,"last_name":null}} IN users', $result->query);
     }
-
 }

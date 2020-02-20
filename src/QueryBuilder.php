@@ -150,7 +150,7 @@ class QueryBuilder
         return $argument;
     }
 
-    protected function normalizeSortExpression($sortExpression = null, $direction = null) : array
+    protected function normalizeSortExpression($sortExpression = null, $direction = null): array
     {
         if (is_string($sortExpression)) {
             $sortExpression = [$sortExpression];
@@ -172,7 +172,7 @@ class QueryBuilder
         return ['null'];
     }
 
-    protected function normalizeEdgeCollections($edgeCollection) : array
+    protected function normalizeEdgeCollections($edgeCollection): array
     {
         if (is_string($edgeCollection)) {
             $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
@@ -195,7 +195,7 @@ class QueryBuilder
      * @param array $predicates
      * @return array
      */
-    protected function normalizePredicates($predicates) : array
+    protected function normalizePredicates($predicates): array
     {
         $normalizedPredicates = [];
         foreach ($predicates as $predicate) {
@@ -331,7 +331,7 @@ class QueryBuilder
      * @param null $index
      * @return bool
      */
-    public function removeCommand($index = null) : bool
+    public function removeCommand($index = null): bool
     {
         if ($index === null) {
             return (array_pop($this->commands)) ? true : false;
@@ -358,7 +358,7 @@ class QueryBuilder
      * @param string $mode
      * @return QueryBuilder
      */
-    public function registerCollections($collections, $mode = 'write') : self
+    public function registerCollections($collections, $mode = 'write'): self
     {
         if (! is_array($collections)) {
             $collections = [$collections];
@@ -375,14 +375,14 @@ class QueryBuilder
      * @param string $variableName
      * @return QueryBuilder
      */
-    protected function registerVariable(string $variableName) : self
+    protected function registerVariable(string $variableName): self
     {
         $this->variables[$variableName] = $variableName;
 
         return $this;
     }
 
-    public function bind($data, $to = null, $collection = false) : BindExpression
+    public function bind($data, $to = null, $collection = false): BindExpression
     {
         if ($to == null) {
             $to = $this->queryId.'_'.(count($this->binds) + 1);
@@ -403,7 +403,7 @@ class QueryBuilder
      *
      * @return mixed
      */
-    public function compile() : self
+    public function compile(): self
     {
         $this->query = '';
 
