@@ -151,7 +151,7 @@ trait hasQueryClauses
             $variableName = $this->normalizeArgument($variableName, 'Variable');
         }
         if (isset($expression)) {
-            $expression = $this->normalizeArgument($expression, ['VariableAttribute', 'Function', 'Query', 'Bind']);
+            $expression = $this->normalizeArgument($expression, ['Reference', 'Function', 'Query', 'Bind']);
         }
 
         $this->addCommand(new CollectClause($variableName, $expression));
@@ -174,7 +174,7 @@ trait hasQueryClauses
         $this->registerVariable($groupsVariable);
 
         if (isset($projectionExpression)) {
-            $projectionExpression = $this->normalizeArgument($projectionExpression, ['VariableAttribute', 'Object', 'Function', 'Query', 'Bind']);
+            $projectionExpression = $this->normalizeArgument($projectionExpression, ['Reference', 'Object', 'Function', 'Query', 'Bind']);
         }
 
         $this->addCommand(new GroupClause($groupsVariable, $projectionExpression));
@@ -234,7 +234,7 @@ trait hasQueryClauses
         $variableName = $this->normalizeArgument($variableName, 'Variable');
         $this->registerVariable($variableName);
 
-        $aggregateExpression = $this->normalizeArgument($aggregateExpression, ['VariableAttribute', 'Function', 'Query', 'Bind']);
+        $aggregateExpression = $this->normalizeArgument($aggregateExpression, ['Reference', 'Function', 'Query', 'Bind']);
 
         $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
@@ -298,7 +298,7 @@ trait hasQueryClauses
      */
     public function return($expression, $distinct = false): QueryBuilder
     {
-        $expression = $this->normalizeArgument($expression, ['Boolean', 'Object', 'List', 'Function', 'Variable', 'VariableAttribute', 'Query', 'Bind']);
+        $expression = $this->normalizeArgument($expression, ['Boolean', 'Object', 'List', 'Function', 'Variable', 'Reference', 'Query', 'Bind']);
 
         $this->addCommand(new ReturnClause($expression, $distinct));
 

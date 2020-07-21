@@ -21,7 +21,7 @@ trait hasNumericFunctions
      */
     public function average($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('AVERAGE', $arguments);
     }
@@ -40,7 +40,7 @@ trait hasNumericFunctions
      */
     public function max($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MAX', $arguments);
     }
@@ -54,7 +54,7 @@ trait hasNumericFunctions
      */
     public function min($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MIN', $arguments);
     }
@@ -79,7 +79,7 @@ trait hasNumericFunctions
      */
     public function sum($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('SUM', $arguments);
     }

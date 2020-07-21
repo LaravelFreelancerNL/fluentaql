@@ -101,7 +101,7 @@ class Grammar
         'Null' => 'Literal',
         'RegisteredVariable' => 'Literal',
         'Variable' => 'Literal',
-        'VariableAttribute' => 'Literal',
+        'Reference' => 'Literal',
         'Object' => 'Object',
         'Range' => 'Literal',
         'String' => 'Bind',
@@ -116,7 +116,7 @@ class Grammar
         'Number' => 'Number',
         'Boolean' => 'Boolean',
         'Null' => 'Null',
-        'VariableAttribute' => 'VariableAttribute',
+        'Reference' => 'Reference',
         'Id' => 'Id',
         'Key' => 'Key',
         'Bind' => 'Bind',
@@ -322,16 +322,16 @@ class Grammar
      * @param array $registeredVariables
      * @return bool
      */
-    public function isVariableAttribute($value, $registeredVariables = []): bool
+    public function isReference($value, $registeredVariables = []): bool
     {
-        if (empty($registeredVariables)) {
-            return false;
+        $variables = '';
+        if (! empty($registeredVariables)) {
+            $variables = implode('|', $registeredVariables).'|';
         }
-        $variables = implode('|', $registeredVariables);
 
         if (
             is_string($value)
-            && preg_match('/^('.$variables.'|NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+            && preg_match('/^('.$variables.'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
         ) {
             return true;
         }

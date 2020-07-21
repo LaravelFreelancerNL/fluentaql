@@ -24,7 +24,7 @@ trait hasArrayFunctions
      */
     public function countDistinct($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('COUNT_DISTINCT', $arguments);
     }
@@ -38,7 +38,7 @@ trait hasArrayFunctions
      */
     public function first($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('FIRST', $arguments);
     }
@@ -52,7 +52,7 @@ trait hasArrayFunctions
      */
     public function last($value)
     {
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'VariableAttribute']);
+        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('LAST', $arguments);
     }

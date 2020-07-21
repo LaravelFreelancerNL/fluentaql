@@ -161,7 +161,7 @@ class QueryBuilder
             return $sortExpression;
         }
         if (is_array($sortExpression) && ! empty($sortExpression)) {
-            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'VariableAttribute');
+            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'Reference');
             if (isset($sortExpression[1]) && ! $this->grammar->isSortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
@@ -235,7 +235,7 @@ class QueryBuilder
             $comparisonOperator = '==';
         }
 
-        $attribute = $this->normalizeArgument($attribute, ['VariableAttribute']);
+        $attribute = $this->normalizeArgument($attribute, ['Reference']);
         $value = $this->normalizeArgument($value);
 
         $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
@@ -262,16 +262,12 @@ class QueryBuilder
 
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
             $check = 'is'.$allowedExpressionType;
-            if ($allowedExpressionType == 'VariableAttribute') {
+            if ($allowedExpressionType == 'Reference' || $allowedExpressionType == 'RegisteredVariable') {
                 if ($this->grammar->$check($argument, $this->variables)) {
                     return $allowedExpressionType;
                 }
             }
-            if ($allowedExpressionType == 'RegisteredVariable') {
-                if ($this->grammar->$check($argument, $this->variables)) {
-                    return $allowedExpressionType;
-                }
-            }
+
             if ($this->grammar->$check($argument)) {
                 return $allowedExpressionType;
             }

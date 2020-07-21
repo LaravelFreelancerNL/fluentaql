@@ -22,10 +22,10 @@ trait hasGeoFunctions
      */
     public function distance($latitude1, $longitude1, $latitude2, $longitude2)
     {
-        $latitude1 = $this->normalizeArgument($latitude1, ['Number', 'VariableAttribute']);
-        $longitude1 = $this->normalizeArgument($longitude1, ['Number', 'VariableAttribute']);
-        $latitude2 = $this->normalizeArgument($latitude2, ['Number', 'VariableAttribute']);
-        $longitude2 = $this->normalizeArgument($longitude2, ['Number', 'VariableAttribute']);
+        $latitude1 = $this->normalizeArgument($latitude1, ['Number', 'Reference']);
+        $longitude1 = $this->normalizeArgument($longitude1, ['Number', 'Reference']);
+        $latitude2 = $this->normalizeArgument($latitude2, ['Number', 'Reference']);
+        $longitude2 = $this->normalizeArgument($longitude2, ['Number', 'Reference']);
 
         return new FunctionExpression('DISTANCE', [$latitude1, $longitude1, $latitude2, $longitude2]);
     }

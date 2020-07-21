@@ -251,26 +251,29 @@ class GrammarTest extends TestCase
     }
 
     /**
-     * is variableAttribute.
+     * is reference.
      * @test
      */
-    public function is_variable_attribute()
+    public function is_reference()
     {
         $registeredVariables = ['doc', 'u'];
 
-        $result = $this->grammar->isVariableAttribute('doc[name]', $registeredVariables);
+        $result = $this->grammar->isReference('doc[name]', $registeredVariables);
         self::assertTrue($result);
 
-        $result = $this->grammar->isVariableAttribute('u.[*]', $registeredVariables);
+        $result = $this->grammar->isReference('u.[*]', $registeredVariables);
         self::assertTrue($result);
 
-        $result = $this->grammar->isVariableAttribute('smurf[name]', $registeredVariables);
+        $result = $this->grammar->isReference('smurf[name]', $registeredVariables);
         self::assertFalse($result);
 
-        $result = $this->grammar->isVariableAttribute('NEW[name]', $registeredVariables);
+        $result = $this->grammar->isReference('u[name]', $registeredVariables);
         self::assertTrue($result);
 
-        $result = $this->grammar->isVariableAttribute('OLD.attribute', $registeredVariables);
+        $result = $this->grammar->isReference('NEW._key', $registeredVariables);
+        self::assertTrue($result);
+
+        $result = $this->grammar->isReference('OLD.attribute', $registeredVariables);
         self::assertTrue($result);
     }
 

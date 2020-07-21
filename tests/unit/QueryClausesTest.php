@@ -261,6 +261,9 @@ class QueryClausesTest extends TestCase
      */
     public function return_clause_syntax()
     {
+        $result = AQB::return('NEW.key')->get();
+        self::assertEquals('RETURN NEW.key', $result->query);
+
         $result = AQB::return('u.name')->get();
         self::assertEquals('RETURN @1_1', $result->query);
 
