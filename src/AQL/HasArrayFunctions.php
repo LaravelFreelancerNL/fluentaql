@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Array AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-array.html
  */
-trait hasArrayFunctions
+trait HasArrayFunctions
 {
     public function count($value)
     {
@@ -24,6 +24,8 @@ trait hasArrayFunctions
      */
     public function countDistinct($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('COUNT_DISTINCT', $arguments);
@@ -38,6 +40,8 @@ trait hasArrayFunctions
      */
     public function first($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('FIRST', $arguments);
@@ -52,6 +56,8 @@ trait hasArrayFunctions
      */
     public function last($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('LAST', $arguments);
@@ -65,6 +71,8 @@ trait hasArrayFunctions
      */
     public function length($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value);
 
         return new FunctionExpression('LENGTH', $arguments);

@@ -1,23 +1,26 @@
 <?php
 
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
-use LaravelFreelancerNL\FluentAQL\Facades\AQB;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\API\hasGeoFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasGeoFunctions
  */
 class GeoFunctionsTest extends TestCase
 {
-    public function test_distance()
+    public function testDistance()
     {
-        $functionExpression = AQB::distance(52.5163, 13.3777, 50.9322, 6.94);
+        $functionExpression = (new QueryBuilder())->distance(52.5163, 13.3777, 50.9322, 6.94);
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('DISTANCE(52.5163, 13.3777, 50.9322, 6.94)', (string) $functionExpression);
     }
 
-    public function test_distance_by_reference()
+    public function testDistanceByReference()
     {
-        $qb = AQB::for('l', 'locations')->for('u', 'users');
+        $qb = (new QueryBuilder())->for('l', 'locations')->for('u', 'users');
         $functionExpression = $qb->distance('l.lat', 'l.lon', 'u.lat', 'u.lon');
         self::assertInstanceOf(FunctionExpression::class, $functionExpression);
         self::assertEquals('DISTANCE(l.lat, l.lon, u.lat, u.lon)', (string) $functionExpression);

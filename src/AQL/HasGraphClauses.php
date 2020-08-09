@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
@@ -13,7 +13,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  * Trait hasGraphClauses
  * API calls to add clause commands to the builder.
  */
-trait hasGraphClauses
+trait HasGraphClauses
 {
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
@@ -46,8 +46,12 @@ trait hasGraphClauses
      * @param bool $kShortestPaths
      * @return QueryBuilder
      */
-    public function traverse($fromVertex, $inDirection = 'outbound', $toVertex = null, $kShortestPaths = false): QueryBuilder
-    {
+    public function traverse(
+        $fromVertex,
+        $inDirection = 'outbound',
+        $toVertex = null,
+        $kShortestPaths = false
+    ): QueryBuilder {
         $fromVertex = $this->normalizeArgument($fromVertex, 'Id');
         $inDirection = $this->normalizeArgument($inDirection, 'Direction');
 

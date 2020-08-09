@@ -1,7 +1,10 @@
 <?php
 
-use LaravelFreelancerNL\FluentAQL\Facades\AQB;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
 use LaravelFreelancerNL\FluentAQL\Grammar;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
@@ -22,11 +25,7 @@ class GrammarTest extends TestCase
         $this->grammar = new Grammar();
     }
 
-    /**
-     * is range.
-     * @test
-     */
-    public function is_range()
+    public function testIsRange()
     {
         $result = $this->grammar->isRange('0..1');
         self::assertTrue($result);
@@ -50,11 +49,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * validate collection name syntax.
-     * @test
-     */
-    public function is_collection()
+    public function testIsCollection()
     {
         $result = $this->grammar->isCollection('col');
         self::assertTrue($result);
@@ -87,11 +82,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is key.
-     * @test
-     */
-    public function is_key()
+    public function testIsKey()
     {
         $result = $this->grammar->isKey('_key');
         self::assertTrue($result);
@@ -109,11 +100,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is id.
-     * @test
-     */
-    public function is_id()
+    public function testisId()
     {
         $result = $this->grammar->isId('Characters/BranStark');
         self::assertTrue($result);
@@ -134,11 +121,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is legal variable name.
-     * @test
-     */
-    public function validate_variable_name_syntax()
+    public function testValidateVariableNameSyntax()
     {
         $result = $this->grammar->isVariable('doc');
         self::assertTrue($result);
@@ -174,11 +157,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is attribute.
-     * @test
-     */
-    public function is_attribute()
+    public function testIsAttribute()
     {
         $result = $this->grammar->isAttribute('`_key`');
         self::assertTrue($result);
@@ -250,11 +229,7 @@ class GrammarTest extends TestCase
         self::assertTrue($result);
     }
 
-    /**
-     * is reference.
-     * @test
-     */
-    public function is_reference()
+    public function testIsReference()
     {
         $registeredVariables = ['doc', 'u'];
 
@@ -277,13 +252,9 @@ class GrammarTest extends TestCase
         self::assertTrue($result);
     }
 
-    /**
-     * is document.
-     * @test
-     */
-    public function is_document()
+    public function testIsDocument()
     {
-        $doc = new stdClass();
+        $doc = new \stdClass();
         $doc->attribute1 = 'test';
         $result = $this->grammar->isObject($doc);
         self::assertTrue($result);
@@ -299,11 +270,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is list.
-     * @test
-     */
-    public function is_list()
+    public function testIsList()
     {
         $result = $this->grammar->isList([1, 2, 3]);
         self::assertTrue($result);
@@ -315,11 +282,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is_number.
-     * @test
-     */
-    public function is_numeric()
+    public function testIsNumeric()
     {
         $result = $this->grammar->isNumber(4);
         self::assertTrue($result);
@@ -331,11 +294,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * formatBind.
-     * @test
-     */
-    public function format_bind()
+    public function testFormatBind()
     {
         $result = $this->grammar->formatBind('aBindName');
         self::assertEquals('@aBindName', $result);
@@ -347,11 +306,7 @@ class GrammarTest extends TestCase
         self::assertEquals('@@aCollection', $result);
     }
 
-    /**
-     * validateBindParameterSyntax.
-     * @test
-     */
-    public function validate_bind_parameter_syntax()
+    public function testValidateBindParameterSyntax()
     {
         $result = $this->grammar->validateBindParameterSyntax('aBindVariableName');
         self::assertTrue($result);
@@ -366,11 +321,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is sort direction.
-     * @test
-     */
-    public function is_sort_direction()
+    public function testIsSortDirection()
     {
         $result = $this->grammar->isSortDirection('asc');
         self::assertTrue($result);
@@ -382,11 +333,7 @@ class GrammarTest extends TestCase
         self::assertTrue($result);
     }
 
-    /**
-     * is graph direction.
-     * @test
-     */
-    public function is_graph_direction()
+    public function testIsGraphDirection()
     {
         $result = $this->grammar->isDirection('outbound');
         self::assertTrue($result);
@@ -401,21 +348,13 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is function.
-     * @test
-     */
-    public function is_function()
+    public function testIsFunction()
     {
-        $result = $this->grammar->isFunction(AQB::document('Characters/123'));
+        $result = $this->grammar->isFunction((new QueryBuilder())->document('Characters/123'));
         self::assertTrue($result);
     }
 
-    /**
-     * is logical operator.
-     * @test
-     */
-    public function is_logical_operator()
+    public function testIsLogicalOperator()
     {
         $result = $this->grammar->isLogicalOperator('AND');
         self::assertTrue($result);
@@ -427,11 +366,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is array associative or numeric.
-     * @test
-     */
-    public function is_array_associative()
+    public function testIsAssociativeArray()
     {
         $emptyArray = [];
         $numericArray = [
@@ -463,11 +398,7 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
     }
 
-    /**
-     * is array numeric.
-     * @test
-     */
-    public function is_array_associative_or_numeric()
+    public function testIsNumericArray()
     {
         $emptyArray = [];
         $numericArray = [

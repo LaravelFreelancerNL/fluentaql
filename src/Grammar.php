@@ -134,7 +134,7 @@ class Grammar
 
     public function wrap($value): string
     {
-        return '`'.addcslashes($value, '`').'`';
+        return '`' . addcslashes($value, '`') . '`';
     }
 
     public function mapArgumentTypeToExpressionType($argumentType): string
@@ -270,7 +270,13 @@ class Grammar
 
     public function isKey($value): bool
     {
-        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
+        if (
+            is_string($value) &&
+            preg_match(
+                "/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/",
+                $value
+            )
+        ) {
             return true;
         }
 
@@ -279,7 +285,13 @@ class Grammar
 
     public function isId($value): bool
     {
-        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
+        if (
+            is_string($value) &&
+            preg_match(
+                "/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/",
+                $value
+            )
+        ) {
             return true;
         }
 
@@ -310,7 +322,15 @@ class Grammar
      */
     public function isAttribute($value): bool
     {
-        if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
+        $pattern = '/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*'
+        . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
+        if (
+            is_string($value) &&
+            preg_match(
+                $pattern,
+                $value
+            )
+        ) {
             return true;
         }
 
@@ -326,12 +346,17 @@ class Grammar
     {
         $variables = '';
         if (! empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables).'|';
+            $variables = implode('|', $registeredVariables) . '|';
         }
 
         if (
             is_string($value)
-            && preg_match('/^('.$variables.'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+            && preg_match(
+                '/^('
+                . $variables
+                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/',
+                $value
+            )
         ) {
             return true;
         }
@@ -402,7 +427,7 @@ class Grammar
             $prefix = '@@';
         }
 
-        return $prefix.$bindVariableName;
+        return $prefix . $bindVariableName;
     }
 
     public function getAllowedExpressionTypes()

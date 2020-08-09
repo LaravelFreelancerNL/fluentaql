@@ -22,6 +22,6 @@ class ReturnClause extends Clause
             $output .= ' DISTINCT';
         }
 
-        return $output.' '.$this->expression;
+        return $output . ' ' . $this->expression;
     }
 }

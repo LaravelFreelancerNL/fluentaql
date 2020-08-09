@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -10,7 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Numeric AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html
  */
-trait hasNumericFunctions
+trait HasNumericFunctions
 {
     /**
      * Return the average (arithmetic mean) of the values in array.
@@ -21,6 +21,8 @@ trait hasNumericFunctions
      */
     public function average($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('AVERAGE', $arguments);
@@ -40,6 +42,8 @@ trait hasNumericFunctions
      */
     public function max($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MAX', $arguments);
@@ -54,6 +58,8 @@ trait hasNumericFunctions
      */
     public function min($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MIN', $arguments);
@@ -79,6 +85,8 @@ trait hasNumericFunctions
      */
     public function sum($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('SUM', $arguments);

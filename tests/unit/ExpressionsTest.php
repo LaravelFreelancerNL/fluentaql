@@ -1,7 +1,10 @@
 <?php
 
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
@@ -10,11 +13,8 @@ use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
  */
 class ExpressionsTest extends TestCase
 {
-    /**
-     * list expression returns proper json formatted list.
-     * @test
-     */
-    public function ListExpression()
+
+    public function testListExpression()
     {
         $expression = new ListExpression([1, 2, '"You know nothing John Snow"']);
         self::assertEquals('[1,2,"You know nothing John Snow"]', (string) $expression);
@@ -23,11 +23,7 @@ class ExpressionsTest extends TestCase
         self::assertEquals('["users/john","users/amy"]', (string) $expression);
     }
 
-    /**
-     * string expression returns proper json encoded string.
-     * @test
-     */
-    public function StringExpression()
+    public function testStringExpression()
     {
         $expression = new StringExpression('You know nothing John Snow');
         self::assertEquals('"You know nothing John Snow"', (string) $expression);

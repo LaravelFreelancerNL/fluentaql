@@ -1,8 +1,10 @@
 <?php
 
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
-use LaravelFreelancerNL\FluentAQL\Facades\AQB;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
@@ -11,56 +13,37 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 class QueryBuilderTest extends TestCase
 {
-    /**
-     * facade.
-     * @test
-     */
-    public function facade()
+
+    public function testFacade()
     {
-        $aqb = AQB::get();
+        $aqb = (new QueryBuilder())->get();
 
         self::assertInstanceOf(QueryBuilder::class, $aqb);
     }
 
-    /**
-     * get.
-     * @test
-     */
-    public function get()
+    public function testGet()
     {
-        $result = AQB::get();
+        $result = (new QueryBuilder())->get();
 
         self::assertInstanceOf(QueryBuilder::class, $result);
     }
 
-    /**
-     * clear commands.
-     * @test
-     */
-    public function clear_commands()
+    public function testClearCommands()
     {
-        $queryBuilder = AQB::for('u', 'users')->return('u');
+        $queryBuilder = (new QueryBuilder())->for('u', 'users')->return('u');
         self::assertCount(2, $queryBuilder->getCommands());
 
         $queryBuilder->clearCommands();
         self::assertCount(0, $queryBuilder->getCommands());
     }
 
-    /**
-     * toAql.
-     * @test
-     */
-    public function to_aql()
+    public function testToAql()
     {
-        $query = AQB::for('u', 'users')->return('u')->toAql();
+        $query = (new QueryBuilder())->for('u', 'users')->return('u')->toAql();
         self::assertEquals('FOR u IN users RETURN u', $query);
     }
 
-    /**
-     * bind.
-     * @test
-     */
-    public function bind()
+    public function testBind()
     {
         $qb = new QueryBuilder();
 
@@ -83,13 +66,9 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(121, strlen($qb->binds['1_1']));
     }
 
-    /**
-     * register collection.
-     * @test
-     */
-    public function register_collections()
+    public function testRegisterCollections()
     {
-        $qb = AQB::registerCollections('Characters');
+        $qb = (new QueryBuilder())->registerCollections('Characters');
         self::assertArrayHasKey('write', $qb->collections);
         self::assertContains('Characters', $qb->collections['write']);
 

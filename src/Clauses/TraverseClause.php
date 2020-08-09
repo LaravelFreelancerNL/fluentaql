@@ -11,8 +11,12 @@ class TraverseClause extends Clause
     protected $toVertex;
     protected $kShortestPaths = false;
 
-    public function __construct(StringExpression $startVertex, $direction = 'outbound', $toVertex = null, bool $kShortestPaths = false)
-    {
+    public function __construct(
+        StringExpression $startVertex,
+        $direction = 'outbound',
+        $toVertex = null,
+        bool $kShortestPaths = false
+    ) {
         $this->direction = $direction;
         $this->startVertex = $startVertex;
         $this->toVertex = $toVertex;
@@ -25,9 +29,9 @@ class TraverseClause extends Clause
         if (isset($this->toVertex)) {
             $output .= ($this->kShortestPaths) ? ' K_SHORTEST_PATHS' : ' SHORTEST_PATH';
         }
-        $output .= ' '.$this->startVertex;
+        $output .= ' ' . $this->startVertex;
         if (isset($this->toVertex)) {
-            $output .= ' TO '.$this->toVertex;
+            $output .= ' TO ' . $this->toVertex;
         }
 
         return $output;

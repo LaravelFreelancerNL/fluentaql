@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\CollectClause;
@@ -21,7 +21,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  * Trait hasQueryClauses
  * API calls to add clause commands to the builder.
  */
-trait hasQueryClauses
+trait HasQueryClauses
 {
     /**
      * Use with extreme caution, as no safety checks are done at all!
@@ -98,8 +98,12 @@ trait hasQueryClauses
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function filter($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
-    {
+    public function filter(
+        $attribute,
+        $comparisonOperator = '==',
+        $value = null,
+        $logicalOperator = 'AND'
+    ): QueryBuilder {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
             $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
@@ -123,8 +127,12 @@ trait hasQueryClauses
      * @param string $logicalOperator
      * @return QueryBuilder
      */
-    public function search($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
-    {
+    public function search(
+        $attribute,
+        $comparisonOperator = '==',
+        $value = null,
+        $logicalOperator = 'AND'
+    ): QueryBuilder {
         //create array of predicates if $leftOperand isn't an array already
         if (is_string($attribute)) {
             $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
@@ -174,7 +182,10 @@ trait hasQueryClauses
         $this->registerVariable($groupsVariable);
 
         if (isset($projectionExpression)) {
-            $projectionExpression = $this->normalizeArgument($projectionExpression, ['Reference', 'Object', 'Function', 'Query', 'Bind']);
+            $projectionExpression = $this->normalizeArgument(
+                $projectionExpression,
+                ['Reference', 'Object', 'Function', 'Query', 'Bind']
+            );
         }
 
         $this->addCommand(new GroupClause($groupsVariable, $projectionExpression));
@@ -234,7 +245,10 @@ trait hasQueryClauses
         $variableName = $this->normalizeArgument($variableName, 'Variable');
         $this->registerVariable($variableName);
 
-        $aggregateExpression = $this->normalizeArgument($aggregateExpression, ['Reference', 'Function', 'Query', 'Bind']);
+        $aggregateExpression = $this->normalizeArgument(
+            $aggregateExpression,
+            ['Reference', 'Function', 'Query', 'Bind']
+        );
 
         $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
@@ -298,7 +312,10 @@ trait hasQueryClauses
      */
     public function return($expression, $distinct = false): QueryBuilder
     {
-        $expression = $this->normalizeArgument($expression, ['Boolean', 'Object', 'List', 'Function', 'Variable', 'Reference', 'Query', 'Bind']);
+        $expression = $this->normalizeArgument(
+            $expression,
+            ['Boolean', 'Object', 'List', 'Function', 'Variable', 'Reference', 'Query', 'Bind']
+        );
 
         $this->addCommand(new ReturnClause($expression, $distinct));
 

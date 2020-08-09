@@ -30,9 +30,9 @@ class LimitClause extends Clause
     {
         $output = 'LIMIT ';
         if ($this->offset !== null) {
-            $output .= $this->offset.', ';
+            $output .= $this->offset . ', ';
         }
 
-        return $output.$this->count;
+        return $output . $this->count;
     }
 }

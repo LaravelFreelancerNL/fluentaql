@@ -1,111 +1,125 @@
 <?php
 
-use LaravelFreelancerNL\FluentAQL\Facades\AQB;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\API\hasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasQueryClauses.php
  */
 class GraphClausesTest extends TestCase
 {
-    /**
-     * 'with' statement syntax.
-     * @test
-     */
-    public function _with_statement_syntax()
+    public function testWithSstatementSyntax()
     {
-        $result = AQB::with('Characters', 'ChildOf', 'Locations', 'Traits')->get();
+        $result = (new QueryBuilder())
+            ->with('Characters', 'ChildOf', 'Locations', 'Traits')
+            ->get();
         self::assertEquals('WITH Characters, ChildOf, Locations, Traits', $result->query);
     }
 
-    /**
-     * traverse clause.
-     * @test
-     */
-    public function traverse_clause()
+    public function testTraverseClause()
     {
-        $result = AQB::traverse('Characters/BranStark', 'outbound')->get();
+        $result = (new QueryBuilder())
+            ->traverse('Characters/BranStark', 'outbound')
+            ->get();
         self::assertEquals('OUTBOUND "Characters/BranStark"', $result->query);
     }
 
-    /**
-     * shortest_path clause.
-     * @test
-     */
-    public function shortest_path()
+    public function testShortestPath()
     {
-        $result = AQB::traverse('Characters/BranStark', 'outbound', 'Characters/NedStark')->get();
+        $result = (new QueryBuilder())
+            ->traverse('Characters/BranStark', 'outbound', 'Characters/NedStark')
+            ->get();
         self::assertEquals('OUTBOUND SHORTEST_PATH "Characters/BranStark" TO "Characters/NedStark"', $result->query);
 
-        $result = AQB::shortestPath('Characters/BranStark', 'outbound', 'Characters/NedStark')->get();
+        $result = (new QueryBuilder())
+            ->shortestPath('Characters/BranStark', 'outbound', 'Characters/NedStark')
+            ->get();
         self::assertEquals('OUTBOUND SHORTEST_PATH "Characters/BranStark" TO "Characters/NedStark"', $result->query);
     }
 
-    /**
-     * k shortest path clause.
-     * @test
-     */
-    public function k_shortest_path()
+    public function testKShortestPath()
     {
-        $result = AQB::traverse('Characters/BranStark', 'outbound', 'Characters/NedStark', true)->get();
+        $result = (new QueryBuilder())
+            ->traverse('Characters/BranStark', 'outbound', 'Characters/NedStark', true)
+            ->get();
         self::assertEquals('OUTBOUND K_SHORTEST_PATHS "Characters/BranStark" TO "Characters/NedStark"', $result->query);
 
-        $result = AQB::kShortestPaths('Characters/BranStark', 'outbound', 'Characters/NedStark')->get();
+        $result = (new QueryBuilder())
+            ->kShortestPaths('Characters/BranStark', 'outbound', 'Characters/NedStark')
+            ->get();
         self::assertEquals('OUTBOUND K_SHORTEST_PATHS "Characters/BranStark" TO "Characters/NedStark"', $result->query);
     }
 
-    /**
-     * graph clause.
-     * @test
-     */
-    public function graph_clause()
+    public function testGraphClause()
     {
-        $result = AQB::graph('relations')->get();
+        $result = (new QueryBuilder())
+            ->graph('relations')
+            ->get();
         self::assertEquals('GRAPH "relations"', $result->query);
     }
 
-    /**
-     * Edge Collection list clause.
-     * @test
-     */
-    public function edge_collection_list_clause()
+    public function testEdgeCollectionListClause()
     {
-        $result = AQB::edgeCollections('ChildOf')->get();
+        $result = (new QueryBuilder())
+            ->edgeCollections('ChildOf')
+            ->get();
         self::assertEquals('ChildOf', $result->query);
 
-        $result = AQB::edgeCollections(['ChildOf'])->get();
+        $result = (new QueryBuilder())
+            ->edgeCollections(['ChildOf'])
+            ->get();
         self::assertEquals('ChildOf', $result->query);
 
-        $result = AQB::edgeCollections(['ChildOf', 'KilledBy'])->get();
+        $result = (new QueryBuilder())
+            ->edgeCollections(['ChildOf', 'KilledBy'])
+            ->get();
         self::assertEquals('ChildOf, KilledBy', $result->query);
 
-        $result = AQB::edgeCollections(['ChildOf', ['KilledBy', 'ANY']])->get();
+        $result = (new QueryBuilder())
+            ->edgeCollections(['ChildOf', ['KilledBy', 'ANY']])
+            ->get();
         self::assertEquals('ChildOf, ANY KilledBy', $result->query);
 
-        $result = AQB::edgeCollections(['ChildOf', ['KilledBy', 'ANY'], 'SucceededBy'])->get();
+        $result = (new QueryBuilder())
+            ->edgeCollections(['ChildOf', ['KilledBy', 'ANY'], 'SucceededBy'])
+            ->get();
         self::assertEquals('ChildOf, ANY KilledBy, SucceededBy', $result->query);
     }
 
-    /**
-     * Prune clause syntax.
-     * @test
-     */
-    public function prune_clause_syntax()
+    public function testPruneClauseSyntax()
     {
-        $result = AQB::for('u', 'Users')->prune('u.active', '==', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune('u.active', '==', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->prune('u.active', '==', 'true', 'OR')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune('u.active', '==', 'true', 'OR')
+            ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->prune('u.active', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune('u.active', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->prune('u.active')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune('u.active')
+            ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == null', $result->query);
 
-        $result = AQB::for('u', 'Users')->prune([['u.active', '==', 'true'], ['u.age']])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune([['u.active', '==', 'true'], ['u.age']])
+            ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == true AND u.age == null', $result->query);
     }
 }

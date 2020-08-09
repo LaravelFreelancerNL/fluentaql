@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -10,7 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Date AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-date.html
  */
-trait hasDateFunctions
+trait HasDateFunctions
 {
     /**
      * Get the current unix time as numeric timestamp.
@@ -55,12 +55,12 @@ trait hasDateFunctions
 
     protected function processDateString($dateString)
     {
-        if (empty($dateString)) {
-            $dateString[] = time();
-        } else {
+        if (isset($dateString)) {
             $dateString[0] = $this->normalizeArgument($dateString[0], ['Number', 'Function', 'Object']);
         }
-
+        if (empty($dateString)) {
+            $dateString[] = time();
+        }
         $elements = count($dateString);
         if ($elements > 1) {
             for ($i = 1; $i < $elements; $i++) {

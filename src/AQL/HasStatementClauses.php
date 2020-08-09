@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\InsertClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LetClause;
@@ -14,7 +14,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  * Trait hasStatementClauses
  * API calls to add data modification commands to the builder.
  */
-trait hasStatementClauses
+trait HasStatementClauses
 {
     /**
      * Assign a value to a variable.

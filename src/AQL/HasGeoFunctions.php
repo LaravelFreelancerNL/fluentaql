@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Geo AQL functions.
  * @see https://www.arangodb.com/docs/stable/aql/functions-geo.html
  */
-trait hasGeoFunctions
+trait HasGeoFunctions
 {
     /**
      * Calculate the distance between two coordinates with the Haversine formula.

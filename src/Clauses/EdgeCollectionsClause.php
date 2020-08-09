@@ -18,10 +18,10 @@ class EdgeCollectionsClause extends Clause
         return implode(', ', array_map(function ($expression) {
             $output = '';
             if (isset($expression[1])) {
-                $output = $expression[1].' ';
+                $output = $expression[1] . ' ';
             }
 
-            return $output.$expression[0];
+            return $output . $expression[0];
         }, $this->edgeCollections));
     }
 }

@@ -2,10 +2,10 @@
 
 namespace LaravelFreelancerNL\FluentAQL;
 
-use LaravelFreelancerNL\FluentAQL\API\hasFunctions;
-use LaravelFreelancerNL\FluentAQL\API\hasGraphClauses;
-use LaravelFreelancerNL\FluentAQL\API\hasQueryClauses;
-use LaravelFreelancerNL\FluentAQL\API\hasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\AQL\HasFunctions;
+use LaravelFreelancerNL\FluentAQL\AQL\HasGraphClauses;
+use LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses;
+use LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
@@ -25,7 +25,10 @@ use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
  */
 class QueryBuilder
 {
-    use hasQueryClauses, hasStatementClauses, hasGraphClauses, hasFunctions;
+    use HasQueryClauses;
+    use HasStatementClauses;
+    use HasGraphClauses;
+    use HasFunctions;
 
     /**
      * The AQL query.
@@ -119,7 +122,7 @@ class QueryBuilder
             return $this->bind($argument);
         }
 
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
 
         return new $expressionClass($argument);
     }
@@ -261,7 +264,7 @@ class QueryBuilder
         }
 
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is'.$allowedExpressionType;
+            $check = 'is' . $allowedExpressionType;
             if ($allowedExpressionType == 'Reference' || $allowedExpressionType == 'RegisteredVariable') {
                 if ($this->grammar->$check($argument, $this->variables)) {
                     return $allowedExpressionType;
@@ -278,7 +281,11 @@ class QueryBuilder
             return 'Bind';
         }
 
-        throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: ".implode(', ', $allowedExpressionTypes).'.');
+        throw new ExpressionTypeException(
+            "This argument, '{$argument}', does not match one of these expression types: "
+            . implode(', ', $allowedExpressionTypes)
+            . '.'
+        );
     }
 
     protected function setSubQuery()
@@ -380,13 +387,14 @@ class QueryBuilder
 
     public function bind($data, $to = null, $collection = false): BindExpression
     {
-        if ($to == null) {
-            $to = $this->queryId.'_'.(count($this->binds) + 1);
-        } else {
-            if (! $this->grammar->validateBindParameterSyntax($to)) {
-                throw new BindException('Invalid bind parameter.');
-            }
+        if (isset($to) && ! $this->grammar->validateBindParameterSyntax($to)) {
+            throw new BindException('Invalid bind parameter.');
         }
+
+        if ($to == null) {
+            $to = $this->queryId . '_' . (count($this->binds) + 1);
+        }
+
         $this->binds[$to] = $data;
 
         $to = $this->grammar->formatBind($to, $collection);
@@ -405,7 +413,7 @@ class QueryBuilder
 
         foreach ($this->commands as $command) {
             $result = $command->compile();
-            $this->query .= ' '.$result;
+            $this->query .= ' ' . $result;
 
             if ($command instanceof self) {
                 // Extract binds
@@ -420,7 +428,7 @@ class QueryBuilder
         $this->query = trim($this->query);
 
         if ($this->isSubQuery) {
-            $this->query = '('.$this->query.')';
+            $this->query = '(' . $this->query . ')';
         }
 
         return $this;

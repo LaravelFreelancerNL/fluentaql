@@ -24,8 +24,12 @@ class PredicateExpression extends Expression implements ExpressionInterface
      * @param ExpressionInterface $rightOperand
      * @param null|string $logicalOperator
      */
-    public function __construct(ExpressionInterface $leftOperand, $comparisonOperator = '==', ExpressionInterface $rightOperand = null, $logicalOperator = null)
-    {
+    public function __construct(
+        ExpressionInterface $leftOperand,
+        $comparisonOperator = '==',
+        ExpressionInterface $rightOperand = null,
+        $logicalOperator = null
+    ) {
         $this->leftOperand = $leftOperand;
         $this->comparisonOperator = strtoupper($comparisonOperator);
         $this->rightOperand = $rightOperand;
@@ -39,6 +43,6 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->leftOperand.' '.$this->comparisonOperator.' '.$this->rightOperand;
+        return $this->leftOperand . ' ' . $this->comparisonOperator . ' ' . $this->rightOperand;
     }
 }

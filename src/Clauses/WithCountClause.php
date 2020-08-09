@@ -13,6 +13,6 @@ class WithCountClause extends Clause
 
     public function compile()
     {
-        return 'WITH COUNT INTO '.$this->countVariableName;
+        return 'WITH COUNT INTO ' . $this->countVariableName;
     }
 }
