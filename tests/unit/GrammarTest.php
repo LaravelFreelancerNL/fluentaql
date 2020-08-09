@@ -308,16 +308,16 @@ class GrammarTest extends TestCase
 
     public function testValidateBindParameterSyntax()
     {
-        $result = $this->grammar->validateBindParameterSyntax('aBindVariableName');
+        $result = $this->grammar->isBindParameter('aBindVariableName');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateBindParameterSyntax('@aBindVariableName');
+        $result = $this->grammar->isBindParameter('@aBindVariableName');
         self::assertTrue($result);
 
-        $result = $this->grammar->validateBindParameterSyntax('a-faultybind-variable-name');
+        $result = $this->grammar->isBindParameter('a-faultybind-variable-name');
         self::assertFalse($result);
 
-        $result = $this->grammar->validateBindParameterSyntax('@@aBindVariableName');
+        $result = $this->grammar->isBindParameter('@@aBindVariableName');
         self::assertFalse($result);
     }
 

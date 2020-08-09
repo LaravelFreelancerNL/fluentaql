@@ -33,7 +33,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->collect('doc', 'expression')
             ->get();
-        self::assertEquals('COLLECT doc = @1_1', $result->query);
+        self::assertEquals('COLLECT doc = @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
@@ -52,14 +52,14 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->group('groupsVariable', 'projectionExpression')
             ->get();
-        self::assertEquals('INTO groupsVariable = @1_1', $result->query);
+        self::assertEquals('INTO groupsVariable = @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->group('groupsVariable', '{ 
     "name" : u.name, 
     "isActive" : u.status == "active"
   }')->get();
-        self::assertEquals('INTO groupsVariable = @1_1', $result->query);
+        self::assertEquals('INTO groupsVariable = @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testAggregateClause()
@@ -67,7 +67,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->aggregate('variableName', 'aggregateExpression')
             ->get();
-        self::assertEquals('AGGREGATE variableName = @1_1', $result->query);
+        self::assertEquals('AGGREGATE variableName = @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testKeepClause()
@@ -314,7 +314,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->return('u.name')
             ->get();
-        self::assertEquals('RETURN @1_1', $result->query);
+        self::assertEquals('RETURN @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
@@ -325,11 +325,11 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->return('1 + 1')
             ->get();
-        self::assertEquals('RETURN @1_1', $result->query);
+        self::assertEquals('RETURN @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->return('1 + 1', true)
             ->get();
-        self::assertEquals('RETURN DISTINCT @1_1', $result->query);
+        self::assertEquals('RETURN DISTINCT @'.$result->getQueryId().'_1', $result->query);
     }
 }

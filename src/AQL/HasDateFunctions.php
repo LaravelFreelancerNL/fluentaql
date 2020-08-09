@@ -55,12 +55,14 @@ trait HasDateFunctions
 
     protected function processDateString($dateString)
     {
-        if (isset($dateString)) {
+        if (is_array($dateString) && ! empty($dateString)) {
             $dateString[0] = $this->normalizeArgument($dateString[0], ['Number', 'Function', 'Object']);
         }
+
         if (empty($dateString)) {
             $dateString[] = time();
         }
+
         $elements = count($dateString);
         if ($elements > 1) {
             for ($i = 1; $i < $elements; $i++) {

@@ -28,6 +28,14 @@ class QueryBuilderTest extends TestCase
         self::assertInstanceOf(QueryBuilder::class, $result);
     }
 
+    public function testGetQueryId()
+    {
+        $qb = new QueryBuilder();
+        $id = $qb->getQueryId();
+
+        self::assertEquals(spl_object_id($qb), $id);
+    }
+
     public function testClearCommands()
     {
         $queryBuilder = (new QueryBuilder())->for('u', 'users')->return('u');
@@ -59,11 +67,11 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@1_1', (string) $bind);
+        self::assertEquals('@'.$qb->getQueryId().'_1', (string) $bind);
 
-        self::arrayHasKey('1_1');
-        self::assertIsString($qb->binds['1_1']);
-        self::assertEquals(121, strlen($qb->binds['1_1']));
+        self::arrayHasKey($qb->getQueryId().'_1');
+        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
+        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId().'_1']));
     }
 
     public function testRegisterCollections()
