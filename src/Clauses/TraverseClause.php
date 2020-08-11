@@ -16,10 +16,10 @@ class TraverseClause extends Clause
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param  StringExpression  $startVertex
-     * @param  string  $direction
-     * @param  null  $toVertex
-     * @param  bool  $kShortestPaths
+     * @param StringExpression $startVertex
+     * @param string           $direction
+     * @param null             $toVertex
+     * @param bool             $kShortestPaths
      */
     public function __construct(
         StringExpression $startVertex,
@@ -39,9 +39,9 @@ class TraverseClause extends Clause
         if (isset($this->toVertex)) {
             $output .= ($this->kShortestPaths) ? ' K_SHORTEST_PATHS' : ' SHORTEST_PATH';
         }
-        $output .= ' ' . $this->startVertex;
+        $output .= ' '.$this->startVertex;
         if (isset($this->toVertex)) {
-            $output .= ' TO ' . $this->toVertex;
+            $output .= ' TO '.$this->toVertex;
         }
 
         return $output;

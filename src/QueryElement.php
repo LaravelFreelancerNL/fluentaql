@@ -4,7 +4,6 @@ namespace LaravelFreelancerNL\FluentAQL;
 
 abstract class QueryElement
 {
-
     /**
      * Compile expression output.
      *

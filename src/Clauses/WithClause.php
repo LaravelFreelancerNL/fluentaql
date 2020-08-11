@@ -8,6 +8,7 @@ class WithClause extends Clause
 
     /**
      * WithClause constructor.
+     *
      * @param array $collections
      */
     public function __construct($collections)

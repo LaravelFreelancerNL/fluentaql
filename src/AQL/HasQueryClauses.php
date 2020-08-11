@@ -27,9 +27,10 @@ trait HasQueryClauses
      * Use with extreme caution, as no safety checks are done at all!
      * You HAVE TO prepare user input yourself or be open to injection attacks.
      *
-     * @param string $aql
-     * @param null $binds
+     * @param string     $aql
+     * @param null       $binds
      * @param array|null $collections
+     *
      * @return QueryBuilder
      */
     public function raw(string $aql, $binds = null, $collections = null): QueryBuilder
@@ -61,15 +62,17 @@ trait HasQueryClauses
 
     /**
      * Create a for clause.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
      * @param string|array $variableName
-     * @param mixed $in
+     * @param mixed        $in
+     *
      * @return QueryBuilder
      */
     public function for($variableName, $in = null): QueryBuilder
     {
-        if (! is_array($variableName)) {
+        if (!is_array($variableName)) {
             $variableName = [$variableName];
         }
 
@@ -94,8 +97,9 @@ trait HasQueryClauses
      *
      * @param string $attribute
      * @param string $comparisonOperator
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $logicalOperator
+     *
      * @return QueryBuilder
      */
     public function filter(
@@ -123,8 +127,9 @@ trait HasQueryClauses
      *
      * @param string $attribute
      * @param string $comparisonOperator
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $logicalOperator
+     *
      * @return QueryBuilder
      */
     public function search(
@@ -147,10 +152,12 @@ trait HasQueryClauses
 
     /**
      * Collect clause.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
      * @param string|null $variableName
-     * @param null $expression
+     * @param null        $expression
+     *
      * @return QueryBuilder
      */
     public function collect($variableName = null, $expression = null): QueryBuilder
@@ -172,8 +179,10 @@ trait HasQueryClauses
      * Creates the INTO clause of a collect clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#grouping-syntaxes
+     *
      * @param $groupsVariable
      * @param null $projectionExpression
+     *
      * @return QueryBuilder
      */
     public function group($groupsVariable, $projectionExpression = null): QueryBuilder
@@ -196,9 +205,11 @@ trait HasQueryClauses
     /**
      * Keep clause
      * Limits the attributes of the data that is grouped.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#discarding-obsolete-variables
      *
      * @param $keepVariable
+     *
      * @return QueryBuilder
      */
     public function keep($keepVariable): QueryBuilder
@@ -219,6 +230,7 @@ trait HasQueryClauses
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#group-length-calculation
      *
      * @param $countVariableName
+     *
      * @return QueryBuilder
      */
     public function withCount($countVariableName): QueryBuilder
@@ -234,10 +246,12 @@ trait HasQueryClauses
     /**
      * Aggregate clause
      * Creates the INTO clause of a collect clause.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#aggregation
      *
      * @param $variableName
      * @param $aggregateExpression
+     *
      * @return QueryBuilder
      */
     public function aggregate($variableName, $aggregateExpression): QueryBuilder
@@ -257,9 +271,12 @@ trait HasQueryClauses
 
     /**
      * Sort documents to return.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
+     *
      * @param null $sortBy
      * @param null $direction
+     *
      * @return QueryBuilder
      */
     public function sort($sortBy = null, $direction = null): QueryBuilder
@@ -285,10 +302,12 @@ trait HasQueryClauses
 
     /**
      * Limit results.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
      *
      * @param int $offsetOrCount
      * @param int $count
+     *
      * @return $this
      */
     public function limit(int $offsetOrCount, int $count = null)
@@ -304,12 +323,14 @@ trait HasQueryClauses
 
     /**
      * Return data.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-return.html
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $expression
      * @param bool $distinct
+     *
      * @return QueryBuilder
      */
     public function return($expression, $distinct = false): QueryBuilder

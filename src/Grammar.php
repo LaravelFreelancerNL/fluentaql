@@ -6,7 +6,6 @@ namespace LaravelFreelancerNL\FluentAQL;
  * Provides AQL syntax functions
  */
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions;
 
 class Grammar
@@ -19,35 +18,35 @@ class Grammar
      * @var array
      */
     protected $comparisonOperators = [
-        '==' => 1,
-        '!=' => 1,
-        '<' => 1,
-        '>' => 1,
-        '<=' => 1,
-        '>=' => 1,
-        'IN' => 1,
-        'NOT IN' => 1,
-        'LIKE' => 1,
-        '~' => 1,
-        '!~' => 1,
-        'ALL ==' => 1,
-        'ALL !=' => 1,
-        'ALL <' => 1,
-        'ALL >' => 1,
-        'ALL <=' => 1,
-        'ALL >=' => 1,
-        'ALL IN' => 1,
-        'ANY ==' => 1,
-        'ANY !=' => 1,
-        'ANY <' => 1,
-        'ANY >' => 1,
-        'ANY <=' => 1,
-        'ANY >=' => 1,
-        'ANY IN' => 1,
+        '=='      => 1,
+        '!='      => 1,
+        '<'       => 1,
+        '>'       => 1,
+        '<='      => 1,
+        '>='      => 1,
+        'IN'      => 1,
+        'NOT IN'  => 1,
+        'LIKE'    => 1,
+        '~'       => 1,
+        '!~'      => 1,
+        'ALL =='  => 1,
+        'ALL !='  => 1,
+        'ALL <'   => 1,
+        'ALL >'   => 1,
+        'ALL <='  => 1,
+        'ALL >='  => 1,
+        'ALL IN'  => 1,
+        'ANY =='  => 1,
+        'ANY !='  => 1,
+        'ANY <'   => 1,
+        'ANY >'   => 1,
+        'ANY <='  => 1,
+        'ANY >='  => 1,
+        'ANY IN'  => 1,
         'NONE ==' => 1,
         'NONE !=' => 1,
-        'NONE <' => 1,
-        'NONE >' => 1,
+        'NONE <'  => 1,
+        'NONE >'  => 1,
         'NONE <=' => 1,
         'NONE >=' => 1,
         'NONE IN' => 1,
@@ -63,11 +62,11 @@ class Grammar
 
     protected $logicalOperators = [
         'AND' => 1,
-        '&&' => 1,
-        'OR' => 1,
-        '||' => 1,
+        '&&'  => 1,
+        'OR'  => 1,
+        '||'  => 1,
         'NOT' => 1,
-        '!' => 1,
+        '!'   => 1,
     ];
 
     protected $rangeOperator = '..';
@@ -85,29 +84,29 @@ class Grammar
      * Strings of an unrecognized nature are always bound.
      */
     protected $argumentTypeExpressionMap = [
-        'AssociativeArray' => 'Object',
-        'Attribute' => 'Literal',
-        'Bind'  => 'Bind',
-        'Boolean' => 'Boolean',
-        'Collection' => 'Literal',
-        'Constant' => 'Constant',
-        'Direction' => 'Constant',
-        'Document' => 'Object',
-        'Function' => 'Function',
-        'Graph' => 'String',
-        'Id' => 'String',
-        'IndexedArray' => 'List',
-        'Key' => 'String',
-        'List' => 'List',
-        'Name' => 'String',
-        'Number' => 'Literal',
-        'Null' => 'Literal',
+        'AssociativeArray'   => 'Object',
+        'Attribute'          => 'Literal',
+        'Bind'               => 'Bind',
+        'Boolean'            => 'Boolean',
+        'Collection'         => 'Literal',
+        'Constant'           => 'Constant',
+        'Direction'          => 'Constant',
+        'Document'           => 'Object',
+        'Function'           => 'Function',
+        'Graph'              => 'String',
+        'Id'                 => 'String',
+        'IndexedArray'       => 'List',
+        'Key'                => 'String',
+        'List'               => 'List',
+        'Name'               => 'String',
+        'Number'             => 'Literal',
+        'Null'               => 'Literal',
         'RegisteredVariable' => 'Literal',
-        'Variable' => 'Literal',
-        'Reference' => 'Literal',
-        'Object' => 'Object',
-        'Range' => 'Literal',
-        'String' => 'Bind',
+        'Variable'           => 'Literal',
+        'Reference'          => 'Literal',
+        'Object'             => 'Object',
+        'Range'              => 'Literal',
+        'String'             => 'Bind',
     ];
 
     /*
@@ -116,13 +115,13 @@ class Grammar
      * String should always go last to trap unrecognized syntax in a bind.
      */
     protected $defaultAllowedExpressionTypes = [
-        'Number' => 'Number',
-        'Boolean' => 'Boolean',
-        'Null' => 'Null',
+        'Number'    => 'Number',
+        'Boolean'   => 'Boolean',
+        'Null'      => 'Null',
         'Reference' => 'Reference',
-        'Id' => 'Id',
-        'Key' => 'Key',
-        'Bind' => 'Bind',
+        'Id'        => 'Id',
+        'Key'       => 'Key',
+        'Bind'      => 'Bind',
     ];
 
     /**
@@ -137,14 +136,13 @@ class Grammar
 
     public function wrap($value): string
     {
-        return '`' . addcslashes($value, '`') . '`';
+        return '`'.addcslashes($value, '`').'`';
     }
 
     public function mapArgumentTypeToExpressionType($argumentType): string
     {
         return $this->argumentTypeExpressionMap[$argumentType];
     }
-
 
     public function formatBind(string $bindVariableName, bool $collection = null)
     {
@@ -157,7 +155,7 @@ class Grammar
             $prefix = '@@';
         }
 
-        return $prefix . $bindVariableName;
+        return $prefix.$bindVariableName;
     }
 
     public function getAllowedExpressionTypes()

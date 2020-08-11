@@ -23,6 +23,6 @@ class ConditionalExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        return $this->parameters['if'] . ' ? ' . $this->parameters['then'] . ' : ' . $this->parameters['else'];
+        return $this->parameters['if'].' ? '.$this->parameters['then'].' : '.$this->parameters['else'];
     }
 }

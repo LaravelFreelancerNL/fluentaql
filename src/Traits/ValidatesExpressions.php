@@ -9,6 +9,7 @@ trait ValidatesExpressions
 {
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isBind($value)
@@ -25,6 +26,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isRange($value): bool
@@ -38,6 +40,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isBoolean($value): bool
@@ -47,6 +50,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isNull($value): bool
@@ -56,15 +60,17 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isNumber($value): bool
     {
-        return is_numeric($value) && ! is_string($value);
+        return is_numeric($value) && !is_string($value);
     }
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isList($value): bool
@@ -117,6 +123,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isCollection($value): bool
@@ -159,6 +166,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isVariable($value)
@@ -177,12 +185,13 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isAttribute($value): bool
     {
         $pattern = '/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*'
-            . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
+            .'(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
         if (
             is_string($value) &&
             preg_match($pattern, $value)
@@ -196,20 +205,21 @@ trait ValidatesExpressions
     /**
      * @param mixed $value
      * @param array $registeredVariables
+     *
      * @return bool
      */
     public function isReference($value, $registeredVariables = []): bool
     {
         $variables = '';
-        if (! empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables) . '|';
+        if (!empty($registeredVariables)) {
+            $variables = implode('|', $registeredVariables).'|';
         }
 
         if (
             is_string($value)
             && preg_match('/^('
-                . $variables
-                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+                .$variables
+                .'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
         ) {
             return true;
         }
@@ -219,6 +229,7 @@ trait ValidatesExpressions
 
     /**
      * @param $value
+     *
      * @return bool
      */
     public function isObject($value): bool
@@ -243,6 +254,7 @@ trait ValidatesExpressions
      * Check if the array is associative.
      *
      * @param array $array
+     *
      * @return bool
      */
     public function isAssociativeArray(array $array)
@@ -251,13 +263,14 @@ trait ValidatesExpressions
             return true;
         }
 
-        return ! ctype_digit(implode('', array_keys($array)));
+        return !ctype_digit(implode('', array_keys($array)));
     }
 
     /**
      * Check if the array is numeric.
      *
      * @param array $array
+     *
      * @return bool
      */
     public function isIndexedArray(array $array)

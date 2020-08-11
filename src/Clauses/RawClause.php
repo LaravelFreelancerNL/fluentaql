@@ -8,6 +8,7 @@ class RawClause extends Clause
 
     /**
      * RawClause constructor.
+     *
      * @param string $aql
      */
     public function __construct(string $aql)
@@ -19,6 +20,7 @@ class RawClause extends Clause
 
     /**
      * Generate output.
+     *
      * @return string
      */
     public function compile()

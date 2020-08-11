@@ -13,6 +13,6 @@ class OptionsClause extends Clause
 
     public function compile()
     {
-        return 'OPTIONS ' . $this->options;
+        return 'OPTIONS '.$this->options;
     }
 }

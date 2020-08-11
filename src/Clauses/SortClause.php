@@ -19,6 +19,6 @@ class SortClause extends Clause
             return implode(' ', $expression);
         }, $this->by));
 
-        return 'SORT ' . $sortBy;
+        return 'SORT '.$sortBy;
     }
 }

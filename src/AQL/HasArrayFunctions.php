@@ -6,6 +6,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 /**
  * Array AQL functions.
+ *
  * @see https://www.arangodb.com/docs/stable/aql/functions-array.html
  */
 trait HasArrayFunctions
@@ -17,9 +18,11 @@ trait HasArrayFunctions
 
     /**
      * Get the number of unique elements.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#count_distinct
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function countDistinct($value)
@@ -33,9 +36,11 @@ trait HasArrayFunctions
 
     /**
      * Get the first element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#first
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function first($value)
@@ -49,9 +54,11 @@ trait HasArrayFunctions
 
     /**
      * Get the last element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#last
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function last($value)
@@ -67,6 +74,7 @@ trait HasArrayFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function length($value)

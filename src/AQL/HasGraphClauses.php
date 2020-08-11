@@ -18,6 +18,7 @@ trait HasGraphClauses
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
      * This is required in clusters.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-with.html
      *
      * @return QueryBuilder
@@ -38,14 +39,16 @@ trait HasGraphClauses
     /**
      * Traverse a graph
      * Must be preceded by a FOR clause.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $fromVertex
      * @param string $inDirection
-     * @param null $toVertex
-     * @param bool $kShortestPaths
+     * @param null   $toVertex
+     * @param bool   $kShortestPaths
+     *
      * @return QueryBuilder
      */
     public function traverse(
@@ -68,11 +71,13 @@ trait HasGraphClauses
 
     /**
      * Shortest path alias for traverse.
+     *
      * @link arangodb.com/docs/stable/aql/graphs-shortest-path.html
      *
      * @param $fromVertex
      * @param string $inDirection
      * @param string $toVertex
+     *
      * @return QueryBuilder
      */
     public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
@@ -84,11 +89,13 @@ trait HasGraphClauses
 
     /**
      * K Shortest Paths alias for traverse.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-kshortest-paths.html
      *
      * @param $fromVertex
      * @param string $inDirection
      * @param string $toVertex
+     *
      * @return QueryBuilder
      */
     public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
@@ -101,9 +108,11 @@ trait HasGraphClauses
     /**
      * Named Graph clause
      * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string $graphName
+     *
      * @return QueryBuilder
      */
     public function graph(string $graphName): QueryBuilder
@@ -119,10 +128,12 @@ trait HasGraphClauses
      * EdgeCollections Clause for unnamed graphs
      * Generates a list of edge collections to traverse through.
      * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string|array $edgeCollection
-     * @param string|null $direction
+     * @param string|null  $direction
+     *
      * @return QueryBuilder
      */
     public function edgeCollections($edgeCollection): QueryBuilder
@@ -148,12 +159,14 @@ trait HasGraphClauses
 
     /**
      * Prune a graph traversal.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
      *
      * @param string $attribute
      * @param string $comparisonOperator
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $logicalOperator
+     *
      * @return QueryBuilder
      */
     public function prune($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder

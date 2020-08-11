@@ -13,7 +13,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class QueryBuilderTest extends TestCase
 {
-
     public function testFacade()
     {
         $aqb = (new QueryBuilder())->get();
@@ -67,11 +66,11 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@' . $qb->getQueryId() . '_1', (string) $bind);
+        self::assertEquals('@'.$qb->getQueryId().'_1', (string) $bind);
 
-        self::arrayHasKey($qb->getQueryId() . '_1');
-        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
-        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId() . '_1']));
+        self::arrayHasKey($qb->getQueryId().'_1');
+        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
+        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId().'_1']));
     }
 
     public function testRegisterCollections()

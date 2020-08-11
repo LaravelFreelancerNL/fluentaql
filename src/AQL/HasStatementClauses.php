@@ -18,10 +18,12 @@ trait HasStatementClauses
 {
     /**
      * Assign a value to a variable.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-let.html
      *
      * @param $variableName
      * @param $expression
+     *
      * @return $this
      */
     public function let($variableName, $expression)
@@ -38,10 +40,12 @@ trait HasStatementClauses
 
     /**
      * Insert a document in a collection.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-insert.html
      *
      * @param $document
      * @param string $collection
+     *
      * @return QueryBuilder
      */
     public function insert($document, string $collection): QueryBuilder
@@ -58,11 +62,13 @@ trait HasStatementClauses
 
     /**
      * Update a document in a collection with the supplied data.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-update.html
      *
      * @param $document
      * @param $with
      * @param $collection
+     *
      * @return QueryBuilder
      */
     public function update($document, $with, $collection): QueryBuilder
@@ -79,11 +85,13 @@ trait HasStatementClauses
 
     /**
      * Replace a document in a collection with the supplied data.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-replace.html
      *
      * @param $document
      * @param $with
      * @param $collection
+     *
      * @return QueryBuilder
      */
     public function replace($document, $with, string $collection): QueryBuilder
@@ -100,15 +108,17 @@ trait HasStatementClauses
 
     /**
      * Update, replace or insert documents in a collection with the supplied data.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-upsert.html
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param mixed $search
-     * @param mixed $insert
-     * @param mixed $with
+     * @param mixed  $search
+     * @param mixed  $insert
+     * @param mixed  $with
      * @param string $collection
-     * @param bool $replace
+     * @param bool   $replace
+     *
      * @return QueryBuilder
      */
     public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
@@ -126,10 +136,12 @@ trait HasStatementClauses
 
     /**
      * Remove a document from a collection.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-remove.html
      *
-     * @param mixed $document
+     * @param mixed  $document
      * @param string $collection
+     *
      * @return QueryBuilder
      */
     public function remove($document, string $collection): QueryBuilder
