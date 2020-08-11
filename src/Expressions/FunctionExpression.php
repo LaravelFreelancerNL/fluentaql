@@ -42,15 +42,15 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        $output = strtoupper($this->functionName).'(';
+        $output = strtoupper($this->functionName) . '(';
         $implosion = '';
         foreach ($this->parameters as $parameter) {
-            $implosion .= ', '.(string) $parameter;
+            $implosion .= ', ' . (string) $parameter;
         }
         if ($implosion != '') {
             $output .= ltrim($implosion, ', ');
         }
 
-        return $output.')';
+        return $output . ')';
     }
 }

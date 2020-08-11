@@ -17,6 +17,6 @@ class ListExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        return '['.implode(',', $this->expression).']';
+        return '[' . implode(',', $this->expression) . ']';
     }
 }

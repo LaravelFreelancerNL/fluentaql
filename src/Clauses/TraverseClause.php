@@ -39,9 +39,9 @@ class TraverseClause extends Clause
         if (isset($this->toVertex)) {
             $output .= ($this->kShortestPaths) ? ' K_SHORTEST_PATHS' : ' SHORTEST_PATH';
         }
-        $output .= ' '.$this->startVertex;
+        $output .= ' ' . $this->startVertex;
         if (isset($this->toVertex)) {
-            $output .= ' TO '.$this->toVertex;
+            $output .= ' TO ' . $this->toVertex;
         }
 
         return $output;

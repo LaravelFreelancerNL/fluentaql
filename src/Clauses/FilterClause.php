@@ -26,7 +26,7 @@ class FilterClause extends Clause
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
 
-        return 'FILTER '.rtrim($compiledPredicates);
+        return 'FILTER ' . rtrim($compiledPredicates);
     }
 
     protected function compilePredicates($predicates, $compiledPredicates = '')
@@ -35,7 +35,7 @@ class FilterClause extends Clause
         foreach ($predicates as $predicate) {
             if ($predicate instanceof PredicateExpression) {
                 if ($compiledPredicates != '' && $compiledPredicates !== '(') {
-                    $compiledPredicates .= ' '.$predicate->logicalOperator.' ';
+                    $compiledPredicates .= ' ' . $predicate->logicalOperator . ' ';
                 }
                 $compiledPredicates .= $predicate;
             }

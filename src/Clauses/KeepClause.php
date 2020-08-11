@@ -13,6 +13,6 @@ class KeepClause extends Clause
 
     public function compile()
     {
-        return 'KEEP '.$this->keepVariable;
+        return 'KEEP ' . $this->keepVariable;
     }
 }

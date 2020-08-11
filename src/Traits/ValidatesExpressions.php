@@ -191,7 +191,7 @@ trait ValidatesExpressions
     public function isAttribute($value): bool
     {
         $pattern = '/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*'
-            .'(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
+            . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
         if (
             is_string($value) &&
             preg_match($pattern, $value)
@@ -212,14 +212,14 @@ trait ValidatesExpressions
     {
         $variables = '';
         if (!empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables).'|';
+            $variables = implode('|', $registeredVariables) . '|';
         }
 
         if (
             is_string($value)
             && preg_match('/^('
-                .$variables
-                .'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
+                . $variables
+                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
         ) {
             return true;
         }

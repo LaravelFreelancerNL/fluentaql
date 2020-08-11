@@ -136,7 +136,7 @@ class Grammar
 
     public function wrap($value): string
     {
-        return '`'.addcslashes($value, '`').'`';
+        return '`' . addcslashes($value, '`') . '`';
     }
 
     public function mapArgumentTypeToExpressionType($argumentType): string
@@ -155,7 +155,7 @@ class Grammar
             $prefix = '@@';
         }
 
-        return $prefix.$bindVariableName;
+        return $prefix . $bindVariableName;
     }
 
     public function getAllowedExpressionTypes()

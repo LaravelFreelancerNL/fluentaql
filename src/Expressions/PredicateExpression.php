@@ -43,6 +43,6 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->leftOperand.' '.$this->comparisonOperator.' '.$this->rightOperand;
+        return $this->leftOperand . ' ' . $this->comparisonOperator . ' ' . $this->rightOperand;
     }
 }

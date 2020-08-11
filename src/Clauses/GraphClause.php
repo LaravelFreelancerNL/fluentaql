@@ -13,6 +13,6 @@ class GraphClause extends Clause
 
     public function compile()
     {
-        return 'GRAPH '.$this->graphName;
+        return 'GRAPH ' . $this->graphName;
     }
 }

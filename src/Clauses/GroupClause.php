@@ -15,9 +15,9 @@ class GroupClause extends Clause
 
     public function compile()
     {
-        $output = 'INTO '.$this->groupsVariable;
+        $output = 'INTO ' . $this->groupsVariable;
         if (isset($this->projectionExpression)) {
-            $output .= ' = '.$this->projectionExpression;
+            $output .= ' = ' . $this->projectionExpression;
         }
 
         return $output;

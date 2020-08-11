@@ -203,7 +203,7 @@ class QueryBuilder
         }
 
         if ($to == null) {
-            $to = $this->queryId.'_'.(count($this->binds) + 1);
+            $to = $this->queryId . '_' . (count($this->binds) + 1);
         }
 
         $this->binds[$to] = $data;
@@ -224,7 +224,7 @@ class QueryBuilder
 
         foreach ($this->commands as $command) {
             $result = $command->compile();
-            $this->query .= ' '.$result;
+            $this->query .= ' ' . $result;
 
             if ($command instanceof self) {
                 // Extract binds
@@ -239,7 +239,7 @@ class QueryBuilder
         $this->query = trim($this->query);
 
         if ($this->isSubQuery) {
-            $this->query = '('.$this->query.')';
+            $this->query = '(' . $this->query . ')';
         }
 
         return $this;

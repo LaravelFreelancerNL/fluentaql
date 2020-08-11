@@ -31,7 +31,7 @@ class ForClause extends Clause
 
         $inExpression = (string) $this->in;
         if (is_array($this->in)) {
-            $inExpression = '['.implode(', ', $this->in).']';
+            $inExpression = '[' . implode(', ', $this->in) . ']';
         }
 
         return "FOR {$variableExpression} IN {$inExpression}";

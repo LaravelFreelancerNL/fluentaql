@@ -56,7 +56,7 @@ trait NormalizesExpressions
             return $this->bind($argument);
         }
 
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
 
         return new $expressionClass($argument);
     }
@@ -200,7 +200,7 @@ trait NormalizesExpressions
         }
 
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is'.$allowedExpressionType;
+            $check = 'is' . $allowedExpressionType;
             if ($allowedExpressionType == 'Reference' || $allowedExpressionType == 'RegisteredVariable') {
                 if ($this->grammar->$check($argument, $this->variables)) {
                     return $allowedExpressionType;
@@ -218,8 +218,8 @@ trait NormalizesExpressions
         }
 
         throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: "
-            .implode(', ', $allowedExpressionTypes)
-            .'.');
+            . implode(', ', $allowedExpressionTypes)
+            . '.');
     }
 
     /**
