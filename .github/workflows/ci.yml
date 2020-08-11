@@ -29,4 +29,4 @@ jobs:
 
       - name: PHP Unit tests
         if: ${{ always() }}
-        run: bin/phpunit
+        run: vendor/bin/phpunit

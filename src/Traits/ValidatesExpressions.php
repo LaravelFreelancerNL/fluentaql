@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
@@ -136,10 +137,7 @@ trait ValidatesExpressions
     {
         if (
             is_string($value) &&
-            preg_match(
-                "/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/",
-                $value
-            )
+            preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)
         ) {
             return true;
         }
@@ -151,10 +149,7 @@ trait ValidatesExpressions
     {
         if (
             is_string($value) &&
-            preg_match(
-                "/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/",
-                $value
-            )
+            preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)
         ) {
             return true;
         }
@@ -190,10 +185,7 @@ trait ValidatesExpressions
             . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
         if (
             is_string($value) &&
-            preg_match(
-                $pattern,
-                $value
-            )
+            preg_match($pattern, $value)
         ) {
             return true;
         }
@@ -215,12 +207,9 @@ trait ValidatesExpressions
 
         if (
             is_string($value)
-            && preg_match(
-                '/^('
+            && preg_match('/^('
                 . $variables
-                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/',
-                $value
-            )
+                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
         ) {
             return true;
         }
@@ -279,5 +268,4 @@ trait ValidatesExpressions
 
         return ctype_digit(implode('', array_keys($array)));
     }
-
 }

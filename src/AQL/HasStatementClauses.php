@@ -102,6 +102,8 @@ trait HasStatementClauses
      * Update, replace or insert documents in a collection with the supplied data.
      * @link https://www.arangodb.com/docs/stable/aql/operations-upsert.html
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @param mixed $search
      * @param mixed $insert
      * @param mixed $with

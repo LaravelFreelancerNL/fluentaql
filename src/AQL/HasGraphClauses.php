@@ -40,6 +40,8 @@ trait HasGraphClauses
      * Must be preceded by a FOR clause.
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @param $fromVertex
      * @param string $inDirection
      * @param null $toVertex

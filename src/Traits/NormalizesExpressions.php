@@ -1,4 +1,5 @@
 <?php
+
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
@@ -20,7 +21,6 @@ trait NormalizesExpressions
      * @var Grammar
      */
     protected $grammar;
-
     protected function normalizeArgument($argument, $allowedExpressionTypes = null)
     {
         if (is_scalar($argument)) {
@@ -43,20 +43,17 @@ trait NormalizesExpressions
     protected function normalizeScalar($argument, $allowedExpressionTypes)
     {
         $argumentType = $this->determineArgumentType($argument, $allowedExpressionTypes);
-
         return $this->createExpression($argument, $argumentType);
     }
 
     protected function createExpression($argument, $argumentType)
     {
         $expressionType = $this->grammar->mapArgumentTypeToExpressionType($argumentType);
-
         if ($expressionType == 'Bind') {
             return $this->bind($argument);
         }
 
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
-
         return new $expressionClass($argument);
     }
 
@@ -112,7 +109,6 @@ trait NormalizesExpressions
     {
         if (is_string($edgeCollection)) {
             $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
-
             return $edgeCollection;
         }
         if (is_array($edgeCollection) && ! empty($edgeCollection)) {
@@ -150,7 +146,6 @@ trait NormalizesExpressions
         $comparisonOperator = '==';
         $value = null;
         $logicalOperator = 'AND';
-
         $attribute = $predicate[0];
         if (isset($predicate[1])) {
             $comparisonOperator = $predicate[1];
@@ -173,9 +168,7 @@ trait NormalizesExpressions
 
         $attribute = $this->normalizeArgument($attribute, ['Reference']);
         $value = $this->normalizeArgument($value);
-
         $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
-
         return $normalizedPredicate;
     }
 
@@ -214,11 +207,9 @@ trait NormalizesExpressions
             return 'Bind';
         }
 
-        throw new ExpressionTypeException(
-            "This argument, '{$argument}', does not match one of these expression types: "
+        throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: "
             . implode(', ', $allowedExpressionTypes)
-            . '.'
-        );
+            . '.');
     }
 
     /**
@@ -246,11 +237,10 @@ trait NormalizesExpressions
             return new StringExpression($argument->format(\DateTime::ATOM));
         }
         if ($argument instanceof ExpressionInterface) {
-            //Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
+//Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
             return $argument;
         }
 
         return new ObjectExpression($this->normalizeIterable((array) $argument, $allowedExpressionTypes));
     }
-
 }

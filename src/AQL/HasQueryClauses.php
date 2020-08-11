@@ -306,6 +306,8 @@ trait HasQueryClauses
      * Return data.
      * @link https://www.arangodb.com/docs/stable/aql/operations-return.html
      *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
      * @param $expression
      * @param bool $distinct
      * @return QueryBuilder

@@ -19,11 +19,11 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
  */
 class QueryBuilder
 {
-    use NormalizesExpressions,
-        HasQueryClauses,
-        HasStatementClauses,
-        HasGraphClauses,
-        HasFunctions;
+    use NormalizesExpressions;
+    use HasQueryClauses;
+    use HasStatementClauses;
+    use HasGraphClauses;
+    use HasFunctions;
 
     /**
      * The AQL query.
@@ -176,6 +176,17 @@ class QueryBuilder
         return $this;
     }
 
+    /**
+     * Bind data or a collection name to a variable
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @param $data
+     * @param  null  $to
+     * @param  bool  $collection
+     * @return BindExpression
+     * @throws BindException
+     */
     public function bind($data, $to = null, $collection = false): BindExpression
     {
         if (isset($to) && ! $this->grammar->isBindParameter($to)) {
@@ -260,5 +271,4 @@ class QueryBuilder
     {
         return $this->grammar->wrap($value);
     }
-
 }

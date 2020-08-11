@@ -14,6 +14,17 @@ class UpsertClause extends Clause
 
     protected $replace;
 
+    /**
+     * UpsertClause constructor.
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @param $search
+     * @param $insert
+     * @param $with
+     * @param $collection
+     * @param  bool  $replace
+     */
     public function __construct($search, $insert, $with, $collection, $replace = false)
     {
         parent::__construct();

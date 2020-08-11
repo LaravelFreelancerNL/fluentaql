@@ -11,6 +11,16 @@ class TraverseClause extends Clause
     protected $toVertex;
     protected $kShortestPaths = false;
 
+    /**
+     * TraverseClause constructor.
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @param  StringExpression  $startVertex
+     * @param  string  $direction
+     * @param  null  $toVertex
+     * @param  bool  $kShortestPaths
+     */
     public function __construct(
         StringExpression $startVertex,
         $direction = 'outbound',

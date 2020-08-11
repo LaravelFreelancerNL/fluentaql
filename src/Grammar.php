@@ -11,7 +11,6 @@ use LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions;
 
 class Grammar
 {
-
     use ValidatesExpressions;
 
     /**
