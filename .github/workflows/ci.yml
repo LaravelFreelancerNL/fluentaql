@@ -1,15 +1,14 @@
 name: Continuous Integration
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   run:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on: ubuntu-18.04
     strategy:
       matrix:
-        operating-system: [ubuntu-18.04, ubuntu-latest]
         php-versions: ['7.2', '7.3', '7.4']
-    name:  Quality checks PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+    name:  Quality checks PHP ${{ matrix.php-versions }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
