@@ -14,13 +14,13 @@ use LaravelFreelancerNL\FluentAQL\Grammar;
 
 trait NormalizesExpressions
 {
-
     /**
      * The database query grammar instance.
      *
      * @var Grammar
      */
     protected $grammar;
+
     protected function normalizeArgument($argument, $allowedExpressionTypes = null)
     {
         if (is_scalar($argument)) {
@@ -37,12 +37,15 @@ trait NormalizesExpressions
     /**
      * @param $argument
      * @param $allowedExpressionTypes
-     * @return BindExpression
+     *
      * @throws ExpressionTypeException
+     *
+     * @return BindExpression
      */
     protected function normalizeScalar($argument, $allowedExpressionTypes)
     {
         $argumentType = $this->determineArgumentType($argument, $allowedExpressionTypes);
+
         return $this->createExpression($argument, $argumentType);
     }
 
@@ -53,7 +56,8 @@ trait NormalizesExpressions
             return $this->bind($argument);
         }
 
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
+
         return new $expressionClass($argument);
     }
 
@@ -62,7 +66,7 @@ trait NormalizesExpressions
         if (is_array($argument)) {
             return $this->normalizeArray($argument, $allowedExpressionTypes);
         }
-        if (! is_iterable($argument)) {
+        if (!is_iterable($argument)) {
             return $this->normalizeObject($argument, $allowedExpressionTypes);
         }
 
@@ -71,7 +75,8 @@ trait NormalizesExpressions
 
     /**
      * @param array|object $argument
-     * @param null $allowedExpressionTypes
+     * @param null         $allowedExpressionTypes
+     *
      * @return array
      */
     protected function normalizeIterable($argument, $allowedExpressionTypes = null)
@@ -93,9 +98,9 @@ trait NormalizesExpressions
 
             return $sortExpression;
         }
-        if (is_array($sortExpression) && ! empty($sortExpression)) {
+        if (is_array($sortExpression) && !empty($sortExpression)) {
             $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'Reference');
-            if (isset($sortExpression[1]) && ! $this->grammar->isSortDirection($sortExpression[1])) {
+            if (isset($sortExpression[1]) && !$this->grammar->isSortDirection($sortExpression[1])) {
                 unset($sortExpression[1]);
             }
 
@@ -109,11 +114,12 @@ trait NormalizesExpressions
     {
         if (is_string($edgeCollection)) {
             $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
+
             return $edgeCollection;
         }
-        if (is_array($edgeCollection) && ! empty($edgeCollection)) {
+        if (is_array($edgeCollection) && !empty($edgeCollection)) {
             $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollection[1]) && ! $this->grammar->isDirection($edgeCollection[1])) {
+            if (isset($edgeCollection[1]) && !$this->grammar->isDirection($edgeCollection[1])) {
                 unset($edgeCollection[1]);
             }
 
@@ -125,6 +131,7 @@ trait NormalizesExpressions
 
     /**
      * @param array $predicates
+     *
      * @return array
      */
     protected function normalizePredicates($predicates): array
@@ -161,7 +168,7 @@ trait NormalizesExpressions
         if ($this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
             $value = 'null';
         }
-        if (! $this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
+        if (!$this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
             $value = $comparisonOperator;
             $comparisonOperator = '==';
         }
@@ -169,6 +176,7 @@ trait NormalizesExpressions
         $attribute = $this->normalizeArgument($attribute, ['Reference']);
         $value = $this->normalizeArgument($value);
         $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
+
         return $normalizedPredicate;
     }
 
@@ -177,8 +185,10 @@ trait NormalizesExpressions
      *
      * @param string|iterable $argument
      * @param $allowedExpressionTypes
-     * @return mixed
+     *
      * @throws ExpressionTypeException
+     *
+     * @return mixed
      */
     protected function determineArgumentType($argument, $allowedExpressionTypes = null)
     {
@@ -190,7 +200,7 @@ trait NormalizesExpressions
         }
 
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is' . $allowedExpressionType;
+            $check = 'is'.$allowedExpressionType;
             if ($allowedExpressionType == 'Reference' || $allowedExpressionType == 'RegisteredVariable') {
                 if ($this->grammar->$check($argument, $this->variables)) {
                     return $allowedExpressionType;
@@ -208,13 +218,14 @@ trait NormalizesExpressions
         }
 
         throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: "
-            . implode(', ', $allowedExpressionTypes)
-            . '.');
+            .implode(', ', $allowedExpressionTypes)
+            .'.');
     }
 
     /**
      * @param $argument
      * @param $allowedExpressionTypes
+     *
      * @return ListExpression|ObjectExpression
      */
     protected function normalizeArray($argument, $allowedExpressionTypes)
@@ -229,6 +240,7 @@ trait NormalizesExpressions
     /**
      * @param $argument
      * @param $allowedExpressionTypes
+     *
      * @return ObjectExpression|StringExpression
      */
     protected function normalizeObject($argument, $allowedExpressionTypes)
@@ -237,7 +249,7 @@ trait NormalizesExpressions
             return new StringExpression($argument->format(\DateTime::ATOM));
         }
         if ($argument instanceof ExpressionInterface) {
-//Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
+            //Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
             return $argument;
         }
 

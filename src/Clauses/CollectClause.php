@@ -19,7 +19,7 @@ class CollectClause extends Clause
     {
         $output = 'COLLECT';
         if (isset($this->variableName) && isset($this->expression)) {
-            $output .= ' ' . $this->variableName . ' = ' . $this->expression;
+            $output .= ' '.$this->variableName.' = '.$this->expression;
         }
 
         return $output;

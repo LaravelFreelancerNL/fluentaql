@@ -20,9 +20,9 @@ class PredicateExpression extends Expression implements ExpressionInterface
      * Create predicate expression.
      *
      * @param ExpressionInterface $leftOperand
-     * @param string $comparisonOperator
+     * @param string              $comparisonOperator
      * @param ExpressionInterface $rightOperand
-     * @param null|string $logicalOperator
+     * @param null|string         $logicalOperator
      */
     public function __construct(
         ExpressionInterface $leftOperand,
@@ -43,6 +43,6 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->leftOperand . ' ' . $this->comparisonOperator . ' ' . $this->rightOperand;
+        return $this->leftOperand.' '.$this->comparisonOperator.' '.$this->rightOperand;
     }
 }

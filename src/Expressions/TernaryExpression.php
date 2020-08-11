@@ -34,6 +34,6 @@ class TernaryExpression extends Expression implements ExpressionInterface
      */
     public function compile()
     {
-        return $this->if . ' ? ' . $this->then . ' : ' . $this->else;
+        return $this->if.' ? '.$this->then.' : '.$this->else;
     }
 }

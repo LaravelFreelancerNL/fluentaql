@@ -370,18 +370,18 @@ class GrammarTest extends TestCase
     {
         $emptyArray = [];
         $numericArray = [
-            0 => 'Varys',
+            0   => 'Varys',
             '1' => 'Petyr Baelish',
             '2' => 'The Onion Knight',
         ];
         $associativeArray = [
-            'name' => 'Drogon',
-            'race' => 'dragon',
+            'name'  => 'Drogon',
+            'race'  => 'dragon',
             'color' => 'black',
         ];
         $mixedArray = [
-            'name' => 'Varys',
-            '01' => 'Eunuch',
+            'name'     => 'Varys',
+            '01'       => 'Eunuch',
             'employer' => 'The Realm',
         ];
 
@@ -402,18 +402,18 @@ class GrammarTest extends TestCase
     {
         $emptyArray = [];
         $numericArray = [
-            0 => 'Varys',
+            0   => 'Varys',
             '1' => 'Petyr Baelish',
             '2' => 'The Onion Knight',
         ];
         $associativeArray = [
-            'name' => 'Drogon',
-            'race' => 'dragon',
+            'name'  => 'Drogon',
+            'race'  => 'dragon',
             'color' => 'black',
         ];
         $mixedArray = [
-            'name' => 'Varys',
-            '01' => 'Eunuch',
+            'name'     => 'Varys',
+            '01'       => 'Eunuch',
             'employer' => 'The Realm',
         ];
 

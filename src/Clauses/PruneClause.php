@@ -12,6 +12,6 @@ class PruneClause extends FilterClause
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
 
-        return 'PRUNE ' . rtrim($compiledPredicates);
+        return 'PRUNE '.rtrim($compiledPredicates);
     }
 }

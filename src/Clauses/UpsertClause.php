@@ -23,7 +23,7 @@ class UpsertClause extends Clause
      * @param $insert
      * @param $with
      * @param $collection
-     * @param  bool  $replace
+     * @param bool $replace
      */
     public function __construct($search, $insert, $with, $collection, $replace = false)
     {

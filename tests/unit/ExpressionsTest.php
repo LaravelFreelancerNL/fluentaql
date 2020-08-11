@@ -13,7 +13,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class ExpressionsTest extends TestCase
 {
-
     public function testListExpression()
     {
         $expression = new ListExpression([1, 2, '"You know nothing John Snow"']);

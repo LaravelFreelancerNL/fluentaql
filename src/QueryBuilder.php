@@ -27,12 +27,14 @@ class QueryBuilder
 
     /**
      * The AQL query.
+     *
      * @var
      */
     public $query;
 
     /**
      * Bindings for $query.
+     *
      * @var
      */
     public $binds = [];
@@ -43,8 +45,6 @@ class QueryBuilder
      * @var array
      */
     public $collections;
-
-
 
     /**
      * List of commands to be compiled into a query.
@@ -59,12 +59,14 @@ class QueryBuilder
     /**
      * ID of the query
      * Used as prefix for automatically generated bindings.
+     *
      * @var int
      */
     protected $queryId = 1;
 
     /**
      * Total number of (sub)queries, including this one.
+     *
      * @var int
      */
     protected $queryCount = 1;
@@ -77,7 +79,6 @@ class QueryBuilder
 
         $this->queryId = spl_object_id($this);
     }
-
 
     protected function setSubQuery()
     {
@@ -98,6 +99,7 @@ class QueryBuilder
 
     /**
      * Get the command list.
+     *
      * @return mixed
      */
     public function getCommands()
@@ -107,7 +109,9 @@ class QueryBuilder
 
     /**
      * Get the last or a specific command.
+     *
      * @param int|null $index
+     *
      * @return mixed
      */
     public function getCommand(int $index = null)
@@ -123,6 +127,7 @@ class QueryBuilder
      * Remove the last or a specified command.
      *
      * @param null $index
+     *
      * @return bool
      */
     public function removeCommand($index = null): bool
@@ -148,13 +153,14 @@ class QueryBuilder
     }
 
     /**
-     * @param mixed $collections
+     * @param mixed  $collections
      * @param string $mode
+     *
      * @return QueryBuilder
      */
     public function registerCollections($collections, $mode = 'write'): self
     {
-        if (! is_array($collections)) {
+        if (!is_array($collections)) {
             $collections = [$collections];
         }
 
@@ -167,6 +173,7 @@ class QueryBuilder
      * Register variables on declaration for later data normalization.
      *
      * @param string $variableName
+     *
      * @return QueryBuilder
      */
     protected function registerVariable(string $variableName): self
@@ -177,24 +184,26 @@ class QueryBuilder
     }
 
     /**
-     * Bind data or a collection name to a variable
+     * Bind data or a collection name to a variable.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $data
-     * @param  null  $to
-     * @param  bool  $collection
-     * @return BindExpression
+     * @param null $to
+     * @param bool $collection
+     *
      * @throws BindException
+     *
+     * @return BindExpression
      */
     public function bind($data, $to = null, $collection = false): BindExpression
     {
-        if (isset($to) && ! $this->grammar->isBindParameter($to)) {
+        if (isset($to) && !$this->grammar->isBindParameter($to)) {
             throw new BindException('Invalid bind parameter.');
         }
 
         if ($to == null) {
-            $to = $this->queryId . '_' . (count($this->binds) + 1);
+            $to = $this->queryId.'_'.(count($this->binds) + 1);
         }
 
         $this->binds[$to] = $data;
@@ -215,7 +224,7 @@ class QueryBuilder
 
         foreach ($this->commands as $command) {
             $result = $command->compile();
-            $this->query .= ' ' . $result;
+            $this->query .= ' '.$result;
 
             if ($command instanceof self) {
                 // Extract binds
@@ -230,7 +239,7 @@ class QueryBuilder
         $this->query = trim($this->query);
 
         if ($this->isSubQuery) {
-            $this->query = '(' . $this->query . ')';
+            $this->query = '('.$this->query.')';
         }
 
         return $this;

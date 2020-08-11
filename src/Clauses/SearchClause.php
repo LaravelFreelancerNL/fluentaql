@@ -12,6 +12,6 @@ class SearchClause extends FilterClause
     {
         $compiledPredicates = $this->compilePredicates($this->predicates);
 
-        return 'SEARCH ' . rtrim($compiledPredicates);
+        return 'SEARCH '.rtrim($compiledPredicates);
     }
 }
