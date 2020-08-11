@@ -6,45 +6,47 @@ namespace LaravelFreelancerNL\FluentAQL;
  * Provides AQL syntax functions
  */
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
+use LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions;
 
 class Grammar
 {
+    use ValidatesExpressions;
+
     /**
      * All of the available predicate operators.
      *
      * @var array
      */
     protected $comparisonOperators = [
-        '==' => 1,
-        '!=' => 1,
-        '<' => 1,
-        '>' => 1,
-        '<=' => 1,
-        '>=' => 1,
-        'IN' => 1,
-        'NOT IN' => 1,
-        'LIKE' => 1,
-        '~' => 1,
-        '!~' => 1,
-        'ALL ==' => 1,
-        'ALL !=' => 1,
-        'ALL <' => 1,
-        'ALL >' => 1,
-        'ALL <=' => 1,
-        'ALL >=' => 1,
-        'ALL IN' => 1,
-        'ANY ==' => 1,
-        'ANY !=' => 1,
-        'ANY <' => 1,
-        'ANY >' => 1,
-        'ANY <=' => 1,
-        'ANY >=' => 1,
-        'ANY IN' => 1,
+        '=='      => 1,
+        '!='      => 1,
+        '<'       => 1,
+        '>'       => 1,
+        '<='      => 1,
+        '>='      => 1,
+        'IN'      => 1,
+        'NOT IN'  => 1,
+        'LIKE'    => 1,
+        '~'       => 1,
+        '!~'      => 1,
+        'ALL =='  => 1,
+        'ALL !='  => 1,
+        'ALL <'   => 1,
+        'ALL >'   => 1,
+        'ALL <='  => 1,
+        'ALL >='  => 1,
+        'ALL IN'  => 1,
+        'ANY =='  => 1,
+        'ANY !='  => 1,
+        'ANY <'   => 1,
+        'ANY >'   => 1,
+        'ANY <='  => 1,
+        'ANY >='  => 1,
+        'ANY IN'  => 1,
         'NONE ==' => 1,
         'NONE !=' => 1,
-        'NONE <' => 1,
-        'NONE >' => 1,
+        'NONE <'  => 1,
+        'NONE >'  => 1,
         'NONE <=' => 1,
         'NONE >=' => 1,
         'NONE IN' => 1,
@@ -60,11 +62,11 @@ class Grammar
 
     protected $logicalOperators = [
         'AND' => 1,
-        '&&' => 1,
-        'OR' => 1,
-        '||' => 1,
+        '&&'  => 1,
+        'OR'  => 1,
+        '||'  => 1,
         'NOT' => 1,
-        '!' => 1,
+        '!'   => 1,
     ];
 
     protected $rangeOperator = '..';
@@ -82,29 +84,29 @@ class Grammar
      * Strings of an unrecognized nature are always bound.
      */
     protected $argumentTypeExpressionMap = [
-        'AssociativeArray' => 'Object',
-        'Attribute' => 'Literal',
-        'Bind'  => 'Bind',
-        'Boolean' => 'Boolean',
-        'Collection' => 'Literal',
-        'Constant' => 'Constant',
-        'Direction' => 'Constant',
-        'Document' => 'Object',
-        'Function' => 'Function',
-        'Graph' => 'String',
-        'Id' => 'String',
-        'IndexedArray' => 'List',
-        'Key' => 'String',
-        'List' => 'List',
-        'Name' => 'String',
-        'Number' => 'Literal',
-        'Null' => 'Literal',
+        'AssociativeArray'   => 'Object',
+        'Attribute'          => 'Literal',
+        'Bind'               => 'Bind',
+        'Boolean'            => 'Boolean',
+        'Collection'         => 'Literal',
+        'Constant'           => 'Constant',
+        'Direction'          => 'Constant',
+        'Document'           => 'Object',
+        'Function'           => 'Function',
+        'Graph'              => 'String',
+        'Id'                 => 'String',
+        'IndexedArray'       => 'List',
+        'Key'                => 'String',
+        'List'               => 'List',
+        'Name'               => 'String',
+        'Number'             => 'Literal',
+        'Null'               => 'Literal',
         'RegisteredVariable' => 'Literal',
-        'Variable' => 'Literal',
-        'Reference' => 'Literal',
-        'Object' => 'Object',
-        'Range' => 'Literal',
-        'String' => 'Bind',
+        'Variable'           => 'Literal',
+        'Reference'          => 'Literal',
+        'Object'             => 'Object',
+        'Range'              => 'Literal',
+        'String'             => 'Bind',
     ];
 
     /*
@@ -113,13 +115,13 @@ class Grammar
      * String should always go last to trap unrecognized syntax in a bind.
      */
     protected $defaultAllowedExpressionTypes = [
-        'Number' => 'Number',
-        'Boolean' => 'Boolean',
-        'Null' => 'Null',
+        'Number'    => 'Number',
+        'Boolean'   => 'Boolean',
+        'Null'      => 'Null',
         'Reference' => 'Reference',
-        'Id' => 'Id',
-        'Key' => 'Key',
-        'Bind' => 'Bind',
+        'Id'        => 'Id',
+        'Key'       => 'Key',
+        'Bind'      => 'Bind',
     ];
 
     /**
@@ -134,261 +136,12 @@ class Grammar
 
     public function wrap($value): string
     {
-        return '`'.addcslashes($value, '`').'`';
+        return '`' . addcslashes($value, '`') . '`';
     }
 
     public function mapArgumentTypeToExpressionType($argumentType): string
     {
         return $this->argumentTypeExpressionMap[$argumentType];
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isBind($value)
-    {
-        if (is_string($value)) {
-            return true;
-        }
-        if (is_object($value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isRange($value): bool
-    {
-        if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isBoolean($value): bool
-    {
-        return is_bool($value) || $value === 'true' || $value === 'false';
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isNull($value): bool
-    {
-        return $value === null || $value == 'null';
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isNumber($value): bool
-    {
-        return is_numeric($value) && ! is_string($value);
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isList($value): bool
-    {
-        return is_array($value) && $this->isIndexedArray($value);
-    }
-
-    public function isQuery($value): bool
-    {
-        return $value instanceof QueryBuilder;
-    }
-
-    public function isFunction($value): bool
-    {
-        return $value instanceof FunctionExpression;
-    }
-
-    public function isLogicalOperator($operator): bool
-    {
-        return isset($this->logicalOperators[strtoupper($operator)]);
-    }
-
-    public function isComparisonOperator($operator): bool
-    {
-        return isset($this->comparisonOperators[strtoupper($operator)]);
-    }
-
-    public function isArithmeticOperators($operator): bool
-    {
-        return isset($this->arithmeticOperators[$operator]);
-    }
-
-    public function isSortDirection($value): bool
-    {
-        if (preg_match('/asc|desc/i', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isDirection($value): bool
-    {
-        if (preg_match('/outbound|inbound|any/i', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isCollection($value): bool
-    {
-        if (is_string($value) && preg_match('/^[a-zA-Z0-9_-]+$/', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isGraph($value): bool
-    {
-        return $this->isCollection($value);
-    }
-
-    public function isKey($value): bool
-    {
-        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isId($value): bool
-    {
-        if (is_string($value) && preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isVariable($value)
-    {
-        if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function isRegisteredVariable($value, $registeredVariables = []): bool
-    {
-        return isset($registeredVariables[$value]);
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isAttribute($value): bool
-    {
-        if (is_string($value) && preg_match('/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param mixed $value
-     * @param array $registeredVariables
-     * @return bool
-     */
-    public function isReference($value, $registeredVariables = []): bool
-    {
-        $variables = '';
-        if (! empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables).'|';
-        }
-
-        if (
-            is_string($value)
-            && preg_match('/^('.$variables.'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
-        ) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * @param $value
-     * @return bool
-     */
-    public function isObject($value): bool
-    {
-        if (is_object($value) || (is_array($value) && $this->isAssociativeArray($value))) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function validateBindParameterSyntax($bindParameter): bool
-    {
-        if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check if the array is associative.
-     *
-     * @param array $array
-     * @return bool
-     */
-    public function isAssociativeArray(array $array)
-    {
-        if (empty($array)) {
-            return true;
-        }
-
-        return ! ctype_digit(implode('', array_keys($array)));
-    }
-
-    /**
-     * Check if the array is numeric.
-     *
-     * @param array $array
-     * @return bool
-     */
-    public function isIndexedArray(array $array)
-    {
-        if (empty($array)) {
-            return true;
-        }
-
-        return ctype_digit(implode('', array_keys($array)));
     }
 
     public function formatBind(string $bindVariableName, bool $collection = null)
@@ -402,7 +155,7 @@ class Grammar
             $prefix = '@@';
         }
 
-        return $prefix.$bindVariableName;
+        return $prefix . $bindVariableName;
     }
 
     public function getAllowedExpressionTypes()

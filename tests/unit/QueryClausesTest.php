@@ -1,279 +1,333 @@
 <?php
 
-use LaravelFreelancerNL\FluentAQL\Facades\AQB;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\API\hasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasQueryClauses.php
  */
 class QueryClausesTest extends TestCase
 {
-    /**
-     * raw AQL.
-     * @test
-     */
-    public function raw_aql()
+    public function testRawAql()
     {
-        $result = AQB::raw('FOR u IN Users FILTER u.email="test@test.com"')->get();
+        $result = (new QueryBuilder())
+            ->raw('FOR u IN Users FILTER u.email="test@test.com"')
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.email="test@test.com"', $result->query);
 
         //Todo: test bindings & collections
     }
 
-    /**
-     * collect clause.
-     * @test
-     */
-    public function collect_clause()
+    public function testCollectClause()
     {
-        $result = AQB::collect()->get();
+        $result = (new QueryBuilder())
+            ->collect()
+            ->get();
         self::assertEquals('COLLECT', $result->query);
 
-        $result = AQB::collect('doc', 'expression')->get();
-        self::assertEquals('COLLECT doc = @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->collect('doc', 'expression')
+            ->get();
+        self::assertEquals('COLLECT doc = @' . $result->getQueryId() . '_1', $result->query);
 
-        $result = AQB::for('u', 'Users')->collect('hometown', 'u.city')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->collect('hometown', 'u.city')
+            ->get();
         self::assertEquals('FOR u IN Users COLLECT hometown = u.city', $result->query);
     }
 
-    /**
-     * group clause.
-     * @test
-     */
-    public function group_clause()
+    public function testGroupClause()
     {
-        $result = AQB::group('groupsVariable')->get();
+        $result = (new QueryBuilder())
+            ->group('groupsVariable')
+            ->get();
         self::assertEquals('INTO groupsVariable', $result->query);
 
-        $result = AQB::group('groupsVariable', 'projectionExpression')->get();
-        self::assertEquals('INTO groupsVariable = @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->group('groupsVariable', 'projectionExpression')
+            ->get();
+        self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
 
-        $result = AQB::group('groupsVariable', '{ 
+        $result = (new QueryBuilder())
+            ->group('groupsVariable', '{ 
     "name" : u.name, 
     "isActive" : u.status == "active"
   }')->get();
-        self::assertEquals('INTO groupsVariable = @1_1', $result->query);
+        self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
     }
 
-    /**
-     * aggregate clause.
-     * @test
-     */
-    public function aggregate_clause()
+    public function testAggregateClause()
     {
-        $result = AQB::aggregate('variableName', 'aggregateExpression')->get();
-        self::assertEquals('AGGREGATE variableName = @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->aggregate('variableName', 'aggregateExpression')
+            ->get();
+        self::assertEquals('AGGREGATE variableName = @' . $result->getQueryId() . '_1', $result->query);
     }
 
-    /**
-     * keep clause.
-     * @test
-     */
-    public function keep_clause()
+    public function testKeepClause()
     {
-        $result = AQB::keep('variableName')->get();
+        $result = (new QueryBuilder())
+            ->keep('variableName')
+            ->get();
         self::assertEquals('KEEP variableName', $result->query);
     }
 
-    /**
-     * count clause.
-     * @test
-     */
-    public function count_clause()
+    public function testCountClause()
     {
-        $result = AQB::withCount('countVariableName')->get();
+        $result = (new QueryBuilder())
+            ->withCount('countVariableName')
+            ->get();
         self::assertEquals('WITH COUNT INTO countVariableName', $result->query);
     }
 
-    /**
-     * options clause.
-     * @test
-     */
-    public function options_clause()
+    public function testOptionsClause()
     {
-        $options = new stdClass();
+        $options = new \stdClass();
         $options->method = 'sorted';
-        $result = AQB::options($options)->get();
+        $result = (new QueryBuilder())
+            ->options($options)
+            ->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
 
         $options = ['method' => 'sorted'];
-        $result = AQB::options($options)->get();
+        $result = (new QueryBuilder())
+            ->options($options)
+            ->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
     }
 
-    /**
-     * 'for' clause syntax.
-     * @test
-     */
-    public function for_clause_syntax()
+    public function testForClauseSyntax()
     {
-        $result = AQB::for('u', 'users')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'users')
+            ->get();
         self::assertEquals('FOR u IN users', $result->query);
 
-        $result = AQB::for('u')->get();
+        $result = (new QueryBuilder())
+            ->for('u')
+            ->get();
         self::assertEquals('FOR u IN', $result->query);
 
-        $result = AQB::for(['v', 'e', 'p'], 'graph')->get();
+        $result = (new QueryBuilder())
+            ->for(['v', 'e', 'p'], 'graph')
+            ->get();
         self::assertEquals('FOR v, e, p IN graph', $result->query);
     }
 
-    /**
-     * filter clause syntax.
-     * @test
-     */
-    public function filter_clause_syntax()
+    public function testFilterSyntax()
     {
-        $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active', '==', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter('u.active', '==', 'true', 'OR')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active', '==', 'true', 'OR')
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter('u.active', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter('u.active')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active')
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.active == null', $result->query);
 
-        $result = AQB::for('u', 'Users')->filter([['u.active', '==', 'true'], ['u.age']])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter([['u.active', '==', 'true'], ['u.age']])
+            ->get();
         self::assertEquals('FOR u IN Users FILTER u.active == true AND u.age == null', $result->query);
     }
 
-    /**
-     * filters can use logical operators other than equals.
-     * @test
-     */
-    public function filtering_on_null_values_can_use_all_logical_operators()
+    public function testFilterOnNullValueCanUseAllLogicalOperators()
     {
-        $result = AQB::for('doc', 'documents')
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
             ->filter('doc.attribute', '!=')
             ->return('doc')
             ->get();
         self::assertEquals('FOR doc IN documents FILTER doc.attribute != null RETURN doc', $result->query);
 
-        $result = AQB::for('doc', 'documents')
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
             ->filter([['doc.attribute1', '!='], ['doc.attribute2', '!='], ['doc.attribute3', '!=']])
             ->return('doc')
             ->get();
-        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null AND doc.attribute3 != null RETURN doc', $result->query);
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null'
+            . ' AND doc.attribute3 != null RETURN doc',
+            $result->query
+        );
     }
 
-    /**
-     * filters are seperated by comparison operators.
-     * @test
-     */
-    public function filters_are_separated_by_comparison_operators()
+    public function testFiltersAreSeperatedByComparisonOperators()
     {
         $filter = [
             ['doc.attribute1', '!=', 'null', 'OR'],
             ['doc.attribute2', '!=', 'null', 'OR'],
             ['doc.attribute3', '!=', 'null', 'OR'],
         ];
-        $result = AQB::for('doc', 'documents')->filter($filter)->get();
-        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
+            $result->query
+        );
     }
 
-    /**
-     * filters are seperated by comparison operators.
-     * @test
-     */
-    public function filters_with_case_insensitive_logical_operators()
+    public function testFiltersWithCaseInsensitiveLogicalOperators()
     {
         $filter = [
             ['doc.attribute1', '!=', 'null', 'or'],
             ['doc.attribute2', '!=', 'null', 'Or'],
             ['doc.attribute3', '!=', 'null', 'OR'],
         ];
-        $result = AQB::for('doc', 'documents')->filter($filter)->get();
-        self::assertEquals('FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null', $result->query);
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
+            $result->query
+        );
     }
 
-    /**
-     * Search clause syntax.
-     * @test
-     */
-    public function search_clause_syntax()
+    public function testSearchClauseSyntax()
     {
-        $result = AQB::for('u', 'Users')->search('u.active', '==', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active', '==', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->search('u.active', '==', 'true', 'OR')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active', '==', 'true', 'OR')
+            ->get();
         self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->search('u.active', 'true')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active', 'true')
+            ->get();
         self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
 
-        $result = AQB::for('u', 'Users')->search('u.active')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active')
+            ->get();
         self::assertEquals('FOR u IN Users SEARCH u.active == null', $result->query);
 
-        $result = AQB::for('u', 'Users')->search([['u.active', '==', 'true'], ['u.age']])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search([['u.active', '==', 'true'], ['u.age']])
+            ->get();
         self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
     }
 
-    /**
-     * sort clause syntax.
-     * @test
-     */
-    public function sort_clause_syntax()
+    public function testSortSyntax()
     {
-        $result = AQB::for('u', 'Users')->sort('u.name', 'DESC')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort('u.name', 'DESC')
+            ->get();
         self::assertEquals('FOR u IN Users SORT u.name DESC', $result->query);
 
-        $result = AQB::sort('null')->get();
+        $result = (new QueryBuilder())
+            ->sort('null')
+            ->get();
         self::assertEquals('SORT null', $result->query);
 
-        $result = AQB::sort()->get();
+        $result = (new QueryBuilder())
+            ->sort()
+            ->get();
         self::assertEquals('SORT null', $result->query);
 
-        $result = AQB::for('u', 'Users')->sort(['u.name'])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort(['u.name'])
+            ->get();
         self::assertEquals('FOR u IN Users SORT u.name', $result->query);
 
-        $result = AQB::for('u', 'Users')->sort(['u.name', 'u.age'])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort(['u.name', 'u.age'])
+            ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age', $result->query);
 
-        $result = AQB::for('u', 'Users')->sort([['u.age', 'DESC']])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort([['u.age', 'DESC']])
+            ->get();
         self::assertEquals('FOR u IN Users SORT u.age DESC', $result->query);
 
-        $result = AQB::for('u', 'Users')->sort(['u.name', ['u.age', 'DESC']])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort(['u.name', ['u.age', 'DESC']])
+            ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age DESC', $result->query);
 
-        $result = AQB::for('u', 'Users')->sort(['u.name', 'DESC'])->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->sort(['u.name', 'DESC'])
+            ->get();
         self::assertNotEquals('FOR u IN Users SORT u.name DESC', $result->query);
     }
 
-    /**
-     * limit clause syntax.
-     * @test
-     */
-    public function limit_clause_syntax()
+    public function testLimitSyntax()
     {
-        $result = AQB::limit(4)->get();
+        $result = (new QueryBuilder())
+            ->limit(4)
+            ->get();
         self::assertEquals('LIMIT 4', $result->query);
 
-        $result = AQB::limit(4, 5)->get();
+        $result = (new QueryBuilder())
+            ->limit(4, 5)
+            ->get();
         self::assertEquals('LIMIT 4, 5', $result->query);
     }
 
-    /**
-     * 'return' clause Syntax.
-     * @test
-     */
-    public function return_clause_syntax()
+    public function testReturnSyntax()
     {
-        $result = AQB::return('NEW.key')->get();
+        $result = (new QueryBuilder())
+            ->return('NEW.key')
+            ->get();
         self::assertEquals('RETURN NEW.key', $result->query);
 
-        $result = AQB::return('u.name')->get();
-        self::assertEquals('RETURN @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->return('u.name')
+            ->get();
+        self::assertEquals('RETURN @' . $result->getQueryId() . '_1', $result->query);
 
-        $result = AQB::for('u', 'Users')->return('u.name')->get();
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->return('u.name')
+            ->get();
         self::assertEquals('FOR u IN Users RETURN u.name', $result->query);
 
-        $result = AQB::return('1 + 1')->get();
-        self::assertEquals('RETURN @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->return('1 + 1')
+            ->get();
+        self::assertEquals('RETURN @' . $result->getQueryId() . '_1', $result->query);
 
-        $result = AQB::return('1 + 1', true)->get();
-        self::assertEquals('RETURN DISTINCT @1_1', $result->query);
+        $result = (new QueryBuilder())
+            ->return('1 + 1', true)
+            ->get();
+        self::assertEquals('RETURN DISTINCT @' . $result->getQueryId() . '_1', $result->query);
     }
 }

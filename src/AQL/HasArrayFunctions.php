@@ -1,14 +1,15 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
 /**
  * Array AQL functions.
+ *
  * @see https://www.arangodb.com/docs/stable/aql/functions-array.html
  */
-trait hasArrayFunctions
+trait HasArrayFunctions
 {
     public function count($value)
     {
@@ -17,13 +18,17 @@ trait hasArrayFunctions
 
     /**
      * Get the number of unique elements.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#count_distinct
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function countDistinct($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('COUNT_DISTINCT', $arguments);
@@ -31,13 +36,17 @@ trait hasArrayFunctions
 
     /**
      * Get the first element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#first
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function first($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('FIRST', $arguments);
@@ -45,13 +54,17 @@ trait hasArrayFunctions
 
     /**
      * Get the last element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#last
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function last($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
 
         return new FunctionExpression('LAST', $arguments);
@@ -61,10 +74,13 @@ trait hasArrayFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      *
      * @param $value
+     *
      * @return FunctionExpression
      */
     public function length($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value);
 
         return new FunctionExpression('LENGTH', $arguments);

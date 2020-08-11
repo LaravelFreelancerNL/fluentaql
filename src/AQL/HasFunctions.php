@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -9,13 +9,13 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  *
  * AQL Function API calls.
  */
-trait hasFunctions
+trait HasFunctions
 {
-    use hasArrayFunctions,
-        hasDateFunctions,
-        hasGeoFunctions,
-        hasMiscellaneousFunctions,
-        hasNumericFunctions;
+    use HasArrayFunctions;
+    use HasDateFunctions;
+    use HasGeoFunctions;
+    use HasMiscellaneousFunctions;
+    use HasNumericFunctions;
 
     protected function function($functionName, ...$parameters)
     {

@@ -1,5 +1,7 @@
 <?php
 
+namespace LaravelFreelancerNL\FluentAQL\Tests;
+
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 

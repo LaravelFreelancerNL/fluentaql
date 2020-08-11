@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -8,12 +8,14 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Trait hasNumericFunctions.
  *
  * Date AQL functions.
+ *
  * @see https://www.arangodb.com/docs/stable/aql/functions-date.html
  */
-trait hasDateFunctions
+trait HasDateFunctions
 {
     /**
      * Get the current unix time as numeric timestamp.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_now
      *
      * @return FunctionExpression
@@ -55,10 +57,12 @@ trait hasDateFunctions
 
     protected function processDateString($dateString)
     {
+        if (is_array($dateString) && !empty($dateString)) {
+            $dateString[0] = $this->normalizeArgument($dateString[0], ['Number', 'Function', 'Object']);
+        }
+
         if (empty($dateString)) {
             $dateString[] = time();
-        } else {
-            $dateString[0] = $this->normalizeArgument($dateString[0], ['Number', 'Function', 'Object']);
         }
 
         $elements = count($dateString);
@@ -73,9 +77,11 @@ trait hasDateFunctions
 
     /**
      * Get the year value of a date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_year
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateYear($date)
@@ -87,9 +93,11 @@ trait hasDateFunctions
 
     /**
      * Get the month value of a date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_month
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateMonth($date)
@@ -101,9 +109,11 @@ trait hasDateFunctions
 
     /**
      * Get the day value of a date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_day
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateDay($date)
@@ -115,9 +125,11 @@ trait hasDateFunctions
 
     /**
      * Get the day value of a date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_hour
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateHour($date)
@@ -129,9 +141,11 @@ trait hasDateFunctions
 
     /**
      * Get the minute value of a date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_minute
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateMinute($date)
@@ -143,9 +157,11 @@ trait hasDateFunctions
 
     /**
      * Get the second of the date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_second
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateSecond($date)
@@ -157,9 +173,11 @@ trait hasDateFunctions
 
     /**
      * Get the millisecond of the date.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_millisecond
      *
      * @param  $date
+     *
      * @return FunctionExpression
      */
     public function dateMillisecond($date)

@@ -21,7 +21,8 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     /**
      * FunctionExpression constructor.
-     * @param string $functionName
+     *
+     * @param string            $functionName
      * @param array|string|null $parameters
      */
     public function __construct(string $functionName, $parameters = [])
@@ -41,15 +42,15 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     public function compile()
     {
-        $output = strtoupper($this->functionName).'(';
+        $output = strtoupper($this->functionName) . '(';
         $implosion = '';
         foreach ($this->parameters as $parameter) {
-            $implosion .= ', '.(string) $parameter;
+            $implosion .= ', ' . (string) $parameter;
         }
         if ($implosion != '') {
             $output .= ltrim($implosion, ', ');
         }
 
-        return $output.')';
+        return $output . ')';
     }
 }

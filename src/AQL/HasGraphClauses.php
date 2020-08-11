@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
@@ -13,11 +13,12 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  * Trait hasGraphClauses
  * API calls to add clause commands to the builder.
  */
-trait hasGraphClauses
+trait HasGraphClauses
 {
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
      * This is required in clusters.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/operations-with.html
      *
      * @return QueryBuilder
@@ -38,16 +39,24 @@ trait hasGraphClauses
     /**
      * Traverse a graph
      * Must be preceded by a FOR clause.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $fromVertex
      * @param string $inDirection
-     * @param null $toVertex
-     * @param bool $kShortestPaths
+     * @param null   $toVertex
+     * @param bool   $kShortestPaths
+     *
      * @return QueryBuilder
      */
-    public function traverse($fromVertex, $inDirection = 'outbound', $toVertex = null, $kShortestPaths = false): QueryBuilder
-    {
+    public function traverse(
+        $fromVertex,
+        $inDirection = 'outbound',
+        $toVertex = null,
+        $kShortestPaths = false
+    ): QueryBuilder {
         $fromVertex = $this->normalizeArgument($fromVertex, 'Id');
         $inDirection = $this->normalizeArgument($inDirection, 'Direction');
 
@@ -62,11 +71,13 @@ trait hasGraphClauses
 
     /**
      * Shortest path alias for traverse.
+     *
      * @link arangodb.com/docs/stable/aql/graphs-shortest-path.html
      *
      * @param $fromVertex
      * @param string $inDirection
      * @param string $toVertex
+     *
      * @return QueryBuilder
      */
     public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
@@ -78,11 +89,13 @@ trait hasGraphClauses
 
     /**
      * K Shortest Paths alias for traverse.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-kshortest-paths.html
      *
      * @param $fromVertex
      * @param string $inDirection
      * @param string $toVertex
+     *
      * @return QueryBuilder
      */
     public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
@@ -95,9 +108,11 @@ trait hasGraphClauses
     /**
      * Named Graph clause
      * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string $graphName
+     *
      * @return QueryBuilder
      */
     public function graph(string $graphName): QueryBuilder
@@ -113,10 +128,12 @@ trait hasGraphClauses
      * EdgeCollections Clause for unnamed graphs
      * Generates a list of edge collections to traverse through.
      * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @param string|array $edgeCollection
-     * @param string|null $direction
+     * @param string|null  $direction
+     *
      * @return QueryBuilder
      */
     public function edgeCollections($edgeCollection): QueryBuilder
@@ -142,12 +159,14 @@ trait hasGraphClauses
 
     /**
      * Prune a graph traversal.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
      *
      * @param string $attribute
      * @param string $comparisonOperator
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $logicalOperator
+     *
      * @return QueryBuilder
      */
     public function prune($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder

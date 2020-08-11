@@ -7,6 +7,14 @@ class ReturnClause extends Clause
     protected $expression;
     protected $distinct;
 
+    /**
+     * ReturnClause constructor.
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     *
+     * @param $expression
+     * @param bool $distinct
+     */
     public function __construct($expression, $distinct = false)
     {
         parent::__construct();
@@ -22,6 +30,6 @@ class ReturnClause extends Clause
             $output .= ' DISTINCT';
         }
 
-        return $output.' '.$this->expression;
+        return $output . ' ' . $this->expression;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\API;
+namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 
@@ -8,19 +8,24 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  * Trait hasNumericFunctions.
  *
  * Numeric AQL functions.
+ *
  * @see https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html
  */
-trait hasNumericFunctions
+trait HasNumericFunctions
 {
     /**
      * Return the average (arithmetic mean) of the values in array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average
      *
      * @param string|array $value
+     *
      * @return FunctionExpression
      */
     public function average($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('AVERAGE', $arguments);
@@ -33,13 +38,17 @@ trait hasNumericFunctions
 
     /**
      * Return the largest element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#max
      *
      * @param string|array $value
+     *
      * @return FunctionExpression
      */
     public function max($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MAX', $arguments);
@@ -47,13 +56,17 @@ trait hasNumericFunctions
 
     /**
      * Return the smallest element of an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min
      *
      * @param string|array $value
+     *
      * @return FunctionExpression
      */
     public function min($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('MIN', $arguments);
@@ -72,13 +85,17 @@ trait hasNumericFunctions
 
     /**
      * Return the sum of the values in an array.
+     *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum
      *
      * @param string|array $value
+     *
      * @return FunctionExpression
      */
     public function sum($value)
     {
+        $arguments = [];
+
         $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
 
         return new FunctionExpression('SUM', $arguments);
