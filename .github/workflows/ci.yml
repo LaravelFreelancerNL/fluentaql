@@ -21,9 +21,6 @@ jobs:
           ini-values: post_max_size=256M, short_open_tag=On
           coverage: xdebug
 
-      - name: Composer normalize
-        run: composer normalize
-
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
 
