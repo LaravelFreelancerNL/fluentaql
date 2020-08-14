@@ -3,6 +3,7 @@
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class FilterClause extends Clause
 {
@@ -15,33 +16,35 @@ class FilterClause extends Clause
      *
      * @param array $predicates
      */
-    public function __construct($predicates)
+    public function __construct(array $predicates)
     {
         parent::__construct();
 
         $this->predicates = $predicates;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder)
     {
-        $compiledPredicates = $this->compilePredicates($this->predicates);
+        $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
+
+        $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);
 
         return 'FILTER ' . rtrim($compiledPredicates);
     }
 
-    protected function compilePredicates($predicates, $compiledPredicates = '')
+    protected function compilePredicates(QueryBuilder $queryBuilder, $predicates, $compiledPredicates = '')
     {
         $currentLogicalOperator = $this->defaultLogicalOperator;
         foreach ($predicates as $predicate) {
             if ($predicate instanceof PredicateExpression) {
-                if ($compiledPredicates != '' && $compiledPredicates !== '(') {
+                if ($compiledPredicates != '') {
                     $compiledPredicates .= ' ' . $predicate->logicalOperator . ' ';
                 }
-                $compiledPredicates .= $predicate;
+                $compiledPredicates .= $predicate->compile($queryBuilder);
             }
 
             if (is_array($predicate)) {
-                $compiledPredicates = $this->compilePredicates($predicate, $compiledPredicates);
+                $compiledPredicates = $this->compilePredicates($queryBuilder, $predicate, $compiledPredicates);
             }
         }
 

@@ -47,9 +47,9 @@ class QueryBuilder
     public $collections;
 
     /**
-     * List of commands to be compiled into a query.
+     * List of clauses to be compiled into a query.
      */
-    protected $commands = [];
+    protected $clauses = [];
 
     /**
      * Registry of variable names used in this query.
@@ -71,8 +71,6 @@ class QueryBuilder
      */
     protected $queryCount = 1;
 
-    protected $isSubQuery = false;
-
     public function __construct()
     {
         $this->grammar = new Grammar();
@@ -80,63 +78,64 @@ class QueryBuilder
         $this->queryId = spl_object_id($this);
     }
 
-    protected function setSubQuery()
+    public function addClauseToQuery(string $clause)
     {
-        $this->isSubQuery = true;
-
-        return $this;
+        if ($this->query != null) {
+            $this->query .= ' ';
+        }
+        $this->query .= $clause;
     }
 
     /**
-     * Add an AQL command (raw AQL and clauses.
+     * Add an AQL clause (raw AQL and clauses.
      *
      * @param Clause|QueryBuilder $clause
      */
-    public function addCommand($clause)
+    public function addClause($clause)
     {
-        $this->commands[] = $clause;
+        $this->clauses[] = $clause;
     }
 
     /**
-     * Get the command list.
+     * Get the clause list.
      *
      * @return mixed
      */
-    public function getCommands()
+    public function getClauses()
     {
-        return $this->commands;
+        return $this->clauses;
     }
 
     /**
-     * Get the last or a specific command.
+     * Get the last or a specific clause.
      *
      * @param int|null $index
      *
      * @return mixed
      */
-    public function getCommand(int $index = null)
+    public function getClause(int $index = null)
     {
         if ($index === null) {
-            return end($this->commands);
+            return end($this->clauses);
         }
 
-        return $this->commands[$index];
+        return $this->clauses[$index];
     }
 
     /**
-     * Remove the last or a specified command.
+     * Remove the last or a specified clause.
      *
      * @param null $index
      *
      * @return bool
      */
-    public function removeCommand($index = null): bool
+    public function removeClause($index = null): bool
     {
         if ($index === null) {
-            return (array_pop($this->commands)) ? true : false;
+            return (array_pop($this->clauses)) ? true : false;
         }
-        if (isset($this->commands[$index])) {
-            unset($this->commands[$index]);
+        if (isset($this->clauses[$index])) {
+            unset($this->clauses[$index]);
 
             return true;
         }
@@ -145,11 +144,11 @@ class QueryBuilder
     }
 
     /**
-     * Clear all commands.
+     * Clear all clauses.
      */
-    public function clearCommands()
+    public function clearClauses()
     {
-        $this->commands = [];
+        $this->clauses = [];
     }
 
     /**
@@ -172,13 +171,20 @@ class QueryBuilder
     /**
      * Register variables on declaration for later data normalization.
      *
-     * @param string $variableName
+     * @param string|array $variableName
      *
      * @return QueryBuilder
      */
-    protected function registerVariable(string $variableName): self
+    public function registerVariable($variableName): self
     {
-        $this->variables[$variableName] = $variableName;
+        if (is_object($variableName)) {
+            $variableName = (string) $variableName;
+        }
+        if (is_string($variableName)) {
+            $variableName = [$variableName];
+        }
+
+        $this->variables = array_unique(array_merge($this->variables, $variableName));
 
         return $this;
     }
@@ -216,31 +222,16 @@ class QueryBuilder
     /**
      * Compile the query with its bindings and collection list.
      *
+     * @param  QueryBuilder|null  $parentQueryBuilder
      * @return mixed
      */
     public function compile(): self
     {
         $this->query = '';
-
-        foreach ($this->commands as $command) {
-            $result = $command->compile();
-            $this->query .= ' ' . $result;
-
-            if ($command instanceof self) {
-                // Extract binds
-                $this->binds = array_unique(array_merge($this->binds, $command->binds));
-
-                // Extract collections
-                foreach ($command->collections as $mode) {
-                    $this->registerCollections($command->collections[$mode], $mode);
-                }
-            }
+        foreach ($this->clauses as $clause) {
+            $this->query .= ' ' . $clause->compile($this);
         }
         $this->query = trim($this->query);
-
-        if ($this->isSubQuery) {
-            $this->query = '(' . $this->query . ')';
-        }
 
         return $this;
     }
@@ -279,5 +270,10 @@ class QueryBuilder
     public function wrap($value)
     {
         return $this->grammar->wrap($value);
+    }
+
+    public function getVariables()
+    {
+        return $this->variables;
     }
 }

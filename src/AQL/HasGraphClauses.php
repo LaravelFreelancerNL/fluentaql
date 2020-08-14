@@ -31,7 +31,7 @@ trait HasGraphClauses
             $collections[$key] = $this->normalizeArgument($collection, 'Collection');
         }
 
-        $this->addCommand(new WithClause($collections));
+        $this->addClause(new WithClause($collections));
 
         return $this;
     }
@@ -64,7 +64,7 @@ trait HasGraphClauses
             $toVertex = $this->normalizeArgument($toVertex, 'Id');
         }
 
-        $this->addCommand(new TraverseClause($fromVertex, $inDirection, $toVertex, $kShortestPaths));
+        $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex, $kShortestPaths));
 
         return $this;
     }
@@ -119,7 +119,7 @@ trait HasGraphClauses
     {
         $graphName = $this->normalizeArgument($graphName, 'Graph');
 
-        $this->addCommand(new GraphClause($graphName));
+        $this->addClause(new GraphClause($graphName));
 
         return $this;
     }
@@ -152,7 +152,7 @@ trait HasGraphClauses
             }, $edgeCollection);
         }
 
-        $this->addCommand(new EdgeCollectionsClause($collections));
+        $this->addClause(new EdgeCollectionsClause($collections));
 
         return $this;
     }
@@ -178,7 +178,7 @@ trait HasGraphClauses
 
         $predicates = $this->normalizePredicates($attribute);
 
-        $this->addCommand(new PruneClause($predicates));
+        $this->addClause(new PruneClause($predicates));
 
         return $this;
     }

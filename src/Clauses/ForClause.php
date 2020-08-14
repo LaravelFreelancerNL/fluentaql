@@ -3,6 +3,7 @@
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ForClause extends Clause
 {
@@ -13,26 +14,32 @@ class ForClause extends Clause
     /**
      * ForClause constructor.
      *
-     * @param array               $variableName
-     * @param ExpressionInterface $in
+     * @param $variables
+     * @param  ExpressionInterface  $in
      */
-    public function __construct($variableName, $in = null)
+    public function __construct($variables, $in = null)
     {
         parent::__construct();
 
-        $this->variables = $variableName;
+        $this->variables = $variables;
 
         $this->in = $in;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder)
     {
+        foreach ($this->variables  as $key => $value) {
+            $this->variables [$key] = $queryBuilder->normalizeArgument($value, 'Variable');
+            $queryBuilder->registerVariable($this->variables [$key]);
+        }
         $variableExpression = implode(', ', $this->variables);
 
-        $inExpression = (string) $this->in;
-        if (is_array($this->in)) {
-            $inExpression = '[' . implode(', ', $this->in) . ']';
+        if ($this->in !== null) {
+            $this->in = $queryBuilder
+                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'Bind'])
+                ->compile($queryBuilder);
         }
+        $inExpression = (string) $this->in;
 
         return "FOR {$variableExpression} IN {$inExpression}";
     }

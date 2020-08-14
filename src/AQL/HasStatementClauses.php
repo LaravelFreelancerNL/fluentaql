@@ -28,12 +28,7 @@ trait HasStatementClauses
      */
     public function let($variableName, $expression)
     {
-        $variableName = $this->normalizeArgument($variableName, 'Variable');
-        $this->registerVariable($variableName);
-
-        $expression = $this->normalizeArgument($expression, ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']);
-
-        $this->addCommand(new LetClause($variableName, $expression));
+        $this->addClause(new LetClause($variableName, $expression));
 
         return $this;
     }
@@ -55,7 +50,7 @@ trait HasStatementClauses
         $this->registerCollections($collection);
         $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
 
-        $this->addCommand(new InsertClause($document, $collection));
+        $this->addClause(new InsertClause($document, $collection));
 
         return $this;
     }
@@ -78,7 +73,7 @@ trait HasStatementClauses
         $this->registerCollections($collection);
         $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
 
-        $this->addCommand(new UpdateClause($document, $with, $collection));
+        $this->addClause(new UpdateClause($document, $with, $collection));
 
         return $this;
     }
@@ -101,7 +96,7 @@ trait HasStatementClauses
         $this->registerCollections($collection);
         $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
 
-        $this->addCommand(new ReplaceClause($document, $with, $collection));
+        $this->addClause(new ReplaceClause($document, $with, $collection));
 
         return $this;
     }
@@ -129,7 +124,7 @@ trait HasStatementClauses
         $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
         $this->registerCollections($collection);
 
-        $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
+        $this->addClause(new UpsertClause($search, $insert, $with, $collection, $replace));
 
         return $this;
     }
@@ -150,7 +145,7 @@ trait HasStatementClauses
         $this->registerCollections($collection);
         $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
 
-        $this->addCommand(new RemoveClause($document, $collection));
+        $this->addClause(new RemoveClause($document, $collection));
 
         return $this;
     }

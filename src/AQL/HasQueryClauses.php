@@ -46,7 +46,7 @@ trait HasQueryClauses
             }
         }
 
-        $this->addCommand(new RawClause($aql));
+        $this->addClause(new RawClause($aql));
 
         return $this;
     }
@@ -55,7 +55,7 @@ trait HasQueryClauses
     {
         $options = $this->normalizeArgument($options, 'Object');
 
-        $this->addCommand(new OptionsClause($options));
+        $this->addClause(new OptionsClause($options));
 
         return $this;
     }
@@ -76,16 +76,7 @@ trait HasQueryClauses
             $variableName = [$variableName];
         }
 
-        foreach ($variableName as $key => $value) {
-            $variableName[$key] = $this->normalizeArgument($value, 'Variable');
-            $this->registerVariable($variableName[$key]);
-        }
-
-        if ($in !== null) {
-            $in = $this->normalizeArgument($in, ['Collection', 'Range', 'List', 'Query']);
-        }
-
-        $this->addCommand(new ForClause($variableName, $in));
+        $this->addClause(new ForClause($variableName, $in));
 
         return $this;
     }
@@ -95,27 +86,26 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-filter.html
      *
-     * @param string $attribute
-     * @param string $comparisonOperator
-     * @param mixed  $value
+     * @param mixed $leftOperand
+     * @param string|array|null $comparisonOperator
+     * @param mixed  $rightOperand
      * @param string $logicalOperator
      *
      * @return QueryBuilder
      */
     public function filter(
-        $attribute,
-        $comparisonOperator = '==',
-        $value = null,
-        $logicalOperator = 'AND'
+        $leftOperand,
+        $comparisonOperator = null,
+        $rightOperand = null,
+        $logicalOperator = null
     ): QueryBuilder {
-        //create array of predicates if $leftOperand isn't an array already
-        if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
+
+        $predicates = $leftOperand;
+        if (is_string($comparisonOperator)) {
+            $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $predicates = $this->normalizePredicates($attribute);
-
-        $this->addCommand(new FilterClause($predicates));
+        $this->addClause(new FilterClause($predicates));
 
         return $this;
     }
@@ -145,7 +135,7 @@ trait HasQueryClauses
 
         $predicates = $this->normalizePredicates($attribute);
 
-        $this->addCommand(new SearchClause($predicates));
+        $this->addClause(new SearchClause($predicates));
 
         return $this;
     }
@@ -169,7 +159,7 @@ trait HasQueryClauses
             $expression = $this->normalizeArgument($expression, ['Reference', 'Function', 'Query', 'Bind']);
         }
 
-        $this->addCommand(new CollectClause($variableName, $expression));
+        $this->addClause(new CollectClause($variableName, $expression));
 
         return $this;
     }
@@ -197,7 +187,7 @@ trait HasQueryClauses
             );
         }
 
-        $this->addCommand(new GroupClause($groupsVariable, $projectionExpression));
+        $this->addClause(new GroupClause($groupsVariable, $projectionExpression));
 
         return $this;
     }
@@ -217,7 +207,7 @@ trait HasQueryClauses
         $keepVariable = $this->normalizeArgument($keepVariable, 'Variable');
         $this->registerVariable($keepVariable);
 
-        $this->addCommand(new KeepClause($keepVariable));
+        $this->addClause(new KeepClause($keepVariable));
 
         return $this;
     }
@@ -238,7 +228,7 @@ trait HasQueryClauses
         $countVariableName = $this->normalizeArgument($countVariableName, 'Variable');
         $this->registerVariable($countVariableName);
 
-        $this->addCommand(new WithCountClause($countVariableName));
+        $this->addClause(new WithCountClause($countVariableName));
 
         return $this;
     }
@@ -264,7 +254,7 @@ trait HasQueryClauses
             ['Reference', 'Function', 'Query', 'Bind']
         );
 
-        $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
+        $this->addClause(new AggregateClause($variableName, $aggregateExpression));
 
         return $this;
     }
@@ -295,7 +285,7 @@ trait HasQueryClauses
             }, $sortBy);
         }
 
-        $this->addCommand(new SortClause($sortExpressions));
+        $this->addClause(new SortClause($sortExpressions));
 
         return $this;
     }
@@ -316,7 +306,7 @@ trait HasQueryClauses
             $count = (int) $count;
         }
 
-        $this->addCommand(new LimitClause($offsetOrCount, $count));
+        $this->addClause(new LimitClause($offsetOrCount, $count));
 
         return $this;
     }
@@ -335,12 +325,7 @@ trait HasQueryClauses
      */
     public function return($expression, $distinct = false): QueryBuilder
     {
-        $expression = $this->normalizeArgument(
-            $expression,
-            ['Boolean', 'Object', 'List', 'Function', 'Variable', 'Reference', 'Query', 'Bind']
-        );
-
-        $this->addCommand(new ReturnClause($expression, $distinct));
+        $this->addClause(new ReturnClause($expression, $distinct));
 
         return $this;
     }

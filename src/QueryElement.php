@@ -7,9 +7,10 @@ abstract class QueryElement
     /**
      * Compile expression output.
      *
+     * @param  QueryBuilder  $queryBuilder
      * @return string
      */
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder)
     {
     }
 

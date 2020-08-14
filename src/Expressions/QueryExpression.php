@@ -15,16 +15,24 @@ class QueryExpression extends Expression implements ExpressionInterface
     public function __construct(QueryBuilder $expression)
     {
         parent::__construct($expression);
-
-        //Query Expressions are by definition subqueries.
-        $this->expression->setSubQuery();
     }
 
-    public function compile()
+    public function compile(QueryBuilder $parentQueryBuilder)
     {
+        $this->expression->registerVariable($parentQueryBuilder->getVariables());
+
         $this->expression = $this->expression->compile();
 
-        return $this->expression;
+        $parentQueryBuilder->binds = array_unique(array_merge($parentQueryBuilder->binds, $this->expression->binds));
+
+        // Extract collections
+        if (isset($this->expression->collections )) {
+            foreach ($this->expression->collections as $collection => $mode) {
+                $parentQueryBuilder->registerCollections($this->expression->collections[$collection], $mode);
+            }
+        }
+
+        return '(' . $this->expression . ')';
     }
 
     public function __toString()

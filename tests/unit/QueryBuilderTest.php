@@ -13,12 +13,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class QueryBuilderTest extends TestCase
 {
-    public function testFacade()
-    {
-        $aqb = (new QueryBuilder())->get();
-
-        self::assertInstanceOf(QueryBuilder::class, $aqb);
-    }
 
     public function testGet()
     {
@@ -38,10 +32,10 @@ class QueryBuilderTest extends TestCase
     public function testClearCommands()
     {
         $queryBuilder = (new QueryBuilder())->for('u', 'users')->return('u');
-        self::assertCount(2, $queryBuilder->getCommands());
+        self::assertCount(2, $queryBuilder->getClauses());
 
-        $queryBuilder->clearCommands();
-        self::assertCount(0, $queryBuilder->getCommands());
+        $queryBuilder->clearClauses();
+        self::assertCount(0, $queryBuilder->getClauses());
     }
 
     public function testToAql()
