@@ -25,6 +25,7 @@ class FilterClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder)
     {
+
         $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
 
         $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);

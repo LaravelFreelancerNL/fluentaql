@@ -23,16 +23,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasQueryClauses
 {
-    /**
-     * Use with extreme caution, as no safety checks are done at all!
-     * You HAVE TO prepare user input yourself or be open to injection attacks.
-     *
-     * @param string     $aql
-     * @param null       $binds
-     * @param array|null $collections
-     *
-     * @return QueryBuilder
-     */
+
     public function raw(string $aql, $binds = null, $collections = null): QueryBuilder
     {
         if (is_array($binds)) {
@@ -51,14 +42,6 @@ trait HasQueryClauses
         return $this;
     }
 
-    public function options($options): QueryBuilder
-    {
-        $options = $this->normalizeArgument($options, 'Object');
-
-        $this->addClause(new OptionsClause($options));
-
-        return $this;
-    }
 
     /**
      * Create a for clause.
@@ -115,25 +98,24 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-search.html
      *
-     * @param string $attribute
-     * @param string $comparisonOperator
-     * @param mixed  $value
-     * @param string $logicalOperator
+     * @param $leftOperand
+     * @param  string  $comparisonOperator
+     * @param  null  $rightOperand
+     * @param  string  $logicalOperator
      *
      * @return QueryBuilder
      */
     public function search(
-        $attribute,
-        $comparisonOperator = '==',
-        $value = null,
-        $logicalOperator = 'AND'
+        $leftOperand,
+        $comparisonOperator = null,
+        $rightOperand = null,
+        $logicalOperator = null
     ): QueryBuilder {
-        //create array of predicates if $leftOperand isn't an array already
-        if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
-        }
 
-        $predicates = $this->normalizePredicates($attribute);
+        $predicates = $leftOperand;
+        if (is_string($comparisonOperator)) {
+            $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
+        }
 
         $this->addClause(new SearchClause($predicates));
 
@@ -152,12 +134,6 @@ trait HasQueryClauses
      */
     public function collect($variableName = null, $expression = null): QueryBuilder
     {
-        if (isset($variableName)) {
-            $variableName = $this->normalizeArgument($variableName, 'Variable');
-        }
-        if (isset($expression)) {
-            $expression = $this->normalizeArgument($expression, ['Reference', 'Function', 'Query', 'Bind']);
-        }
 
         $this->addClause(new CollectClause($variableName, $expression));
 
@@ -177,16 +153,6 @@ trait HasQueryClauses
      */
     public function group($groupsVariable, $projectionExpression = null): QueryBuilder
     {
-        $groupsVariable = $this->normalizeArgument($groupsVariable, 'Variable');
-        $this->registerVariable($groupsVariable);
-
-        if (isset($projectionExpression)) {
-            $projectionExpression = $this->normalizeArgument(
-                $projectionExpression,
-                ['Reference', 'Object', 'Function', 'Query', 'Bind']
-            );
-        }
-
         $this->addClause(new GroupClause($groupsVariable, $projectionExpression));
 
         return $this;
@@ -204,9 +170,6 @@ trait HasQueryClauses
      */
     public function keep($keepVariable): QueryBuilder
     {
-        $keepVariable = $this->normalizeArgument($keepVariable, 'Variable');
-        $this->registerVariable($keepVariable);
-
         $this->addClause(new KeepClause($keepVariable));
 
         return $this;
@@ -225,9 +188,6 @@ trait HasQueryClauses
      */
     public function withCount($countVariableName): QueryBuilder
     {
-        $countVariableName = $this->normalizeArgument($countVariableName, 'Variable');
-        $this->registerVariable($countVariableName);
-
         $this->addClause(new WithCountClause($countVariableName));
 
         return $this;
@@ -246,14 +206,6 @@ trait HasQueryClauses
      */
     public function aggregate($variableName, $aggregateExpression): QueryBuilder
     {
-        $variableName = $this->normalizeArgument($variableName, 'Variable');
-        $this->registerVariable($variableName);
-
-        $aggregateExpression = $this->normalizeArgument(
-            $aggregateExpression,
-            ['Reference', 'Function', 'Query', 'Bind']
-        );
-
         $this->addClause(new AggregateClause($variableName, $aggregateExpression));
 
         return $this;
@@ -271,21 +223,7 @@ trait HasQueryClauses
      */
     public function sort($sortBy = null, $direction = null): QueryBuilder
     {
-        $sortExpressions = [];
-
-        //normalize string|null $by and $direction
-        if (is_string($sortBy) || $sortBy == null) {
-            $sortExpressions[] = $this->normalizeSortExpression($sortBy, $direction);
-        }
-
-        if (is_array($sortBy)) {
-            //Wandel door de array
-            $sortExpressions = array_map(function ($expression) {
-                return $this->normalizeSortExpression($expression);
-            }, $sortBy);
-        }
-
-        $this->addClause(new SortClause($sortExpressions));
+        $this->addClause(new SortClause($sortBy, $direction));
 
         return $this;
     }
@@ -302,10 +240,6 @@ trait HasQueryClauses
      */
     public function limit(int $offsetOrCount, int $count = null)
     {
-        if ($count !== null) {
-            $count = (int) $count;
-        }
-
         $this->addClause(new LimitClause($offsetOrCount, $count));
 
         return $this;
@@ -329,4 +263,12 @@ trait HasQueryClauses
 
         return $this;
     }
+
+    public function options($options): QueryBuilder
+    {
+        $this->addClause(new OptionsClause($options));
+
+        return $this;
+    }
+
 }

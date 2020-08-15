@@ -2,15 +2,19 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class SearchClause extends FilterClause
 {
     protected $predicates = [];
 
     protected $defaultLogicalOperator = 'AND';
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder)
     {
-        $compiledPredicates = $this->compilePredicates($this->predicates);
+        $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
+
+        $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);
 
         return 'SEARCH ' . rtrim($compiledPredicates);
     }

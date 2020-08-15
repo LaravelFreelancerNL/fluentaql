@@ -101,7 +101,7 @@ trait NormalizesExpressions
         return $argument;
     }
 
-    protected function normalizeSortExpression($sortExpression = null, $direction = null): array
+    public function normalizeSortExpression($sortExpression = null, $direction = null): array
     {
         if (is_string($sortExpression)) {
             $sortExpression = [$sortExpression];
@@ -184,7 +184,8 @@ trait NormalizesExpressions
         }
 
         $logicalOperator = 'AND';
-        if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[1])) {
+
+        if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
             $logicalOperator = $predicate[3];
         }
 

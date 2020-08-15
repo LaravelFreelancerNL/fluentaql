@@ -2,15 +2,12 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class RawClause extends Clause
 {
     protected $aql;
 
-    /**
-     * RawClause constructor.
-     *
-     * @param string $aql
-     */
     public function __construct(string $aql)
     {
         parent::__construct();
@@ -18,12 +15,7 @@ class RawClause extends Clause
         $this->aql = $aql;
     }
 
-    /**
-     * Generate output.
-     *
-     * @return string
-     */
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
         return (string) $this->aql;
     }

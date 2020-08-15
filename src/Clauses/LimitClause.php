@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class LimitClause extends Clause
 {
     protected $count;
@@ -11,10 +13,10 @@ class LimitClause extends Clause
     /**
      * ForClause constructor.
      *
-     * @param int      $offsetOrCount
-     * @param int|null $count
+     * @param mixed      $offsetOrCount
+     * @param mixed $count
      */
-    public function __construct(int $offsetOrCount, int $count = null)
+    public function __construct($offsetOrCount, $count = null)
     {
         if ($count === null) {
             $this->count = $offsetOrCount;
@@ -26,13 +28,19 @@ class LimitClause extends Clause
         }
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder)
     {
+        $this->count = $queryBuilder->normalizeArgument($this->count, ['Number', 'Reference', 'Query', 'Bind']);
+
+
+
         $output = 'LIMIT ';
         if ($this->offset !== null) {
-            $output .= $this->offset . ', ';
+            $this->offset = $queryBuilder->normalizeArgument($this->offset, ['Number', 'Reference', 'Query', 'Bind']);
+
+            $output .= $this->offset->compile($queryBuilder) . ', ';
         }
 
-        return $output . $this->count;
+        return $output . $this->count->compile($queryBuilder);
     }
 }
