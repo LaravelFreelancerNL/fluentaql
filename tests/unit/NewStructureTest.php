@@ -219,11 +219,6 @@ class NewStructureTest extends TestCase
 
     public function testSubQueryWithManyToManyJoin()
     {
-//        FOR b IN books " +
-//........>"  LET a = (FOR x IN b.authors " +
-//........>"             FOR a IN authors FILTER x == a._id RETURN a) " +
-//........>"   RETURN { book: b, authors: a }"
-//
         $subQuery = (new QueryBuilder())
             ->for('x', 'b.authors')
             ->for('a', 'authors')
@@ -239,6 +234,28 @@ class NewStructureTest extends TestCase
 
         self::assertEquals(
             'FOR b IN books LET a = (FOR x IN b.authors FOR a IN authors FILTER x == a._id RETURN a)'
+            . ' RETURN {"book":b,"authors":a}'
+            , $result->query
+        );
+    }
+
+    public function testSubQueryWithFunction()
+    {
+        $subQuery = (new QueryBuilder())
+            ->for('x', 'b.authors')
+            ->for('a', 'authors')
+            ->filter('x', '==', 'a._id')
+            ->return('a');
+
+        $result = (new QueryBuilder());
+        $result->for('b', 'books')
+            ->let('a', $result->first($subQuery))
+            ->return(['book' => 'b', 'authors' => 'a'])
+            ->get();
+
+
+        self::assertEquals(
+            'FOR b IN books LET a = FIRST((FOR x IN b.authors FOR a IN authors FILTER x == a._id RETURN a))'
             . ' RETURN {"book":b,"authors":a}'
             , $result->query
         );

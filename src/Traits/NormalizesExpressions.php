@@ -24,6 +24,12 @@ trait NormalizesExpressions
      */
     protected $grammar;
 
+    /**
+     * @param $argument
+     * @param  array|null  $allowedExpressionTypes
+     * @return Expression
+     * @throws ExpressionTypeException
+     */
     public function normalizeArgument($argument, $allowedExpressionTypes = null)
     {
         if ($argument instanceof Expression) {

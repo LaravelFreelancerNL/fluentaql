@@ -27,11 +27,7 @@ trait HasArrayFunctions
      */
     public function countDistinct($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
-
-        return new FunctionExpression('COUNT_DISTINCT', $arguments);
+         return new FunctionExpression('COUNT_DISTINCT', [$value]);
     }
 
     /**
@@ -45,11 +41,7 @@ trait HasArrayFunctions
      */
     public function first($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
-
-        return new FunctionExpression('FIRST', $arguments);
+        return new FunctionExpression('FIRST', [$value]);
     }
 
     /**
@@ -63,26 +55,19 @@ trait HasArrayFunctions
      */
     public function last($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Reference']);
-
-        return new FunctionExpression('LAST', $arguments);
+        return new FunctionExpression('LAST', [$value]);
     }
 
     /**
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
+     * @link https://www.arangodb.com/docs/3.6/aql/functions-string.html#length
      *
-     * @param $value
+     * @param array|string $value
      *
      * @return FunctionExpression
      */
     public function length($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value);
-
-        return new FunctionExpression('LENGTH', $arguments);
+        return new FunctionExpression('LENGTH', [$value]);
     }
 }

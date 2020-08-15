@@ -24,11 +24,7 @@ trait HasNumericFunctions
      */
     public function average($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
-
-        return new FunctionExpression('AVERAGE', $arguments);
+        return new FunctionExpression('AVERAGE', [$value]);
     }
 
     public function avg($value)
@@ -47,11 +43,7 @@ trait HasNumericFunctions
      */
     public function max($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
-
-        return new FunctionExpression('MAX', $arguments);
+        return new FunctionExpression('MAX', [$value]);
     }
 
     /**
@@ -65,11 +57,7 @@ trait HasNumericFunctions
      */
     public function min($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
-
-        return new FunctionExpression('MIN', $arguments);
+        return new FunctionExpression('MIN', [$value]);
     }
 
     /**
@@ -80,7 +68,7 @@ trait HasNumericFunctions
      */
     public function rand()
     {
-        return new FunctionExpression('RAND', null);
+        return new FunctionExpression('RAND');
     }
 
     /**

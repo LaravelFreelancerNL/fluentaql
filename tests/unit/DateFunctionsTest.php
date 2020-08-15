@@ -2,7 +2,6 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
@@ -13,99 +12,100 @@ class DateFunctionsTest extends TestCase
 {
     public function testDateNow()
     {
-        $functionExpression = (new QueryBuilder())->dateNow();
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_NOW()', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateNow());
+        self::assertEquals('RETURN DATE_NOW()', $qb->get()->query);
     }
 
     public function testDateIso8601()
     {
-        $functionExpression = (new QueryBuilder())->dateIso8601(2019, 11, 13, 10, 20, 50, 666);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_ISO8601(2019, 11, 13, 10, 20, 50, 666)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateIso8601(2019, 11, 13, 10, 20, 50, 666));
+        self::assertEquals('RETURN DATE_ISO8601(2019, 11, 13, 10, 20, 50, 666)', $qb->get()->query);
     }
 
     public function testDateIso8601WithDateOnly()
     {
-        $functionExpression = (new QueryBuilder())->dateIso8601(2019, 11, 13);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_ISO8601(2019, 11, 13)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateIso8601(2019, 11, 13));
+        self::assertEquals('RETURN DATE_ISO8601(2019, 11, 13)', $qb->get()->query);
     }
 
     public function testDateIso8601DefaultsToCurrentTime()
     {
-        $functionExpression = (new QueryBuilder())->dateTimestamp();
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals(26, strlen((string) $functionExpression));
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateIso8601());
+        self::assertEquals(31, strlen($qb->get()->query));
     }
 
-    public function testDateTimestamp()
+        public function testDateTimestamp()
     {
-        $functionExpression = (new QueryBuilder())->dateTimestamp(2019, 11, 13, 10, 20, 50, 666);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_TIMESTAMP(2019, 11, 13, 10, 20, 50, 666)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateTimestamp(2019, 11, 13, 10, 20, 50, 666));
+        self::assertEquals('RETURN DATE_TIMESTAMP(2019, 11, 13, 10, 20, 50, 666)', $qb->get()->query);
     }
 
     public function testDateTimestampWithDateOnly()
     {
-        $functionExpression = (new QueryBuilder())->dateTimestamp(2019, 11, 13);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_TIMESTAMP(2019, 11, 13)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateTimestamp(2019, 11, 13));
+        self::assertEquals('RETURN DATE_TIMESTAMP(2019, 11, 13)', $qb->get()->query);
     }
 
     public function testDateTimestampDefaultsToCurrentTime()
     {
-        $functionExpression = (new QueryBuilder())->dateTimestamp();
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals(26, strlen((string) $functionExpression));
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateTimestamp());
+        self::assertEquals(33, strlen($qb->get()->query));
+
     }
 
     public function testDateYear()
     {
-        $functionExpression = (new QueryBuilder())->dateYear(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_YEAR(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateYear(1399472349522));
+        self::assertEquals('RETURN DATE_YEAR(1399472349522)', $qb->get()->query);
     }
 
     public function testDateMonth()
     {
-        $functionExpression = (new QueryBuilder())->dateMonth(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_MONTH(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateMonth(1399472349522));
+        self::assertEquals('RETURN DATE_MONTH(1399472349522)', $qb->get()->query);
     }
 
     public function testDateDay()
     {
-        $functionExpression = (new QueryBuilder())->dateDay(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_DAY(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateDay(1399472349522));
+        self::assertEquals('RETURN DATE_DAY(1399472349522)', $qb->get()->query);
     }
 
     public function testDateHour()
     {
-        $functionExpression = (new QueryBuilder())->dateHour(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_HOUR(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateHour(1399472349522));
+        self::assertEquals('RETURN DATE_HOUR(1399472349522)', $qb->get()->query);
     }
 
     public function testDateMinute()
     {
-        $functionExpression = (new QueryBuilder())->dateMinute(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_MINUTE(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateMinute(1399472349522));
+        self::assertEquals('RETURN DATE_MINUTE(1399472349522)', $qb->get()->query);
     }
 
     public function testDateSecond()
     {
-        $functionExpression = (new QueryBuilder())->dateSecond(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_SECOND(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateSecond(1399472349522));
+        self::assertEquals('RETURN DATE_SECOND(1399472349522)', $qb->get()->query);
     }
 
     public function testDateMillisecond()
     {
-        $functionExpression = (new QueryBuilder())->dateMillisecond(1399472349522);
-        self::assertInstanceOf(FunctionExpression::class, $functionExpression);
-        self::assertEquals('DATE_MILLISECOND(1399472349522)', (string) $functionExpression);
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateMillisecond(1399472349522));
+        self::assertEquals('RETURN DATE_MILLISECOND(1399472349522)', $qb->get()->query);
     }
 }

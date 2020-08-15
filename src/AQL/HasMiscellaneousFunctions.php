@@ -26,18 +26,6 @@ trait HasMiscellaneousFunctions
      */
     public function document($collection, $id = null)
     {
-        $arguments = [];
-
-        if ($id === null) {
-            $id = $collection;
-            $collection = null;
-        }
-
-        if ($collection !== null) {
-            $arguments['collection'] = $this->normalizeArgument($collection, ['Collection', 'Id']);
-        }
-        $arguments['id'] = $this->normalizeArgument($id, ['Id', 'Key', 'Query', 'List']);
-
-        return new FunctionExpression('DOCUMENT', $arguments);
+        return new FunctionExpression('DOCUMENT', ['collection' => $collection, 'id' => $id]);
     }
 }

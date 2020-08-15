@@ -4,12 +4,9 @@
   "keywords": [
     "fluentaql",
     "arangodb",
-    "multi-model database",
-    "document database",
-    "graph database",
     "aql",
     "aql query",
-    "query builder"
+    "aql query builder"
   ],
   "license": "MIT",
   "authors": [

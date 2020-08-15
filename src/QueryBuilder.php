@@ -222,7 +222,6 @@ class QueryBuilder
     /**
      * Compile the query with its bindings and collection list.
      *
-     * @param  QueryBuilder|null  $parentQueryBuilder
      * @return mixed
      */
     public function compile(): self

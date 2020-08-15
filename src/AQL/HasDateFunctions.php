@@ -22,7 +22,7 @@ trait HasDateFunctions
      */
     public function dateNow()
     {
-        return new FunctionExpression('DATE_NOW', null);
+        return new FunctionExpression('DATE_NOW', []);
     }
 
     /**
@@ -35,9 +35,11 @@ trait HasDateFunctions
      */
     public function dateIso8601()
     {
-        $dateString = $this->processDateString(func_get_args());
+        if (empty($arguments = func_get_args())) {
+            $arguments[] = time();
+        }
 
-        return new FunctionExpression('DATE_ISO8601', $dateString);
+        return new FunctionExpression('DATE_ISO8601', $arguments);
     }
 
     /**
@@ -50,29 +52,11 @@ trait HasDateFunctions
      */
     public function dateTimestamp()
     {
-        $dateString = $this->processDateString(func_get_args());
-
-        return new FunctionExpression('DATE_TIMESTAMP', $dateString);
-    }
-
-    protected function processDateString($dateString)
-    {
-        if (is_array($dateString) && !empty($dateString)) {
-            $dateString[0] = $this->normalizeArgument($dateString[0], ['Number', 'Function', 'Object']);
+        if (empty($arguments = func_get_args())) {
+            $arguments[] = time();
         }
 
-        if (empty($dateString)) {
-            $dateString[] = time();
-        }
-
-        $elements = count($dateString);
-        if ($elements > 1) {
-            for ($i = 1; $i < $elements; $i++) {
-                $dateString[$i] = $this->normalizeArgument($dateString[$i], ['Number', 'Function']);
-            }
-        }
-
-        return $dateString;
+        return new FunctionExpression('DATE_TIMESTAMP', $arguments);
     }
 
     /**
@@ -86,8 +70,6 @@ trait HasDateFunctions
      */
     public function dateYear($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_YEAR', $date);
     }
 
@@ -102,8 +84,6 @@ trait HasDateFunctions
      */
     public function dateMonth($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_MONTH', $date);
     }
 
@@ -118,8 +98,6 @@ trait HasDateFunctions
      */
     public function dateDay($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_DAY', $date);
     }
 
@@ -134,8 +112,6 @@ trait HasDateFunctions
      */
     public function dateHour($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_HOUR', $date);
     }
 
@@ -150,8 +126,6 @@ trait HasDateFunctions
      */
     public function dateMinute($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_MINUTE', $date);
     }
 
@@ -166,8 +140,6 @@ trait HasDateFunctions
      */
     public function dateSecond($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_SECOND', $date);
     }
 
@@ -182,8 +154,6 @@ trait HasDateFunctions
      */
     public function dateMillisecond($date)
     {
-        $date = $this->normalizeArgument($date, ['Number', 'Function', 'Object']);
-
         return new FunctionExpression('DATE_MILLISECOND', $date);
     }
 }
