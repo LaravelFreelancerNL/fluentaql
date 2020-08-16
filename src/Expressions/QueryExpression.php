@@ -17,7 +17,7 @@ class QueryExpression extends Expression implements ExpressionInterface
         parent::__construct($expression);
     }
 
-    public function compile(QueryBuilder $parentQueryBuilder)
+    public function compile(QueryBuilder $parentQueryBuilder): string
     {
         $this->expression->registerVariable($parentQueryBuilder->getVariables());
 
@@ -26,7 +26,7 @@ class QueryExpression extends Expression implements ExpressionInterface
         $parentQueryBuilder->binds = array_unique(array_merge($parentQueryBuilder->binds, $this->expression->binds));
 
         // Extract collections
-        if (isset($this->expression->collections )) {
+        if (isset($this->expression->collections)) {
             foreach ($this->expression->collections as $collection => $mode) {
                 $parentQueryBuilder->registerCollections($this->expression->collections[$collection], $mode);
             }

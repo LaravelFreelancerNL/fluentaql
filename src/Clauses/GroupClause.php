@@ -17,7 +17,7 @@ class GroupClause extends Clause
         $this->projectionExpression = $projectionExpression;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->groupsVariable = $queryBuilder->normalizeArgument($this->groupsVariable, 'Variable');
         $queryBuilder->registerVariable($this->groupsVariable);

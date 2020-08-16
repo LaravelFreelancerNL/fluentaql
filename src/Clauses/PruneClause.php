@@ -2,15 +2,15 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class PruneClause extends FilterClause
 {
-    protected $predicates = [];
-
-    protected $defaultLogicalOperator = 'AND';
-
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        $compiledPredicates = $this->compilePredicates($this->predicates);
+        $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
+
+        $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);
 
         return 'PRUNE ' . rtrim($compiledPredicates);
     }

@@ -3,9 +3,12 @@
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\PruneClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\TraverseShortestPathClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithClause;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -25,13 +28,7 @@ trait HasGraphClauses
      */
     public function with(): QueryBuilder
     {
-        $collections = func_get_args();
-        foreach ($collections as $key => $collection) {
-            $this->registerCollections($collection, 'read');
-            $collections[$key] = $this->normalizeArgument($collection, 'Collection');
-        }
-
-        $this->addClause(new WithClause($collections));
+        $this->addClause(new WithClause(func_get_args()));
 
         return $this;
     }
@@ -57,14 +54,7 @@ trait HasGraphClauses
         $toVertex = null,
         $kShortestPaths = false
     ): QueryBuilder {
-        $fromVertex = $this->normalizeArgument($fromVertex, 'Id');
-        $inDirection = $this->normalizeArgument($inDirection, 'Direction');
-
-        if ($toVertex !== null) {
-            $toVertex = $this->normalizeArgument($toVertex, 'Id');
-        }
-
-        $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex, $kShortestPaths));
+        $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
@@ -82,7 +72,7 @@ trait HasGraphClauses
      */
     public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
-        $this->traverse($fromVertex, $inDirection, $toVertex);
+        $this->addClause(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
@@ -100,7 +90,7 @@ trait HasGraphClauses
      */
     public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
-        $this->traverse($fromVertex, $inDirection, $toVertex, true);
+        $this->addClause(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
@@ -117,8 +107,6 @@ trait HasGraphClauses
      */
     public function graph(string $graphName): QueryBuilder
     {
-        $graphName = $this->normalizeArgument($graphName, 'Graph');
-
         $this->addClause(new GraphClause($graphName));
 
         return $this;
@@ -131,28 +119,11 @@ trait HasGraphClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
-     * @param string|array $edgeCollection
-     * @param string|null  $direction
-     *
      * @return QueryBuilder
      */
-    public function edgeCollections($edgeCollection): QueryBuilder
+    public function edgeCollections(): QueryBuilder
     {
-        $collections = [];
-
-        //normalize string|null $edgeCollections and $direction
-        if (is_string($edgeCollection)) {
-            $collections[] = $this->normalizeEdgeCollections($edgeCollection);
-        }
-
-        if (is_array($edgeCollection)) {
-            //Wandel door de array
-            $collections = array_map(function ($expression) {
-                return $this->normalizeEdgeCollections($expression);
-            }, $edgeCollection);
-        }
-
-        $this->addClause(new EdgeCollectionsClause($collections));
+        $this->addClause(new EdgeCollectionsClause(func_get_args()));
 
         return $this;
     }
@@ -162,21 +133,23 @@ trait HasGraphClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
      *
-     * @param string $attribute
-     * @param string $comparisonOperator
-     * @param mixed  $value
-     * @param string $logicalOperator
+     * @param $leftOperand
+     * @param  string  $comparisonOperator
+     * @param  null  $rightOperand
+     * @param  string  $logicalOperator
      *
      * @return QueryBuilder
      */
-    public function prune($attribute, $comparisonOperator = '==', $value = null, $logicalOperator = 'AND'): QueryBuilder
-    {
-        //create array of predicates if $leftOperand isn't an array already
-        if (is_string($attribute)) {
-            $attribute = [[$attribute, $comparisonOperator, $value, $logicalOperator]];
+    public function prune(
+        $leftOperand,
+        $comparisonOperator = null,
+        $rightOperand = null,
+        $logicalOperator = null
+    ): QueryBuilder {
+        $predicates = $leftOperand;
+        if (is_string($comparisonOperator)) {
+            $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
-
-        $predicates = $this->normalizePredicates($attribute);
 
         $this->addClause(new PruneClause($predicates));
 

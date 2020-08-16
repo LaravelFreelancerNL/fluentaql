@@ -36,7 +36,7 @@ class UpsertClause extends Clause
         $this->replace = $replace;
     }
 
-    public function compile()
+    public function compile(): string
     {
         $withClause = 'UPDATE';
         if ($this->replace) {

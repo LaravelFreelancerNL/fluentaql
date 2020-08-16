@@ -16,7 +16,7 @@ class InsertClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile()
+    public function compile(): string
     {
         return "INSERT {$this->document} IN {$this->collection}";
     }

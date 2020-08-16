@@ -5,7 +5,6 @@ namespace LaravelFreelancerNL\FluentAQL\Traits;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\NullExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ObjectExpression;
@@ -123,25 +122,6 @@ trait NormalizesExpressions
         return ['null'];
     }
 
-    protected function normalizeEdgeCollections($edgeCollection): array
-    {
-        if (is_string($edgeCollection)) {
-            $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
-
-            return $edgeCollection;
-        }
-        if (is_array($edgeCollection) && !empty($edgeCollection)) {
-            $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollection[1]) && !$this->grammar->isDirection($edgeCollection[1])) {
-                unset($edgeCollection[1]);
-            }
-
-            return $edgeCollection;
-        }
-
-        return [];
-    }
-
     /**
      * @param array $predicates
      *
@@ -189,7 +169,12 @@ trait NormalizesExpressions
             $logicalOperator = $predicate[3];
         }
 
-        $normalizedPredicate[] = new PredicateExpression($leftOperand, $comparisonOperator, $rightOperand, $logicalOperator);
+        $normalizedPredicate[] = new PredicateExpression(
+            $leftOperand,
+            $comparisonOperator,
+            $rightOperand,
+            $logicalOperator
+        );
 
         return $normalizedPredicate;
     }
@@ -231,9 +216,12 @@ trait NormalizesExpressions
             return 'Bind';
         }
 
-        throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: "
-            . implode(', ', $allowedExpressionTypes)
-            . '.');
+        throw new ExpressionTypeException(
+            "This argument, 
+            '{$argument}', does not match one of these expression types: "
+                . implode(', ', $allowedExpressionTypes)
+                . '.'
+        );
     }
 
     /**

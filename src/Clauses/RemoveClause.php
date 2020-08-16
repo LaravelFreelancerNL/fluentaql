@@ -16,7 +16,7 @@ class RemoveClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile()
+    public function compile(): string
     {
         return "REMOVE {$this->document} IN {$this->collection}";
     }

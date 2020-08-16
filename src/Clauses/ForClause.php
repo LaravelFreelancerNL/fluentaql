@@ -26,13 +26,17 @@ class ForClause extends Clause
         $this->in = $in;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        foreach ($this->variables  as $key => $value) {
+        foreach ($this->variables as $key => $value) {
             $this->variables [$key] = $queryBuilder->normalizeArgument($value, 'Variable');
-            $queryBuilder->registerVariable($this->variables [$key]);
+            $queryBuilder->registerVariable($this->variables[$key]->compile($queryBuilder));
         }
-        $variableExpression = implode(', ', $this->variables);
+        $variableExpression =  array_map(function ($variable) use ($queryBuilder) {
+            return $variable->compile($queryBuilder);
+        }, $this->variables);
+
+        $variableExpression = implode(', ',$variableExpression);
 
         if ($this->in !== null) {
             $this->in = $queryBuilder

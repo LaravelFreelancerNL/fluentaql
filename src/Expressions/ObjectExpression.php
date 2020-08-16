@@ -9,7 +9,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 class ObjectExpression extends Expression implements ExpressionInterface
 {
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $output = '';
         foreach ($this->expression as $key => $value) {

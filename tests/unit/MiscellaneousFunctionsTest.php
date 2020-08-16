@@ -28,7 +28,7 @@ class MiscellaneousFunctionsTest extends TestCase
         self::assertEquals('RETURN DOCUMENT("users/john", "users/amy")', $qb->get()->query);
 
         $qb = new QueryBuilder();
-        $qb->return($qb->document('users',  ['john', 'amy']));
+        $qb->return($qb->document('users', ['john', 'amy']));
         self::assertEquals('RETURN DOCUMENT(users, ["john","amy"])', $qb->get()->query);
 
         $qb = new QueryBuilder();

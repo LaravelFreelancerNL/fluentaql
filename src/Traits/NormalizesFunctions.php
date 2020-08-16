@@ -11,11 +11,11 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesFunctions
 {
-    use NormalizesArrayFunctions,
-        NormalizesDateFunctions,
-        NormalizesGeoFunctions,
-        NormalizesMiscellaneousFunctions,
-        NormalizesNumericFunctions;
+    use NormalizesArrayFunctions;
+    use NormalizesDateFunctions;
+    use NormalizesGeoFunctions;
+    use NormalizesMiscellaneousFunctions;
+    use NormalizesNumericFunctions;
 
     protected function normalizeAll(QueryBuilder $queryBuilder)
     {
@@ -27,22 +27,30 @@ trait NormalizesFunctions
     protected function normalizeArrays(QueryBuilder $queryBuilder)
     {
         foreach ($this->parameters as $key => $parameter) {
-            $this->parameters[$key] = $queryBuilder->normalizeArgument($parameter, ['List', 'Query', 'Variable', 'Reference', 'Bind']);
+            $this->parameters[$key] = $queryBuilder->normalizeArgument(
+                $parameter,
+                ['List', 'Query', 'Variable', 'Reference', 'Bind']
+            );
         }
     }
 
     protected function normalizeNumbers(QueryBuilder $queryBuilder)
     {
         foreach ($this->parameters as $key => $parameter) {
-            $this->parameters[$key] = $queryBuilder->normalizeArgument($parameter, ['Number', 'Function', 'Query', 'Reference', 'Bind']);
+            $this->parameters[$key] = $queryBuilder->normalizeArgument(
+                $parameter,
+                ['Number', 'Function', 'Query', 'Reference', 'Bind']
+            );
         }
     }
 
     protected function normalizeStrings(QueryBuilder $queryBuilder)
     {
         foreach ($this->parameters as $key => $parameter) {
-            $this->parameters[$key] = $queryBuilder->normalizeArgument($parameter, ['Query', 'Variable', 'Reference', 'Bind']);
+            $this->parameters[$key] = $queryBuilder->normalizeArgument(
+                $parameter,
+                ['Query', 'Variable', 'Reference', 'Bind']
+            );
         }
     }
-
 }

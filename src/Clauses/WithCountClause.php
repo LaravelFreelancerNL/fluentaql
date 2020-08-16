@@ -13,7 +13,7 @@ class WithCountClause extends Clause
         $this->countVariableName = $countVariableName;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->countVariableName = $queryBuilder->normalizeArgument($this->countVariableName, 'Variable');
         $queryBuilder->registerVariable($this->countVariableName);

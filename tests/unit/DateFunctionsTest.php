@@ -38,7 +38,7 @@ class DateFunctionsTest extends TestCase
         self::assertEquals(31, strlen($qb->get()->query));
     }
 
-        public function testDateTimestamp()
+    public function testDateTimestamp()
     {
         $qb = new QueryBuilder();
         $qb->return($qb->dateTimestamp(2019, 11, 13, 10, 20, 50, 666));
@@ -57,7 +57,6 @@ class DateFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->dateTimestamp());
         self::assertEquals(33, strlen($qb->get()->query));
-
     }
 
     public function testDateYear()

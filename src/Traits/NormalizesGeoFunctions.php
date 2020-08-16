@@ -15,5 +15,4 @@ trait NormalizesGeoFunctions
     {
         $this->normalizeNumbers($queryBuilder);
     }
-
 }

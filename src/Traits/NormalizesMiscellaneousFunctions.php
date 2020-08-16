@@ -19,8 +19,14 @@ trait NormalizesMiscellaneousFunctions
         }
 
         if (isset($this->parameters['collection'])) {
-            $this->parameters['collection'] = $queryBuilder->normalizeArgument($this->parameters['collection'] , ['Collection', 'Id', 'Query', 'Bind']);
+            $this->parameters['collection'] = $queryBuilder->normalizeArgument(
+                $this->parameters['collection'],
+                ['Collection', 'Id', 'Query', 'Bind']
+            );
         }
-        $this->parameters['id'] = $queryBuilder->normalizeArgument($this->parameters['id'], ['Id', 'Key', 'Query', 'List', 'Bind']);
+        $this->parameters['id'] = $queryBuilder->normalizeArgument(
+            $this->parameters['id'],
+            ['Id', 'Key', 'Query', 'List', 'Bind']
+        );
     }
 }

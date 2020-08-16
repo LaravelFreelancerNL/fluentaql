@@ -25,7 +25,7 @@ class ReturnClause extends Clause
         $this->distinct = $distinct;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->expression = $queryBuilder->normalizeArgument(
             $this->expression,

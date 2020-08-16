@@ -18,12 +18,15 @@ class LetClause extends Clause
         $this->expression = $expression;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
         $queryBuilder->registerVariable($this->variableName);
 
-        $this->expression = $queryBuilder->normalizeArgument($this->expression, ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']);
+        $this->expression = $queryBuilder->normalizeArgument(
+            $this->expression,
+            ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']
+        );
 
 
 

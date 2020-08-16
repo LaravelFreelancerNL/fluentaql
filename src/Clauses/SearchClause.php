@@ -10,7 +10,7 @@ class SearchClause extends FilterClause
 
     protected $defaultLogicalOperator = 'AND';
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
 

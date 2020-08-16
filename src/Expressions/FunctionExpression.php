@@ -40,7 +40,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
         $this->parameters = $parameters;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         if (! empty($this->parameters)) {
             $normalizeFunction = $this->getNormalizeFunctionName();
@@ -69,5 +69,4 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
         return 'normalize' . str_replace(' ', '', $value);
     }
-
 }

@@ -82,7 +82,6 @@ trait HasQueryClauses
         $rightOperand = null,
         $logicalOperator = null
     ): QueryBuilder {
-
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
@@ -111,7 +110,6 @@ trait HasQueryClauses
         $rightOperand = null,
         $logicalOperator = null
     ): QueryBuilder {
-
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
@@ -270,5 +268,4 @@ trait HasQueryClauses
 
         return $this;
     }
-
 }

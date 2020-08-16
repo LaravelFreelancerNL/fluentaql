@@ -6,5 +6,5 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 interface ExpressionInterface
 {
-    public function compile(QueryBuilder $queryBuilder);
+    public function compile(QueryBuilder $queryBuilder): string;
 }

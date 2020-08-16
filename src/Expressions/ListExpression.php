@@ -17,7 +17,7 @@ class ListExpression extends Expression implements ExpressionInterface
         $this->expression = $expression;
     }
 
-    public function compile(QueryBuilder $queryBuilder = null)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         //normalize $this_expression
         foreach ($this->expression as $key => $value) {

@@ -19,7 +19,7 @@ class ReplaceClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile()
+    public function compile(): string
     {
         return "REPLACE {$this->document} WITH {$this->with} IN {$this->collection}";
     }

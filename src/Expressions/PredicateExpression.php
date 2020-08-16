@@ -44,8 +44,9 @@ class PredicateExpression extends Expression implements ExpressionInterface
      * @param  QueryBuilder|null  $queryBuilder
      * @return string
      */
-    public function compile(QueryBuilder $queryBuilder = null)
+    public function compile(QueryBuilder $queryBuilder = null): string
     {
-        return $this->leftOperand->compile($queryBuilder) . ' ' . $this->comparisonOperator . ' ' . $this->rightOperand->compile($queryBuilder);
+        return $this->leftOperand->compile($queryBuilder) .
+            ' ' . $this->comparisonOperator . ' ' . $this->rightOperand->compile($queryBuilder);
     }
 }

@@ -23,18 +23,22 @@ class CollectClause extends Clause
         $this->expression = $expression;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         if (isset($this->variableName)) {
             $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
         }
         if (isset($this->expression)) {
-            $this->expression = $queryBuilder->normalizeArgument($this->expression, ['Reference', 'Function', 'Query', 'Bind']);
+            $this->expression = $queryBuilder->normalizeArgument(
+                $this->expression,
+                ['Reference', 'Function', 'Query', 'Bind']
+            );
         }
 
         $output = 'COLLECT';
         if (isset($this->variableName) && isset($this->expression)) {
-            $output .= ' ' . $this->variableName->compile($queryBuilder) . ' = ' . $this->expression->compile($queryBuilder);
+            $output .= ' ' . $this->variableName->compile($queryBuilder)
+                . ' = ' . $this->expression->compile($queryBuilder);
         }
 
         return $output;

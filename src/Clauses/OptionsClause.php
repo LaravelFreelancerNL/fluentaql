@@ -13,7 +13,7 @@ class OptionsClause extends Clause
         $this->options = $options;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->options = $queryBuilder->normalizeArgument($this->options, 'Object');
 

@@ -19,7 +19,7 @@ class UpdateClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile()
+    public function compile(): string
     {
         return "UPDATE {$this->document} WITH {$this->with} IN {$this->collection}";
     }

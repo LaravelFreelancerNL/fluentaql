@@ -28,7 +28,7 @@ class LimitClause extends Clause
         }
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->count = $queryBuilder->normalizeArgument($this->count, ['Number', 'Reference', 'Query', 'Bind']);
 

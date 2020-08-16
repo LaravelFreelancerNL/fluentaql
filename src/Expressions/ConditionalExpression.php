@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class ConditionalExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
@@ -21,8 +23,8 @@ class ConditionalExpression extends Expression implements ExpressionInterface
         $this->parameters['else'] = $else;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return $this->parameters['if'] . ' ? ' . $this->parameters['then'] . ' : ' . $this->parameters['else'];
+        return $this->parameters['if']->compile($queryBuilder) . ' ? ' . $this->parameters['then']->compile($queryBuilder) . ' : ' . $this->parameters['else']->compile($queryBuilder);
     }
 }

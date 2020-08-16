@@ -307,6 +307,4 @@ class QueryClausesTest extends TestCase
             ->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
     }
-
-
 }

@@ -13,7 +13,7 @@ class KeepClause extends Clause
         $this->keepVariable = $keepVariable;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->keepVariable = $queryBuilder->normalizeArgument($this->keepVariable, 'Variable');
         $queryBuilder->registerVariable($this->keepVariable);

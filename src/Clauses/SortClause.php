@@ -18,7 +18,7 @@ class SortClause extends Clause
         $this->direction = $direction;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $sortExpressions = [];
 
@@ -36,7 +36,7 @@ class SortClause extends Clause
 
         $sortExpressions = implode(', ', array_map(function ($expression) {
             return implode(' ', $expression);
-        },$sortExpressions));
+        }, $sortExpressions));
 
         return 'SORT ' . $sortExpressions;
     }

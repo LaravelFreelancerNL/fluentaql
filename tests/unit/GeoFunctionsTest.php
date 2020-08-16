@@ -30,12 +30,12 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->for('l', 'locations')
             ->for('u', 'users')
-            ->return($qb->distance('l.lat', 'l.lon', 'u.lat', 'u.lon')
-        );
+            ->return($qb->distance('l.lat', 'l.lon', 'u.lat', 'u.lon'));
         self::assertEquals(
             'FOR l IN locations'
             . ' FOR u IN users'
-            . ' RETURN DISTANCE(l.lat, l.lon, u.lat, u.lon)'
-            , $qb->get()->query);
+            . ' RETURN DISTANCE(l.lat, l.lon, u.lat, u.lon)',
+            $qb->get()->query
+        );
     }
 }

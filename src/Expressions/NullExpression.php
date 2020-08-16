@@ -24,7 +24,7 @@ class NullExpression extends LiteralExpression implements ExpressionInterface
      * @param  QueryBuilder|null  $queryBuilder
      * @return string
      */
-    public function compile(QueryBuilder $queryBuilder = null)
+    public function compile(QueryBuilder $queryBuilder = null): string
     {
         return 'null';
     }

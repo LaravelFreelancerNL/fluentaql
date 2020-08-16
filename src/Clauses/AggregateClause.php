@@ -16,7 +16,7 @@ class AggregateClause extends Clause
         $this->aggregateExpression = $aggregateExpression;
     }
 
-    public function compile(QueryBuilder $queryBuilder)
+    public function compile(QueryBuilder $queryBuilder): string
     {
         $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
         $queryBuilder->registerVariable($this->variableName);
@@ -26,6 +26,7 @@ class AggregateClause extends Clause
             ['Reference', 'Function', 'Query', 'Bind']
         );
 
-        return "AGGREGATE {$this->variableName->compile($queryBuilder)} = {$this->aggregateExpression->compile($queryBuilder)}";
+        return "AGGREGATE {$this->variableName->compile($queryBuilder)} 
+            = {$this->aggregateExpression->compile($queryBuilder)}";
     }
 }
