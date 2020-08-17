@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class ReturnClause extends Clause
 {
     protected $expression;
@@ -23,13 +25,18 @@ class ReturnClause extends Clause
         $this->distinct = $distinct;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
+        $this->expression = $queryBuilder->normalizeArgument(
+            $this->expression,
+            ['Boolean', 'Object', 'List', 'Function', 'Variable', 'Reference', 'Query', 'Bind']
+        );
+
         $output = 'RETURN';
         if ($this->distinct) {
             $output .= ' DISTINCT';
         }
 
-        return $output . ' ' . $this->expression;
+        return $output . ' ' . $this->expression->compile($queryBuilder);
     }
 }

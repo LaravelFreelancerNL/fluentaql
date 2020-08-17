@@ -3,47 +3,64 @@
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class TraverseClause extends Clause
 {
     protected $direction;
+
     protected $startVertex;
+
     protected $toVertex;
-    protected $kShortestPaths = false;
 
     /**
      * TraverseClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param StringExpression $startVertex
-     * @param string           $direction
-     * @param null             $toVertex
-     * @param bool             $kShortestPaths
+     * @param string  $startVertex
+     * @param string  $direction
+     * @param string|null  $toVertex
      */
     public function __construct(
-        StringExpression $startVertex,
+        string $startVertex,
         $direction = 'outbound',
-        $toVertex = null,
-        bool $kShortestPaths = false
+        $toVertex = null
     ) {
         $this->direction = $direction;
         $this->startVertex = $startVertex;
         $this->toVertex = $toVertex;
-        $this->kShortestPaths = $kShortestPaths;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        $output = $this->direction;
-        if (isset($this->toVertex)) {
-            $output .= ($this->kShortestPaths) ? ' K_SHORTEST_PATHS' : ' SHORTEST_PATH';
+        $this->startVertex = $queryBuilder->normalizeArgument($this->startVertex, 'Id');
+        $this->direction = $queryBuilder->normalizeArgument($this->direction, 'GraphDirection');
+
+        if ($this->toVertex !== null) {
+            $this->toVertex = $queryBuilder->normalizeArgument($this->toVertex, 'Id');
         }
-        $output .= ' ' . $this->startVertex;
+
+
+        $output = $this->direction->compile($queryBuilder);
+
+        $output .= $this->traverseType();
+
+        $output .= ' ' . $this->startVertex->compile($queryBuilder);
         if (isset($this->toVertex)) {
-            $output .= ' TO ' . $this->toVertex;
+            $output .= ' TO ' . $this->toVertex->compile($queryBuilder);
         }
 
         return $output;
+    }
+
+    /**
+     * Default path type
+     *
+     * @return string
+     */
+    protected function traverseType(): string
+    {
+        return '';
     }
 }

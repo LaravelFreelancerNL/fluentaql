@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class OptionsClause extends Clause
 {
     protected $options;
@@ -11,8 +13,10 @@ class OptionsClause extends Clause
         $this->options = $options;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return 'OPTIONS ' . $this->options;
+        $this->options = $queryBuilder->normalizeArgument($this->options, 'Object');
+
+        return 'OPTIONS ' . $this->options->compile($queryBuilder);
     }
 }

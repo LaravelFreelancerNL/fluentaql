@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class LetClause extends Clause
 {
     protected $variableName;
@@ -16,8 +18,18 @@ class LetClause extends Clause
         $this->expression = $expression;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return "LET {$this->variableName} = {$this->expression}";
+        $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
+        $queryBuilder->registerVariable($this->variableName->compile($queryBuilder));
+
+        $this->expression = $queryBuilder->normalizeArgument(
+            $this->expression,
+            ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']
+        );
+
+
+
+        return "LET {$this->variableName->compile($queryBuilder)} = {$this->expression->compile($queryBuilder)}";
     }
 }

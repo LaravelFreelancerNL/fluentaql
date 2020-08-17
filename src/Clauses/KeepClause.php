@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class KeepClause extends Clause
 {
     protected $keepVariable;
@@ -11,8 +13,12 @@ class KeepClause extends Clause
         $this->keepVariable = $keepVariable;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return 'KEEP ' . $this->keepVariable;
+        $this->keepVariable = $queryBuilder->normalizeArgument($this->keepVariable, 'Variable');
+        $queryBuilder->registerVariable($this->keepVariable);
+
+
+        return 'KEEP ' . $this->keepVariable->compile($queryBuilder);
     }
 }

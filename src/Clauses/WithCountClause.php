@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class WithCountClause extends Clause
 {
     protected $countVariableName;
@@ -11,8 +13,11 @@ class WithCountClause extends Clause
         $this->countVariableName = $countVariableName;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return 'WITH COUNT INTO ' . $this->countVariableName;
+        $this->countVariableName = $queryBuilder->normalizeArgument($this->countVariableName, 'Variable');
+        $queryBuilder->registerVariable($this->countVariableName);
+
+        return 'WITH COUNT INTO ' . $this->countVariableName->compile($queryBuilder);
     }
 }

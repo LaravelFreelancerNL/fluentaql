@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class UpsertClause extends Clause
 {
     protected $search;
@@ -36,13 +38,21 @@ class UpsertClause extends Clause
         $this->replace = $replace;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
+        $this->search = $queryBuilder->normalizeArgument($this->search, ['RegisteredVariable', 'Key', 'Bind']);
+        $this->insert = $queryBuilder->normalizeArgument($this->insert, ['RegisteredVariable', 'Key', 'Bind']);
+        $this->with = $queryBuilder->normalizeArgument($this->with, ['Object', 'Bind']);
+        $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
+        $queryBuilder->registerCollections($this->collection->compile($queryBuilder));
+
         $withClause = 'UPDATE';
         if ($this->replace) {
             $withClause = 'REPLACE';
         }
 
-        return "UPSERT {$this->search} INSERT {$this->insert} {$withClause} {$this->with} IN {$this->collection}";
+        return "UPSERT {$this->search->compile($queryBuilder)} " .
+            "INSERT {$this->insert->compile($queryBuilder)} {$withClause} {$this->with->compile($queryBuilder)} " .
+            "IN {$this->collection->compile($queryBuilder)}";
     }
 }

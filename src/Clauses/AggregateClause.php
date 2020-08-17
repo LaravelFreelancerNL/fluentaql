@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class AggregateClause extends Clause
 {
     protected $variableName;
@@ -10,11 +12,21 @@ class AggregateClause extends Clause
     public function __construct($variableName, $aggregateExpression)
     {
         $this->variableName = $variableName;
+
         $this->aggregateExpression = $aggregateExpression;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return "AGGREGATE {$this->variableName} = {$this->aggregateExpression}";
+        $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
+        $queryBuilder->registerVariable($this->variableName);
+
+        $this->aggregateExpression = $queryBuilder->normalizeArgument(
+            $this->aggregateExpression,
+            ['Reference', 'Function', 'Query', 'Bind']
+        );
+
+        return "AGGREGATE {$this->variableName->compile($queryBuilder)} " .
+            "= {$this->aggregateExpression->compile($queryBuilder)}";
     }
 }

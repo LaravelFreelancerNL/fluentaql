@@ -112,7 +112,7 @@ trait ValidatesExpressions
         return false;
     }
 
-    public function isDirection($value): bool
+    public function isGraphDirection($value): bool
     {
         if (preg_match('/outbound|inbound|any/i', $value)) {
             return true;

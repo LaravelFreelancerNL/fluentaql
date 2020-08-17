@@ -13,12 +13,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class QueryBuilderTest extends TestCase
 {
-    public function testFacade()
-    {
-        $aqb = (new QueryBuilder())->get();
-
-        self::assertInstanceOf(QueryBuilder::class, $aqb);
-    }
 
     public function testGet()
     {
@@ -33,15 +27,6 @@ class QueryBuilderTest extends TestCase
         $id = $qb->getQueryId();
 
         self::assertEquals(spl_object_id($qb), $id);
-    }
-
-    public function testClearCommands()
-    {
-        $queryBuilder = (new QueryBuilder())->for('u', 'users')->return('u');
-        self::assertCount(2, $queryBuilder->getCommands());
-
-        $queryBuilder->clearCommands();
-        self::assertCount(0, $queryBuilder->getCommands());
     }
 
     public function testToAql()
@@ -66,7 +51,7 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@' . $qb->getQueryId() . '_1', (string) $bind);
+        self::assertEquals('@' . $qb->getQueryId() . '_1', $bind->compile($qb));
 
         self::arrayHasKey($qb->getQueryId() . '_1');
         self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);

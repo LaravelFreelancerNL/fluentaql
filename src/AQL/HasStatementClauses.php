@@ -28,12 +28,7 @@ trait HasStatementClauses
      */
     public function let($variableName, $expression)
     {
-        $variableName = $this->normalizeArgument($variableName, 'Variable');
-        $this->registerVariable($variableName);
-
-        $expression = $this->normalizeArgument($expression, ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']);
-
-        $this->addCommand(new LetClause($variableName, $expression));
+        $this->addClause(new LetClause($variableName, $expression));
 
         return $this;
     }
@@ -50,12 +45,7 @@ trait HasStatementClauses
      */
     public function insert($document, string $collection): QueryBuilder
     {
-        $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Object', 'Bind']);
-
-        $this->registerCollections($collection);
-        $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
-
-        $this->addCommand(new InsertClause($document, $collection));
+        $this->addClause(new InsertClause($document, $collection));
 
         return $this;
     }
@@ -73,12 +63,7 @@ trait HasStatementClauses
      */
     public function update($document, $with, $collection): QueryBuilder
     {
-        $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
-        $with = $this->normalizeArgument($with, ['Object', 'Bind']);
-        $this->registerCollections($collection);
-        $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
-
-        $this->addCommand(new UpdateClause($document, $with, $collection));
+        $this->addClause(new UpdateClause($document, $with, $collection));
 
         return $this;
     }
@@ -96,12 +81,7 @@ trait HasStatementClauses
      */
     public function replace($document, $with, string $collection): QueryBuilder
     {
-        $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
-        $with = $this->normalizeArgument($with, ['Object', 'Bind']);
-        $this->registerCollections($collection);
-        $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
-
-        $this->addCommand(new ReplaceClause($document, $with, $collection));
+        $this->addClause(new ReplaceClause($document, $with, $collection));
 
         return $this;
     }
@@ -123,13 +103,7 @@ trait HasStatementClauses
      */
     public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
     {
-        $search = $this->normalizeArgument($search, ['RegisteredVariable', 'Key', 'Bind']);
-        $insert = $this->normalizeArgument($insert, ['RegisteredVariable', 'Key', 'Bind']);
-        $with = $this->normalizeArgument($with, ['Object', 'Bind']);
-        $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
-        $this->registerCollections($collection);
-
-        $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
+        $this->addClause(new UpsertClause($search, $insert, $with, $collection, $replace));
 
         return $this;
     }
@@ -146,11 +120,7 @@ trait HasStatementClauses
      */
     public function remove($document, string $collection): QueryBuilder
     {
-        $document = $this->normalizeArgument($document, ['RegisteredVariable', 'Key', 'Object', 'Bind']);
-        $this->registerCollections($collection);
-        $collection = $this->normalizeArgument($collection, ['Collection', 'Bind']);
-
-        $this->addCommand(new RemoveClause($document, $collection));
+        $this->addClause(new RemoveClause($document, $collection));
 
         return $this;
     }

@@ -90,7 +90,7 @@ class Grammar
         'Boolean'            => 'Boolean',
         'Collection'         => 'Literal',
         'Constant'           => 'Constant',
-        'Direction'          => 'Constant',
+        'GraphDirection'     => 'Constant',
         'Document'           => 'Object',
         'Function'           => 'Function',
         'Graph'              => 'String',

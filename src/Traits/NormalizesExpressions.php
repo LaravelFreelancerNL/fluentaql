@@ -4,25 +4,31 @@ namespace LaravelFreelancerNL\FluentAQL\Traits;
 
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\NullExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ObjectExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 use LaravelFreelancerNL\FluentAQL\Grammar;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesExpressions
 {
-    /**
-     * The database query grammar instance.
-     *
-     * @var Grammar
-     */
-    protected $grammar;
 
-    protected function normalizeArgument($argument, $allowedExpressionTypes = null)
+    /**
+     * @param $argument
+     * @param  array|null  $allowedExpressionTypes
+     * @return Expression
+     * @throws ExpressionTypeException
+     */
+    public function normalizeArgument($argument, $allowedExpressionTypes = null)
     {
+        if ($argument instanceof Expression) {
+            return $argument;
+        }
+
         if (is_scalar($argument)) {
             return $this->normalizeScalar($argument, $allowedExpressionTypes);
         }
@@ -88,10 +94,10 @@ trait NormalizesExpressions
         return $argument;
     }
 
-    protected function normalizeSortExpression($sortExpression = null, $direction = null): array
+    public function normalizeSortExpression($sortExpression = null, $direction = null): array
     {
         if (is_string($sortExpression)) {
-            $sortExpression = [$sortExpression];
+            $sortExpression = [$this->normalizeArgument($sortExpression, 'Reference')];
             if ($direction) {
                 $sortExpression[] = $direction;
             }
@@ -110,38 +116,25 @@ trait NormalizesExpressions
         return ['null'];
     }
 
-    protected function normalizeEdgeCollections($edgeCollection): array
-    {
-        if (is_string($edgeCollection)) {
-            $edgeCollection = [$this->normalizeArgument($edgeCollection, 'Collection')];
-
-            return $edgeCollection;
-        }
-        if (is_array($edgeCollection) && !empty($edgeCollection)) {
-            $edgeCollection[0] = $this->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollection[1]) && !$this->grammar->isDirection($edgeCollection[1])) {
-                unset($edgeCollection[1]);
-            }
-
-            return $edgeCollection;
-        }
-
-        return [];
-    }
-
     /**
      * @param array $predicates
      *
      * @return array
      */
-    protected function normalizePredicates($predicates): array
+    public function normalizePredicates($predicates): array
     {
         $normalizedPredicates = [];
+        if (isset($predicates[1]) && is_string($predicates[1])) {
+            $normalizedPredicates[] = $this->normalizePredicate($predicates);
+            return $normalizedPredicates;
+        }
+
         foreach ($predicates as $predicate) {
-            if (is_array($predicate[0])) {
-                $normalizedPredicates = $this->normalizePredicates($predicate);
+            if ($predicate instanceof PredicateExpression) {
+                $normalizedPredicates[] = $predicate;
+                continue;
             }
-            $normalizedPredicates[] = $this->normalizePredicate($predicate);
+            $normalizedPredicates[] = $this->normalizePredicates($predicate);
         }
 
         return $normalizedPredicates;
@@ -150,32 +143,32 @@ trait NormalizesExpressions
     protected function normalizePredicate($predicate)
     {
         $normalizedPredicate = [];
+
+        if (! $predicate[0] instanceof PredicateExpression) {
+            $leftOperand = $this->normalizeArgument($predicate[0]);
+        }
+
         $comparisonOperator = '==';
-        $value = null;
-        $logicalOperator = 'AND';
-        $attribute = $predicate[0];
-        if (isset($predicate[1])) {
+        if ($this->grammar->isComparisonOperator($predicate[1])) {
             $comparisonOperator = $predicate[1];
         }
-        if (isset($predicate[2])) {
-            $value = $predicate[2];
+
+        if (! $predicate[2] instanceof PredicateExpression) {
+            $rightOperand = $this->normalizeArgument($predicate[2]);
         }
+
+        $logicalOperator = 'AND';
+
         if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
             $logicalOperator = $predicate[3];
         }
 
-        // if $rightOperand is empty and $logicalOperator is not a valid operate, then the operation defaults to '=='
-        if ($this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
-            $value = 'null';
-        }
-        if (!$this->grammar->isComparisonOperator($comparisonOperator) && $value == null) {
-            $value = $comparisonOperator;
-            $comparisonOperator = '==';
-        }
-
-        $attribute = $this->normalizeArgument($attribute, ['Reference']);
-        $value = $this->normalizeArgument($value);
-        $normalizedPredicate[] = new PredicateExpression($attribute, $comparisonOperator, $value, $logicalOperator);
+        $normalizedPredicate[] = new PredicateExpression(
+            $leftOperand,
+            $comparisonOperator,
+            $rightOperand,
+            $logicalOperator
+        );
 
         return $normalizedPredicate;
     }
@@ -217,9 +210,12 @@ trait NormalizesExpressions
             return 'Bind';
         }
 
-        throw new ExpressionTypeException("This argument, '{$argument}', does not match one of these expression types: "
-            . implode(', ', $allowedExpressionTypes)
-            . '.');
+        throw new ExpressionTypeException(
+            "This argument, 
+            '{$argument}', does not match one of these expression types: "
+                . implode(', ', $allowedExpressionTypes)
+                . '.'
+        );
     }
 
     /**
@@ -241,16 +237,16 @@ trait NormalizesExpressions
      * @param $argument
      * @param $allowedExpressionTypes
      *
-     * @return ObjectExpression|StringExpression
+     * @return Expression
      */
     protected function normalizeObject($argument, $allowedExpressionTypes)
     {
         if ($argument instanceof \DateTimeInterface) {
             return new StringExpression($argument->format(\DateTime::ATOM));
         }
-        if ($argument instanceof ExpressionInterface) {
-            //Fixme: check for queryBuilders, functions, binds etc and handle them accordingly
-            return $argument;
+
+        if ($argument instanceof QueryBuilder) {
+            return new QueryExpression($argument);
         }
 
         return new ObjectExpression($this->normalizeIterable((array) $argument, $allowedExpressionTypes));

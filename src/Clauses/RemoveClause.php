@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class RemoveClause extends Clause
 {
     protected $document;
@@ -16,8 +18,15 @@ class RemoveClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return "REMOVE {$this->document} IN {$this->collection}";
+        $this->document = $queryBuilder->normalizeArgument(
+            $this->document,
+            ['RegisteredVariable', 'Key', 'Object', 'Bind']
+        );
+        $queryBuilder->registerCollections($this->collection);
+        $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
+
+        return "REMOVE {$this->document->compile($queryBuilder)} IN {$this->collection->compile($queryBuilder)}";
     }
 }

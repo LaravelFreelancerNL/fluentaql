@@ -21,12 +21,6 @@ supported versions for clauses, functions and expressions.
 ## Usage
 The Query Builder (QB) has fluent API where you create a new QueryBuilder object and chain AQL statements to create a query.
 
-### Facade
-For ease of use you can use the AQB facade to quickly generate a static version of the QB.  In the documentation we 
-solely use the facade, however feel free to just instantiate the QB normally.
-
-```(new QueryBuilder())->for('i', '1..100')->return('i')```
-
 ### Getting the query, bindings and collection list 
 the ``get()`` method returns an array with the query, the bindings and a list of used collections.
 ```(new QueryBuilder())->for('i', '1..100')->return('i')->get()```

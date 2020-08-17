@@ -22,6 +22,122 @@ class QueryClausesTest extends TestCase
         //Todo: test bindings & collections
     }
 
+    public function testForClause()
+    {
+        $result = (new QueryBuilder())
+            ->for('u', 'users')
+            ->get();
+        self::assertEquals('FOR u IN users', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u')
+            ->get();
+        self::assertEquals('FOR u IN', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for(['v', 'e', 'p'], 'graph')
+            ->get();
+        self::assertEquals('FOR v, e, p IN graph', $result->query);
+    }
+
+    public function testFilterClause()
+    {
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active', '==', 'true')
+            ->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter('u.active', '==', 'true', 'OR')
+            ->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->filter([['u.active', '==', 'true'], ['u.age', '>', 18]])
+            ->get();
+        self::assertEquals('FOR u IN Users FILTER u.active == true AND u.age > 18', $result->query);
+    }
+
+    public function testFilterOnNullValueCanUseAllLogicalOperators()
+    {
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter('doc.attribute', '!=', null)
+            ->return('doc')
+            ->get();
+        self::assertEquals('FOR doc IN documents FILTER doc.attribute != null RETURN doc', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter([['doc.attribute1', '!=', null], ['doc.attribute2', '!=', null], ['doc.attribute3', '!=', null]])
+            ->return('doc')
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null'
+            . ' AND doc.attribute3 != null RETURN doc',
+            $result->query
+        );
+    }
+
+    public function testFiltersAreSeparatedByComparisonOperators()
+    {
+        $filter = [
+            ['doc.attribute1', '!=', 'null', 'OR'],
+            ['doc.attribute2', '!=', null, 'OR'],
+            ['doc.attribute3', '!=', 'null', 'OR'],
+        ];
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
+            $result->query
+        );
+    }
+
+    public function testFiltersWithCaseInsensitiveLogicalOperators()
+    {
+        $filter = [
+            ['doc.attribute1', '!=', 'null', 'or'],
+            ['doc.attribute2', '!=', 'null', 'Or'],
+            ['doc.attribute3', '!=', 'null', 'OR'],
+        ];
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
+            $result->query
+        );
+    }
+
+    public function testSearchClause()
+    {
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active', '==', 'true')
+            ->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search('u.active', '==', 'true', 'OR')
+            ->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->search([['u.active', '==', 'true'], ['u.age', '==', null]])
+            ->get();
+        self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
+    }
+
+
     public function testCollectClause()
     {
         $result = (new QueryBuilder())
@@ -61,14 +177,6 @@ class QueryClausesTest extends TestCase
         self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
     }
 
-    public function testAggregateClause()
-    {
-        $result = (new QueryBuilder())
-            ->aggregate('variableName', 'aggregateExpression')
-            ->get();
-        self::assertEquals('AGGREGATE variableName = @' . $result->getQueryId() . '_1', $result->query);
-    }
-
     public function testKeepClause()
     {
         $result = (new QueryBuilder())
@@ -77,170 +185,7 @@ class QueryClausesTest extends TestCase
         self::assertEquals('KEEP variableName', $result->query);
     }
 
-    public function testCountClause()
-    {
-        $result = (new QueryBuilder())
-            ->withCount('countVariableName')
-            ->get();
-        self::assertEquals('WITH COUNT INTO countVariableName', $result->query);
-    }
-
-    public function testOptionsClause()
-    {
-        $options = new \stdClass();
-        $options->method = 'sorted';
-        $result = (new QueryBuilder())
-            ->options($options)
-            ->get();
-        self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
-
-        $options = ['method' => 'sorted'];
-        $result = (new QueryBuilder())
-            ->options($options)
-            ->get();
-        self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
-    }
-
-    public function testForClauseSyntax()
-    {
-        $result = (new QueryBuilder())
-            ->for('u', 'users')
-            ->get();
-        self::assertEquals('FOR u IN users', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u')
-            ->get();
-        self::assertEquals('FOR u IN', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for(['v', 'e', 'p'], 'graph')
-            ->get();
-        self::assertEquals('FOR v, e, p IN graph', $result->query);
-    }
-
-    public function testFilterSyntax()
-    {
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->filter('u.active', '==', 'true')
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->filter('u.active', '==', 'true', 'OR')
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->filter('u.active', 'true')
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->filter('u.active')
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.active == null', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->filter([['u.active', '==', 'true'], ['u.age']])
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.active == true AND u.age == null', $result->query);
-    }
-
-    public function testFilterOnNullValueCanUseAllLogicalOperators()
-    {
-        $result = (new QueryBuilder())
-            ->for('doc', 'documents')
-            ->filter('doc.attribute', '!=')
-            ->return('doc')
-            ->get();
-        self::assertEquals('FOR doc IN documents FILTER doc.attribute != null RETURN doc', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('doc', 'documents')
-            ->filter([['doc.attribute1', '!='], ['doc.attribute2', '!='], ['doc.attribute3', '!=']])
-            ->return('doc')
-            ->get();
-        self::assertEquals(
-            'FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null'
-            . ' AND doc.attribute3 != null RETURN doc',
-            $result->query
-        );
-    }
-
-    public function testFiltersAreSeperatedByComparisonOperators()
-    {
-        $filter = [
-            ['doc.attribute1', '!=', 'null', 'OR'],
-            ['doc.attribute2', '!=', 'null', 'OR'],
-            ['doc.attribute3', '!=', 'null', 'OR'],
-        ];
-        $result = (new QueryBuilder())
-            ->for('doc', 'documents')
-            ->filter($filter)
-            ->get();
-        self::assertEquals(
-            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
-            $result->query
-        );
-    }
-
-    public function testFiltersWithCaseInsensitiveLogicalOperators()
-    {
-        $filter = [
-            ['doc.attribute1', '!=', 'null', 'or'],
-            ['doc.attribute2', '!=', 'null', 'Or'],
-            ['doc.attribute3', '!=', 'null', 'OR'],
-        ];
-        $result = (new QueryBuilder())
-            ->for('doc', 'documents')
-            ->filter($filter)
-            ->get();
-        self::assertEquals(
-            'FOR doc IN documents FILTER doc.attribute1 != null OR doc.attribute2 != null OR doc.attribute3 != null',
-            $result->query
-        );
-    }
-
-    public function testSearchClauseSyntax()
-    {
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->search('u.active', '==', 'true')
-            ->get();
-        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->search('u.active', '==', 'true', 'OR')
-            ->get();
-        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->search('u.active', 'true')
-            ->get();
-        self::assertEquals('FOR u IN Users SEARCH u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->search('u.active')
-            ->get();
-        self::assertEquals('FOR u IN Users SEARCH u.active == null', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->search([['u.active', '==', 'true'], ['u.age']])
-            ->get();
-        self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
-    }
-
-    public function testSortSyntax()
+    public function testSortClause()
     {
         $result = (new QueryBuilder())
             ->for('u', 'Users')
@@ -266,30 +211,24 @@ class QueryClausesTest extends TestCase
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort(['u.name', 'u.age'])
+            ->sort('u.name', 'u.age')
             ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort([['u.age', 'DESC']])
+            ->sort(['u.age', 'DESC'])
             ->get();
         self::assertEquals('FOR u IN Users SORT u.age DESC', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort(['u.name', ['u.age', 'DESC']])
+            ->sort('u.name', ['u.age', 'DESC'])
             ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age DESC', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->sort(['u.name', 'DESC'])
-            ->get();
-        self::assertNotEquals('FOR u IN Users SORT u.name DESC', $result->query);
     }
 
-    public function testLimitSyntax()
+    public function testLimitClause()
     {
         $result = (new QueryBuilder())
             ->limit(4)
@@ -300,6 +239,22 @@ class QueryClausesTest extends TestCase
             ->limit(4, 5)
             ->get();
         self::assertEquals('LIMIT 4, 5', $result->query);
+    }
+
+    public function testWithCountClause()
+    {
+        $result = (new QueryBuilder())
+            ->withCount('countVariableName')
+            ->get();
+        self::assertEquals('WITH COUNT INTO countVariableName', $result->query);
+    }
+
+    public function testAggregateClause()
+    {
+        $result = (new QueryBuilder())
+            ->aggregate('variableName', 'aggregateExpression')
+            ->get();
+        self::assertEquals('AGGREGATE variableName = @' . $result->getQueryId() . '_1', $result->query);
     }
 
     public function testReturnSyntax()
@@ -329,5 +284,21 @@ class QueryClausesTest extends TestCase
             ->return('1 + 1', true)
             ->get();
         self::assertEquals('RETURN DISTINCT @' . $result->getQueryId() . '_1', $result->query);
+    }
+
+    public function testOptionsClause()
+    {
+        $options = new \stdClass();
+        $options->method = 'sorted';
+        $result = (new QueryBuilder())
+            ->options($options)
+            ->get();
+        self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
+
+        $options = ['method' => 'sorted'];
+        $result = (new QueryBuilder())
+            ->options($options)
+            ->get();
+        self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
     }
 }

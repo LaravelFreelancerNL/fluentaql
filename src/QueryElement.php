@@ -5,21 +5,10 @@ namespace LaravelFreelancerNL\FluentAQL;
 abstract class QueryElement
 {
     /**
-     * Compile expression output.
+     * Compile clause|expression output.
      *
+     * @param  QueryBuilder  $queryBuilder
      * @return string
      */
-    public function compile()
-    {
-    }
-
-    /**
-     * Get expression.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->compile();
-    }
+    abstract public function compile(QueryBuilder $queryBuilder): string;
 }

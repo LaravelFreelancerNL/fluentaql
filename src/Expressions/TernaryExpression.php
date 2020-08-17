@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class TernaryExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
@@ -27,13 +29,10 @@ class TernaryExpression extends Expression implements ExpressionInterface
         $this->else = $else;
     }
 
-    /**
-     * Compile predicate string.
-     *
-     * @return string
-     */
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return $this->if . ' ? ' . $this->then . ' : ' . $this->else;
+        return $this->if->compile($queryBuilder) .
+            ' ? ' . $this->then->compile($queryBuilder) .
+            ' : ' . $this->else->compile($queryBuilder);
     }
 }

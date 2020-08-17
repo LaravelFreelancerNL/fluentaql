@@ -53,12 +53,7 @@ class StatementClausesTest extends TestCase
         self::assertEquals('LET x = @' . $result->getQueryId() . '_1', $result->query);
     }
 
-    /**
-     * insert.
-     *
-     * @test
-     */
-    public function insert()
+    public function testInsertStatement()
     {
         $result = (new QueryBuilder())->insert('{
           "name": "Catelyn",
@@ -74,12 +69,7 @@ class StatementClausesTest extends TestCase
         self::assertEquals('INSERT @' . $result->getQueryId() . '_1 IN Characters', $result->query);
     }
 
-    /**
-     * Update.
-     *
-     * @test
-     */
-    public function update()
+    public function testUdateStatement()
     {
         $result = (new QueryBuilder())
             ->for('u', 'users')
@@ -91,12 +81,22 @@ class StatementClausesTest extends TestCase
         self::assertEquals('FOR u IN users UPDATE u WITH @' . $result->getQueryId() . '_1 IN users', $result->query);
     }
 
-    /**
-     * replace.
-     *
-     * @test
-     */
-    public function replace()
+    public function testUpdateMaintainsNullValue()
+    {
+        $data = new \stdClass();
+        $data->name['first_name'] = null;
+        $data->name['last_name'] = null;
+        $result = (new QueryBuilder())
+            ->for('u', 'users')
+            ->update('u', $data, 'users')
+            ->get();
+        self::assertEquals(
+            'FOR u IN users UPDATE u WITH {"name":{"first_name":null,"last_name":null}} IN users',
+            $result->query
+        );
+    }
+
+    public function testReplaceStatement()
     {
         $result = (new QueryBuilder())
             ->for('u', 'users')
@@ -109,37 +109,7 @@ class StatementClausesTest extends TestCase
         self::assertEquals('FOR u IN users REPLACE u WITH @' . $result->getQueryId() . '_1 IN users', $result->query);
     }
 
-    /**
-     * remove.
-     *
-     * @test
-     */
-    public function remove()
-    {
-        $result = (new QueryBuilder())
-            ->for('u', 'users')
-            ->remove('u', 'users')
-            ->get();
-        self::assertEquals('FOR u IN users REMOVE u IN users', $result->query);
-
-        $result = (new QueryBuilder())
-            ->remove('john', 'users')
-            ->get();
-        self::assertEquals('REMOVE "john" IN users', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('i', '1..1000')
-            ->remove('{ _key: CONCAT(\'test\', i) }', 'users')
-            ->get();
-        self::assertEquals('FOR i IN 1..1000 REMOVE @' . $result->getQueryId() . '_1 IN users', $result->query);
-    }
-
-    /**
-     * Upsert.
-     *
-     * @test
-     */
-    public function upsert()
+    public function testUpsertStatement()
     {
         $result = (new QueryBuilder())
             ->upsert(
@@ -179,18 +149,23 @@ class StatementClausesTest extends TestCase
         );
     }
 
-    public function testUpdateMaintainsNullValue()
+    public function testRemoveStatement()
     {
-        $data = new \stdClass();
-        $data->name['first_name'] = null;
-        $data->name['last_name'] = null;
         $result = (new QueryBuilder())
             ->for('u', 'users')
-            ->update('u', $data, 'users')
+            ->remove('u', 'users')
             ->get();
-        self::assertEquals(
-            'FOR u IN users UPDATE u WITH {"name":{"first_name":null,"last_name":null}} IN users',
-            $result->query
-        );
+        self::assertEquals('FOR u IN users REMOVE u IN users', $result->query);
+
+        $result = (new QueryBuilder())
+            ->remove('john', 'users')
+            ->get();
+        self::assertEquals('REMOVE "john" IN users', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('i', '1..1000')
+            ->remove('{ _key: CONCAT(\'test\', i) }', 'users')
+            ->get();
+        self::assertEquals('FOR i IN 1..1000 REMOVE @' . $result->getQueryId() . '_1 IN users', $result->query);
     }
 }

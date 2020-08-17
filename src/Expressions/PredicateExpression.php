@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class PredicateExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
@@ -26,9 +28,9 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function __construct(
         ExpressionInterface $leftOperand,
-        $comparisonOperator = '==',
-        ExpressionInterface $rightOperand = null,
-        $logicalOperator = null
+        $comparisonOperator,
+        ExpressionInterface $rightOperand,
+        $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;
         $this->comparisonOperator = strtoupper($comparisonOperator);
@@ -39,10 +41,12 @@ class PredicateExpression extends Expression implements ExpressionInterface
     /**
      * Compile predicate string.
      *
+     * @param  QueryBuilder|null  $queryBuilder
      * @return string
      */
-    public function compile()
+    public function compile(QueryBuilder $queryBuilder = null): string
     {
-        return $this->leftOperand . ' ' . $this->comparisonOperator . ' ' . $this->rightOperand;
+        return $this->leftOperand->compile($queryBuilder) .
+            ' ' . $this->comparisonOperator . ' ' . $this->rightOperand->compile($queryBuilder);
     }
 }
