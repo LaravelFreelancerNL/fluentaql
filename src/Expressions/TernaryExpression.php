@@ -31,6 +31,8 @@ class TernaryExpression extends Expression implements ExpressionInterface
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        return $this->if->compile($queryBuilder) . ' ? ' . $this->then->compile($queryBuilder) . ' : ' . $this->else->compile($queryBuilder);
+        return $this->if->compile($queryBuilder) .
+            ' ? ' . $this->then->compile($queryBuilder) .
+            ' : ' . $this->else->compile($queryBuilder);
     }
 }

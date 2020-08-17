@@ -25,6 +25,8 @@ class ConditionalExpression extends Expression implements ExpressionInterface
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        return $this->parameters['if']->compile($queryBuilder) . ' ? ' . $this->parameters['then']->compile($queryBuilder) . ' : ' . $this->parameters['else']->compile($queryBuilder);
+        return $this->parameters['if']->compile($queryBuilder) .
+            ' ? ' . $this->parameters['then']->compile($queryBuilder) .
+            ' : ' . $this->parameters['else']->compile($queryBuilder);
     }
 }

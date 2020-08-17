@@ -16,12 +16,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesExpressions
 {
-    /**
-     * The database query grammar instance.
-     *
-     * @var Grammar
-     */
-    protected $grammar;
 
     /**
      * @param $argument
@@ -103,7 +97,7 @@ trait NormalizesExpressions
     public function normalizeSortExpression($sortExpression = null, $direction = null): array
     {
         if (is_string($sortExpression)) {
-            $sortExpression = [$sortExpression];
+            $sortExpression = [$this->normalizeArgument($sortExpression, 'Reference')];
             if ($direction) {
                 $sortExpression[] = $direction;
             }

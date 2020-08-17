@@ -21,7 +21,7 @@ class LetClause extends Clause
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
-        $queryBuilder->registerVariable($this->variableName);
+        $queryBuilder->registerVariable($this->variableName->compile($queryBuilder));
 
         $this->expression = $queryBuilder->normalizeArgument(
             $this->expression,

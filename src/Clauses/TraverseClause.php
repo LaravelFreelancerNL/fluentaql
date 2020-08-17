@@ -35,7 +35,7 @@ class TraverseClause extends Clause
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->startVertex = $queryBuilder->normalizeArgument($this->startVertex, 'Id');
-        $this->direction = $queryBuilder->normalizeArgument($this->direction, 'Direction');
+        $this->direction = $queryBuilder->normalizeArgument($this->direction, 'GraphDirection');
 
         if ($this->toVertex !== null) {
             $this->toVertex = $queryBuilder->normalizeArgument($this->toVertex, 'Id');

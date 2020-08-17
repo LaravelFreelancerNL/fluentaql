@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class InsertClause extends Clause
 {
     protected $document;
@@ -13,11 +15,18 @@ class InsertClause extends Clause
         parent::__construct();
 
         $this->document = $document;
+
         $this->collection = $collection;
     }
 
-    public function compile(): string
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return "INSERT {$this->document} IN {$this->collection}";
+        $this->document = $queryBuilder->normalizeArgument($this->document, ['RegisteredVariable', 'Object', 'Bind']);
+
+        $queryBuilder->registerCollections($this->collection);
+        $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
+
+
+        return "INSERT {$this->document->compile($queryBuilder)} IN {$this->collection->compile($queryBuilder)}";
     }
 }

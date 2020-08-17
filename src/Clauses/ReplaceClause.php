@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+
 class ReplaceClause extends Clause
 {
     protected $document;
@@ -19,8 +21,21 @@ class ReplaceClause extends Clause
         $this->collection = $collection;
     }
 
-    public function compile(): string
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        return "REPLACE {$this->document} WITH {$this->with} IN {$this->collection}";
+        $this->document = $queryBuilder->normalizeArgument(
+            $this->document,
+            ['RegisteredVariable', 'Key', 'Object', 'Bind']
+        );
+
+        $this->with = $queryBuilder->normalizeArgument($this->with, ['Object', 'Bind']);
+
+        $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
+        $queryBuilder->registerCollections($this->collection->compile($queryBuilder));
+
+
+        return "REPLACE {$this->document->compile($queryBuilder)} " .
+            "WITH {$this->with->compile($queryBuilder)} " .
+            "IN {$this->collection->compile($queryBuilder)}";
     }
 }

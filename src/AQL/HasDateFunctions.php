@@ -35,7 +35,8 @@ trait HasDateFunctions
      */
     public function dateIso8601()
     {
-        if (empty($arguments = func_get_args())) {
+        $arguments = func_get_args();
+        if (empty($arguments)) {
             $arguments[] = time();
         }
 
@@ -52,7 +53,8 @@ trait HasDateFunctions
      */
     public function dateTimestamp()
     {
-        if (empty($arguments = func_get_args())) {
+        $arguments = func_get_args();
+        if (empty($arguments)) {
             $arguments[] = time();
         }
 

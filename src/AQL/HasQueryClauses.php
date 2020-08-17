@@ -219,9 +219,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function sort($sortBy = null, $direction = null): QueryBuilder
+    public function sort(): QueryBuilder
     {
-        $this->addClause(new SortClause($sortBy, $direction));
+        $this->addClause(new SortClause(func_get_args()));
 
         return $this;
     }

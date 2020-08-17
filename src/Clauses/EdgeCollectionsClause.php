@@ -17,6 +17,13 @@ class EdgeCollectionsClause extends Clause
         $this->edgeCollections = $edgeCollections;
     }
 
+    /**
+     *
+     * @SuppressWarnings(PHPMD.UndefinedVariable)
+     *
+     * @param  QueryBuilder  $queryBuilder
+     * @return string
+     */
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->edgeCollections = array_map(function ($edgeCollection) use ($queryBuilder) {
@@ -25,7 +32,7 @@ class EdgeCollectionsClause extends Clause
             }
 
             $edgeCollection[0] = $queryBuilder->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollections[1]) && !$this->grammar->isDirection($edgeCollections[1])) {
+            if (isset($edgeCollections[1]) && !$queryBuilder->grammar->isGraphDirection($edgeCollections[1])) {
                 unset($edgeCollections[1]);
             }
             return $edgeCollection;
@@ -33,10 +40,13 @@ class EdgeCollectionsClause extends Clause
 
         $output = array_map(function ($edgeCollection) use ($queryBuilder) {
             if ($edgeCollection instanceof LiteralExpression) {
-                return $edgeCollection->compile($queryBuilder) . ' ';
+                return $edgeCollection->compile($queryBuilder);
             }
 
             $edgeCollectionOutput = '';
+            if (isset($edgeCollection[1])) {
+                $edgeCollectionOutput = $edgeCollection[1] . ' ';
+            }
 
             $edgeCollectionOutput .= $edgeCollection[0]->compile($queryBuilder);
             return $edgeCollectionOutput;

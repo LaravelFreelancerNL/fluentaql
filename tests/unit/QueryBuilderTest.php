@@ -29,15 +29,6 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(spl_object_id($qb), $id);
     }
 
-    public function testClearCommands()
-    {
-        $queryBuilder = (new QueryBuilder())->for('u', 'users')->return('u');
-        self::assertCount(2, $queryBuilder->getClauses());
-
-        $queryBuilder->clearClauses();
-        self::assertCount(0, $queryBuilder->getClauses());
-    }
-
     public function testToAql()
     {
         $query = (new QueryBuilder())->for('u', 'users')->return('u')->toAql();
@@ -60,7 +51,7 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@' . $qb->getQueryId() . '_1', (string) $bind);
+        self::assertEquals('@' . $qb->getQueryId() . '_1', $bind->compile($qb));
 
         self::arrayHasKey($qb->getQueryId() . '_1');
         self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);

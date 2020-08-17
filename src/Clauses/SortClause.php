@@ -2,42 +2,64 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class SortClause extends Clause
 {
-    protected $by;
+    protected $attributes;
 
-    protected $direction;
-
-    public function __construct($sortBy = null, $direction = null)
+    public function __construct($attributes)
     {
         parent::__construct();
 
-        $this->by = $sortBy;
-        $this->direction = $direction;
+        $this->attributes = $attributes;
     }
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        $sortExpressions = [];
-
-        //normalize string|null $by and $direction
-        if (is_string($this->by) || $this->by == null) {
-            $sortExpressions[] = $queryBuilder->normalizeSortExpression($this->by, $this->direction);
+        //Structure input of  reference + direction to the regular sort expressions
+        if (
+            count($this->attributes) == 2
+            && is_string($this->attributes[1])
+            && $queryBuilder->grammar->isSortDirection($this->attributes[1])
+        ) {
+            $this->attributes = [[$this->attributes[0], $this->attributes[1]]];
         }
 
-        if (is_array($this->by)) {
-            //Wandel door de array
-            $sortExpressions = array_map(function ($expression) use ($queryBuilder) {
-                return $queryBuilder->normalizeSortExpression($expression);
-            }, $this->by);
+        if (empty($this->attributes)) {
+            $this->attributes = [null];
         }
 
-        $sortExpressions = implode(', ', array_map(function ($expression) {
-            return implode(' ', $expression);
-        }, $sortExpressions));
+        $this->attributes = $this->normalizeSortExpressions($queryBuilder, $this->attributes);
 
-        return 'SORT ' . $sortExpressions;
+        //Generate query output
+        $sortExpressionOutput = array_map(function ($sortBy) use ($queryBuilder) {
+            if ($sortBy instanceof ExpressionInterface) {
+                return $sortBy->compile($queryBuilder);
+            }
+
+            $output = $sortBy[0]->compile($queryBuilder);
+            if (isset($sortBy[1])) {
+                $output .= ' ' . $sortBy[1];
+            }
+            return $output;
+        }, $this->attributes);
+
+        return 'SORT ' . implode(', ', $sortExpressionOutput);
+    }
+
+    protected function normalizeSortExpressions(QueryBuilder $queryBuilder, array $attributes)
+    {
+        return array_map(function ($sortBy) use ($queryBuilder) {
+            if (is_string($sortBy) || $sortBy === null) {
+                return $queryBuilder->normalizeArgument($sortBy, ['Null', 'Reference', 'Function', 'Bind']);
+            }
+            $sortBy[0] =  $queryBuilder->normalizeArgument($sortBy[0], ['Null', 'Reference', 'Function', 'Bind']);
+            if (isset($sortBy[1]) && ! $queryBuilder->grammar->isSortDirection($sortBy[1])) {
+                unset($sortBy[1]);
+            }
+            return $sortBy;
+        }, $this->attributes);
     }
 }

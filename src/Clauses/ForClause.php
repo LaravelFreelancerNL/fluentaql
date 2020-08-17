@@ -36,7 +36,7 @@ class ForClause extends Clause
             return $variable->compile($queryBuilder);
         }, $this->variables);
 
-        $variableExpression = implode(', ',$variableExpression);
+        $variableExpression = implode(', ', $variableExpression);
 
         if ($this->in !== null) {
             $this->in = $queryBuilder

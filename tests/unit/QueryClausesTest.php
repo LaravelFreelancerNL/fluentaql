@@ -211,27 +211,21 @@ class QueryClausesTest extends TestCase
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort(['u.name', 'u.age'])
+            ->sort('u.name', 'u.age')
             ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort([['u.age', 'DESC']])
+            ->sort(['u.age', 'DESC'])
             ->get();
         self::assertEquals('FOR u IN Users SORT u.age DESC', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
-            ->sort(['u.name', ['u.age', 'DESC']])
+            ->sort('u.name', ['u.age', 'DESC'])
             ->get();
         self::assertEquals('FOR u IN Users SORT u.name, u.age DESC', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->sort(['u.name', 'DESC'])
-            ->get();
-        self::assertNotEquals('FOR u IN Users SORT u.name DESC', $result->query);
     }
 
     public function testLimitClause()

@@ -21,7 +21,7 @@ class QueryExpression extends Expression implements ExpressionInterface
     {
         $this->expression->registerVariable($parentQueryBuilder->getVariables());
 
-        $this->expression = $this->expression->compile();
+        $this->expression = $this->expression->compile($parentQueryBuilder);
 
         $parentQueryBuilder->binds = array_unique(array_merge($parentQueryBuilder->binds, $this->expression->binds));
 
@@ -33,10 +33,5 @@ class QueryExpression extends Expression implements ExpressionInterface
         }
 
         return '(' . $this->expression . ')';
-    }
-
-    public function __toString()
-    {
-        return $this->compile()->query;
     }
 }

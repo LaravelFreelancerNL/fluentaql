@@ -335,16 +335,16 @@ class GrammarTest extends TestCase
 
     public function testIsGraphDirection()
     {
-        $result = $this->grammar->isDirection('outbound');
+        $result = $this->grammar->isGraphDirection('outbound');
         self::assertTrue($result);
 
-        $result = $this->grammar->isDirection('inbound');
+        $result = $this->grammar->isGraphDirection('inbound');
         self::assertTrue($result);
 
-        $result = $this->grammar->isDirection('ANY');
+        $result = $this->grammar->isGraphDirection('ANY');
         self::assertTrue($result);
 
-        $result = $this->grammar->isDirection('dfhdrf');
+        $result = $this->grammar->isGraphDirection('dfhdrf');
         self::assertFalse($result);
     }
 

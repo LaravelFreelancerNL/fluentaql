@@ -9,6 +9,7 @@ use LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
 
 /**
@@ -24,6 +25,13 @@ class QueryBuilder
     use HasStatementClauses;
     use HasGraphClauses;
     use HasFunctions;
+
+    /**
+     * The database query grammar instance.
+     *
+     * @var Grammar
+     */
+    public $grammar;
 
     /**
      * The AQL query.
@@ -64,26 +72,11 @@ class QueryBuilder
      */
     protected $queryId = 1;
 
-    /**
-     * Total number of (sub)queries, including this one.
-     *
-     * @var int
-     */
-    protected $queryCount = 1;
-
     public function __construct()
     {
         $this->grammar = new Grammar();
 
         $this->queryId = spl_object_id($this);
-    }
-
-    public function addClauseToQuery(string $clause)
-    {
-        if ($this->query != null) {
-            $this->query .= ' ';
-        }
-        $this->query .= $clause;
     }
 
     /**
@@ -144,14 +137,6 @@ class QueryBuilder
     }
 
     /**
-     * Clear all clauses.
-     */
-    public function clearClauses()
-    {
-        $this->clauses = [];
-    }
-
-    /**
      * @param mixed  $collections
      * @param string $mode
      *
@@ -177,11 +162,11 @@ class QueryBuilder
      */
     public function registerVariable($variableName): self
     {
-        if (is_object($variableName)) {
-            $variableName = (string) $variableName;
+        if ($variableName instanceof ExpressionInterface) {
+            $variableName = $variableName->compile($this);
         }
         if (is_string($variableName)) {
-            $variableName = [$variableName];
+            $variableName = [$variableName => $variableName];
         }
 
         $this->variables = array_unique(array_merge($this->variables, $variableName));
