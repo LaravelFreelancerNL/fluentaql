@@ -2,7 +2,6 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class TraverseClause extends Clause
