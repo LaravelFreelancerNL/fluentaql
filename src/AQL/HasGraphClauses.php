@@ -42,17 +42,14 @@ trait HasGraphClauses
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $fromVertex
-     * @param string $inDirection
-     * @param null   $toVertex
-     * @param bool   $kShortestPaths
-     *
+     * @param  string  $inDirection
+     * @param  null  $toVertex
      * @return QueryBuilder
      */
     public function traverse(
         $fromVertex,
         $inDirection = 'outbound',
-        $toVertex = null,
-        $kShortestPaths = false
+        $toVertex = null
     ): QueryBuilder {
         $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex));
 

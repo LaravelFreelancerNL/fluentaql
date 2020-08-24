@@ -214,9 +214,6 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
-     * @param null $sortBy
-     * @param null $direction
-     *
      * @return QueryBuilder
      */
     public function sort(): QueryBuilder

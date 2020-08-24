@@ -1,5 +1,5 @@
 {
-  "name": "laravel-freelancer-nl/aql-query-builder",
+  "name": "laravel-freelancer-nl/fluentaql",
   "description": "PHP AQL Query Builder",
   "keywords": [
     "fluentaql",
