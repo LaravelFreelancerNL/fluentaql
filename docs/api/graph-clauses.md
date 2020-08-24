@@ -129,3 +129,67 @@ The weight is set through the 'OPTIONS' clause.
         ->for(['v', 'e', 'p'])
         ->shortestPath('users/1', 'INBOUND', 'cities/10')
 ``` 
+
+## GRAPH (named graph)
+```
+    graph(string $graphName)
+```
+Execute the previously set traversal on a named graph.
+
+**Example:**
+```
+    $qb = new QueryBuilder();
+    $qb->with('users', 'cities')
+        ->for(['v', 'e', 'p'])
+        ->traverse('users/1', 'ANY')
+        ->graph("citizens")
+``` 
+Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" GRAPH "citizens"`
+
+[ArangoDB NAMED GRAPH documentation](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#working-with-named-graphs)
+
+## EDGE COLLECTIONS (unnamed graph)
+```
+    edgeCollections(...$edgeCollections)
+```
+Execute the previously set traversal on the given set of edge collections.
+
+**Example:**
+```
+    $qb = new QueryBuilder();
+    $qb->with('users', 'cities')
+        ->for(['v', 'e', 'p'])
+        ->traverse('users/1', 'ANY')
+        ->edgeCollections('edge1', 'edge2', 'edge3')
+``` 
+Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" edge1, edge2, edge3`
+
+[ArangoDB UNNAMED GRAPH documentation](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#working-with-collection-sets)
+
+
+## PRUNE
+```
+prune($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = null)
+```
+Filter out data not matching the given predicate(s).
+
+**Example - single predicate:**
+```
+    $qb = new QueryBuilder();
+    $qb->for(['v', 'e', 'p'], '1..5')
+        ->traverse('circles/A', 'OUTBOUND')
+        ->graph("traversalGraph")
+        ->prune('e.theTruth' '==' true)
+        ->return([
+            'vertices' => 'p.vertices[*]._key',
+            'edges' => 'p.edges[*].label'
+        ]);
+``` 
+Resulting AQL: 
+```
+FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
+    PRUNE e.theTruth == true
+    RETURN { vertices: p.vertices[*]._key, edges: p.edges[*].label }
+```
+
+[ArangoDB PRUNE documentation](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#using-filters-and-the-explainer-to-extrapolate-the-costs)

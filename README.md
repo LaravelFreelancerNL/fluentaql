@@ -4,13 +4,13 @@ Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Lang
 
 		(badges)
 ## Table of contents
-1. [Use Cases](#use-cases)
+1. [Use Cases](#purpose)
 2. [Requirements](#requirements)
 3. [Installation](#installation)
 4. [Usage](#usage)
 
 
-## Purpose & use Cases
+## Purpose
 Using a query builder mainly makes the life of a programmer much easier. You can write cleaner code 
 and be quicker at it. Which of course comes at the cost of application speed.
 
@@ -81,11 +81,11 @@ FOR i IN 1..100 FILTER i < 50 LIMIT 10 SORT i DESC RETURN i
 ## API
 See the following pages on details for the API
 
-- [Query clauses](docs/query-clauses.md): how to search, select, sort and limit data 
-- [Statement clauses](docs/statement-clauses.md): data manipulation & variable declaration
-- [Functions](docs/functions.md): a list of all supported AQL functions
-- [Subqueries](docs/subqueries.md): how to create subqueries, joins etc.
-- [Data binding & referencing](docs/binds-references.md) 
+- [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
+- [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
+- [Graph clauses](docs/api/graph-clauses.md): graph traversals
+- [Functions](docs/api/functions.md): a list of all supported AQL functions
+- [Subqueries](docs/api/subqueries.md): how to create subqueries, joins etc.
 
 ### (Always) bind user input
 No matter what, never trust user input and always bind it. 
@@ -99,9 +99,11 @@ $qb->bind('your data', 'your-bind-id')
 ```
 
 ## References & resources 
+
 ### ArangoDB
 - [ArangoDB](https://arangodb.com) 
 - [AQL documentation](https://www.arangodb.com/docs/stable/aql/)
+
 ### ArangoDB PHP clients
-- https://github.com/arangodb/arangodb-php
-- https://github.com/sandrokeil/arangodb-php-client
+- [Official ArangoDB PHP driver](https://github.com/arangodb/arangodb-php)
+- [Community PHP driver](https://github.com/sandrokeil/arangodb-php-client)
