@@ -32,8 +32,8 @@ class EdgeCollectionsClause extends Clause
             }
 
             $edgeCollection[0] = $queryBuilder->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollections[1]) && !$queryBuilder->grammar->isGraphDirection($edgeCollections[1])) {
-                unset($edgeCollections[1]);
+            if (isset($edgeCollection[1]) && !$queryBuilder->grammar->isGraphDirection($edgeCollection[1])) {
+                unset($edgeCollection[1]);
             }
             return $edgeCollection;
         }, $this->edgeCollections);

@@ -4,7 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
-class GroupClause extends Clause
+class IntoClause extends Clause
 {
 
     protected $groupsVariable;

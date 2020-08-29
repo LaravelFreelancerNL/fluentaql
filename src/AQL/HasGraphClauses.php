@@ -48,10 +48,9 @@ trait HasGraphClauses
      */
     public function traverse(
         $fromVertex,
-        $inDirection = 'outbound',
-        $toVertex = null
+        $inDirection = 'outbound'
     ): QueryBuilder {
-        $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex));
+        $this->addClause(new TraverseClause($fromVertex, $inDirection));
 
         return $this;
     }

@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasStatementClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses.php
  */
 class StatementClausesTest extends TestCase
 {

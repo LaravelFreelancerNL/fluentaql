@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\CollectClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\GroupClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\IntoClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\KeepClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause;
@@ -149,9 +149,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function group($groupsVariable, $projectionExpression = null): QueryBuilder
+    public function into($groupsVariable, $projectionExpression = null): QueryBuilder
     {
-        $this->addClause(new GroupClause($groupsVariable, $projectionExpression));
+        $this->addClause(new IntoClause($groupsVariable, $projectionExpression));
 
         return $this;
     }
@@ -176,7 +176,7 @@ trait HasQueryClauses
     /**
      * withCount clause
      * Count the collected and grouped data.
-     * withCount can only be used after a group clause.
+     * withCount can only be used after a into clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#group-length-calculation
      *

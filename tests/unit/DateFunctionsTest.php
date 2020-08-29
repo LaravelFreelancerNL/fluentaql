@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
  */
 class DateFunctionsTest extends TestCase
 {

@@ -144,6 +144,7 @@ trait NormalizesExpressions
     {
         $normalizedPredicate = [];
 
+        $leftOperand = null;
         if (! $predicate[0] instanceof PredicateExpression) {
             $leftOperand = $this->normalizeArgument($predicate[0]);
         }
@@ -153,6 +154,7 @@ trait NormalizesExpressions
             $comparisonOperator = $predicate[1];
         }
 
+        $rightOperand = null;
         if (! $predicate[2] instanceof PredicateExpression) {
             $rightOperand = $this->normalizeArgument($predicate[2]);
         }

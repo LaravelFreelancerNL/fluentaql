@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses.php
  */
 class GraphClausesTest extends TestCase
 {
