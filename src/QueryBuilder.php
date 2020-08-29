@@ -180,7 +180,7 @@ class QueryBuilder
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
      * @param $data
-     * @param null $to
+     * @param string|null $to
      * @param bool $collection
      *
      * @throws BindException

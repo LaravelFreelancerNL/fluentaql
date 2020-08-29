@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasArrayFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasArrayFunctions
  */
 class ArrayFunctionsTest extends TestCase
 {

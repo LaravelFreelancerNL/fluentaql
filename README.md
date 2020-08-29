@@ -2,7 +2,12 @@
 
 Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Language ([AQL](https://www.arangodb.com/docs/stable/aql/)).
 
-		(badges)
+[![Latest Unstable Version](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/v/unstable)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
+![Github CI tests](https://github.com/LaravelFreelancerNL/fluentaql/workflows/Continuous%20Integration/badge.svg)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LaravelFreelancerNL/aql-query-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/aql-query-builder/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=master)
+[![License](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/license)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
+
 ## Table of contents
 1. [Use Cases](#purpose)
 2. [Requirements](#requirements)
@@ -39,10 +44,17 @@ The use of a query builder has both pros and cons. It is up to you to decide wha
 * ArangoDB regularly adds AQL functions and clauses in minor versions. So be sure to check the AQL documentation for the availability of specific features.
 
 ## Installation
-The easiest way to install FluentAQL is through composer:
+You know the drill:
 ```
 composer require laravel-freelancer-nl/fluentaql 
 ```
+
+## Before you begin: safety first!
+FluentAQL is a query builder that focuses on making your life as a developer easier while maintaining the strength
+and flexibility of AQL. It focuses on syntax checking of the provided expressions 
+however that is not airtight if you don't bind user input.
+
+**Always bind user input.**
 
 ## Usage
 First fire up a new query builder then fluently add AQL clauses on top. 

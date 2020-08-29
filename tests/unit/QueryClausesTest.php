@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses.php
  */
 class QueryClausesTest extends TestCase
 {
@@ -160,17 +160,17 @@ class QueryClausesTest extends TestCase
     public function testGroupClause()
     {
         $result = (new QueryBuilder())
-            ->group('groupsVariable')
+            ->into('groupsVariable')
             ->get();
         self::assertEquals('INTO groupsVariable', $result->query);
 
         $result = (new QueryBuilder())
-            ->group('groupsVariable', 'projectionExpression')
+            ->into('groupsVariable', 'projectionExpression')
             ->get();
         self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
 
         $result = (new QueryBuilder())
-            ->group('groupsVariable', '{ 
+            ->into('groupsVariable', '{ 
     "name" : u.name, 
     "isActive" : u.status == "active"
   }')->get();
