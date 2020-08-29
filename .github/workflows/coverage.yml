@@ -23,6 +23,6 @@ jobs:
 
       - name: Test coverage
         run: |
-          vendor/bin/phpunit --coverage-clover clover.xml --whitelist /src
+          vendor/bin/phpunit --coverage-clover clover.xml --whitelist src
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover clover.xml
