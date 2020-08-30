@@ -3,7 +3,6 @@
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class EdgeCollectionsClause extends Clause
@@ -48,8 +47,7 @@ class EdgeCollectionsClause extends Clause
                 $edgeCollectionOutput = $edgeCollection[1] . ' ';
             }
 
-            $edgeCollectionOutput .= $edgeCollection[0]->compile($queryBuilder);
-            return $edgeCollectionOutput;
+            return $edgeCollectionOutput . $edgeCollection[0]->compile($queryBuilder);
         }, $this->edgeCollections);
 
         return implode(', ', $output);

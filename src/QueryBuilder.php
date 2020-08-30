@@ -6,9 +6,11 @@ use LaravelFreelancerNL\FluentAQL\AQL\HasFunctions;
 use LaravelFreelancerNL\FluentAQL\AQL\HasGraphClauses;
 use LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses;
+use LaravelFreelancerNL\FluentAQL\AQL\HasSupportCommands;
 use LaravelFreelancerNL\FluentAQL\Clauses\Clause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
 
@@ -20,11 +22,12 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
  */
 class QueryBuilder
 {
-    use NormalizesExpressions;
-    use HasQueryClauses;
-    use HasStatementClauses;
-    use HasGraphClauses;
-    use HasFunctions;
+    use NormalizesExpressions,
+        HasQueryClauses,
+        HasStatementClauses,
+        HasGraphClauses,
+        HasFunctions,
+        HasSupportCommands;
 
     /**
      * The database query grammar instance.
@@ -55,9 +58,9 @@ class QueryBuilder
     public $collections;
 
     /**
-     * List of clauses to be compiled into a query.
+     * List of Clauses to be compiled into a query.
      */
-    protected $clauses = [];
+    protected $commands = [];
 
     /**
      * Registry of variable names used in this query.
@@ -80,13 +83,13 @@ class QueryBuilder
     }
 
     /**
-     * Add an AQL clause (raw AQL and clauses.
+     * Add an AQL command (raw AQL and Clauses.
      *
-     * @param Clause|QueryBuilder $clause
+     * @param Clause|Expression|QueryBuilder $command
      */
-    public function addClause($clause)
+    public function addCommand($command)
     {
-        $this->clauses[] = $clause;
+        $this->commands[] = $command;
     }
 
     /**
@@ -94,41 +97,41 @@ class QueryBuilder
      *
      * @return mixed
      */
-    public function getClauses()
+    public function getCommands()
     {
-        return $this->clauses;
+        return $this->commands;
     }
 
     /**
-     * Get the last or a specific clause.
+     * Get the last, or a specific, command.
      *
      * @param int|null $index
      *
      * @return mixed
      */
-    public function getClause(int $index = null)
+    public function getCommand(int $index = null)
     {
         if ($index === null) {
-            return end($this->clauses);
+            return end($this->commands);
         }
 
-        return $this->clauses[$index];
+        return $this->commands[$index];
     }
 
     /**
-     * Remove the last or a specified clause.
+     * Remove the last, or the specified, Command.
      *
      * @param null $index
      *
      * @return bool
      */
-    public function removeClause($index = null): bool
+    public function removeCommand($index = null): bool
     {
         if ($index === null) {
-            return (array_pop($this->clauses)) ? true : false;
+            return (array_pop($this->commands)) ? true : false;
         }
-        if (isset($this->clauses[$index])) {
-            unset($this->clauses[$index]);
+        if (isset($this->commands[$index])) {
+            unset($this->commands[$index]);
 
             return true;
         }
@@ -212,8 +215,8 @@ class QueryBuilder
     public function compile(): self
     {
         $this->query = '';
-        foreach ($this->clauses as $clause) {
-            $this->query .= ' ' . $clause->compile($this);
+        foreach ($this->commands as $command) {
+            $this->query .= ' ' . $command->compile($this);
         }
         $this->query = trim($this->query);
 

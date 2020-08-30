@@ -2,17 +2,35 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
 
+use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * Class StructureTest.
- *
- * @covers \LaravelFreelancerNL\FluentAQL\QueryBuilder
+ * @covers \LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression
  */
 class QueryBuilderTest extends TestCase
 {
+    public function testGetCommand()
+    {
+        $result = (new QueryBuilder());
+        $result->addCommand(new ForClause(['u'], 'users'));
+        $command = $result->getCommand(0);
+        self::assertInstanceOf(ForClause::class, $command);
+
+    }
+
+    public function testRemoveCommand()
+    {
+        $qb = (new QueryBuilder());
+        $qb->addCommand(new ForClause(['u'], 'users'));
+        $command = $qb->getCommand(0);
+        self::assertInstanceOf(ForClause::class, $command);
+        $qb->removeCommand(0);
+        self::assertEmpty($qb->getCommands());
+    }
+
 
     public function testGet()
     {
@@ -71,5 +89,12 @@ class QueryBuilderTest extends TestCase
         $qb = $qb->registerCollections('Traits', 'exclusive');
         self::assertArrayHasKey('exclusive', $qb->collections);
         self::assertContains('Traits', $qb->collections['exclusive']);
+    }
+
+    public function testWrap()
+    {
+        $result = (new QueryBuilder())->wrap("paghmo' tIn mIS");
+
+        self::assertEquals('`paghmo\' tIn mIS`', $result);
     }
 }

@@ -28,7 +28,7 @@ trait HasGraphClauses
      */
     public function with(): QueryBuilder
     {
-        $this->addClause(new WithClause(func_get_args()));
+        $this->addCommand(new WithClause(func_get_args()));
 
         return $this;
     }
@@ -50,7 +50,7 @@ trait HasGraphClauses
         $fromVertex,
         $inDirection = 'outbound'
     ): QueryBuilder {
-        $this->addClause(new TraverseClause($fromVertex, $inDirection));
+        $this->addCommand(new TraverseClause($fromVertex, $inDirection));
 
         return $this;
     }
@@ -68,7 +68,7 @@ trait HasGraphClauses
      */
     public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
-        $this->addClause(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
+        $this->addCommand(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
@@ -86,14 +86,14 @@ trait HasGraphClauses
      */
     public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
-        $this->addClause(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
+        $this->addCommand(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
 
     /**
      * Named Graph clause
-     * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
@@ -103,7 +103,7 @@ trait HasGraphClauses
      */
     public function graph(string $graphName): QueryBuilder
     {
-        $this->addClause(new GraphClause($graphName));
+        $this->addCommand(new GraphClause($graphName));
 
         return $this;
     }
@@ -111,7 +111,7 @@ trait HasGraphClauses
     /**
      * EdgeCollections Clause for unnamed graphs
      * Generates a list of edge collections to traverse through.
-     * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
@@ -119,7 +119,7 @@ trait HasGraphClauses
      */
     public function edgeCollections(): QueryBuilder
     {
-        $this->addClause(new EdgeCollectionsClause(func_get_args()));
+        $this->addCommand(new EdgeCollectionsClause(func_get_args()));
 
         return $this;
     }
@@ -147,7 +147,7 @@ trait HasGraphClauses
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $this->addClause(new PruneClause($predicates));
+        $this->addCommand(new PruneClause($predicates));
 
         return $this;
     }

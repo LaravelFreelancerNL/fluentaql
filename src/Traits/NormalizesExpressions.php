@@ -11,7 +11,6 @@ use LaravelFreelancerNL\FluentAQL\Expressions\ObjectExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
-use LaravelFreelancerNL\FluentAQL\Grammar;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesExpressions
@@ -92,28 +91,6 @@ trait NormalizesExpressions
         }
 
         return $argument;
-    }
-
-    public function normalizeSortExpression($sortExpression = null, $direction = null): array
-    {
-        if (is_string($sortExpression)) {
-            $sortExpression = [$this->normalizeArgument($sortExpression, 'Reference')];
-            if ($direction) {
-                $sortExpression[] = $direction;
-            }
-
-            return $sortExpression;
-        }
-        if (is_array($sortExpression) && !empty($sortExpression)) {
-            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'Reference');
-            if (isset($sortExpression[1]) && !$this->grammar->isSortDirection($sortExpression[1])) {
-                unset($sortExpression[1]);
-            }
-
-            return $sortExpression;
-        }
-
-        return ['null'];
     }
 
     /**

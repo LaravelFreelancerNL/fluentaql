@@ -8,6 +8,8 @@ Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Lang
 [![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=master)
 [![License](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/license)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
 
+**1.0.0-alpha release: API may change in future releases**
+
 ## Table of contents
 1. [Use Cases](#purpose)
 2. [Requirements](#requirements)
@@ -39,7 +41,7 @@ The use of a query builder has both pros and cons. It is up to you to decide wha
 ## Requirements
 | FluentAQL           | ArangoDB          | PHP               |
 | :------------------ | :---------------- | :---------------- |
-| 0.x                 | 3.x *             | ^7.2               |
+| 1.x                 | 3.x *             | ^7.2               |
 
 * ArangoDB regularly adds AQL functions and clauses in minor versions. So be sure to check the AQL documentation for the availability of specific features.
 
@@ -93,11 +95,12 @@ FOR i IN 1..100 FILTER i < 50 LIMIT 10 SORT i DESC RETURN i
 ## API
 See the following pages on details for the API
 
-- [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
-- [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
-- [Graph clauses](docs/api/graph-clauses.md): graph traversals
-- [Functions](docs/api/functions.md): a list of all supported AQL functions
-- [Subqueries](docs/api/subqueries.md): how to create subqueries, joins etc.
+- API
+    - [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
+    - [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
+    - [Graph clauses](docs/api/graph-clauses.md): graph traversals
+    - [Functions](docs/api/functions.md): a list of all supported AQL functions
+    - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
 
 ### (Always) bind user input
 No matter what, never trust user input and always bind it. 

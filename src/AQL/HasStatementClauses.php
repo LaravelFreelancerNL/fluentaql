@@ -28,7 +28,7 @@ trait HasStatementClauses
      */
     public function let($variableName, $expression)
     {
-        $this->addClause(new LetClause($variableName, $expression));
+        $this->addCommand(new LetClause($variableName, $expression));
 
         return $this;
     }
@@ -45,7 +45,7 @@ trait HasStatementClauses
      */
     public function insert($document, string $collection): QueryBuilder
     {
-        $this->addClause(new InsertClause($document, $collection));
+        $this->addCommand(new InsertClause($document, $collection));
 
         return $this;
     }
@@ -63,7 +63,7 @@ trait HasStatementClauses
      */
     public function update($document, $with, $collection): QueryBuilder
     {
-        $this->addClause(new UpdateClause($document, $with, $collection));
+        $this->addCommand(new UpdateClause($document, $with, $collection));
 
         return $this;
     }
@@ -81,7 +81,7 @@ trait HasStatementClauses
      */
     public function replace($document, $with, string $collection): QueryBuilder
     {
-        $this->addClause(new ReplaceClause($document, $with, $collection));
+        $this->addCommand(new ReplaceClause($document, $with, $collection));
 
         return $this;
     }
@@ -103,7 +103,7 @@ trait HasStatementClauses
      */
     public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
     {
-        $this->addClause(new UpsertClause($search, $insert, $with, $collection, $replace));
+        $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
 
         return $this;
     }
@@ -120,7 +120,7 @@ trait HasStatementClauses
      */
     public function remove($document, string $collection): QueryBuilder
     {
-        $this->addClause(new RemoveClause($document, $collection));
+        $this->addCommand(new RemoveClause($document, $collection));
 
         return $this;
     }

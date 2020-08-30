@@ -18,7 +18,7 @@ class SortClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        //Structure input of  reference + direction to the regular sort expressions
+        //Structure input of  reference + direction to the regular sort Expressions
         if (
             count($this->attributes) == 2
             && is_string($this->attributes[1])

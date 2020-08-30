@@ -2,7 +2,7 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-class ArithmeticExpression extends PredicateExpression implements ExpressionInterface
+class MathExpression extends PredicateExpression implements ExpressionInterface
 {
     /** @var string */
     protected $leftOperand = '';

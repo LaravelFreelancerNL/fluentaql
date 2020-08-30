@@ -429,4 +429,26 @@ class GrammarTest extends TestCase
         $result = $this->grammar->isIndexedArray($numericArray);
         self::assertTrue($result);
     }
+
+    public function testGetAllowedExpressionTypes()
+    {
+        $defaultAllowedExpressionTypes = [
+            'Number'    => 'Number',
+            'Boolean'   => 'Boolean',
+            'Null'      => 'Null',
+            'Reference' => 'Reference',
+            'Id'        => 'Id',
+            'Key'       => 'Key',
+            'Bind'      => 'Bind',
+        ];
+
+        $result = $this->grammar->getAllowedExpressionTypes();
+        self::assertEquals($defaultAllowedExpressionTypes, $result);
+    }
+
+    public function testGetDateFormat()
+    {
+        $result = $this->grammar->getDateformat();
+        self::assertEquals('Y-m-d\TH:i:s.v\Z', $result);
+    }
 }

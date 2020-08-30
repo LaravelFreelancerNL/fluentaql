@@ -5,3 +5,4 @@ phpunit.phar
 /vendor
 .cache
 *.cache*
+/clover.xml

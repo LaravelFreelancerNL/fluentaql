@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
@@ -8,19 +8,24 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasSupportCommands
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\RawClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\ForClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\FilterClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\SearchClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\CollectClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\IntoClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\KeepClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\SortClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\LimitClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause
  */
 class QueryClausesTest extends TestCase
 {
-    public function testRawAql()
-    {
-        $result = (new QueryBuilder())
-            ->raw('FOR u IN Users FILTER u.email="test@test.com"')
-            ->get();
-        self::assertEquals('FOR u IN Users FILTER u.email="test@test.com"', $result->query);
-
-        //Todo: test bindings & collections
-    }
 
     public function testForClause()
     {
@@ -137,7 +142,6 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR u IN Users SEARCH u.active == true AND u.age == null', $result->query);
     }
 
-
     public function testCollectClause()
     {
         $result = (new QueryBuilder())
@@ -157,7 +161,7 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR u IN Users COLLECT hometown = u.city', $result->query);
     }
 
-    public function testGroupClause()
+    public function testIntoClause()
     {
         $result = (new QueryBuilder())
             ->into('groupsVariable')
@@ -257,7 +261,7 @@ class QueryClausesTest extends TestCase
         self::assertEquals('AGGREGATE variableName = @' . $result->getQueryId() . '_1', $result->query);
     }
 
-    public function testReturnSyntax()
+    public function testReturnClause()
     {
         $result = (new QueryBuilder())
             ->return('NEW.key')

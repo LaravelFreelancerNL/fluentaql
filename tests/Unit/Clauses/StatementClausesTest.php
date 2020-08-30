@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
@@ -8,7 +8,13 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\LetClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\InsertClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\UpdateClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\ReplaceClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\UpsertClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\RemoveClause
  */
 class StatementClausesTest extends TestCase
 {
@@ -69,7 +75,7 @@ class StatementClausesTest extends TestCase
         self::assertEquals('INSERT @' . $result->getQueryId() . '_1 IN Characters', $result->query);
     }
 
-    public function testUdateStatement()
+    public function testUpdateClause()
     {
         $result = (new QueryBuilder())
             ->for('u', 'users')

@@ -299,28 +299,3 @@ $qb->for('user', 'users')
 ``` 
 Resulting AQL: `... OPTIONS {indexHint: 'byName', forceIndexHint: true} ...`
 
-### RAW
-```
-raw(string $aql, $binds = null, $collections = null)
-```
-This clause allows you to write raw AQL. This is particularly useful for AQL features that this query builder doesn't support yet.
-
-Of course that means you are responsible for its safety. As always bind user data.
-
-
-**Example 1: simple query**
-```
-$qb->raw('for user in users return user.name');
-``` 
-
-**Example 2: with binds**
-```
-$qb->raw('for user in users filter user.age >= @min-age && user.age <= @max-age  return u.name', ['min-age' => 18, 'max-age' => 65]);
-``` 
-
-**Example 2: with collections for deadlock prevention in cluster graph traversals or transactions**
-```
-$qb->raw('for user in users return user.name', null, ['read' => ['users']]);
-``` 
-
-

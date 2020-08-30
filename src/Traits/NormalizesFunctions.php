@@ -17,13 +17,6 @@ trait NormalizesFunctions
     use NormalizesMiscellaneousFunctions;
     use NormalizesNumericFunctions;
 
-    protected function normalizeAll(QueryBuilder $queryBuilder)
-    {
-        foreach ($this->parameters as $key => $parameter) {
-            $this->parameters[$key] = $queryBuilder->normalizeArgument($parameter);
-        }
-    }
-
     protected function normalizeArrays(QueryBuilder $queryBuilder)
     {
         foreach ($this->parameters as $key => $parameter) {
