@@ -57,7 +57,7 @@ class SupportCommandsTest extends TestCase
             )
             ->get();
         self::assertEquals('FOR user IN users FILTER user.age == 5 * 4', $qb->query);
-        self::assertEquals('test@test.com', $result->binds['email_address']);
+        self::assertEquals('test@test.com', $qb->binds['email_address']);
     }
 
     public function testRawAqlExpressionWithCollections()
