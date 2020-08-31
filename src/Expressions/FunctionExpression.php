@@ -27,7 +27,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * FunctionExpression constructor.
      *
-     * @param string            $functionName
+     * @param string $functionName
      * @param mixed $parameters
      */
     public function __construct(string $functionName, $parameters = [])

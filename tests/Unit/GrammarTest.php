@@ -10,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Grammar
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
  */
 class GrammarTest extends TestCase
 {
@@ -428,5 +429,28 @@ class GrammarTest extends TestCase
 
         $result = $this->grammar->isIndexedArray($numericArray);
         self::assertTrue($result);
+    }
+
+    public function testGetAllowedExpressionTypes()
+    {
+        $defaultAllowedExpressionTypes = [
+            'Number'    => 'Number',
+            'Boolean'   => 'Boolean',
+            'Null'      => 'Null',
+            'Reference' => 'Reference',
+            'Id'        => 'Id',
+            'Key'       => 'Key',
+            'Bind'      => 'Bind',
+        ];
+
+        $result = $this->grammar->getAllowedExpressionTypes();
+        self::assertEquals($defaultAllowedExpressionTypes, $result);
+    }
+
+    public function testGetDateFormat()
+    {
+        $qb = new QueryBuilder();
+        $result = $qb->grammar->getDateformat();
+        self::assertEquals('Y-m-d\TH:i:s.v\Z', $result);
     }
 }

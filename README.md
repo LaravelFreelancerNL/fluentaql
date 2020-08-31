@@ -2,7 +2,14 @@
 
 Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Language ([AQL](https://www.arangodb.com/docs/stable/aql/)).
 
-		(badges)
+[![Latest Unstable Version](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/v/unstable)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
+![Github CI tests](https://github.com/LaravelFreelancerNL/fluentaql/workflows/Continuous%20Integration/badge.svg)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LaravelFreelancerNL/aql-query-builder/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/aql-query-builder/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=master)
+[![License](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/license)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
+
+**1.0.0-alpha release: API may change before a stable version is released**
+
 ## Table of contents
 1. [Use Cases](#purpose)
 2. [Requirements](#requirements)
@@ -34,15 +41,22 @@ The use of a query builder has both pros and cons. It is up to you to decide wha
 ## Requirements
 | FluentAQL           | ArangoDB          | PHP               |
 | :------------------ | :---------------- | :---------------- |
-| 0.x                 | 3.x *             | ^7.2               |
+| 1.x                 | 3.x *             | ^7.2               |
 
 * ArangoDB regularly adds AQL functions and clauses in minor versions. So be sure to check the AQL documentation for the availability of specific features.
 
 ## Installation
-The easiest way to install FluentAQL is through composer:
+You know the drill:
 ```
 composer require laravel-freelancer-nl/fluentaql 
 ```
+
+## Before you begin: safety first!
+FluentAQL is a query builder that focuses on making your life as a developer easier while maintaining the strength
+and flexibility of AQL. It focuses on syntax checking of the provided expressions 
+however that is not airtight if you don't bind user input.
+
+**Always bind user input.**
 
 ## Usage
 First fire up a new query builder then fluently add AQL clauses on top. 
@@ -78,15 +92,6 @@ The generated AQL for this query is:
 FOR i IN 1..100 FILTER i < 50 LIMIT 10 SORT i DESC RETURN i
 ```
 
-## API
-See the following pages on details for the API
-
-- [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
-- [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
-- [Graph clauses](docs/api/graph-clauses.md): graph traversals
-- [Functions](docs/api/functions.md): a list of all supported AQL functions
-- [Subqueries](docs/api/subqueries.md): how to create subqueries, joins etc.
-
 ### (Always) bind user input
 No matter what, never trust user input and always bind it. 
 ``` 
@@ -98,6 +103,18 @@ Binds are registered in order and given an id. If you want to specify the bind n
 $qb->bind('your data', 'your-bind-id')
 ```
 
+## Documentation
+- API
+    - [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
+    - [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
+    - [Graph clauses](docs/api/graph-clauses.md): graph traversals
+    - [Functions](docs/api/functions.md): a list of all supported AQL functions
+    - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
+- Core Concepts
+    - [Terminology](docs/core-concepts/terminology.md): definitions of terms used in the documentation 
+    - [Data binding](docs/core-concepts/data-binding.md): How to inject external data and collections 
+    - [Subqueries](docs/core-concepts/subqueries.md): Subquery creation
+
 ## References & resources 
 
 ### ArangoDB
@@ -107,3 +124,6 @@ $qb->bind('your data', 'your-bind-id')
 ### ArangoDB PHP clients
 - [Official ArangoDB PHP driver](https://github.com/arangodb/arangodb-php)
 - [Community PHP driver](https://github.com/sandrokeil/arangodb-php-client)
+
+## Credits
+- Pluma@arangodb

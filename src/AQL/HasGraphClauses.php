@@ -3,7 +3,6 @@
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\PruneClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause;
@@ -18,6 +17,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasGraphClauses
 {
+
+    abstract public function addCommand($command);
+
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
      * This is required in clusters.
@@ -26,9 +28,9 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function with(): QueryBuilder
+    public function with(): self
     {
-        $this->addClause(new WithClause(func_get_args()));
+        $this->addCommand(new WithClause(func_get_args()));
 
         return $this;
     }
@@ -43,15 +45,13 @@ trait HasGraphClauses
      *
      * @param $fromVertex
      * @param  string  $inDirection
-     * @param  null  $toVertex
      * @return QueryBuilder
      */
     public function traverse(
         $fromVertex,
-        $inDirection = 'outbound',
-        $toVertex = null
-    ): QueryBuilder {
-        $this->addClause(new TraverseClause($fromVertex, $inDirection, $toVertex));
+        $inDirection = 'outbound'
+    ): self {
+        $this->addCommand(new TraverseClause($fromVertex, $inDirection));
 
         return $this;
     }
@@ -67,9 +67,9 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
+    public function shortestPath($fromVertex, $inDirection, $toVertex): self
     {
-        $this->addClause(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
+        $this->addCommand(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
@@ -85,16 +85,16 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
+    public function kShortestPaths($fromVertex, $inDirection, $toVertex): self
     {
-        $this->addClause(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
+        $this->addCommand(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
 
     /**
      * Named Graph clause
-     * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
@@ -102,9 +102,9 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function graph(string $graphName): QueryBuilder
+    public function graph(string $graphName): self
     {
-        $this->addClause(new GraphClause($graphName));
+        $this->addCommand(new GraphClause($graphName));
 
         return $this;
     }
@@ -112,15 +112,16 @@ trait HasGraphClauses
     /**
      * EdgeCollections Clause for unnamed graphs
      * Generates a list of edge collections to traverse through.
-     * Only usable after traverse/shortestPath/kShortestPaths clauses.
+     * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
+     * @param  array  $edgeCollections
      * @return QueryBuilder
      */
-    public function edgeCollections(): QueryBuilder
+    public function edgeCollections(...$edgeCollections): self
     {
-        $this->addClause(new EdgeCollectionsClause(func_get_args()));
+        $this->addCommand(new EdgeCollectionsClause($edgeCollections));
 
         return $this;
     }
@@ -142,13 +143,13 @@ trait HasGraphClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $this->addClause(new PruneClause($predicates));
+        $this->addCommand(new PruneClause($predicates));
 
         return $this;
     }

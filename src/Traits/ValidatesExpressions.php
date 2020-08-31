@@ -98,7 +98,7 @@ trait ValidatesExpressions
         return isset($this->comparisonOperators[strtoupper($operator)]);
     }
 
-    public function isArithmeticOperators($operator): bool
+    public function isArithmeticOperator($operator): bool
     {
         return isset($this->arithmeticOperators[$operator]);
     }
@@ -112,9 +112,13 @@ trait ValidatesExpressions
         return false;
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isGraphDirection($value): bool
     {
-        if (preg_match('/outbound|inbound|any/i', $value)) {
+        if (is_string($value) && preg_match('/outbound|inbound|any/i', $value)) {
             return true;
         }
 
@@ -205,26 +209,25 @@ trait ValidatesExpressions
     /**
      * @param mixed $value
      * @param array $registeredVariables
-     *
      * @return bool
      */
     public function isReference($value, $registeredVariables = []): bool
     {
         $variables = '';
         if (!empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables) . '|';
+            $variables = implode('|', $registeredVariables);
         }
 
-        if (
-            is_string($value)
-            && preg_match('/^('
+        if (! is_string($value)) {
+            return false;
+        }
+
+        return (bool) preg_match(
+            '/^('
                 . $variables
-                . 'NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/', $value)
-        ) {
-            return true;
-        }
-
-        return false;
+                . '|CURRENT|NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/',
+            $value
+        );
     }
 
     /**

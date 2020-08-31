@@ -1,12 +1,14 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Functions;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions
  */
 class DateFunctionsTest extends TestCase
 {

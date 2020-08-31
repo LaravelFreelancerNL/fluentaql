@@ -87,6 +87,7 @@ class Grammar
         'AssociativeArray'   => 'Object',
         'Attribute'          => 'Literal',
         'Bind'               => 'Bind',
+        'CollectionBind'     => 'CollectionBind',
         'Boolean'            => 'Boolean',
         'Collection'         => 'Literal',
         'Constant'           => 'Constant',

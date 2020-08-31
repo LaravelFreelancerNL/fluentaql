@@ -1,13 +1,12 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Functions;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasGeoFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGeoFunctions
  */
 class GeoFunctionsTest extends TestCase
 {

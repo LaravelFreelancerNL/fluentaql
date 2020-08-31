@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\CollectClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\GroupClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\IntoClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\KeepClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause;
@@ -15,6 +15,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SearchClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SortClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -24,42 +25,25 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait HasQueryClauses
 {
 
-    public function raw(string $aql, $binds = null, $collections = null): QueryBuilder
-    {
-        if (is_array($binds)) {
-            foreach ($binds as $key => $value) {
-                $this->bind($value, $key);
-            }
-        }
-        if (is_array($binds)) {
-            foreach ($collections as $mode => $modeCollections) {
-                $this->registerCollections($modeCollections, $mode);
-            }
-        }
-
-        $this->addClause(new RawClause($aql));
-
-        return $this;
-    }
-
+    abstract public function addCommand($command);
 
     /**
      * Create a for clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
-     * @param string|array $variableName
+     * @param string|array|ExpressionInterface $variableName
      * @param mixed        $in
      *
      * @return QueryBuilder
      */
-    public function for($variableName, $in = null): QueryBuilder
+    public function for($variableName, $in = null): self
     {
         if (!is_array($variableName)) {
             $variableName = [$variableName];
         }
 
-        $this->addClause(new ForClause($variableName, $in));
+        $this->addCommand(new ForClause($variableName, $in));
 
         return $this;
     }
@@ -81,13 +65,13 @@ trait HasQueryClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $this->addClause(new FilterClause($predicates));
+        $this->addCommand(new FilterClause($predicates));
 
         return $this;
     }
@@ -109,13 +93,13 @@ trait HasQueryClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $this->addClause(new SearchClause($predicates));
+        $this->addCommand(new SearchClause($predicates));
 
         return $this;
     }
@@ -130,10 +114,10 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function collect($variableName = null, $expression = null): QueryBuilder
+    public function collect($variableName = null, $expression = null): self
     {
 
-        $this->addClause(new CollectClause($variableName, $expression));
+        $this->addCommand(new CollectClause($variableName, $expression));
 
         return $this;
     }
@@ -149,9 +133,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function group($groupsVariable, $projectionExpression = null): QueryBuilder
+    public function into($groupsVariable, $projectionExpression = null): self
     {
-        $this->addClause(new GroupClause($groupsVariable, $projectionExpression));
+        $this->addCommand(new IntoClause($groupsVariable, $projectionExpression));
 
         return $this;
     }
@@ -166,9 +150,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function keep($keepVariable): QueryBuilder
+    public function keep($keepVariable): self
     {
-        $this->addClause(new KeepClause($keepVariable));
+        $this->addCommand(new KeepClause($keepVariable));
 
         return $this;
     }
@@ -176,7 +160,7 @@ trait HasQueryClauses
     /**
      * withCount clause
      * Count the collected and grouped data.
-     * withCount can only be used after a group clause.
+     * withCount can only be used after a into clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#group-length-calculation
      *
@@ -184,9 +168,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function withCount($countVariableName): QueryBuilder
+    public function withCount($countVariableName): self
     {
-        $this->addClause(new WithCountClause($countVariableName));
+        $this->addCommand(new WithCountClause($countVariableName));
 
         return $this;
     }
@@ -202,9 +186,9 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function aggregate($variableName, $aggregateExpression): QueryBuilder
+    public function aggregate($variableName, $aggregateExpression): self
     {
-        $this->addClause(new AggregateClause($variableName, $aggregateExpression));
+        $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
         return $this;
     }
@@ -214,11 +198,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
+     * @param  mixed  ...$references
      * @return QueryBuilder
      */
-    public function sort(): QueryBuilder
+    public function sort(...$references): self
     {
-        $this->addClause(new SortClause(func_get_args()));
+        $this->addCommand(new SortClause($references));
 
         return $this;
     }
@@ -233,9 +218,9 @@ trait HasQueryClauses
      *
      * @return $this
      */
-    public function limit(int $offsetOrCount, int $count = null)
+    public function limit(int $offsetOrCount, int $count = null): self
     {
-        $this->addClause(new LimitClause($offsetOrCount, $count));
+        $this->addCommand(new LimitClause($offsetOrCount, $count));
 
         return $this;
     }
@@ -252,16 +237,16 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function return($expression, $distinct = false): QueryBuilder
+    public function return($expression, $distinct = false): self
     {
-        $this->addClause(new ReturnClause($expression, $distinct));
+        $this->addCommand(new ReturnClause($expression, $distinct));
 
         return $this;
     }
 
-    public function options($options): QueryBuilder
+    public function options($options): self
     {
-        $this->addClause(new OptionsClause($options));
+        $this->addCommand(new OptionsClause($options));
 
         return $this;
     }

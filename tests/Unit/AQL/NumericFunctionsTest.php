@@ -1,12 +1,12 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Functions;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasNumericFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasNumericFunctions
  */
 class NumericFunctionsTest extends TestCase
 {

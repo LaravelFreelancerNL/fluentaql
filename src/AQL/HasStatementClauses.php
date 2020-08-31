@@ -16,6 +16,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasStatementClauses
 {
+
+    abstract public function addCommand($command);
+
     /**
      * Assign a value to a variable.
      *
@@ -26,9 +29,9 @@ trait HasStatementClauses
      *
      * @return $this
      */
-    public function let($variableName, $expression)
+    public function let($variableName, $expression): self
     {
-        $this->addClause(new LetClause($variableName, $expression));
+        $this->addCommand(new LetClause($variableName, $expression));
 
         return $this;
     }
@@ -43,9 +46,9 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function insert($document, string $collection): QueryBuilder
+    public function insert($document, string $collection): self
     {
-        $this->addClause(new InsertClause($document, $collection));
+        $this->addCommand(new InsertClause($document, $collection));
 
         return $this;
     }
@@ -61,9 +64,9 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function update($document, $with, $collection): QueryBuilder
+    public function update($document, $with, $collection): self
     {
-        $this->addClause(new UpdateClause($document, $with, $collection));
+        $this->addCommand(new UpdateClause($document, $with, $collection));
 
         return $this;
     }
@@ -79,9 +82,9 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function replace($document, $with, string $collection): QueryBuilder
+    public function replace($document, $with, string $collection): self
     {
-        $this->addClause(new ReplaceClause($document, $with, $collection));
+        $this->addCommand(new ReplaceClause($document, $with, $collection));
 
         return $this;
     }
@@ -101,9 +104,9 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
+    public function upsert($search, $insert, $with, string $collection, bool $replace = false): self
     {
-        $this->addClause(new UpsertClause($search, $insert, $with, $collection, $replace));
+        $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
 
         return $this;
     }
@@ -118,9 +121,9 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function remove($document, string $collection): QueryBuilder
+    public function remove($document, string $collection): self
     {
-        $this->addClause(new RemoveClause($document, $collection));
+        $this->addCommand(new RemoveClause($document, $collection));
 
         return $this;
     }

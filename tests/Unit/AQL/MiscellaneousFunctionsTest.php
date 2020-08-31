@@ -1,15 +1,14 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Functions;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\Clauses
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasMiscellaneousFunctions
  */
 class MiscellaneousFunctionsTest extends TestCase
 {

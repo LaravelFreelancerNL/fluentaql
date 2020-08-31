@@ -40,7 +40,7 @@ class ForClause extends Clause
 
         if ($this->in !== null) {
             $this->in = $queryBuilder
-                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'Bind'])
+                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'CollectionBind'])
                 ->compile($queryBuilder);
         }
         $inExpression = (string) $this->in;

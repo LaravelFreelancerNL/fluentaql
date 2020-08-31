@@ -4,13 +4,10 @@ namespace LaravelFreelancerNL\FluentAQL\Traits;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
-/**
- * Trait hasFunctions.
- *
- * AQL Function API calls.
- */
 trait NormalizesNumericFunctions
 {
+    abstract protected function normalizeArrays(QueryBuilder $queryBuilder);
+
     protected function normalizeAverage(QueryBuilder $queryBuilder)
     {
         $this->normalizeArrays($queryBuilder);

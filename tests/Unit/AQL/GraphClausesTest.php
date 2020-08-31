@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Clauses;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
@@ -8,10 +8,13 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * Class StructureTest.
  *
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\hasQueryClauses.php
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses
  */
 class GraphClausesTest extends TestCase
 {
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\WithClause
+     */
     public function testWithClause()
     {
         $result = (new QueryBuilder())
@@ -20,6 +23,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('WITH Characters, ChildOf, Locations, Traits', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     */
     public function testTraverseClause()
     {
         $result = (new QueryBuilder())
@@ -28,6 +34,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('OUTBOUND "Characters/BranStark"', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     */
     public function testShortestPath()
     {
         $result = (new QueryBuilder())
@@ -41,6 +50,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('OUTBOUND SHORTEST_PATH "Characters/BranStark" TO "Characters/NedStark"', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     */
     public function testKShortestPaths()
     {
         $result = (new QueryBuilder())
@@ -49,6 +61,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('OUTBOUND K_SHORTEST_PATHS "Characters/BranStark" TO "Characters/NedStark"', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\GraphClause
+     */
     public function testGraphClause()
     {
         $result = (new QueryBuilder())
@@ -57,6 +72,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('GRAPH "relations"', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause
+     */
     public function testEdgeCollectionListClauseStringInput()
     {
         $result = (new QueryBuilder())
@@ -65,6 +83,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('ChildOf', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause
+     */
     public function testEdgeCollectionListClauseArrayInput()
     {
         $result = (new QueryBuilder())
@@ -78,16 +99,19 @@ class GraphClausesTest extends TestCase
         self::assertEquals('ChildOf, KilledBy', $result->query);
 
         $result = (new QueryBuilder())
-            ->edgeCollections('ChildOf', ['KilledBy', 'ANY'])
+            ->edgeCollections('ChildOf', 'ANY', 'KilledBy')
             ->get();
         self::assertEquals('ChildOf, ANY KilledBy', $result->query);
 
         $result = (new QueryBuilder())
-            ->edgeCollections('ChildOf', ['KilledBy', 'ANY'], 'SucceededBy')
+            ->edgeCollections('ChildOf', 'ANY', 'KilledBy', 'SucceededBy')
             ->get();
         self::assertEquals('ChildOf, ANY KilledBy, SucceededBy', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\PruneClause
+     */
     public function testPruneClause()
     {
         $result = (new QueryBuilder())
@@ -109,6 +133,9 @@ class GraphClausesTest extends TestCase
         self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
     }
 
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\PruneClause
+     */
     public function testPruneClauseWithMultiplePredicates()
     {
         $result = (new QueryBuilder())

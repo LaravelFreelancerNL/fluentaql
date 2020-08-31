@@ -150,11 +150,12 @@ Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" GRAPH "citizens"`
 
 ## EDGE COLLECTIONS (unnamed graph)
 ```
-    edgeCollections(...$edgeCollections)
+edgeCollections(...$edgeCollections)
 ```
 Execute the previously set traversal on the given set of edge collections.
+To specify a direction add it before the accompanying edge collection. 
 
-**Example:**
+**Example 1: multiple edge collections**
 ```
     $qb = new QueryBuilder();
     $qb->with('users', 'cities')
@@ -163,6 +164,17 @@ Execute the previously set traversal on the given set of edge collections.
         ->edgeCollections('edge1', 'edge2', 'edge3')
 ``` 
 Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" edge1, edge2, edge3`
+
+**Example 2: with directions**
+```
+    $qb = new QueryBuilder();
+    $qb->with('users', 'cities')
+        ->for(['v', 'e', 'p'])
+        ->traverse('users/1', 'ANY')
+        ->edgeCollections('edge1', 'inbound', edge2', 'edge3')
+``` 
+Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" edge1, INBOUND edge2, edge3`
+
 
 [ArangoDB UNNAMED GRAPH documentation](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#working-with-collection-sets)
 

@@ -11,11 +11,12 @@ use LaravelFreelancerNL\FluentAQL\Expressions\ObjectExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\StringExpression;
-use LaravelFreelancerNL\FluentAQL\Grammar;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesExpressions
 {
+
+    abstract public function bind($data, $to = null);
 
     /**
      * @param $argument
@@ -61,7 +62,9 @@ trait NormalizesExpressions
         if ($expressionType == 'Bind') {
             return $this->bind($argument);
         }
-
+        if ($expressionType == 'CollectionBind') {
+            return $this->bindCollection($argument);
+        }
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
 
         return new $expressionClass($argument);
@@ -80,10 +83,11 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array|object $argument
-     * @param null         $allowedExpressionTypes
+     * @param  array|object  $argument
+     * @param  array|null  $allowedExpressionTypes
      *
-     * @return array
+     * @return array|object
+     * @throws ExpressionTypeException
      */
     protected function normalizeIterable($argument, $allowedExpressionTypes = null)
     {
@@ -92,28 +96,6 @@ trait NormalizesExpressions
         }
 
         return $argument;
-    }
-
-    public function normalizeSortExpression($sortExpression = null, $direction = null): array
-    {
-        if (is_string($sortExpression)) {
-            $sortExpression = [$this->normalizeArgument($sortExpression, 'Reference')];
-            if ($direction) {
-                $sortExpression[] = $direction;
-            }
-
-            return $sortExpression;
-        }
-        if (is_array($sortExpression) && !empty($sortExpression)) {
-            $sortExpression[0] = $this->normalizeArgument($sortExpression[0], 'Reference');
-            if (isset($sortExpression[1]) && !$this->grammar->isSortDirection($sortExpression[1])) {
-                unset($sortExpression[1]);
-            }
-
-            return $sortExpression;
-        }
-
-        return ['null'];
     }
 
     /**
@@ -144,6 +126,7 @@ trait NormalizesExpressions
     {
         $normalizedPredicate = [];
 
+        $leftOperand = null;
         if (! $predicate[0] instanceof PredicateExpression) {
             $leftOperand = $this->normalizeArgument($predicate[0]);
         }
@@ -153,6 +136,7 @@ trait NormalizesExpressions
             $comparisonOperator = $predicate[1];
         }
 
+        $rightOperand = null;
         if (! $predicate[2] instanceof PredicateExpression) {
             $rightOperand = $this->normalizeArgument($predicate[2]);
         }
@@ -203,11 +187,6 @@ trait NormalizesExpressions
             if ($this->grammar->$check($argument)) {
                 return $allowedExpressionType;
             }
-        }
-
-        //Fallback to BindExpression if allowed
-        if (isset($allowedExpressionTypes['Bind'])) {
-            return 'Bind';
         }
 
         throw new ExpressionTypeException(

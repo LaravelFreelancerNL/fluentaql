@@ -104,7 +104,7 @@ Resulting AQL: `...  SEARCH u.age < 18 OR u.age > 65 ...`
 ```
 sort($reference, $direction)
 ```
-Return the result of a (sub)query.
+Return the result of a (sub)query. To set a direction add the appropriate string attribute to the method.
 
 **Example 1: default direction (asc)**
 ```
@@ -120,7 +120,7 @@ Resulting AQL: `...  SORT user.name DESC ...`
 
 **Example 3: sort by multiple attributes**
 ```
-$qb->sort(['user.name', 'desc'], 'user.email');
+$qb->sort('user.name', 'desc', 'user.email');
 ``` 
 Resulting AQL: `...  SORT user.name DESC, user.email ...`
 
@@ -154,7 +154,7 @@ Resulting AQL: `... LIMIT 5 10 ...`
 ```
 collect($variableName = null, $expression = null)
 ```
-Group an array by one or more group criteria.
+Group an array by one or more into criteria.
 
 **Example 1:**
 ```
@@ -164,22 +164,20 @@ Resulting AQL: `... COLLECT cities = user.city ...`
 
 [ArangoDB COLLECT documentation](https://www.arangodb.com/docs/stable/aql/operations-collect.html)
 
-### GROUP
+### INTO
 ```
-group($groupsVariable, $projectionExpression = null)
+into($groupsVariable, $projectionExpression = null)
 ```
 This addition to collect stores all collected elements in $groupsVariable.
 
-**Note 1:** the group clause is only useful following a collect or aggregate clause.
-**Note 2:** AQL does not have an actual group clause. Within this query builder we use GROUP to prevent confusing
-with the 'INTO' keyword that is used in other places in AQL as well.
+**Note:** the into clause is only useful following a collect or aggregate clause.
 
 **Example 1: group the users that are in the collected city**
 ```
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->collect('cities', 'user.city')
-        ->group('users-in-this-city')
+        ->into('users-in-this-city')
     ->return(['city' => 'city', 'usersInThisCity' => 'users-in-this-city']);
 ``` 
 Resulting AQL: `... COLLECT cities = user.city INTO users-in-this-city ...`
@@ -190,7 +188,7 @@ Resulting AQL: `... COLLECT cities = user.city INTO users-in-this-city ...`
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->collect('cities', 'user.city')
-        ->group('users-in-this-city', 'user.name')
+        ->into('users-in-this-city', 'user.name')
     ->return(['city' => 'city', 'usersInThisCity' => 'users-in-this-city']);
 ``` 
 Resulting AQL: `... COLLECT cities = user.city INTO users-in-this-city = user.name ...`
@@ -200,19 +198,19 @@ Resulting AQL: `... COLLECT cities = user.city INTO users-in-this-city = user.na
 
 ### KEEP
 ```
-group($groupsVariable, $projectionExpression = null)
+keep($keepVariable)
 ```
 Discard anything but the attributes to keep from the grouped data.    
 
-**Note 1:** the keep clause is only useful following the group clause.
+**Note 1:** the keep clause is only useful following the into clause.
 
-**Example 1: group the users that are in the collected city. Only keep the name variable**
+**Example 1: into the users that are in the collected city. Only keep the name variable**
 ```
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->let('something', 'else')
     ->collect('cities', 'user.city')
-        ->group('users-in-this-city')
+        ->into('users-in-this-city')
         ->keep('name')
     ->return(['city' => 'city', 'usersInThisCity' => 'users-in-this-city']);
 ``` 
@@ -226,7 +224,7 @@ withCount($countVariableName)
 ```
 Discard anything but the attributes to keep from the grouped data.    
 
-**Note:** the with count clause is only be used with group.
+**Note:** the with count clause is only be used with into.
 
 **Example: **
 ```
@@ -234,7 +232,7 @@ $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->let('something', 'else')
     ->collect('cities', 'user.city')
-        ->group('users-in-this-city')
+        ->into('users-in-this-city')
         ->keep('name')
     ->return(['city' => 'city', 'usersInThisCity' => 'users-in-this-city']);
 ``` 
@@ -245,7 +243,7 @@ $qb->for('user', 'users')
 ```
 aggregate($variableName, $aggregateExpression)
 ```
-Aggregate collected data per group
+Aggregate collected data per into
 
 **Note:** the aggregate clause can only be used after the collect clause.
 
@@ -300,29 +298,4 @@ $qb->for('user', 'users')
     ->return('user');
 ``` 
 Resulting AQL: `... OPTIONS {indexHint: 'byName', forceIndexHint: true} ...`
-
-### RAW
-```
-raw(string $aql, $binds = null, $collections = null)
-```
-This clause allows you to write raw AQL. This is particularly useful for AQL features that this query builder doesn't support yet.
-
-Of course that means you are responsible for its safety. As always bind user data.
-
-
-**Example 1: simple query**
-```
-$qb->raw('for user in users return user.name');
-``` 
-
-**Example 2: with binds**
-```
-$qb->raw('for user in users filter user.age >= @min-age && user.age <= @max-age  return u.name', ['min-age' => 18, 'max-age' => 65]);
-``` 
-
-**Example 2: with collections for deadlock prevention in cluster graph traversals or transactions**
-```
-$qb->raw('for user in users return user.name', null, ['read' => ['users']]);
-``` 
-
 
