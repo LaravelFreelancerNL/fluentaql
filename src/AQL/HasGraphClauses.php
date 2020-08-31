@@ -17,6 +17,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasGraphClauses
 {
+
+    abstract public function addCommand($command);
+
     /**
      * Start a query with 'WITH' to prevent graph traversal deadlocks.
      * This is required in clusters.
@@ -113,11 +116,12 @@ trait HasGraphClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
+     * @param  array  $edgeCollections
      * @return QueryBuilder
      */
-    public function edgeCollections(): self
+    public function edgeCollections(...$edgeCollections): self
     {
-        $this->addCommand(new EdgeCollectionsClause(func_get_args()));
+        $this->addCommand(new EdgeCollectionsClause($edgeCollections));
 
         return $this;
     }

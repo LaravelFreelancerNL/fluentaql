@@ -6,6 +6,8 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesNumericFunctions
 {
+    abstract protected function normalizeArrays(QueryBuilder $queryBuilder);
+
     protected function normalizeAverage(QueryBuilder $queryBuilder)
     {
         $this->normalizeArrays($queryBuilder);

@@ -16,6 +16,8 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait NormalizesExpressions
 {
 
+    abstract public function bind($data, $to = null);
+
     /**
      * @param $argument
      * @param  array|null  $allowedExpressionTypes
@@ -60,7 +62,9 @@ trait NormalizesExpressions
         if ($expressionType == 'Bind') {
             return $this->bind($argument);
         }
-
+        if ($expressionType == 'CollectionBind') {
+            return $this->bindCollection($argument);
+        }
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
 
         return new $expressionClass($argument);
@@ -79,10 +83,11 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array|object $argument
-     * @param null         $allowedExpressionTypes
+     * @param  array|object  $argument
+     * @param  array|null  $allowedExpressionTypes
      *
-     * @return array
+     * @return array|object
+     * @throws ExpressionTypeException
      */
     protected function normalizeIterable($argument, $allowedExpressionTypes = null)
     {

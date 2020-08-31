@@ -99,12 +99,12 @@ class GraphClausesTest extends TestCase
         self::assertEquals('ChildOf, KilledBy', $result->query);
 
         $result = (new QueryBuilder())
-            ->edgeCollections('ChildOf', ['KilledBy', 'ANY'])
+            ->edgeCollections('ChildOf', 'ANY', 'KilledBy')
             ->get();
         self::assertEquals('ChildOf, ANY KilledBy', $result->query);
 
         $result = (new QueryBuilder())
-            ->edgeCollections('ChildOf', ['KilledBy', 'ANY'], 'SucceededBy')
+            ->edgeCollections('ChildOf', 'ANY', 'KilledBy', 'SucceededBy')
             ->get();
         self::assertEquals('ChildOf, ANY KilledBy, SucceededBy', $result->query);
     }

@@ -16,6 +16,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasStatementClauses
 {
+
+    abstract public function addCommand($command);
+
     /**
      * Assign a value to a variable.
      *

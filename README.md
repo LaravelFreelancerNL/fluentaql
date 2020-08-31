@@ -8,7 +8,7 @@ Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Lang
 [![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=master)
 [![License](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/license)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
 
-**1.0.0-alpha release: API may change in future releases**
+**1.0.0-alpha release: API may change before a stable version is released**
 
 ## Table of contents
 1. [Use Cases](#purpose)
@@ -122,3 +122,6 @@ $qb->bind('your data', 'your-bind-id')
 ### ArangoDB PHP clients
 - [Official ArangoDB PHP driver](https://github.com/arangodb/arangodb-php)
 - [Community PHP driver](https://github.com/sandrokeil/arangodb-php-client)
+
+## Credits
+- Pluma@arangodb

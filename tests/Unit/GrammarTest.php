@@ -449,7 +449,8 @@ class GrammarTest extends TestCase
 
     public function testGetDateFormat()
     {
-        $result = $this->grammar->getDateformat();
+        $qb = new QueryBuilder();
+        $result = $qb->grammar->getDateformat();
         self::assertEquals('Y-m-d\TH:i:s.v\Z', $result);
     }
 }

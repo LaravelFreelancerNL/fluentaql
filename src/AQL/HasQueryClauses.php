@@ -24,6 +24,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasQueryClauses
 {
+
+    abstract public function addCommand($command);
+
     /**
      * Create a for clause.
      *
@@ -195,11 +198,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
+     * @param  mixed  ...$references
      * @return QueryBuilder
      */
-    public function sort(): self
+    public function sort(...$references): self
     {
-        $this->addCommand(new SortClause(func_get_args()));
+        $this->addCommand(new SortClause($references));
 
         return $this;
     }

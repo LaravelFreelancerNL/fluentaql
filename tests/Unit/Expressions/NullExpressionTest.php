@@ -21,22 +21,4 @@ class NullExpressionTest extends TestCase
 
         self::assertEquals('null', $result);
     }
-
-    public function testNullExpressionWithZero()
-    {
-        $qb = new QueryBuilder();
-        $expression = new NullExpression(0);
-        $result = $expression->compile($qb);
-
-        self::assertEquals('null', $result);
-    }
-
-    public function testNullExpressionWithNullString()
-    {
-        $qb = new QueryBuilder();
-        $expression = new NullExpression('null');
-        $result = $expression->compile($qb);
-
-        self::assertEquals('null', $result);
-    }
 }

@@ -34,6 +34,17 @@ class QueryBuilderTest extends TestCase
         $qb->addCommand(new ForClause(['u'], 'users'));
         $command = $qb->getCommand(0);
         self::assertInstanceOf(ForClause::class, $command);
+        $qb->removeCommand();
+        self::assertEmpty($qb->getCommands());
+    }
+
+
+    public function testRemoveCommandWithIndex()
+    {
+        $qb = (new QueryBuilder());
+        $qb->addCommand(new ForClause(['u'], 'users'));
+        $command = $qb->getCommand(0);
+        self::assertInstanceOf(ForClause::class, $command);
         $qb->removeCommand(0);
         self::assertEmpty($qb->getCommands());
     }
@@ -82,6 +93,20 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(121, strlen($qb->binds[$qb->getQueryId() . '_1']));
     }
 
+    public function testBindCollection()
+    {
+        $qb = new QueryBuilder();
+
+        $bind = $qb->bindCollection('users');
+        self::assertInstanceOf(BindExpression::class, $bind);
+        self::assertEquals('@@' . $qb->getQueryId() . '_1', $bind->compile($qb));
+
+        self::arrayHasKey($qb->getQueryId() . '_1');
+        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
+
+        self::assertEquals('users', $qb->binds[$qb->getQueryId() . '_1']);
+    }
+
     public function testRegisterCollections()
     {
         $qb = (new QueryBuilder())->registerCollections('Characters');
@@ -95,12 +120,5 @@ class QueryBuilderTest extends TestCase
         $qb = $qb->registerCollections('Traits', 'exclusive');
         self::assertArrayHasKey('exclusive', $qb->collections);
         self::assertContains('Traits', $qb->collections['exclusive']);
-    }
-
-    public function testWrap()
-    {
-        $result = (new QueryBuilder())->wrap("paghmo' tIn mIS");
-
-        self::assertEquals('`paghmo\' tIn mIS`', $result);
     }
 }

@@ -104,7 +104,7 @@ Resulting AQL: `...  SEARCH u.age < 18 OR u.age > 65 ...`
 ```
 sort($reference, $direction)
 ```
-Return the result of a (sub)query.
+Return the result of a (sub)query. To set a direction add the appropriate string attribute to the method.
 
 **Example 1: default direction (asc)**
 ```
@@ -120,7 +120,7 @@ Resulting AQL: `...  SORT user.name DESC ...`
 
 **Example 3: sort by multiple attributes**
 ```
-$qb->sort(['user.name', 'desc'], 'user.email');
+$qb->sort('user.name', 'desc', 'user.email');
 ``` 
 Resulting AQL: `...  SORT user.name DESC, user.email ...`
 

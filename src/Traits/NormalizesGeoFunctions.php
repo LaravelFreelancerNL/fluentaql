@@ -11,6 +11,8 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesGeoFunctions
 {
+    abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
+
     protected function normalizeDistance(QueryBuilder $queryBuilder)
     {
         $this->normalizeNumbers($queryBuilder);

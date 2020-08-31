@@ -2,6 +2,8 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
+use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -26,30 +28,22 @@ class EdgeCollectionsClause extends Clause
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->edgeCollections = array_map(function ($edgeCollection) use ($queryBuilder) {
-            if (is_string($edgeCollection)) {
-                return $queryBuilder->normalizeArgument($edgeCollection, 'Collection');
-            }
-
-            $edgeCollection[0] = $queryBuilder->normalizeArgument($edgeCollection[0], 'Collection');
-            if (isset($edgeCollection[1]) && !$queryBuilder->grammar->isGraphDirection($edgeCollection[1])) {
-                unset($edgeCollection[1]);
+            if (!$queryBuilder->grammar->isGraphDirection($edgeCollection)) {
+                return $queryBuilder->normalizeArgument($edgeCollection, ['Collection', 'Query', 'Bind']);
             }
             return $edgeCollection;
         }, $this->edgeCollections);
 
-        $output = array_map(function ($edgeCollection) use ($queryBuilder) {
-            if ($edgeCollection instanceof LiteralExpression) {
-                return $edgeCollection->compile($queryBuilder);
+        $output = '';
+        foreach ($this->edgeCollections as $value) {
+            if ($value instanceof ExpressionInterface) {
+                $output .= $value->compile($queryBuilder) . ', ';
             }
-
-            $edgeCollectionOutput = '';
-            if (isset($edgeCollection[1])) {
-                $edgeCollectionOutput = $edgeCollection[1] . ' ';
+            if (is_string($value)) {
+                $output .= $value . ' ';
             }
+        }
 
-            return $edgeCollectionOutput . $edgeCollection[0]->compile($queryBuilder);
-        }, $this->edgeCollections);
-
-        return implode(', ', $output);
+        return rtrim($output, ', ');
     }
 }

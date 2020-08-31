@@ -121,8 +121,7 @@ class QueryBuilder
     /**
      * Remove the last, or the specified, Command.
      *
-     * @param null $index
-     *
+     * @param number|null $index
      * @return bool
      */
     public function removeCommand($index = null): bool
@@ -178,34 +177,62 @@ class QueryBuilder
     }
 
     /**
-     * Bind data or a collection name to a variable.
-     *
-     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * Bind data to a variable.
      *
      * @param $data
      * @param string|null $to
-     * @param bool $collection
-     *
      * @throws BindException
-     *
      * @return BindExpression
      */
-    public function bind($data, $to = null, $collection = false): BindExpression
+    public function bind($data, $to = null): BindExpression
+    {
+        $this->validateBindVariable($to);
+
+        $to = $this->generateBindVariable($to);
+
+        $this->binds[$to] = $data;
+
+        $to = $this->grammar->formatBind($to, false);
+
+        return new BindExpression($to);
+    }
+
+    /**
+     * Bind a collection name to a variable.
+     *
+     * @param $data
+     * @param string|null $to
+     * @throws BindException
+     * @return BindExpression
+     */
+    public function bindCollection($data, $to = null): BindExpression
+    {
+        $this->validateBindVariable($to);
+
+        $to = $this->generateBindVariable($to);
+
+        $this->binds[$to] = $data;
+
+        $to = $this->grammar->formatBind($to, true);
+
+        return new BindExpression($to);
+    }
+
+    protected function validateBindVariable($to)
     {
         if (isset($to) && !$this->grammar->isBindParameter($to)) {
             throw new BindException('Invalid bind parameter.');
         }
+    }
 
+    protected function generateBindVariable($to)
+    {
         if ($to == null) {
             $to = $this->queryId . '_' . (count($this->binds) + 1);
         }
-
-        $this->binds[$to] = $data;
-
-        $to = $this->grammar->formatBind($to, $collection);
-
-        return new BindExpression($to);
+        return $to;
     }
+
 
     /**
      * Compile the query with its bindings and collection list.
@@ -252,11 +279,6 @@ class QueryBuilder
     public function __toString()
     {
         return $this->toAql();
-    }
-
-    public function wrap($value)
-    {
-        return $this->grammar->wrap($value);
     }
 
     public function getVariables()

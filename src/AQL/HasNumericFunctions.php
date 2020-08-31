@@ -18,7 +18,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average
      *
-     * @param string|array $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
@@ -37,7 +37,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#max
      *
-     * @param string|array $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
@@ -51,7 +51,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min
      *
-     * @param string|array $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
@@ -76,16 +76,12 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum
      *
-     * @param string|array $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
     public function sum($value)
     {
-        $arguments = [];
-
-        $arguments['value'] = $this->normalizeArgument($value, ['List', 'Variable', 'Reference']);
-
-        return new FunctionExpression('SUM', $arguments);
+        return new FunctionExpression('SUM', [$value]);
     }
 }
