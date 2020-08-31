@@ -67,5 +67,4 @@ class LiteralExpressionTest extends TestCase
 
         self::assertEquals('@bind-var', $result);
     }
-
 }

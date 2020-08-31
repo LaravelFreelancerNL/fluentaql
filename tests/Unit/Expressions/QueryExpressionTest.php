@@ -16,7 +16,7 @@ class QueryExpressionTest extends TestCase
     public function testQueryExpression()
     {
         $qb = new QueryBuilder();
-        $qb->for('u','users')->return('u');
+        $qb->for('u', 'users')->return('u');
         $qe = new QueryExpression($qb);
         $result = $qe->compile($qb);
 

@@ -69,5 +69,4 @@ class SupportCommandsTest extends TestCase
         self::assertEquals('FOR user IN users FILTER user.age == 5 * 4', $qb->query);
         self::assertEquals('users', $qb->collections['read'][0]);
     }
-
 }

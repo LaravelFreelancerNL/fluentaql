@@ -10,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  * Class StructureTest.
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Grammar
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
  */
 class GrammarTest extends TestCase
 {

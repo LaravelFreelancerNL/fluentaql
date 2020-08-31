@@ -8,7 +8,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression
+ * @covers \LaravelFreelancerNL\FluentAQL\QueryBuilder
  */
 class QueryBuilderTest extends TestCase
 {
@@ -18,7 +18,14 @@ class QueryBuilderTest extends TestCase
         $result->addCommand(new ForClause(['u'], 'users'));
         $command = $result->getCommand(0);
         self::assertInstanceOf(ForClause::class, $command);
+    }
 
+    public function testGetCommands()
+    {
+        $result = (new QueryBuilder());
+        $result->addCommand(new ForClause(['u'], 'users'));
+        $commands = $result->getCommands();
+        self::assertInstanceOf(ForClause::class, $commands[0]);
     }
 
     public function testRemoveCommand()
@@ -30,7 +37,6 @@ class QueryBuilderTest extends TestCase
         $qb->removeCommand(0);
         self::assertEmpty($qb->getCommands());
     }
-
 
     public function testGet()
     {

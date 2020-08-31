@@ -39,6 +39,4 @@ class NullExpressionTest extends TestCase
 
         self::assertEquals('null', $result);
     }
-
-
 }

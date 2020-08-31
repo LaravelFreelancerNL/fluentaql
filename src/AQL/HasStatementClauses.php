@@ -26,7 +26,7 @@ trait HasStatementClauses
      *
      * @return $this
      */
-    public function let($variableName, $expression)
+    public function let($variableName, $expression): self
     {
         $this->addCommand(new LetClause($variableName, $expression));
 
@@ -43,7 +43,7 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function insert($document, string $collection): QueryBuilder
+    public function insert($document, string $collection): self
     {
         $this->addCommand(new InsertClause($document, $collection));
 
@@ -61,7 +61,7 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function update($document, $with, $collection): QueryBuilder
+    public function update($document, $with, $collection): self
     {
         $this->addCommand(new UpdateClause($document, $with, $collection));
 
@@ -79,7 +79,7 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function replace($document, $with, string $collection): QueryBuilder
+    public function replace($document, $with, string $collection): self
     {
         $this->addCommand(new ReplaceClause($document, $with, $collection));
 
@@ -101,7 +101,7 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function upsert($search, $insert, $with, string $collection, bool $replace = false): QueryBuilder
+    public function upsert($search, $insert, $with, string $collection, bool $replace = false): self
     {
         $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
 
@@ -118,7 +118,7 @@ trait HasStatementClauses
      *
      * @return QueryBuilder
      */
-    public function remove($document, string $collection): QueryBuilder
+    public function remove($document, string $collection): self
     {
         $this->addCommand(new RemoveClause($document, $collection));
 

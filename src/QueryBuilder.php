@@ -22,12 +22,12 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
  */
 class QueryBuilder
 {
-    use NormalizesExpressions,
-        HasQueryClauses,
-        HasStatementClauses,
-        HasGraphClauses,
-        HasFunctions,
-        HasSupportCommands;
+    use NormalizesExpressions;
+    use HasQueryClauses;
+    use HasStatementClauses;
+    use HasGraphClauses;
+    use HasFunctions;
+    use HasSupportCommands;
 
     /**
      * The database query grammar instance.

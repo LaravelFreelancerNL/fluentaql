@@ -3,7 +3,6 @@
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\FilterClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\PruneClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause;
@@ -26,7 +25,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function with(): QueryBuilder
+    public function with(): self
     {
         $this->addCommand(new WithClause(func_get_args()));
 
@@ -43,13 +42,12 @@ trait HasGraphClauses
      *
      * @param $fromVertex
      * @param  string  $inDirection
-     * @param  null  $toVertex
      * @return QueryBuilder
      */
     public function traverse(
         $fromVertex,
         $inDirection = 'outbound'
-    ): QueryBuilder {
+    ): self {
         $this->addCommand(new TraverseClause($fromVertex, $inDirection));
 
         return $this;
@@ -66,7 +64,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function shortestPath($fromVertex, $inDirection, $toVertex): QueryBuilder
+    public function shortestPath($fromVertex, $inDirection, $toVertex): self
     {
         $this->addCommand(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
 
@@ -84,7 +82,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
+    public function kShortestPaths($fromVertex, $inDirection, $toVertex): self
     {
         $this->addCommand(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
 
@@ -101,7 +99,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function graph(string $graphName): QueryBuilder
+    public function graph(string $graphName): self
     {
         $this->addCommand(new GraphClause($graphName));
 
@@ -117,7 +115,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function edgeCollections(): QueryBuilder
+    public function edgeCollections(): self
     {
         $this->addCommand(new EdgeCollectionsClause(func_get_args()));
 
@@ -141,7 +139,7 @@ trait HasGraphClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];

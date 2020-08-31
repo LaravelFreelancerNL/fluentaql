@@ -40,5 +40,4 @@ class PredicateExpressionTest extends TestCase
 
         self::assertEquals('OR', $expression->logicalOperator);
     }
-
 }
