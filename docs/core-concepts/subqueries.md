@@ -1,5 +1,5 @@
 # Subqueries
-You can easily create subqueries by passing one query bulder object to another as an expression.
+You can easily create subqueries by passing one query builder object to another as an expression.
 
 Example:
 ```
@@ -9,7 +9,7 @@ Example:
             ->return('u._key')
             ->get();
 
-        $result = (new QueryBuilder())
+        $mainQuery = (new QueryBuilder())
             ->for('u', 'users')
             ->filter('u._key', '==', $subQuery)
             ->return('u')

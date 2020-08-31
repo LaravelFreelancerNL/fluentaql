@@ -189,11 +189,6 @@ trait NormalizesExpressions
             }
         }
 
-        //Fallback to BindExpression if allowed
-        if (isset($allowedExpressionTypes['Bind'])) {
-            return 'Bind';
-        }
-
         throw new ExpressionTypeException(
             "This argument, 
             '{$argument}', does not match one of these expression types: "

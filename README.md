@@ -92,16 +92,6 @@ The generated AQL for this query is:
 FOR i IN 1..100 FILTER i < 50 LIMIT 10 SORT i DESC RETURN i
 ```
 
-## API
-See the following pages on details for the API
-
-- API
-    - [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
-    - [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
-    - [Graph clauses](docs/api/graph-clauses.md): graph traversals
-    - [Functions](docs/api/functions.md): a list of all supported AQL functions
-    - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
-
 ### (Always) bind user input
 No matter what, never trust user input and always bind it. 
 ``` 
@@ -112,6 +102,18 @@ Binds are registered in order and given an id. If you want to specify the bind n
 ```
 $qb->bind('your data', 'your-bind-id')
 ```
+
+## Documentation
+- API
+    - [Query clauses](docs/api/query-clauses.md): how to search, select, sort and limit data 
+    - [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
+    - [Graph clauses](docs/api/graph-clauses.md): graph traversals
+    - [Functions](docs/api/functions.md): a list of all supported AQL functions
+    - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
+- Core Concepts
+    - [Terminology](docs/core-concepts/terminology.md): definitions of terms used in the documentation 
+    - [Data binding](docs/core-concepts/data-binding.md): How to inject external data and collections 
+    - [Subqueries](docs/core-concepts/subqueries.md): Subquery creation
 
 ## References & resources 
 

@@ -7,6 +7,8 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions
  */
 class DateFunctionsTest extends TestCase
 {
