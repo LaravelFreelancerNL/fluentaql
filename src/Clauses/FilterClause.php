@@ -27,27 +27,9 @@ class FilterClause extends Clause
     {
         $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
 
-        $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);
+        $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
         return 'FILTER ' . rtrim($compiledPredicates);
     }
 
-    protected function compilePredicates(QueryBuilder $queryBuilder, $predicates, $compiledPredicates = '')
-    {
-        $currentLogicalOperator = $this->defaultLogicalOperator;
-        foreach ($predicates as $predicate) {
-            if ($predicate instanceof PredicateExpression) {
-                if ($compiledPredicates != '') {
-                    $compiledPredicates .= ' ' . $predicate->logicalOperator . ' ';
-                }
-                $compiledPredicates .= $predicate->compile($queryBuilder);
-            }
-
-            if (is_array($predicate)) {
-                $compiledPredicates = $this->compilePredicates($queryBuilder, $predicate, $compiledPredicates);
-            }
-        }
-
-        return $compiledPredicates;
-    }
 }

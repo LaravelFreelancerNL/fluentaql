@@ -16,7 +16,6 @@ Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Lang
 3. [Installation](#installation)
 4. [Usage](#usage)
 
-
 ## Purpose
 Using a query builder mainly makes the life of a programmer much easier. You can write cleaner code 
 and be quicker at it. Which of course comes at the cost of application speed.
@@ -109,6 +108,7 @@ $qb->bind('your data', 'your-bind-id')
     - [Statement clauses](docs/api/statement-clauses.md): data manipulation & variable declaration
     - [Graph clauses](docs/api/graph-clauses.md): graph traversals
     - [Functions](docs/api/functions.md): a list of all supported AQL functions
+    - [Operator expressions](docs/api/operator-expressions.md): if() & calc() expressions
     - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
 - Core Concepts
     - [Terminology](docs/core-concepts/terminology.md): definitions of terms used in the documentation 

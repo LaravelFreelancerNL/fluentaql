@@ -121,6 +121,44 @@ class QueryClausesTest extends TestCase
         );
     }
 
+    public function testFiltersWithRecursiveFilters()
+    {
+        $filter = [
+            ['doc.attribute1', '==', 'null', 'OR'],
+            [
+                ['doc.attribute2', '!=', null, 'AND'],
+                ['doc.attribute3', '!=', 'null', 'OR']
+            ]
+        ];
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.attribute1 == null AND (doc.attribute2 != null OR doc.attribute3 != null)',
+            $result->query
+        );
+    }
+
+    public function testFiltersWithRecursiveFiltersStartingArray()
+    {
+        $filter = [
+            [
+                ['doc.attribute1', '!=', null, 'AND'],
+                ['doc.attribute2', '!=', 'null', 'OR']
+            ],
+            ['doc.attribute3', '==', 'null', 'OR']
+        ];
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter($filter)
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER (doc.attribute1 != null OR doc.attribute2 != null) OR doc.attribute3 == null',
+            $result->query
+        );
+    }
+
     public function testSearchClause()
     {
         $result = (new QueryBuilder())

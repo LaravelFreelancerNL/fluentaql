@@ -40,7 +40,8 @@ Resulting AQL: `... RETURN user`
 ```
 filter($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = null)
 ```
-Filter out data not matching the given predicate(s).
+Filter out data not matching the given predicate(s). You may add a single predicate or a list of predicates.
+Predicates can be embedded up to one level deep.
 
 **Example 1 - single predicate:**
 ```
@@ -65,6 +66,25 @@ $qb->for('user', 'users')
     ->return('user);
 ``` 
 Resulting AQL: `... FILTER u.age < 18 OR u.age > 65 ...`
+
+**Example 4 - embedded predicates:**
+```
+$filter = [
+    [
+        ['doc.attribute1', '!=', null, 'AND'],
+        ['doc.attribute2', '!=', 'null', 'OR']
+    ],
+    ['doc.attribute3', '==', 'null', 'OR']
+];
+(new QueryBuilder())
+    ->for('doc', 'documents')
+    ->filter($filter)
+    ->get();
+
+``` 
+Resulting AQL: `... FILTER (doc.attribute1 != null OR doc.attribute2 != null) OR doc.attribute3 == null ...`
+
+
 
 [ArangoDB FILTER documentation](https://www.arangodb.com/docs/stable/aql/operations-filter.html)
 

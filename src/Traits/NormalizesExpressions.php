@@ -101,14 +101,15 @@ trait NormalizesExpressions
     /**
      * @param array $predicates
      *
-     * @return array
+     * @return array|object
      */
-    public function normalizePredicates($predicates): array
+    public function normalizePredicates(array $predicates)
     {
         $normalizedPredicates = [];
-        if (isset($predicates[1]) && is_string($predicates[1])) {
-            $normalizedPredicates[] = $this->normalizePredicate($predicates);
-            return $normalizedPredicates;
+
+        //Check if predicates is in fact a single predicate
+        if (isset($predicates[1]) && is_string($predicates[1]) && $this->grammar->isComparisonOperator($predicates[1])) {
+            return $this->normalizePredicate($predicates);
         }
 
         foreach ($predicates as $predicate) {
@@ -124,17 +125,12 @@ trait NormalizesExpressions
 
     protected function normalizePredicate($predicate)
     {
-        $normalizedPredicate = [];
-
         $leftOperand = null;
         if (! $predicate[0] instanceof PredicateExpression) {
             $leftOperand = $this->normalizeArgument($predicate[0]);
         }
 
-        $comparisonOperator = '==';
-        if ($this->grammar->isComparisonOperator($predicate[1])) {
-            $comparisonOperator = $predicate[1];
-        }
+        $comparisonOperator = $predicate[1];
 
         $rightOperand = null;
         if (! $predicate[2] instanceof PredicateExpression) {
@@ -142,19 +138,16 @@ trait NormalizesExpressions
         }
 
         $logicalOperator = 'AND';
-
         if (isset($predicate[3]) && $this->grammar->isLogicalOperator($predicate[3])) {
             $logicalOperator = $predicate[3];
         }
 
-        $normalizedPredicate[] = new PredicateExpression(
+       return new PredicateExpression(
             $leftOperand,
             $comparisonOperator,
             $rightOperand,
             $logicalOperator
         );
-
-        return $normalizedPredicate;
     }
 
     /**

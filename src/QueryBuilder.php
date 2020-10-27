@@ -4,6 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL;
 
 use LaravelFreelancerNL\FluentAQL\AQL\HasFunctions;
 use LaravelFreelancerNL\FluentAQL\AQL\HasGraphClauses;
+use LaravelFreelancerNL\FluentAQL\AQL\HasOperatorExpressions;
 use LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses;
 use LaravelFreelancerNL\FluentAQL\AQL\HasStatementClauses;
 use LaravelFreelancerNL\FluentAQL\AQL\HasSupportCommands;
@@ -12,6 +13,7 @@ use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
+use LaravelFreelancerNL\FluentAQL\Traits\CompilesPredicates;
 use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
 
 /**
@@ -23,10 +25,12 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
 class QueryBuilder
 {
     use NormalizesExpressions;
+    use CompilesPredicates;
     use HasQueryClauses;
     use HasStatementClauses;
     use HasGraphClauses;
     use HasFunctions;
+    use HasOperatorExpressions;
     use HasSupportCommands;
 
     /**
