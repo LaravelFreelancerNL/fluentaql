@@ -35,8 +35,8 @@ class TernaryExpression extends Expression implements ExpressionInterface
         $this->then = $queryBuilder->normalizeArgument($this->then);
         $this->else = $queryBuilder->normalizeArgument($this->else);
 
-        return '('.$queryBuilder->compilePredicates($this->predicates).')'.
-            ' ? ' . $this->then->compile($queryBuilder).
+        return '(' . $queryBuilder->compilePredicates($this->predicates) . ')' .
+            ' ? ' . $this->then->compile($queryBuilder) .
             ' : ' . $this->else->compile($queryBuilder);
     }
 }

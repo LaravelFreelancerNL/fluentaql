@@ -47,6 +47,7 @@ trait CompilesPredicates
     protected function compilePredicateGroup(array $predicates, $position = 0)
     {
         $compiledPredicates = [];
+        $logicalOperator = '';
         if ($predicates[0] instanceof PredicateExpression) {
             $logicalOperator = $predicates[0]->logicalOperator;
         }
@@ -56,7 +57,7 @@ trait CompilesPredicates
 
         $groupCompilation = '';
         if ($position > 0) {
-            $groupCompilation = $logicalOperator.' ';
+            $groupCompilation = $logicalOperator . ' ';
         }
         return $groupCompilation . '(' . implode(' ', $compiledPredicates) . ')';
     }

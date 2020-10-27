@@ -72,6 +72,4 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
 
         return $normalizedCalculation;
     }
-
-
 }

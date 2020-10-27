@@ -108,7 +108,11 @@ trait NormalizesExpressions
         $normalizedPredicates = [];
 
         //Check if predicates is in fact a single predicate
-        if (isset($predicates[1]) && is_string($predicates[1]) && $this->grammar->isComparisonOperator($predicates[1])) {
+        if (
+            isset($predicates[1])
+            && is_string($predicates[1])
+            && $this->grammar->isComparisonOperator($predicates[1])
+        ) {
             return $this->normalizePredicate($predicates);
         }
 
@@ -142,7 +146,7 @@ trait NormalizesExpressions
             $logicalOperator = $predicate[3];
         }
 
-       return new PredicateExpression(
+        return new PredicateExpression(
             $leftOperand,
             $comparisonOperator,
             $rightOperand,
