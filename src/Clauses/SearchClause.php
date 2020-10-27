@@ -14,7 +14,7 @@ class SearchClause extends FilterClause
     {
         $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
 
-        $compiledPredicates = $this->compilePredicates($queryBuilder, $this->predicates);
+        $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
         return 'SEARCH ' . rtrim($compiledPredicates);
     }

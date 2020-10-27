@@ -7,7 +7,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class TernaryExpression extends Expression implements ExpressionInterface
 {
     /** @var string */
-    protected $if = '';
+    protected $predicates = [];
 
     /** @var string */
     protected $then = '';
@@ -18,20 +18,24 @@ class TernaryExpression extends Expression implements ExpressionInterface
     /**
      * Create predicate expression.
      *
-     * @param string $if
+     * @param string $predicates
      * @param string $then
      * @param string $else
      */
-    public function __construct($if, $then, $else = null)
+    public function __construct($predicates, $then, $else = null)
     {
-        $this->if = $if;
+        $this->predicates = $predicates;
         $this->then = $then;
         $this->else = $else;
     }
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        return $this->if->compile($queryBuilder) .
+        $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
+        $this->then = $queryBuilder->normalizeArgument($this->then);
+        $this->else = $queryBuilder->normalizeArgument($this->else);
+
+        return '(' . $queryBuilder->compilePredicates($this->predicates) . ')' .
             ' ? ' . $this->then->compile($queryBuilder) .
             ' : ' . $this->else->compile($queryBuilder);
     }
