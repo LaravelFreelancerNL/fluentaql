@@ -13,6 +13,7 @@ trait HasFunctions
 {
     use HasArrayFunctions;
     use HasDateFunctions;
+    use HasDocumentFunctions;
     use HasGeoFunctions;
     use HasMiscellaneousFunctions;
     use HasNumericFunctions;

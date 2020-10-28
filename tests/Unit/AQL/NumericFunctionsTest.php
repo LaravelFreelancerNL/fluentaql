@@ -31,7 +31,6 @@ class NumericFunctionsTest extends TestCase
         self::assertEquals('FOR u IN users FILTER AVERAGE(u.houses) == 2', $qb->get()->query);
     }
 
-
     public function testMax()
     {
         $qb = new QueryBuilder();
@@ -56,7 +55,7 @@ class NumericFunctionsTest extends TestCase
     public function testSum()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->SUM([1, 2, 3, 4]));
+        $qb->return($qb->sum([1, 2, 3, 4]));
         self::assertEquals('RETURN SUM([1,2,3,4])', $qb->get()->query);
     }
 }

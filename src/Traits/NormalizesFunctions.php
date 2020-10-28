@@ -13,6 +13,7 @@ trait NormalizesFunctions
 {
     use NormalizesArrayFunctions;
     use NormalizesDateFunctions;
+    use NormalizesDocumentFunctions;
     use NormalizesGeoFunctions;
     use NormalizesMiscellaneousFunctions;
     use NormalizesNumericFunctions;
@@ -26,6 +27,17 @@ trait NormalizesFunctions
             );
         }
     }
+
+    protected function normalizeDocuments(QueryBuilder $queryBuilder)
+    {
+        foreach ($this->parameters as $key => $parameter) {
+            $this->parameters[$key] = $queryBuilder->normalizeArgument(
+                $parameter,
+                ['Object', 'Query', 'Variable', 'Reference', 'Bind']
+            );
+        }
+    }
+
 
     protected function normalizeNumbers(QueryBuilder $queryBuilder)
     {

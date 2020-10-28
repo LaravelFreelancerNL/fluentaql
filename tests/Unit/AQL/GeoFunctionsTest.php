@@ -10,12 +10,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class GeoFunctionsTest extends TestCase
 {
-    public function testCount()
-    {
-        $qb = new QueryBuilder();
-        $qb->let('x', $qb->count([1, 2, 3, 4]));
-        self::assertEquals('LET x = LENGTH([1,2,3,4])', $qb->get()->query);
-    }
 
     public function testDistance()
     {
