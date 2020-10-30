@@ -105,7 +105,7 @@ trait ValidatesExpressions
 
     public function isSortDirection($value): bool
     {
-        if (preg_match('/asc|desc/i', $value)) {
+        if (is_string($value) && preg_match('/asc|desc/i', $value)) {
             return true;
         }
 

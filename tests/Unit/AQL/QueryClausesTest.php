@@ -276,6 +276,15 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR u IN Users SORT u.name, u.age DESC, u.city', $result->query);
     }
 
+    public function testSortClauseWithFunctionArgument()
+    {
+        $qb = new QueryBuilder();
+        $result = $qb->for('u', 'users')
+            ->sort($qb->rand())
+            ->get();
+        self::assertEquals('FOR u IN users SORT RAND()', $result->query);
+    }
+
     public function testLimitClause()
     {
         $result = (new QueryBuilder())
