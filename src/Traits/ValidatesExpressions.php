@@ -29,6 +29,20 @@ trait ValidatesExpressions
      *
      * @return bool
      */
+    public function isCollectionBind($value)
+    {
+        if (is_string($value)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
     public function isRange($value): bool
     {
         if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {

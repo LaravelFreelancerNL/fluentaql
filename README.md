@@ -40,7 +40,7 @@ The use of a query builder has both pros and cons. It is up to you to decide wha
 ## Requirements
 | FluentAQL           | ArangoDB          | PHP               |
 | :------------------ | :---------------- | :---------------- |
-| 1.x                 | 3.x *             | ^7.2               |
+| 1.x                 | 3.x *             | ^7.3&#124;^8.0    |
 
 * ArangoDB regularly adds AQL functions and clauses in minor versions. So be sure to check the AQL documentation for the availability of specific features.
 

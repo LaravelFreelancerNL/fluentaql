@@ -38,12 +38,12 @@ class ForClause extends Clause
 
         $variableExpression = implode(', ', $variableExpression);
 
+        $inExpression = '';
         if ($this->in !== null) {
             $this->in = $queryBuilder
-                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'CollectionBind'])
-                ->compile($queryBuilder);
+                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'CollectionBind']);
+            $inExpression = $this->in->compile($queryBuilder);
         }
-        $inExpression = (string) $this->in;
 
         return "FOR {$variableExpression} IN {$inExpression}";
     }

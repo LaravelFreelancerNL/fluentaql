@@ -45,6 +45,22 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR v, e, p IN graph', $result->query);
     }
 
+    public function testForClauseInExpression()
+    {
+        $aqb = (new QueryBuilder());
+        $aqb = $aqb->let('x', [1,2,3,4])
+            ->for(
+                'u',
+                $aqb->if(
+                    [1, '>', 0],
+                    'x',
+                    []
+                )
+            )
+            ->get();
+        self::assertEquals('LET x = [1,2,3,4] FOR u IN (1 > 0) ? x : {}', $aqb->query);
+    }
+
     public function testFilterClause()
     {
         $result = (new QueryBuilder())
