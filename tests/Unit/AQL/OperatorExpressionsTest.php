@@ -14,7 +14,7 @@ class OperatorExpressionsTest extends TestCase
     public function testIf()
     {
         $qb = new QueryBuilder();
-        $qb->let('x', 5)->return($qb->if(['x', '==', '5'], true, false));
+        $qb->let('x', 5)->return($qb->if(['x', '==', 5], true, false));
         self::assertEquals("LET x = 5 RETURN (x == 5) ? true : false", $qb->get()->query);
     }
 

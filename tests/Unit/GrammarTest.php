@@ -293,6 +293,9 @@ class GrammarTest extends TestCase
 
         $result = $this->grammar->isNumber('string');
         self::assertFalse($result);
+
+        $result = $this->grammar->isNumber('1');
+        self::assertFalse($result);
     }
 
     public function testFormatBind()
