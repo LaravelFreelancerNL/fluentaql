@@ -15,6 +15,12 @@ class StringFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->return($qb->concat('string', 'this', 'together'));
-        self::assertEquals('RETURN CONCAT(@' . $qb->getQueryId() . '_1, @' . $qb->getQueryId() . '_2, @' . $qb->getQueryId() . '_3)', $qb->get()->query);
+        self::assertEquals(
+            'RETURN CONCAT(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, @'
+            . $qb->getQueryId() . '_3)',
+            $qb->get()->query
+        );
     }
 }

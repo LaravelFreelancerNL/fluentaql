@@ -116,5 +116,4 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateFormat(1399472349522, "%q/%yyyy"));
         self::assertEquals('RETURN DATE_FORMAT(1399472349522, @' . $qb->getQueryId() . '_1)', $qb->get()->query);
     }
-
 }
