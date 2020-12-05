@@ -17,6 +17,7 @@ trait NormalizesFunctions
     use NormalizesGeoFunctions;
     use NormalizesMiscellaneousFunctions;
     use NormalizesNumericFunctions;
+    use NormalizesStringFunctions;
 
     protected function normalizeArrays(QueryBuilder $queryBuilder)
     {
@@ -54,7 +55,7 @@ trait NormalizesFunctions
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,
-                ['Query', 'Variable', 'Reference', 'Bind']
+                ['Query', 'Reference', 'Bind']
             );
         }
     }

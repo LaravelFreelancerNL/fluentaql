@@ -17,6 +17,7 @@ trait HasFunctions
     use HasGeoFunctions;
     use HasMiscellaneousFunctions;
     use HasNumericFunctions;
+    use HasStringFunctions;
 
     protected function function($functionName, ...$parameters)
     {

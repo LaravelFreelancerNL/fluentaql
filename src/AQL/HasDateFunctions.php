@@ -158,4 +158,18 @@ trait HasDateFunctions
     {
         return new FunctionExpression('DATE_MILLISECOND', $date);
     }
+
+    /**
+     * Get the custom formatted representation of the date.
+     *
+     * @Link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_format
+     *
+     * @param  $date
+     * @param  $format
+     * @return FunctionExpression
+     */
+    public function dateFormat($date, $format): FunctionExpression
+    {
+        return new FunctionExpression('DATE_FORMAT', [$date, $format]);
+    }
 }

@@ -175,6 +175,18 @@ class QueryClausesTest extends TestCase
         );
     }
 
+    public function testFiltersWithEmptyStringValue()
+    {
+        $result = (new QueryBuilder())
+            ->for('doc', 'documents')
+            ->filter('doc.test', '==', '')
+            ->get();
+        self::assertEquals(
+            'FOR doc IN documents FILTER doc.test == @' . $result->getQueryId() . '_1',
+            $result->query
+        );
+    }
+
     public function testSearchClause()
     {
         $result = (new QueryBuilder())

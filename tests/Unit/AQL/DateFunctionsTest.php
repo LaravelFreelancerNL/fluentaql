@@ -109,4 +109,12 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateMillisecond(1399472349522));
         self::assertEquals('RETURN DATE_MILLISECOND(1399472349522)', $qb->get()->query);
     }
+
+    public function testDateFormat()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateFormat(1399472349522, "%q/%yyyy"));
+        self::assertEquals('RETURN DATE_FORMAT(1399472349522, @' . $qb->getQueryId() . '_1)', $qb->get()->query);
+    }
+
 }

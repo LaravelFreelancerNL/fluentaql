@@ -232,7 +232,7 @@ trait ValidatesExpressions
             $variables = implode('|', $registeredVariables);
         }
 
-        if (! is_string($value)) {
+        if (! is_string($value) || empty($value)) {
             return false;
         }
 

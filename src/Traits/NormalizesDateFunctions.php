@@ -76,4 +76,17 @@ trait NormalizesDateFunctions
             ['Number', 'Function', 'Query', 'Reference', 'Bind']
         );
     }
+
+    protected function normalizeDateFormat(QueryBuilder $queryBuilder)
+    {
+        $this->parameters[0] = $queryBuilder->normalizeArgument(
+            $this->parameters[0],
+            ['Number', 'Function', 'Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters[1] = $queryBuilder->normalizeArgument(
+            $this->parameters[1],
+            ['Function', 'Query', 'Reference', 'Bind']
+        );
+    }
 }

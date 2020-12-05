@@ -40,6 +40,7 @@ $qb->for('i', '1..100')
 | dateMinute($date) | [DATE_MINUTE(date)](https://www.arangodb.com/docs/stable/aql/functions-date.html#date_minute) | 
 | dateSecond($date) | [DATE_SECOND(date)](https://www.arangodb.com/docs/stable/aql/functions-date.html#date_second) | 
 | dateMillisecond($date) | [DATE_MILLISECOND(date)](https://www.arangodb.com/docs/stable/aql/functions-date.html#date_millisecond) | 
+| dateFormat($date, $format) | [DATE_FORMAT(date, format)](https://www.arangodb.com/docs/stable/aql/functions-date.html#date_format) | 
 
 ## GEO functions
 | Description           | AQL Function |
@@ -60,3 +61,8 @@ $qb->for('i', '1..100')
 | min($value) | [MIN(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min) | 
 | rand() | [RAND()](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#rand) | 
 | sum($value) | [SUM(numArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum) | 
+
+## String functions
+| Description           | AQL Function |
+| :-------------------- | :-------------------------------------------------------------------------------------------- |
+| concat(...$arguments) | [CONCAT(value1, value2, ... valueN)](https://www.arangodb.com/docs/stable/aql/functions-string.html#concat) | 
