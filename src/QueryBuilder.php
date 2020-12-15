@@ -59,7 +59,7 @@ class QueryBuilder
      *
      * @var array
      */
-    public $collections;
+    public $collections = [];
 
     /**
      * List of Clauses to be compiled into a query.
