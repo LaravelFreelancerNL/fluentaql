@@ -8,8 +8,6 @@ Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Lang
 [![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=master)
 [![License](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/license)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
 
-**1.0.0-alpha release: API may change before a stable version is released**
-
 ## Table of contents
 1. [Use Cases](#purpose)
 2. [Requirements](#requirements)
@@ -40,7 +38,7 @@ The use of a query builder has both pros and cons. It is up to you to decide wha
 ## Requirements
 | FluentAQL           | ArangoDB          | PHP               |
 | :------------------ | :---------------- | :---------------- |
-| 1.x                 | 3.x *             | ^7.3&#124;^8.0    |
+| 1.x                 | ^3.6              | ^7.4&#124;^8.0    |
 
 * ArangoDB regularly adds AQL functions and clauses in minor versions. So be sure to check the AQL documentation for the availability of specific features.
 
@@ -121,9 +119,11 @@ $qb->bind('your data', 'your-bind-id')
 - [ArangoDB](https://arangodb.com) 
 - [AQL documentation](https://www.arangodb.com/docs/stable/aql/)
 
-### ArangoDB PHP clients
-- [Official ArangoDB PHP driver](https://github.com/arangodb/arangodb-php)
-- [Community PHP driver](https://github.com/sandrokeil/arangodb-php-client)
+## Related packages
+* [ArangoDB PHP client](https://github.com/LaravelFreelancerNL/arangodb-php-client)
+* [ArangoDB Laravel Driver](https://github.com/LaravelFreelancerNL/laravel-arangodb)
+
 
 ## Credits
 - Pluma@arangodb
+

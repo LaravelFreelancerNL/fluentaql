@@ -11,7 +11,11 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  */
 trait HasArrayFunctions
 {
-    public function count($value)
+    /**
+     * @param mixed $value
+     * @return FunctionExpression
+     */
+    public function count($value): FunctionExpression
     {
         return $this->length($value);
     }
@@ -21,11 +25,11 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#count_distinct
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
-    public function countDistinct($value)
+    public function countDistinct($value): FunctionExpression
     {
          return new FunctionExpression('COUNT_DISTINCT', [$value]);
     }
@@ -35,11 +39,11 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#first
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
-    public function first($value)
+    public function first($value): FunctionExpression
     {
         return new FunctionExpression('FIRST', [$value]);
     }
@@ -49,11 +53,11 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#last
      *
-     * @param $value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
-    public function last($value)
+    public function last($value): FunctionExpression
     {
         return new FunctionExpression('LAST', [$value]);
     }
@@ -62,11 +66,11 @@ trait HasArrayFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      * @link https://www.arangodb.com/docs/3.6/aql/functions-string.html#length
      *
-     * @param array|string $value
+     * @param mixed$value
      *
      * @return FunctionExpression
      */
-    public function length($value)
+    public function length($value): FunctionExpression
     {
         return new FunctionExpression('LENGTH', [$value]);
     }

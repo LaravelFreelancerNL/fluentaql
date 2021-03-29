@@ -8,11 +8,11 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait ValidatesExpressions
 {
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
-    public function isBind($value)
+    public function isBind($value): bool
     {
         if (is_string($value)) {
             return true;
@@ -25,11 +25,11 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
-    public function isCollectionBind($value)
+    public function isCollectionBind($value): bool
     {
         if (is_string($value)) {
             return true;
@@ -39,7 +39,7 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -53,7 +53,7 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -83,7 +83,7 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -92,31 +92,55 @@ trait ValidatesExpressions
         return is_array($value) && $this->isIndexedArray($value);
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isQuery($value): bool
     {
         return $value instanceof QueryBuilder;
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isFunction($value): bool
     {
         return $value instanceof FunctionExpression;
     }
 
+    /**
+     * @param mixed $operator
+     * @return bool
+     */
     public function isLogicalOperator($operator): bool
     {
         return isset($this->logicalOperators[strtoupper($operator)]);
     }
 
+    /**
+     * @param mixed $operator
+     * @return bool
+     */
     public function isComparisonOperator($operator): bool
     {
         return isset($this->comparisonOperators[strtoupper($operator)]);
     }
 
+    /**
+     * @param mixed $operator
+     * @return bool
+     */
     public function isArithmeticOperator($operator): bool
     {
         return isset($this->arithmeticOperators[$operator]);
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isSortDirection($value): bool
     {
         if (is_string($value) && preg_match('/asc|desc/i', $value)) {
@@ -140,7 +164,7 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -153,11 +177,19 @@ trait ValidatesExpressions
         return false;
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isGraph($value): bool
     {
         return $this->isCollection($value);
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isKey($value): bool
     {
         if (
@@ -170,6 +202,10 @@ trait ValidatesExpressions
         return false;
     }
 
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isId($value): bool
     {
         if (
@@ -183,11 +219,11 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
-    public function isVariable($value)
+    public function isVariable($value): bool
     {
         if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
             return true;
@@ -196,13 +232,18 @@ trait ValidatesExpressions
         return false;
     }
 
+    /**
+     * @param mixed  $value
+     * @param  array  $registeredVariables
+     * @return bool
+     */
     public function isRegisteredVariable($value, $registeredVariables = []): bool
     {
         return isset($registeredVariables[$value]);
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -245,7 +286,7 @@ trait ValidatesExpressions
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return bool
      */
@@ -258,6 +299,10 @@ trait ValidatesExpressions
         return false;
     }
 
+    /**
+     * @param mixed $bindParameter
+     * @return bool
+     */
     public function isBindParameter($bindParameter): bool
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
@@ -274,7 +319,7 @@ trait ValidatesExpressions
      *
      * @return bool
      */
-    public function isAssociativeArray(array $array)
+    public function isAssociativeArray(array $array): bool
     {
         if (empty($array)) {
             return true;
@@ -290,7 +335,7 @@ trait ValidatesExpressions
      *
      * @return bool
      */
-    public function isIndexedArray(array $array)
+    public function isIndexedArray(array $array): bool
     {
         if (empty($array)) {
             return true;

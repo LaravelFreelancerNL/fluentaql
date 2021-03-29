@@ -15,11 +15,5 @@
         <testsuite name="all">
             <directory suffix=".php">tests/</directory>
         </testsuite>
-        <testsuite name="unit">
-            <directory>tests/unit</directory>
-        </testsuite>
-        <testsuite name="int">
-            <directory>tests/integration</directory>
-        </testsuite>
     </testsuites>
 </phpunit>

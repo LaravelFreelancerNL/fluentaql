@@ -31,4 +31,9 @@ class FilterClause extends Clause
 
         return 'FILTER ' . rtrim($compiledPredicates);
     }
+
+    public function getPredicates()
+    {
+        return $this->predicates;
+    }
 }

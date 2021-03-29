@@ -125,7 +125,7 @@ class QueryBuilder
     /**
      * Remove the last, or the specified, Command.
      *
-     * @param number|null $index
+     * @param numeric|null $index
      * @return bool
      */
     public function removeCommand($index = null): bool

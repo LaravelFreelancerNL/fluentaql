@@ -33,7 +33,7 @@ trait HasDateFunctions
      *
      * @return FunctionExpression
      */
-    public function dateIso8601()
+    public function dateIso8601(): FunctionExpression
     {
         $arguments = func_get_args();
         if (empty($arguments)) {
@@ -66,7 +66,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_year
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
@@ -80,7 +80,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_month
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
@@ -94,7 +94,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_day
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
@@ -108,7 +108,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_hour
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
@@ -122,7 +122,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_minute
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
@@ -136,11 +136,11 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_second
      *
-     * @param  $date
+     * @param  mixed $date
      *
      * @return FunctionExpression
      */
-    public function dateSecond($date)
+    public function dateSecond($date): FunctionExpression
     {
         return new FunctionExpression('DATE_SECOND', $date);
     }
@@ -150,11 +150,11 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_millisecond
      *
-     * @param  $date
+     * @param  mixed  $date
      *
      * @return FunctionExpression
      */
-    public function dateMillisecond($date)
+    public function dateMillisecond($date): FunctionExpression
     {
         return new FunctionExpression('DATE_MILLISECOND', $date);
     }
@@ -164,8 +164,8 @@ trait HasDateFunctions
      *
      * @Link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_format
      *
-     * @param  $date
-     * @param  $format
+     * @param  mixed $date
+     * @param  mixed $format
      * @return FunctionExpression
      */
     public function dateFormat($date, $format): FunctionExpression
