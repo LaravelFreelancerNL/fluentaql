@@ -1,9 +1,10 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Clauses;
+namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use stdClass;
 
 /**
  * Class StructureTest.
@@ -35,7 +36,7 @@ class StatementClausesTest extends TestCase
         self::assertEquals('LET x = @' . $result->getQueryId() . '_1', $result->query);
 
         $qb = new QueryBuilder();
-        $object = new \stdClass();
+        $object = new stdClass();
         $object->name = 'Catelyn';
         $object->surname = 'Stark';
         $object->alive = false;
@@ -89,7 +90,7 @@ class StatementClausesTest extends TestCase
 
     public function testUpdateMaintainsNullValue()
     {
-        $data = new \stdClass();
+        $data = new stdClass();
         $data->name['first_name'] = null;
         $data->name['last_name'] = null;
         $result = (new QueryBuilder())

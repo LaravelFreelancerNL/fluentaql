@@ -1,9 +1,10 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Clauses;
+namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use stdClass;
 
 /**
  * Class StructureTest.
@@ -373,7 +374,7 @@ class QueryClausesTest extends TestCase
 
     public function testOptionsClause()
     {
-        $options = new \stdClass();
+        $options = new stdClass();
         $options->method = 'sorted';
         $result = (new QueryBuilder())
             ->options($options)

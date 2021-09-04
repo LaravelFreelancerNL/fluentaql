@@ -17,18 +17,18 @@ class QueryExpression extends Expression implements ExpressionInterface
         parent::__construct($expression);
     }
 
-    public function compile(QueryBuilder $parentQueryBuilder): string
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        $this->expression->registerVariable($parentQueryBuilder->getVariables());
+        $this->expression->registerVariable($queryBuilder->getVariables());
 
-        $this->expression = $this->expression->compile($parentQueryBuilder);
+        $this->expression = $this->expression->compile($queryBuilder);
 
-        $parentQueryBuilder->binds = array_unique(array_merge($parentQueryBuilder->binds, $this->expression->binds));
+        $queryBuilder->binds = array_unique(array_merge($queryBuilder->binds, $this->expression->binds));
 
         // Extract collections
         if (isset($this->expression->collections)) {
-            foreach ($this->expression->collections as $collection => $mode) {
-                $parentQueryBuilder->registerCollections($this->expression->collections[$collection], $mode);
+            foreach ($this->expression->collections as $mode => $collections) {
+                $queryBuilder->registerCollections($this->expression->collections[$mode], $mode);
             }
         }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Expressions;
+namespace Tests\Unit\Expressions;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;

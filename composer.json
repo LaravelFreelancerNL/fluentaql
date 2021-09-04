@@ -33,7 +33,8 @@
   },
   "autoload": {
     "psr-4": {
-      "LaravelFreelancerNL\\FluentAQL\\": "src"
+      "LaravelFreelancerNL\\FluentAQL\\": "src",
+      "Tests\\":  "tests"
     }
   },
   "autoload-dev": {

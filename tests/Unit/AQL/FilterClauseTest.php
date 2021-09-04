@@ -1,8 +1,7 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit\Expressions;
+namespace Tests\Unit\AQL;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\NullExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
@@ -15,7 +14,6 @@ class FilterClauseTest extends TestCase
 {
     public function testGetPredicates()
     {
-        $qb = new QueryBuilder();
         $result = (new QueryBuilder())
             ->for('u', 'Users')
             ->filter('u.active', '==', 'true')

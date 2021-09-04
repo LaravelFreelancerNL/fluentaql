@@ -1,10 +1,11 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace Tests\Unit;
 
 use LaravelFreelancerNL\FluentAQL\Grammar;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use stdClass;
 
 /**
  * Class StructureTest.
@@ -255,7 +256,7 @@ class GrammarTest extends TestCase
 
     public function testIsDocument()
     {
-        $doc = new \stdClass();
+        $doc = new stdClass();
         $doc->attribute1 = 'test';
         $result = $this->grammar->isObject($doc);
         self::assertTrue($result);

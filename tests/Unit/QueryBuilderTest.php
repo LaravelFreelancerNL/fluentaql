@@ -1,6 +1,6 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests\Unit;
+namespace Tests\Unit;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\ForClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
