@@ -228,6 +228,15 @@ class QueryClausesTest extends TestCase
         self::assertEquals('FOR u IN Users COLLECT hometown = u.city', $result->query);
     }
 
+    public function testCollectMultipleClause()
+    {
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->collect([['hometown', 'u.city'], ['surname', 'u.surname']])
+            ->get();
+        self::assertEquals('FOR u IN Users COLLECT hometown = u.city, surname = u.surname', $result->query);
+    }
+
     public function testIntoClause()
     {
         $result = (new QueryBuilder())

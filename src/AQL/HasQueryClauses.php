@@ -109,15 +109,20 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
-     * @param string|null $variableName
-     * @param null        $expression
-     *
      * @return QueryBuilder
      */
-    public function collect($variableName = null, $expression = null): self
+    public function collect(string|array $variableName = null, string $expression = null): self
     {
+        $groups = [];
+        if (is_string($variableName)) {
+            $groups[0][0] = $variableName;
+            $groups[0][1] = $expression;
+        }
+        if (is_array($variableName)) {
+            $groups =  $variableName;
+        }
 
-        $this->addCommand(new CollectClause($variableName, $expression));
+        $this->addCommand(new CollectClause($groups));
 
         return $this;
     }

@@ -2,45 +2,51 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use phpDocumentor\Reflection\Types\ArrayKey;
 
 class CollectClause extends Clause
 {
 
-    protected $variableName;
+    /**
+     * @var array<array<ArrayKey, string>>
+     */
+    protected array $groups;
 
-    protected $expression;
+    protected string|null $expression;
 
     /**
      * CollectClause constructor.
-     * @param  mixed  $variableName
-     * @param  mixed  $expression
+     * @param  array<array<ArrayKey, string>> $groups
      */
-    public function __construct($variableName = null, $expression = null)
+    public function __construct(array $groups = [])
     {
-        $this->variableName = $variableName;
-        $this->expression = $expression;
+        $this->groups = $groups;
     }
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        if (isset($this->variableName)) {
-            $this->variableName = $queryBuilder->normalizeArgument($this->variableName, 'Variable');
-        }
-        if (isset($this->expression)) {
-            $this->expression = $queryBuilder->normalizeArgument(
-                $this->expression,
+        foreach ($this->groups as $key => $group) {
+            $this->groups[$key][0] = $queryBuilder->normalizeArgument(
+                $group[0],
+                'Variable'
+            );
+            $this->groups[$key][1] = $queryBuilder->normalizeArgument(
+                $group[1],
                 ['Reference', 'Function', 'Query', 'Bind']
             );
         }
 
         $output = 'COLLECT';
-        if (isset($this->variableName) && isset($this->expression)) {
-            $output .= ' ' . $this->variableName->compile($queryBuilder)
-                . ' = ' . $this->expression->compile($queryBuilder);
+        $groupOutput = '';
+        foreach ($this->groups as $group) {
+            if ($groupOutput !== '') {
+                $groupOutput .= ',';
+            }
+            $groupOutput .= ' ' . $group[0]->compile($queryBuilder)
+                . ' = ' . $group[1]->compile($queryBuilder);
         }
 
-        return $output;
+        return $output . $groupOutput;
     }
 }

@@ -8,13 +8,13 @@ for($variableName, $in = null)
 Iterate through a data set ($in) and provide the current value to the rest of the query through the $variableName.
 
 **Example 1 - collection:**
-```
+```php
 $qb->for('user', 'users');
 ``` 
 Resulting AQL: `FOR user IN users`
 
 **Example 2 - range:**
-```
+```php
 $qb->for('i', '1..100');
 ``` 
 Resulting AQL: `FOR i IN 1..100`
@@ -28,7 +28,7 @@ return($expression, $distinct = false)
 Return the result of a (sub)query.
 
 **Example:**
-```
+```php
 $qb->for('user', 'users)
     ->return('user');
 ``` 
@@ -44,7 +44,7 @@ Filter out data not matching the given predicate(s). You may add a single predic
 Predicates can be embedded up to one level deep.
 
 **Example 1 - single predicate:**
-```
+```php
 $qb->for('user', 'users')
     ->filter('user.age', '==', 18)
     ->return('user);
@@ -52,7 +52,7 @@ $qb->for('user', 'users')
 Resulting AQL: `... FILTER u.age == 18 ...`
 
 **Example 2 - multiple predicates:**
-```
+```php
 $qb->for('user', 'users')
     ->filter(['u.age', '>=', 18], ['u.age', '<=', 65]))
     ->return('user);
@@ -60,7 +60,7 @@ $qb->for('user', 'users')
 Resulting AQL: `... FILTER u.age >= 18 AND u.age <= 65 ...`
 
 **Example 3 - multiple predicates, logical OR:**
-```
+```php
 $qb->for('user', 'users')
     ->filter(['u.age', '<', 18], ['u.age', '>', 65, 'OR']))
     ->return('user);
@@ -68,7 +68,7 @@ $qb->for('user', 'users')
 Resulting AQL: `... FILTER u.age < 18 OR u.age > 65 ...`
 
 **Example 4 - embedded predicates:**
-```
+```php
 $filter = [
     [
         ['doc.attribute1', '!=', null, 'AND'],
@@ -95,7 +95,7 @@ search($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalO
 Filters equivalent specifically for data from *ArangoSearch Views*
 
 **Example 1 - single predicate:**
-```
+```php
 $qb->for('user', 'users')
     ->search('u.age', '==', 18)
     ->return('user);
@@ -103,7 +103,7 @@ $qb->for('user', 'users')
 Resulting AQL: `... SEARCH u.age == 18 ...`
 
 **Example 2 - multiple predicates:**
-```
+```php
 $qb->for('user', 'users')
     ->search(['u.age', '>=', 18], ['u.age', '<=', 65]))
     ->return('user);
@@ -111,7 +111,7 @@ $qb->for('user', 'users')
 Resulting AQL: `...  SEARCH u.age >= 18 AND u.age <= 65 ...`
 
 **Example 3 - multiple predicates, logical OR:**
-```
+```php
 $qb->for('user', 'users')
     ->search(['u.age', '<', 18], ['u.age', '>', 65, 'OR']))
     ->return('user);
@@ -127,19 +127,19 @@ sort($reference, $direction)
 Return the result of a (sub)query. To set a direction add the appropriate string attribute to the method.
 
 **Example 1: default direction (asc)**
-```
+```php
 $qb->sort('user.name');
 ``` 
 Resulting AQL: `...  SORT user.name ...`
 
 **Example 2: descending direction**
-```
+```php
 $qb->sort('user.name', 'desc');
 ``` 
 Resulting AQL: `...  SORT user.name DESC ...`
 
 **Example 3: sort by multiple attributes**
-```
+```php
 $qb->sort('user.name', 'desc', 'user.email');
 ``` 
 Resulting AQL: `...  SORT user.name DESC, user.email ...`
@@ -157,13 +157,13 @@ Limit the number of results.
 When supplying two parameters the first one is the *offset*.
 
 **Example 1: limit the results to 10**
-```
+```php
 $qb->limit(10);
 ``` 
 Resulting AQL: `... LIMIT 10 ...`
 
 **Example 2: limit the results to 10 starting at 5**
-```
+```php
 $qb->limit(5, 10);
 ``` 
 Resulting AQL: `... LIMIT 5 10 ...`
@@ -177,10 +177,16 @@ collect($variableName = null, $expression = null)
 Group an array by one or more into criteria.
 
 **Example 1:**
-```
+```php
 $qb->collect('cities', 'user.city');
 ``` 
 Resulting AQL: `... COLLECT cities = user.city ...`
+
+**Example 2: limit the results to 10 starting at 5**
+```php
+$qb->collect('cities', 'user.city', 'surnames', 'user.surname');
+``` 
+Resulting AQL: `... COLLECT cities = user.city, surnames = user.surname ...``
 
 [ArangoDB COLLECT documentation](https://www.arangodb.com/docs/stable/aql/operations-collect.html)
 
@@ -193,7 +199,7 @@ This addition to collect stores all collected elements in $groupsVariable.
 **Note:** the into clause is only useful following a collect or aggregate clause.
 
 **Example 1: group the users that are in the collected city**
-```
+```php
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->collect('cities', 'user.city')
@@ -204,7 +210,7 @@ Resulting AQL: `... COLLECT cities = user.city INTO users-in-this-city ...`
 
 
 **Example 2: group the users that are in the collected city. By name only.**
-```
+```php
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->collect('cities', 'user.city')
@@ -225,7 +231,7 @@ Discard anything but the attributes to keep from the grouped data.
 **Note 1:** the keep clause is only useful following the into clause.
 
 **Example 1: into the users that are in the collected city. Only keep the name variable**
-```
+```php
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->let('something', 'else')
@@ -247,7 +253,7 @@ Discard anything but the attributes to keep from the grouped data.
 **Note:** the with count clause is only be used with into.
 
 **Example: **
-```
+```php
 $qb->for('user', 'users')
     ->let('name', 'user.name')
     ->let('something', 'else')
@@ -268,7 +274,7 @@ Aggregate collected data per into
 **Note:** the aggregate clause can only be used after the collect clause.
 
 **Example: **
-```
+```php
 $qb->for('user', 'users')
     ->collect('ageGroup', $qb->floor($qb->raw('(user.age /5) * 5')))
         ->aggregate('minAge', $qb->min('user.age'))
@@ -312,7 +318,7 @@ Options() can be only used with the following clauses:
 So be sure not to pass in any outside data directly. 
 
 **Example: **
-```
+```php
 $qb->for('user', 'users')
     ->options([indexHint => 'byName', 'forceIndexHint' => true])
     ->return('user');
