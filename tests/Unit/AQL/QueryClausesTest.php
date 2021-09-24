@@ -233,8 +233,9 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->for('u', 'Users')
             ->collect([['hometown', 'u.city'], ['surname', 'u.surname']])
+            ->return(['hometown', 'surname'])
             ->get();
-        self::assertEquals('FOR u IN Users COLLECT hometown = u.city, surname = u.surname', $result->query);
+        self::assertEquals('FOR u IN Users COLLECT hometown = u.city, surname = u.surname RETURN [hometown,surname]', $result->query);
     }
 
     public function testIntoClause()

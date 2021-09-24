@@ -31,6 +31,8 @@ class CollectClause extends Clause
                 $group[0],
                 'Variable'
             );
+            $queryBuilder->registerVariable($this->groups[$key][0] );
+
             $this->groups[$key][1] = $queryBuilder->normalizeArgument(
                 $group[1],
                 ['Reference', 'Function', 'Query', 'Bind']
