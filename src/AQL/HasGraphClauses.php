@@ -145,7 +145,7 @@ trait HasGraphClauses
         $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
-        if (is_string($comparisonOperator)) {
+        if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 

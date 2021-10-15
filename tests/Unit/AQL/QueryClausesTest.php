@@ -24,6 +24,8 @@ use stdClass;
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\LimitClause
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause
+ * @covers  \LaravelFreelancerNL\FluentAQL\Traits\CompilesPredicates
+ * @covers  \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
  */
 class QueryClausesTest extends TestCase
 {

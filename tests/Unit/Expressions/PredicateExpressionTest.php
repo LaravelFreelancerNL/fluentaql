@@ -40,4 +40,26 @@ class PredicateExpressionTest extends TestCase
 
         self::assertEquals('OR', $expression->logicalOperator);
     }
+
+    public function testPredicateExpressionLeftOperandOnly()
+    {
+        $qb = new QueryBuilder();
+        $expression = new PredicateExpression((new LiteralExpression('x')));
+        $result = $expression->compile($qb);
+
+        self::assertEquals('x', $result);
+    }
+
+    public function testPredicateWithoutRightOperand()
+    {
+        $qb = new QueryBuilder();
+        $expression = new PredicateExpression(
+            (new LiteralExpression('x')),
+            '==',
+            null
+        );
+        $result = $expression->compile($qb);
+
+        self::assertEquals('x == null', $result);
+    }
 }

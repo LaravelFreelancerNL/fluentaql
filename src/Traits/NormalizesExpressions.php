@@ -24,7 +24,7 @@ trait NormalizesExpressions
      * @return Expression
      * @throws ExpressionTypeException
      */
-    public function normalizeArgument($argument, $allowedExpressionTypes = null)
+    public function normalizeArgument($argument, $allowedExpressionTypes = null): Expression|NullExpression
     {
         if ($argument instanceof Expression) {
             return $argument;
@@ -83,13 +83,15 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param  array|object  $argument
-     * @param  array|null  $allowedExpressionTypes
+     * @param  array<mixed>|object  $argument
+     * @param  array<mixed>|null  $allowedExpressionTypes
      *
-     * @return array|object
+     * @return array<mixed>|object
      * @throws ExpressionTypeException
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function normalizeIterable($argument, $allowedExpressionTypes = null)
+    protected function normalizeIterable($argument, $allowedExpressionTypes = null): object|array
     {
         foreach ($argument as $attribute => $value) {
             $argument[$attribute] = $this->normalizeArgument($value);
@@ -99,45 +101,45 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array $predicates
+     * @param array<mixed>|PredicateExpression $predicates
      *
      * @return array|object
      */
-    public function normalizePredicates(array $predicates)
+    public function normalizePredicates(array|PredicateExpression $predicates)
     {
-        $normalizedPredicates = [];
-
-        //Check if predicates is in fact a single predicate
-        if (
-            isset($predicates[1])
-            && is_string($predicates[1])
-            && $this->grammar->isComparisonOperator($predicates[1])
-        ) {
+        if ($this->grammar->isPredicate($predicates)) {
             return $this->normalizePredicate($predicates);
         }
 
+        $normalizedPredicates = [];
         foreach ($predicates as $predicate) {
-            if ($predicate instanceof PredicateExpression) {
-                $normalizedPredicates[] = $predicate;
-                continue;
-            }
             $normalizedPredicates[] = $this->normalizePredicates($predicate);
         }
 
         return $normalizedPredicates;
     }
 
-    protected function normalizePredicate($predicate)
+    /**
+     * @param non-empty-array<mixed>|PredicateExpression $predicate
+     * @return PredicateExpression
+     * @throws ExpressionTypeException
+     */
+    protected function normalizePredicate(array|PredicateExpression $predicate): PredicateExpression
     {
-        $leftOperand = null;
-        if (! $predicate[0] instanceof PredicateExpression) {
-            $leftOperand = $this->normalizeArgument($predicate[0]);
+        if ($predicate instanceof PredicateExpression) {
+            return $predicate;
         }
 
-        $comparisonOperator = $predicate[1];
+        $leftOperand = $this->normalizeArgument($predicate[0]);
+
+        $comparisonOperator = null;
+        if (isset($predicate[1])) {
+            $comparisonOperator = $predicate[1];
+        }
+
 
         $rightOperand = null;
-        if (! $predicate[2] instanceof PredicateExpression) {
+        if (isset($predicate[2])) {
             $rightOperand = $this->normalizeArgument($predicate[2]);
         }
 
@@ -199,6 +201,7 @@ trait NormalizesExpressions
      * @param $allowedExpressionTypes
      *
      * @return ListExpression|ObjectExpression
+     * @throws ExpressionTypeException
      */
     protected function normalizeArray($argument, $allowedExpressionTypes)
     {
@@ -214,6 +217,7 @@ trait NormalizesExpressions
      * @param $allowedExpressionTypes
      *
      * @return Expression
+     * @throws ExpressionTypeException
      */
     protected function normalizeObject($argument, $allowedExpressionTypes)
     {

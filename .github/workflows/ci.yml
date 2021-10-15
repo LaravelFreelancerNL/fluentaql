@@ -31,7 +31,7 @@ jobs:
 
       - name: PHP Mess Detector
         if: ${{ always() }}
-        run: vendor/bin/phpmd src/ text cleancode,codesize,controversial
+        run: vendor/bin/phpmd src/ text phpmd-ruleset.xml
 
       - name: PHP Stan
         if: ${{ always() }}

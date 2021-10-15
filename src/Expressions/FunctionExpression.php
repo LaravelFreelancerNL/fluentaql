@@ -12,15 +12,10 @@ class FunctionExpression extends Expression implements ExpressionInterface
 {
     use NormalizesFunctions;
 
-    /**
-     * name of the function.
-     *
-     * @string $functionName
-     */
-    protected $functionName;
+    protected string $functionName;
 
     /**
-     * @var Expression[]
+     * @var array<mixed>
      */
     protected $parameters = [];
 
@@ -30,13 +25,14 @@ class FunctionExpression extends Expression implements ExpressionInterface
      * @param string $functionName
      * @param mixed $parameters
      */
-    public function __construct(string $functionName, $parameters = [])
+    public function __construct(string $functionName, mixed $parameters = [])
     {
         $this->functionName = $functionName;
 
         if (! is_array($parameters)) {
             $parameters = [$parameters];
         }
+
         $this->parameters = $parameters;
     }
 
@@ -46,18 +42,26 @@ class FunctionExpression extends Expression implements ExpressionInterface
             $normalizeFunction = $this->getNormalizeFunctionName();
             $this->$normalizeFunction($queryBuilder);
         }
-
         $output = strtoupper($this->functionName) . '(';
-        $implosion = '';
-        foreach ($this->parameters as $parameter) {
-            $implosion .= ', ' . $parameter->compile($queryBuilder);
-        }
-        if ($implosion != '') {
-            $output .= ltrim($implosion, ', ');
-        }
+        $output .= implode(', ', $this->compileParameters($this->parameters, $queryBuilder));
         $output .= ')';
 
         return $output;
+    }
+
+    protected function compileParameters(?array $parameters, QueryBuilder $queryBuilder): array
+    {
+        $compiledParameters = [];
+        foreach ($parameters as $key => $parameter) {
+            if ($key === 'predicates') {
+                $compiledParameters[] = $queryBuilder->compilePredicates($parameter);
+
+                continue;
+            }
+            $compiledParameters[] = $parameter->compile($queryBuilder);
+        }
+
+        return $compiledParameters;
     }
 
     /**

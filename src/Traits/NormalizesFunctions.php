@@ -11,6 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesFunctions
 {
+    use NormalizesArangoSearchFunctions;
     use NormalizesArrayFunctions;
     use NormalizesDateFunctions;
     use NormalizesDocumentFunctions;

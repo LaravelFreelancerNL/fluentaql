@@ -15,6 +15,6 @@ trait NormalizesDocumentFunctions
 
     protected function normalizeMerge(QueryBuilder $queryBuilder)
     {
-        $this->normalizeNumbers($queryBuilder);
+        $this->normalizeDocuments($queryBuilder);
     }
 }

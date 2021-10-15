@@ -6,7 +6,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGeoFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasStringFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesStringFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions
  */
 class StringFunctionsTest extends TestCase
 {
@@ -22,5 +24,10 @@ class StringFunctionsTest extends TestCase
             . $qb->getQueryId() . '_3)',
             $qb->get()->query
         );
+    }
+
+    public function testTokens()
+    {
+        $qb = new QueryBuilder();
     }
 }

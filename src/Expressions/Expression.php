@@ -6,7 +6,6 @@ use LaravelFreelancerNL\FluentAQL\QueryElement;
 
 abstract class Expression extends QueryElement
 {
-    /** @var mixed */
     protected $expression;
 
     /**
@@ -14,7 +13,7 @@ abstract class Expression extends QueryElement
      *
      * @param mixed $expression
      */
-    public function __construct($expression)
+    public function __construct(mixed $expression)
     {
         $this->expression = $expression;
     }

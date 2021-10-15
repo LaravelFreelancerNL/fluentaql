@@ -7,16 +7,19 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class FilterClause extends Clause
 {
-    protected $predicates = [];
+    /**
+     * @var array<mixed>|PredicateExpression
+     */
+    protected array|PredicateExpression $predicates = [];
 
-    protected $defaultLogicalOperator = 'AND';
+    protected string $defaultLogicalOperator = 'AND';
 
     /**
      * Filter statement.
      *
      * @param array $predicates
      */
-    public function __construct(array $predicates)
+    public function __construct(array|PredicateExpression $predicates)
     {
         parent::__construct();
 
@@ -32,7 +35,10 @@ class FilterClause extends Clause
         return 'FILTER ' . rtrim($compiledPredicates);
     }
 
-    public function getPredicates()
+    /**
+     * @return array<mixed>
+     */
+    public function getPredicates(): array
     {
         return $this->predicates;
     }

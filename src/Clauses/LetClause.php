@@ -28,8 +28,6 @@ class LetClause extends Clause
             ['List', 'Object', 'Query', 'Range', 'Number', 'Bind']
         );
 
-
-
         return "LET {$this->variableName->compile($queryBuilder)} = {$this->expression->compile($queryBuilder)}";
     }
 }

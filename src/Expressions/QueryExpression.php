@@ -27,7 +27,7 @@ class QueryExpression extends Expression implements ExpressionInterface
 
         // Extract collections
         if (isset($this->expression->collections)) {
-            foreach ($this->expression->collections as $mode => $collections) {
+            foreach (array_keys($this->expression->collections) as $mode) {
                 $queryBuilder->registerCollections($this->expression->collections[$mode], $mode);
             }
         }

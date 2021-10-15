@@ -11,11 +11,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
  */
 trait CompilesPredicates
 {
-    /**
-     * @param PredicateExpression|array $predicates
-     * @return string
-     */
-    public function compilePredicates($predicates)
+    public function compilePredicates(PredicateExpression|array $predicates): string
     {
         if (! is_array($predicates)) {
             $predicates = [$predicates];
@@ -35,7 +31,7 @@ trait CompilesPredicates
         return implode(' ', $compiledPredicates);
     }
 
-    protected function compilePredicate(PredicateExpression $predicate, $position = 0)
+    protected function compilePredicate(PredicateExpression $predicate, int $position = 0): string
     {
         $compiledPredicate = '';
         if ($position > 0) {
@@ -44,7 +40,7 @@ trait CompilesPredicates
         return $compiledPredicate . $predicate->compile($this);
     }
 
-    protected function compilePredicateGroup(array $predicates, $position = 0)
+    protected function compilePredicateGroup(array $predicates, $position = 0): string
     {
         $compiledPredicates = [];
         $logicalOperator = '';

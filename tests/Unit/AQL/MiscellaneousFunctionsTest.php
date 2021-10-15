@@ -6,9 +6,8 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * Class StructureTest.
- *
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasMiscellaneousFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesMiscellaneousFunctions
  */
 class MiscellaneousFunctionsTest extends TestCase
 {

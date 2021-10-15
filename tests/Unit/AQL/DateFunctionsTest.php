@@ -7,6 +7,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesDateFunctions
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions
  */

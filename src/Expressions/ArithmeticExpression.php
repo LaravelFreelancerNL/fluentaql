@@ -8,16 +8,19 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class ArithmeticExpression extends PredicateExpression implements ExpressionInterface
 {
 
-    protected $calculation = [];
+    /**
+     * @var array<mixed>
+     */
+    protected array $calculation = [];
 
     /**
      * Create predicate expression.
      *
-     * @param string $leftOperand
+     * @param mixed $leftOperand
      * @param string $rightOperand
-     * @param string $operator
+     * @param mixed $operator
      */
-    public function __construct($leftOperand, $operator, $rightOperand)
+    public function __construct(mixed $leftOperand, string $operator, mixed $rightOperand)
     {
         $this->calculation = [$leftOperand, $operator, $rightOperand];
     }
@@ -44,16 +47,15 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
         }
 
         return $leftOperand . ' ' . $normalizedCalculation['arithmeticOperator'] . ' ' . $rightOperand;
-        return $leftOperand . ' ' . $normalizedCalculation['arithmeticOperator'] . ' ' . $rightOperand;
     }
 
     /**
      * @param  QueryBuilder  $queryBuilder
      * @param  array  $calculation
-     * @return mixed
+     * @return array<mixed>
      * @throws ExpressionTypeException
      */
-    public function normalizeCalculation(QueryBuilder $queryBuilder, array $calculation)
+    public function normalizeCalculation(QueryBuilder $queryBuilder, array $calculation): array
     {
         $normalizedCalculation = [];
 

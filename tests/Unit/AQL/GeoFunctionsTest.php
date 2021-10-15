@@ -7,6 +7,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGeoFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesGeoFunctions
  */
 class GeoFunctionsTest extends TestCase
 {

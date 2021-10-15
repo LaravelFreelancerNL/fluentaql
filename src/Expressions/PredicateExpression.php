@@ -6,31 +6,27 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class PredicateExpression extends Expression implements ExpressionInterface
 {
-    /** @var string */
-    protected $leftOperand;
+    protected string|ExpressionInterface $leftOperand;
 
-    /** @var string */
-    protected $comparisonOperator;
+    protected string|null $comparisonOperator;
 
-    /** @var string */
-    protected $rightOperand;
+    protected string|ExpressionInterface|null $rightOperand;
 
-    /** @var string */
-    public $logicalOperator;
+    public string $logicalOperator;
 
     /**
      * Create predicate expression.
      *
      * @param ExpressionInterface $leftOperand
-     * @param string              $comparisonOperator
-     * @param ExpressionInterface $rightOperand
-     * @param null|string         $logicalOperator
+     * @param ?string $comparisonOperator
+     * @param ?ExpressionInterface $rightOperand
+     * @param string|null $logicalOperator
      */
     public function __construct(
         ExpressionInterface $leftOperand,
-        $comparisonOperator,
-        ExpressionInterface $rightOperand,
-        $logicalOperator = 'AND'
+        ?string $comparisonOperator = null,
+        ?ExpressionInterface $rightOperand = null,
+        ?string $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;
         $this->comparisonOperator = strtoupper($comparisonOperator);
@@ -46,7 +42,15 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function compile(QueryBuilder $queryBuilder = null): string
     {
-        return $this->leftOperand->compile($queryBuilder) .
-            ' ' . $this->comparisonOperator . ' ' . $this->rightOperand->compile($queryBuilder);
+        $compiledPredicate = $this->leftOperand->compile($queryBuilder);
+        if (isset($this->comparisonOperator) && $this->comparisonOperator !== '') {
+            $compiledPredicate .= ' ' . $this->comparisonOperator;
+
+            if (! isset($this->rightOperand)) {
+                $this->rightOperand = new NullExpression();
+            }
+            $compiledPredicate .= ' ' . $this->rightOperand->compile($queryBuilder);
+        }
+        return $compiledPredicate;
     }
 }

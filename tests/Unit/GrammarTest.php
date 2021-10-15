@@ -12,6 +12,7 @@ use stdClass;
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Grammar
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesReferences
  */
 class GrammarTest extends TestCase
 {

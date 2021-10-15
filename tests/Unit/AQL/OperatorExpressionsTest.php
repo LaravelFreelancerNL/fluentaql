@@ -6,8 +6,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasArrayFunctions
- * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesArrayFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasOperatorExpressions
+ * @covers \LaravelFreelancerNL\FluentAQL\Expressions\TernaryExpression
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
  */
 class OperatorExpressionsTest extends TestCase
 {

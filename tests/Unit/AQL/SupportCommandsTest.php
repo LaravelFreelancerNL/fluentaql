@@ -7,6 +7,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasSupportCommands
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\RawClause
  */
 class SupportCommandsTest extends TestCase
 {

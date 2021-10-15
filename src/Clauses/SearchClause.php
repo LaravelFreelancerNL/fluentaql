@@ -2,13 +2,17 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class SearchClause extends FilterClause
 {
-    protected $predicates = [];
+    /**
+     * @var array<mixed>|PredicateExpression
+     */
+    protected array|PredicateExpression $predicates = [];
 
-    protected $defaultLogicalOperator = 'AND';
+    protected string $defaultLogicalOperator = 'AND';
 
     public function compile(QueryBuilder $queryBuilder): string
     {

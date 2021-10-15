@@ -6,7 +6,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGeoFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDocumentFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesDocumentFunctions
  */
 class DocumentFunctionsTest extends TestCase
 {

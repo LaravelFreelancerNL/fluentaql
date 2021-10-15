@@ -8,7 +8,7 @@ trait ValidatesOperators
      * @param mixed $operator
      * @return bool
      */
-    public function isLogicalOperator($operator): bool
+    public function isLogicalOperator(mixed $operator): bool
     {
         return isset($this->logicalOperators[strtoupper($operator)]);
     }
@@ -17,7 +17,7 @@ trait ValidatesOperators
      * @param mixed $operator
      * @return bool
      */
-    public function isComparisonOperator($operator): bool
+    public function isComparisonOperator(mixed $operator): bool
     {
         return isset($this->comparisonOperators[strtoupper($operator)]);
     }
@@ -26,7 +26,7 @@ trait ValidatesOperators
      * @param mixed $operator
      * @return bool
      */
-    public function isArithmeticOperator($operator): bool
+    public function isArithmeticOperator(mixed $operator): bool
     {
         return isset($this->arithmeticOperators[$operator]);
     }

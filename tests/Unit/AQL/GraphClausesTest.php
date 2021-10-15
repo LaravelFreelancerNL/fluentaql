@@ -6,9 +6,8 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
- * Class StructureTest.
- *
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses
+ * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGraphClauses
  */
 class GraphClausesTest extends TestCase
 {
@@ -36,6 +35,7 @@ class GraphClausesTest extends TestCase
 
     /**
      * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseShortestPathClause
      */
     public function testShortestPath()
     {
@@ -52,6 +52,7 @@ class GraphClausesTest extends TestCase
 
     /**
      * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathClause
      */
     public function testKShortestPaths()
     {

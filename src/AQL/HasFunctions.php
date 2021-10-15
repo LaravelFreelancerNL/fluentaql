@@ -11,6 +11,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
  */
 trait HasFunctions
 {
+    use HasArangoSearchFunctions;
     use HasArrayFunctions;
     use HasDateFunctions;
     use HasDocumentFunctions;
@@ -18,9 +19,4 @@ trait HasFunctions
     use HasMiscellaneousFunctions;
     use HasNumericFunctions;
     use HasStringFunctions;
-
-    protected function function($functionName, ...$parameters)
-    {
-        return new FunctionExpression($functionName, $parameters);
-    }
 }

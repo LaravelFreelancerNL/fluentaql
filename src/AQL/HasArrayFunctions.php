@@ -66,11 +66,11 @@ trait HasArrayFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      * @link https://www.arangodb.com/docs/3.6/aql/functions-string.html#length
      *
-     * @param mixed$value
+     * @param mixed $value
      *
      * @return FunctionExpression
      */
-    public function length($value): FunctionExpression
+    public function length(mixed $value): FunctionExpression
     {
         return new FunctionExpression('LENGTH', [$value]);
     }

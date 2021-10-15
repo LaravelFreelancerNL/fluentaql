@@ -17,6 +17,13 @@ $qb->for('i', '1..100')
     ->return('i');
 ```
 
+## ArangoSearch functions
+| Description           | AQL Function |
+| :-------------------- | :-------------------------------------------------------------------------------------------- |
+| analyzer(string&#124;array $leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [ANALYZER(expr, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#analyzer) |
+| boost(string&#124;array $leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [BOOST(expr, boost)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#boost) |
+
+
 ## Array functions
 | Description           | AQL Function |
 | :-------------------- | :-------------------------------------------------------------------------------------------- |

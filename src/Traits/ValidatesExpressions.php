@@ -8,14 +8,10 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait ValidatesExpressions
 {
     use ValidatesOperators;
+    use ValidatesPredicates;
     use ValidatesReferences;
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isRange($value): bool
+    public function isRange(mixed $value): bool
     {
         if (is_string($value) && preg_match('/^[0-9]+(?:\.[0-9]+)?+\.{2}[0-9]+(?:\.[0-9]+)?$/', $value)) {
             return true;
@@ -24,51 +20,27 @@ trait ValidatesExpressions
         return false;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isBoolean($value): bool
+    public function isBoolean(mixed $value): bool
     {
         return is_bool($value) || $value === 'true' || $value === 'false';
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public function isNull($value): bool
+    public function isNull(mixed $value): bool
     {
         return $value === null || $value == 'null';
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public function isNumber($value): bool
+    public function isNumber(mixed $value): bool
     {
         return is_numeric($value) && !is_string($value);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isList($value): bool
+    public function isList(mixed $value): bool
     {
         return is_array($value) && $this->isIndexedArray($value);
     }
 
-    /**
-     * @param mixed $value
-     * @return bool
-     */
-    public function isQuery($value): bool
+    public function isQuery(mixed $value): bool
     {
         return $value instanceof QueryBuilder;
     }
@@ -163,12 +135,7 @@ trait ValidatesExpressions
         return false;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isObject($value): bool
+    public function isObject(mixed $value): bool
     {
         if (is_object($value) || (is_array($value) && $this->isAssociativeArray($value))) {
             return true;
@@ -177,11 +144,7 @@ trait ValidatesExpressions
         return false;
     }
 
-    /**
-     * @param mixed $bindParameter
-     * @return bool
-     */
-    public function isBindParameter($bindParameter): bool
+    public function isBindParameter(mixed $bindParameter): bool
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
             return true;
@@ -193,7 +156,7 @@ trait ValidatesExpressions
     /**
      * Check if the array is associative.
      *
-     * @param array $array
+     * @param array<mixed> $array
      *
      * @return bool
      */
@@ -209,7 +172,7 @@ trait ValidatesExpressions
     /**
      * Check if the array is numeric.
      *
-     * @param array $array
+     * @param array<mixed> $array
      *
      * @return bool
      */

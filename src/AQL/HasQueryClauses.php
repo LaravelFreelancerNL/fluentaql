@@ -32,7 +32,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
-     * @param string|array|ExpressionInterface $variableName
+     * @param string|array<mixed>|ExpressionInterface $variableName
      * @param mixed        $in
      *
      * @return QueryBuilder
@@ -65,9 +65,9 @@ trait HasQueryClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): self {
+    ): QueryBuilder {
         $predicates = $leftOperand;
-        if (is_string($comparisonOperator)) {
+        if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
@@ -81,20 +81,23 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-search.html
      *
-     * @param $leftOperand
-     * @param  string  $comparisonOperator
-     * @param  null  $rightOperand
-     * @param  string  $logicalOperator
+     * @param mixed $leftOperand
+     * @param string|null $comparisonOperator
+     * @param mixed $rightOperand
+     * @param string|null $logicalOperator
      *
      * @return QueryBuilder
      */
     public function search(
-        $leftOperand,
-        $comparisonOperator = null,
-        $rightOperand = null,
-        $logicalOperator = null
-    ): self {
+        mixed $leftOperand,
+        string $comparisonOperator = null,
+        mixed $rightOperand = null,
+        string $logicalOperator = null
+    ): QueryBuilder {
         $predicates = $leftOperand;
+        if (! is_array($predicates)) {
+            $predicates = [$predicates];
+        }
         if (is_string($comparisonOperator)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
@@ -111,7 +114,7 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function collect(string|array $variableName = null, string $expression = null): self
+    public function collect(string|array $variableName = null, string $expression = null): QueryBuilder
     {
         $groups = [];
         if (is_string($variableName)) {
@@ -138,7 +141,7 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function into($groupsVariable, $projectionExpression = null): self
+    public function into($groupsVariable, $projectionExpression = null): QueryBuilder
     {
         $this->addCommand(new IntoClause($groupsVariable, $projectionExpression));
 
@@ -155,7 +158,7 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function keep($keepVariable): self
+    public function keep($keepVariable): QueryBuilder
     {
         $this->addCommand(new KeepClause($keepVariable));
 
@@ -173,7 +176,7 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function withCount($countVariableName): self
+    public function withCount($countVariableName): QueryBuilder
     {
         $this->addCommand(new WithCountClause($countVariableName));
 
@@ -191,7 +194,7 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function aggregate($variableName, $aggregateExpression): self
+    public function aggregate($variableName, $aggregateExpression): QueryBuilder
     {
         $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
@@ -203,10 +206,10 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
-     * @param  mixed  ...$references
+     * @param mixed ...$references
      * @return QueryBuilder
      */
-    public function sort(...$references): self
+    public function sort(...$references): QueryBuilder
     {
         $this->addCommand(new SortClause($references));
 
@@ -219,11 +222,11 @@ trait HasQueryClauses
      * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
      *
      * @param int $offsetOrCount
-     * @param int $count
+     * @param int|null $count
      *
-     * @return $this
+     * @return QueryBuilder
      */
-    public function limit(int $offsetOrCount, int $count = null): self
+    public function limit(int $offsetOrCount, int $count = null): QueryBuilder
     {
         $this->addCommand(new LimitClause($offsetOrCount, $count));
 
@@ -242,14 +245,14 @@ trait HasQueryClauses
      *
      * @return QueryBuilder
      */
-    public function return($expression, $distinct = false): self
+    public function return($expression, $distinct = false): QueryBuilder
     {
         $this->addCommand(new ReturnClause($expression, $distinct));
 
         return $this;
     }
 
-    public function options($options): self
+    public function options($options): QueryBuilder
     {
         $this->addCommand(new OptionsClause($options));
 
