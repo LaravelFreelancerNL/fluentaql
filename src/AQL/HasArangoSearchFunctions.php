@@ -144,12 +144,7 @@ trait HasArangoSearchFunctions
             "includeLow" => $includeLow,
             "includeHigh" => $includeHigh
         ];
-        $arguments = array_filter(
-            $arguments,
-            function ($value) {
-                return ! is_null($value);
-            }
-        );
+        $arguments = $this->unsetNullValues($arguments);
 
         return new FunctionExpression('IN_RANGE', $arguments);
     }
@@ -184,12 +179,7 @@ trait HasArangoSearchFunctions
             "maxTerms" => $maxTerms,
             "prefix" => $prefix,
         ];
-        $arguments = array_filter(
-            $arguments,
-            function ($value) {
-                return ! is_null($value);
-            }
-        );
+        $arguments = $this->unsetNullValues($arguments);
 
         return new FunctionExpression('LEVENSHTEIN_MATCH', $arguments);
     }
@@ -239,12 +229,7 @@ trait HasArangoSearchFunctions
             "threshold" => $threshold,
             "analyzer" => $analyzer
         ];
-        $arguments = array_filter(
-            $arguments,
-            function ($value) {
-                return ! is_null($value);
-            }
-        );
+        $arguments = $this->unsetNullValues($arguments);
 
         return new FunctionExpression('NGRAM_MATCH', $arguments);
     }

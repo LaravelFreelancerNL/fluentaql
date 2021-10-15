@@ -289,4 +289,18 @@ class QueryBuilder
     {
         return $this->variables;
     }
+
+    /**
+     * @param array $arguments
+     * @return array
+     */
+    public function unsetNullValues(array $arguments): array
+    {
+        return array_filter(
+            $arguments,
+            function ($value) {
+                return !is_null($value);
+            }
+        );
+    }
 }

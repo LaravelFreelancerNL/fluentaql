@@ -12,13 +12,20 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class DocumentFunctionsTest extends TestCase
 {
-
     public function testKeepAttributes()
     {
         $qb = new QueryBuilder();
         $qb->return($qb->keepAttributes("doc", ["_id", "_key", "foo", "bar"]));
 
         self::assertEquals('RETURN KEEP(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
+    }
+
+    public function testKeepAttributesSingleAttribute()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->keepAttributes("doc", "_id"));
+
+        self::assertEquals('RETURN KEEP(doc, ["_id"])', $qb->get()->query);
     }
 
     public function testMatches()
@@ -91,5 +98,13 @@ class DocumentFunctionsTest extends TestCase
         $qb->return($qb->unset("doc", ["_id", "_key", "foo", "bar"]));
 
         self::assertEquals('RETURN UNSET(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
+    }
+
+    public function testUnsetSingleAttribute()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->unset("doc", "_id"));
+
+        self::assertEquals('RETURN UNSET(doc, ["_id"])', $qb->get()->query);
     }
 }

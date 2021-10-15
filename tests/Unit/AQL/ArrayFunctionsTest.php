@@ -18,6 +18,13 @@ class ArrayFunctionsTest extends TestCase
         self::assertEquals('RETURN APPEND([1,2,3,4], [5,6])', $qb->get()->query);
     }
 
+    public function testAppendUnique()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->append([1, 2, 3, 4], [5,6], true));
+        self::assertEquals('RETURN APPEND([1,2,3,4], [5,6], true)', $qb->get()->query);
+    }
+
     public function testCount()
     {
         $qb = new QueryBuilder();
