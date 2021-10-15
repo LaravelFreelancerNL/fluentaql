@@ -13,6 +13,32 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 class DocumentFunctionsTest extends TestCase
 {
 
+    public function testKeepAttributes()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->keepAttributes("doc", ["_id", "_key", "foo", "bar"]));
+
+        self::assertEquals('RETURN KEEP(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
+    }
+
+    public function testMatches()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->matches(
+            [
+                'user1' => ['name' => 'Janet']
+            ],
+            [
+                'user2' => ['name' => 'Tom']
+            ]
+        ));
+
+        self::assertEquals(
+            'RETURN MATCHES({"user1":{"name":"Janet"}}, {"user2":{"name":"Tom"}}, false)',
+            $qb->get()->query
+        );
+    }
+
     public function testMerge()
     {
         $qb = new QueryBuilder();
@@ -48,5 +74,22 @@ class DocumentFunctionsTest extends TestCase
             'RETURN MERGE([{"foo":"bar"},{"quux":"quetzalcoatl","ruled":true},{"bar":"baz","foo":"done"}])',
             $qb->get()->query
         );
+    }
+
+    public function testParseIdentifier()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->parseIdentifier("_users/my-user"));
+
+        self::assertEquals('RETURN PARSE_IDENTIFIER(@'
+            . $qb->getQueryId() . '_1)', $qb->get()->query);
+    }
+
+    public function testUnset()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->unset("doc", ["_id", "_key", "foo", "bar"]));
+
+        self::assertEquals('RETURN UNSET(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
     }
 }
