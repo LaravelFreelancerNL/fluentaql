@@ -7,6 +7,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasOperatorExpressions
+ * @covers \LaravelFreelancerNL\FluentAQL\Expressions\ArithmeticExpression
  * @covers \LaravelFreelancerNL\FluentAQL\Expressions\TernaryExpression
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
  */

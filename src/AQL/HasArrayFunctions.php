@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Array AQL functions.
@@ -12,6 +16,32 @@ use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 trait HasArrayFunctions
 {
     /**
+     * Add all elements of an array to another array.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#append
+     *
+     * @param array<mixed>|QueryBuilder|Expression $array
+     * @param mixed $values
+     * @param bool|null $unique
+     * @return FunctionExpression
+     */
+    public function append(mixed $array, mixed $values, bool $unique = null): FunctionExpression
+    {
+        $arguments = [
+            'array' => $array,
+            'values' => $values,
+        ];
+        if (isset($unique)) {
+            $arguments['unique'] = $unique;
+        }
+        return new FunctionExpression('APPEND', $arguments);
+    }
+
+    /**
+     * This is an alias for LENGTH().
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
+     *
      * @param mixed $value
      * @return FunctionExpression
      */
@@ -49,6 +79,26 @@ trait HasArrayFunctions
     }
 
     /**
+     * Turn an array of arrays into a flat array.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#flatten
+     *
+     * @param array<mixed>|QueryBuilder|Expression $array
+     * @param int|QueryBuilder|Expression $depth
+     * @return FunctionExpression
+     */
+    public function flatten(mixed $array, mixed $depth = 1): FunctionExpression
+    {
+        $arguments = [
+            'array' => $array,
+            'depth' => $depth,
+        ];
+
+        return new FunctionExpression('FLATTEN', $arguments);
+    }
+
+
+    /**
      * Get the last element of an array.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#last
@@ -64,7 +114,6 @@ trait HasArrayFunctions
 
     /**
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
-     * @link https://www.arangodb.com/docs/3.6/aql/functions-string.html#length
      *
      * @param mixed $value
      *
@@ -73,5 +122,31 @@ trait HasArrayFunctions
     public function length(mixed $value): FunctionExpression
     {
         return new FunctionExpression('LENGTH', [$value]);
+    }
+
+    /**
+     * Remove the first element of an array.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#shift
+     *
+     * @param array<mixed>|QueryBuilder|Expression $array
+     * @return FunctionExpression
+     */
+    public function shift(mixed $array): FunctionExpression
+    {
+        return new FunctionExpression('SHIFT', [$array]);
+    }
+
+    /**
+     * Return all unique elements in an Array.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#unique
+     *
+     * @param array<mixed>|QueryBuilder|Expression $array
+     * @return FunctionExpression
+     */
+    public function unique(mixed $array): FunctionExpression
+    {
+        return new FunctionExpression('UNIQUE', [$array]);
     }
 }
