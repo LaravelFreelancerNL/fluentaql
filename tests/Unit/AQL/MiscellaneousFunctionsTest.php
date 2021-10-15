@@ -37,4 +37,11 @@ class MiscellaneousFunctionsTest extends TestCase
         $qb->return($qb->document(['users/john', 'users/amy']));
         self::assertEquals('RETURN DOCUMENT(["users/john","users/amy"])', $qb->get()->query);
     }
+
+    public function testFirstDocument()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->firstDocument('users'));
+        self::assertEquals('RETURN FIRST_DOCUMENT(@' . $qb->getQueryId() . '_1)', $qb->get()->query);
+    }
 }

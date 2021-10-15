@@ -29,4 +29,9 @@ trait NormalizesMiscellaneousFunctions
             ['Id', 'Key', 'Query', 'List', 'Bind']
         );
     }
+
+    protected function normalizeFirstDocument(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeAny($queryBuilder);
+    }
 }

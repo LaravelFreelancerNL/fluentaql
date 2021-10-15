@@ -20,6 +20,16 @@ trait NormalizesFunctions
     use NormalizesNumericFunctions;
     use NormalizesStringFunctions;
 
+    protected function normalizeAny(QueryBuilder $queryBuilder)
+    {
+        foreach ($this->parameters as $key => $parameter) {
+            $this->parameters[$key] = $queryBuilder->normalizeArgument(
+                $parameter,
+                ['Object', 'List', 'Null', 'Number', 'Boolean', 'List', 'Query', 'Reference', 'Bind']
+            );
+        }
+    }
+
     protected function normalizeArrays(QueryBuilder $queryBuilder)
     {
         foreach ($this->parameters as $key => $parameter) {

@@ -149,6 +149,35 @@ class GeoFunctionsTest extends TestCase
         );
     }
 
+
+    public function testGeoInRangeIncludeEdges()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('polygon', [
+            'type' => 'Polygon',
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+        ])
+            ->for('loc', 'locations')
+            ->return(
+                $qb->geoInRange(
+                    'polygon',
+                    'loc.address.geometry',
+                    10,
+                    100,
+                    false,
+                    true
+                )
+            );
+
+        self::assertEquals(
+            'LET polygon = {"type":"Polygon",'
+            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            . ' FOR loc IN locations'
+            . ' RETURN GEO_IN_RANGE(polygon, loc.address.geometry, 10, 100, false, true)',
+            $qb->get()->query
+        );
+    }
+
     public function testGeoLineString()
     {
         $qb = new QueryBuilder();

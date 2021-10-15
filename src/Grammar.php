@@ -113,7 +113,6 @@ class Grammar
     /*
      * List of default allowed Data Types
      * The order matters in the compilation of the data
-     * String should always go last to trap unrecognized syntax in a bind.
      */
     protected $defaultAllowedExpressionTypes = [
         'Number'    => 'Number',
