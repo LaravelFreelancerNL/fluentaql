@@ -280,5 +280,4 @@ trait HasQueryClauses
 
         return $this;
     }
-
 }

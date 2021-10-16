@@ -178,7 +178,7 @@ trait HasStringFunctions
         string|QueryBuilder|Expression $value,
         string|array|QueryBuilder|Expression $search,
         string|array|QueryBuilder|Expression $replace,
-        int|QueryBuilder|Expression $limit
+        int|QueryBuilder|Expression $limit = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,

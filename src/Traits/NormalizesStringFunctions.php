@@ -186,14 +186,14 @@ trait NormalizesStringFunctions
         );
 
          $this->parameters['offset'] = $queryBuilder->normalizeArgument(
-            $this->parameters['offset'],
-            ['Number', 'Query', 'Reference', 'Bind']
-        );
+             $this->parameters['offset'],
+             ['Number', 'Query', 'Reference', 'Bind']
+         );
 
          $this->parameters['length'] = $queryBuilder->normalizeArgument(
-            $this->parameters['length'],
-            ['Number', 'Query', 'Reference', 'Bind']
-        );
+             $this->parameters['length'],
+             ['Number', 'Query', 'Reference', 'Bind']
+         );
     }
 
     protected function normalizeTokens(QueryBuilder $queryBuilder)
