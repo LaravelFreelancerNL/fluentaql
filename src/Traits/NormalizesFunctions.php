@@ -19,6 +19,7 @@ trait NormalizesFunctions
     use NormalizesMiscellaneousFunctions;
     use NormalizesNumericFunctions;
     use NormalizesStringFunctions;
+    use NormalizesTypeFunctions;
 
     protected function normalizeAny(QueryBuilder $queryBuilder)
     {

@@ -12,6 +12,7 @@ use stdClass;
  *
  * @covers \LaravelFreelancerNL\FluentAQL\Grammar
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesReferences
  */
 class GrammarTest extends TestCase
@@ -157,6 +158,18 @@ class GrammarTest extends TestCase
         self::assertFalse($result);
 
         $result = $this->grammar->isVariable('döc');
+        self::assertFalse($result);
+    }
+
+    public function testValidateComparisonOperatorSyntax()
+    {
+        $result = $this->grammar->isComparisonOperator('==');
+        self::assertTrue($result);
+    }
+
+    public function testValidateIncorrectComparisonOperatorSyntax()
+    {
+        $result = $this->grammar->isComparisonOperator('say what');
         self::assertFalse($result);
     }
 

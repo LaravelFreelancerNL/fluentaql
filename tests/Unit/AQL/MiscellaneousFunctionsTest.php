@@ -7,6 +7,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasMiscellaneousFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesFunctions
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesMiscellaneousFunctions
  */
 class MiscellaneousFunctionsTest extends TestCase

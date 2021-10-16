@@ -161,13 +161,10 @@ class QueryBuilder
 
     /**
      * Register variables on declaration for later data normalization.
-     *
-     * @param string|array $variableName
-     *
-     * @return QueryBuilder
      */
-    public function registerVariable($variableName): self
-    {
+    public function registerVariable(
+        string|array|QueryBuilder|Expression $variableName
+    ): self {
         if ($variableName instanceof ExpressionInterface) {
             $variableName = $variableName->compile($this);
         }

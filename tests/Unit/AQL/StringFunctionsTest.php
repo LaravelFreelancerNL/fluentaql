@@ -183,6 +183,16 @@ class StringFunctionsTest extends TestCase
         );
     }
 
+    public function testLower()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->lower("   Lörem ipsüm, DOLOR SIT Ämet."));
+        self::assertEquals(
+            'RETURN LOWER(@'
+            . $qb->getQueryId() . '_1)',
+            $qb->get()->query
+        );
+    }
     public function testUpper()
     {
         $qb = new QueryBuilder();
@@ -200,5 +210,4 @@ class StringFunctionsTest extends TestCase
         $qb->return($qb->uuid());
         self::assertEquals('RETURN UUID()', $qb->get()->query);
     }
-
 }

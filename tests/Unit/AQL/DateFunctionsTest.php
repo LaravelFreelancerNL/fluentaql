@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\AQL;
 
+use DateTime;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
@@ -9,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
  * @covers \LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesDateFunctions
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions
  */
 class DateFunctionsTest extends TestCase
@@ -246,6 +248,18 @@ class DateFunctionsTest extends TestCase
             'RETURN DATE_ROUND(@' . $qb->getQueryId()
             . '_1, 15, @'
             . $qb->getQueryId() . '_2)',
+            $qb->get()->query
+        );
+    }
+
+    public function testDateTimeObjectParameter()
+    {
+        $date = new DateTime('2011-01-01T15:03:01.012345Z');
+        $qb = new QueryBuilder();
+        $qb->return($qb->dateRound($date, 15, 'minutes'));
+        self::assertEquals(
+            'RETURN DATE_ROUND("2011-01-01T15:03:01+00:00", 15, @'
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }

@@ -10,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  * @covers \LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\normalizesArangoSearchFunctions
  * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
  */
 class ArangoSearchFunctionsTest extends TestCase
 {

@@ -8,6 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasGraphClauses
+ * @covers \LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions
  */
 class GraphClausesTest extends TestCase
 {

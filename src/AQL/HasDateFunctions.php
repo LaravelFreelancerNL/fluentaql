@@ -21,8 +21,8 @@ trait HasDateFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_compare
      */
     public function dateCompare(
-        string|int|QueryBuilder|Expression $date1,
-        string|int|QueryBuilder|Expression $date2,
+        string|int|object $date1,
+        string|int|object $date2,
         string|QueryBuilder|Expression $unitRangeStart,
         null|string|QueryBuilder|Expression $unitRangeEnd
     ): FunctionExpression {
@@ -42,13 +42,10 @@ trait HasDateFunctions
      * Get the day value of a date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_day
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateDay($date)
-    {
+    public function dateDay(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_DAY', $date);
     }
 
@@ -56,13 +53,11 @@ trait HasDateFunctions
      * Get the custom formatted representation of the date.
      *
      * @Link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_format
-     *
-     * @param  mixed $date
-     * @param  mixed $format
-     * @return FunctionExpression
      */
-    public function dateFormat($date, $format): FunctionExpression
-    {
+    public function dateFormat(
+        string|int|object $date,
+        string|QueryBuilder|Expression $format
+    ): FunctionExpression {
         return new FunctionExpression('DATE_FORMAT', [$date, $format]);
     }
 
@@ -70,23 +65,15 @@ trait HasDateFunctions
      * Get the day value of a date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_hour
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateHour($date)
-    {
+    public function dateHour(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_HOUR', $date);
     }
 
     /**
      * Return an ISO 8601 date time string from date
-     * You may enter a unix timestamp or a datestring: year, month, day, hour, minute, second, millisecond
-     * Instead of year you can also enter a unix timestamp in which case month and day may be null.
-     * https://www.arangodb.com/docs/stable/aql/functions-date.html#date_iso8601.
-     *
-     * @return FunctionExpression
      */
     public function dateIso8601(): FunctionExpression
     {
@@ -102,13 +89,10 @@ trait HasDateFunctions
      * Get the millisecond of the date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_millisecond
-     *
-     * @param  mixed  $date
-     *
-     * @return FunctionExpression
      */
-    public function dateMillisecond($date): FunctionExpression
-    {
+    public function dateMillisecond(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_MILLISECOND', $date);
     }
 
@@ -116,13 +100,10 @@ trait HasDateFunctions
      * Get the minute value of a date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_minute
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateMinute($date)
-    {
+    public function dateMinute(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_MINUTE', $date);
     }
 
@@ -130,13 +111,10 @@ trait HasDateFunctions
      * Get the month value of a date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_month
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateMonth($date)
-    {
+    public function dateMonth(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_MONTH', $date);
     }
 
@@ -144,10 +122,8 @@ trait HasDateFunctions
      * Get the current unix time as numeric timestamp.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_now
-     *
-     * @return FunctionExpression
      */
-    public function dateNow()
+    public function dateNow(): FunctionExpression
     {
         return new FunctionExpression('DATE_NOW', []);
     }
@@ -156,25 +132,19 @@ trait HasDateFunctions
      * Get the second of the date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_second
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateSecond($date): FunctionExpression
-    {
+    public function dateSecond(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_SECOND', $date);
     }
 
     /**
      * Return an Unix timestamp from a date value
-     * You may enter a or a dateString: year, month, day, hour, minute, second, millisecond
-     * Instead of year you can also enter a unix timestamp in which case month and day may be null.
-     * https://www.arangodb.com/docs/stable/aql/functions-date.html#date_iso8601.
      *
-     * @return FunctionExpression
+     * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_iso8601.
      */
-    public function dateTimestamp()
+    public function dateTimestamp(): FunctionExpression
     {
         $arguments = func_get_args();
         if (empty($arguments)) {
@@ -190,7 +160,7 @@ trait HasDateFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_trunc
      */
     public function dateTrunc(
-        int|string|QueryBuilder|Expression $date,
+        int|string|object $date,
         string|QueryBuilder|Expression $unit
     ): FunctionExpression {
         $arguments = [
@@ -207,7 +177,7 @@ trait HasDateFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_round
      */
     public function dateRound(
-        int|string|QueryBuilder|Expression $date,
+        int|string|object $date,
         int|QueryBuilder|Expression $amount,
         string|QueryBuilder|Expression $unit
     ): FunctionExpression {
@@ -226,7 +196,7 @@ trait HasDateFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_utctolocal
      */
     public function dateUtcToLocal(
-        int|string|QueryBuilder|Expression $date,
+        int|string|object $date,
         string|QueryBuilder|Expression $timezone,
         null|array|object $zoneInfo = null
     ): FunctionExpression {
@@ -247,7 +217,7 @@ trait HasDateFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_localtoutc
      */
     public function dateLocalToUtc(
-        int|string|QueryBuilder|Expression $date,
+        int|string|object $date,
         string|QueryBuilder|Expression $timezone,
         null|array|object $zoneInfo = null
     ): FunctionExpression {
@@ -267,13 +237,10 @@ trait HasDateFunctions
      * Get the year value of a date.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_year
-     *
-     * @param  mixed $date
-     *
-     * @return FunctionExpression
      */
-    public function dateYear($date)
-    {
+    public function dateYear(
+        string|int|object $date
+    ): FunctionExpression {
         return new FunctionExpression('DATE_YEAR', $date);
     }
 }

@@ -4,12 +4,7 @@ namespace LaravelFreelancerNL\FluentAQL\Traits;
 
 trait ValidatesReferences
 {
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isBind($value): bool
+    public function isBind(mixed $value): bool
     {
         if (is_string($value)) {
             return true;
@@ -21,12 +16,7 @@ trait ValidatesReferences
         return false;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isCollectionBind($value): bool
+    public function isCollectionBind(mixed $value): bool
     {
         if (is_string($value)) {
             return true;
@@ -35,12 +25,7 @@ trait ValidatesReferences
         return false;
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isVariable($value): bool
+    public function isVariable(mixed $value): bool
     {
         if (is_string($value) && preg_match('/^\$?[a-zA-Z_][a-zA-Z0-9_]*+$/', $value)) {
             return true;
@@ -50,21 +35,16 @@ trait ValidatesReferences
     }
 
     /**
-     * @param mixed  $value
-     * @param  array  $registeredVariables
-     * @return bool
+     * @param  array<mixed>  $registeredVariables
      */
-    public function isRegisteredVariable($value, $registeredVariables = []): bool
-    {
+    public function isRegisteredVariable(
+        mixed $value,
+        array $registeredVariables = []
+    ): bool {
         return isset($registeredVariables[$value]);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool
-     */
-    public function isAttribute($value): bool
+    public function isAttribute(mixed $value): bool
     {
         $pattern = '/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*'
             . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
@@ -79,12 +59,12 @@ trait ValidatesReferences
     }
 
     /**
-     * @param mixed $value
-     * @param array $registeredVariables
-     * @return bool
+     * @param array<mixed> $registeredVariables
      */
-    public function isReference($value, $registeredVariables = []): bool
-    {
+    public function isReference(
+        mixed $value,
+        array $registeredVariables = []
+    ): bool {
         $variables = '';
         if (!empty($registeredVariables)) {
             $variables = implode('|', $registeredVariables);

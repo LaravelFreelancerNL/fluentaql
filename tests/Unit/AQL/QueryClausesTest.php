@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\AQL;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 use stdClass;
@@ -27,6 +28,8 @@ use stdClass;
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\WindowClause
  * @covers  \LaravelFreelancerNL\FluentAQL\Traits\CompilesPredicates
  * @covers  \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
+ * @covers  \LaravelFreelancerNL\FluentAQL\Traits\ValidatesReferences
+ * @covers  \LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions
  */
 class QueryClausesTest extends TestCase
 {
@@ -47,6 +50,16 @@ class QueryClausesTest extends TestCase
             ->for(['v', 'e', 'p'], 'graph')
             ->get();
         self::assertEquals('FOR v, e, p IN graph', $result->query);
+    }
+
+    public function testForClauseWithCollectionBind()
+    {
+        $qb = new QueryBuilder();
+        $qb->for('u', '@@users')
+            ->get();
+
+        self::assertEquals('FOR u IN @@'
+            . $qb->getQueryId() . '_1', $qb->query);
     }
 
     public function testForClauseInExpression()
