@@ -52,7 +52,7 @@ class GraphClausesTest extends TestCase
 
     /**
      * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
-     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathClause
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathsClause
      */
     public function testKShortestPaths()
     {
@@ -60,6 +60,18 @@ class GraphClausesTest extends TestCase
             ->kShortestPaths('Characters/BranStark', 'outbound', 'Characters/NedStark')
             ->get();
         self::assertEquals('OUTBOUND K_SHORTEST_PATHS "Characters/BranStark" TO "Characters/NedStark"', $result->query);
+    }
+
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\TraverseKPathsClause
+     */
+    public function testKPaths()
+    {
+        $result = (new QueryBuilder())
+            ->kPaths('Characters/BranStark', 'outbound', 'Characters/NedStark')
+            ->get();
+        self::assertEquals('OUTBOUND K_PATHS "Characters/BranStark" TO "Characters/NedStark"', $result->query);
     }
 
     /**

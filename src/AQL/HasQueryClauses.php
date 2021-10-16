@@ -14,7 +14,9 @@ use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SearchClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SortClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\WindowClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -112,6 +114,8 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
+     * @param string|array|null $variableName
+     * @param string|null $expression
      * @return QueryBuilder
      */
     public function collect(string|array $variableName = null, string $expression = null): QueryBuilder
@@ -258,4 +262,23 @@ trait HasQueryClauses
 
         return $this;
     }
+
+    /**
+     * Aggregate adjacent documents or value ranges with a sliding window to calculate
+     * running totals, rolling averages, and other statistical properties
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/operations-window.html
+     */
+
+    public function window(
+        array|QueryBuilder|Expression $offsets,
+        null|string|QueryBuilder|Expression $rangeValue = null
+    ): QueryBuilder {
+
+
+        $this->addCommand(new WindowClause($offsets, $rangeValue));
+
+        return $this;
+    }
+
 }

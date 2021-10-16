@@ -20,8 +20,8 @@ trait NormalizesExpressions
 
     /**
      * @param $argument
-     * @param  array|null  $allowedExpressionTypes
-     * @return Expression
+     * @param null $allowedExpressionTypes
+     * @return Expression|NullExpression
      * @throws ExpressionTypeException
      */
     public function normalizeArgument($argument, $allowedExpressionTypes = null): Expression|NullExpression

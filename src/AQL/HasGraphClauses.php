@@ -6,7 +6,8 @@ use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\GraphClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\PruneClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKPathsClause;
+use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseShortestPathClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithClause;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
@@ -85,12 +86,31 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function kShortestPaths($fromVertex, $inDirection, $toVertex): self
+    public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
     {
-        $this->addCommand(new TraverseKShortestPathClause($fromVertex, $inDirection, $toVertex));
+        $this->addCommand(new TraverseKShortestPathsClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
+
+    /**
+     * K Paths alias for traverse.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/graphs-k-paths.html
+     *
+     * @param $fromVertex
+     * @param string $inDirection
+     * @param string $toVertex
+     *
+     * @return QueryBuilder
+     */
+    public function kPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
+    {
+        $this->addCommand(new TraverseKPathsClause($fromVertex, $inDirection, $toVertex));
+
+        return $this;
+    }
+
 
     /**
      * Named Graph clause
@@ -102,7 +122,7 @@ trait HasGraphClauses
      *
      * @return QueryBuilder
      */
-    public function graph(string $graphName): self
+    public function graph(string $graphName): QueryBuilder
     {
         $this->addCommand(new GraphClause($graphName));
 
@@ -119,7 +139,7 @@ trait HasGraphClauses
      * @param  array  $edgeCollections
      * @return QueryBuilder
      */
-    public function edgeCollections(...$edgeCollections): self
+    public function edgeCollections(...$edgeCollections): QueryBuilder
     {
         $this->addCommand(new EdgeCollectionsClause($edgeCollections));
 
@@ -143,7 +163,7 @@ trait HasGraphClauses
         $comparisonOperator = null,
         $rightOperand = null,
         $logicalOperator = null
-    ): self {
+    ): QueryBuilder {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];

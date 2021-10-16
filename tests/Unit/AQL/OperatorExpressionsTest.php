@@ -33,4 +33,14 @@ class OperatorExpressionsTest extends TestCase
         $qb->return($qb->calc(3, '+', $qb->calc(3, '*', 3)));
         self::assertEquals("RETURN 3 + (3 * 3)", $qb->get()->query);
     }
+
+    public function testCalcWithEmbeddedOperands()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->calc(
+            $qb->calc(3, '*', 3),
+            '+',
+            $qb->calc(3, '*', 3)));
+        self::assertEquals("RETURN (3 * 3) + (3 * 3)", $qb->get()->query);
+    }
 }

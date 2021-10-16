@@ -59,7 +59,7 @@ class GeoFunctionsTest extends TestCase
             'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
         ])
             ->for('loc', 'locations')
-            ->return($qb->geoContains( 'polygon', 'loc.address.geometry'));
+            ->return($qb->geoContains('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
@@ -100,7 +100,7 @@ class GeoFunctionsTest extends TestCase
             'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
         ])
             ->for('loc', 'locations')
-            ->return($qb->geoEquals( 'polygon', 'loc.address.geometry'));
+            ->return($qb->geoEquals('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
@@ -119,7 +119,7 @@ class GeoFunctionsTest extends TestCase
             'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
         ])
             ->for('loc', 'locations')
-            ->return($qb->geoIntersects( 'polygon', 'loc.address.geometry'));
+            ->return($qb->geoIntersects('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
@@ -138,7 +138,7 @@ class GeoFunctionsTest extends TestCase
             'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
         ])
             ->for('loc', 'locations')
-            ->return($qb->geoInRange( 'polygon', 'loc.address.geometry', 10, 100));
+            ->return($qb->geoInRange('polygon', 'loc.address.geometry', 10, 100));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'

@@ -24,6 +24,7 @@ use stdClass;
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\LimitClause
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause
+ * @covers \LaravelFreelancerNL\FluentAQL\Clauses\WindowClause
  * @covers  \LaravelFreelancerNL\FluentAQL\Traits\CompilesPredicates
  * @covers  \LaravelFreelancerNL\FluentAQL\Traits\ValidatesOperators
  */
@@ -402,5 +403,27 @@ class QueryClausesTest extends TestCase
             ->options($options)
             ->get();
         self::assertEquals('OPTIONS {"method":"sorted"}', $result->query);
+    }
+
+    public function testWindowClause()
+    {
+        $result = (new QueryBuilder())
+            ->window(['preceding' => 5, 'following' => 10])
+            ->get();
+
+        self::assertEquals('WINDOW {"preceding":5,"following":10}', $result->query);
+    }
+
+    public function testWindowClauseWithRange()
+    {
+        $result = (new QueryBuilder())
+            ->for('t', 'observations')
+            ->window(['preceding' => 5, 'following' => 10], 't.time')
+            ->get();
+
+        self::assertEquals(
+            'FOR t IN observations WINDOW t.time WITH {"preceding":5,"following":10}',
+            $result->query
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-class TraverseKShortestPathClause extends TraverseClause
+class TraverseKShortestPathsClause extends TraverseClause
 {
     protected function traverseType(): string
     {
