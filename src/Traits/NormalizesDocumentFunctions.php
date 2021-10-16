@@ -11,6 +11,26 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesDocumentFunctions
 {
+    abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
+
+    protected function normalizeAttributes(QueryBuilder $queryBuilder)
+    {
+        $this->parameters['document'] = $queryBuilder->normalizeArgument(
+            $this->parameters['document'],
+            ['Object', 'Query', 'Variable', 'Reference', 'Bind']
+        );
+
+        $this->parameters['removeInternal'] = $queryBuilder->normalizeArgument(
+            $this->parameters['removeInternal'],
+            ['Boolean', 'Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters['sort'] = $queryBuilder->normalizeArgument(
+            $this->parameters['sort'],
+            ['Boolean', 'Query', 'Reference', 'Bind']
+        );
+    }
+
     protected function normalizeKeep(QueryBuilder $queryBuilder)
     {
         $this->parameters['document'] = $queryBuilder->normalizeArgument(
@@ -23,8 +43,6 @@ trait NormalizesDocumentFunctions
             ['List', 'Query', 'Variable', 'Reference', 'Bind']
         );
     }
-
-    abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
 
     protected function normalizeMatches(QueryBuilder $queryBuilder)
     {

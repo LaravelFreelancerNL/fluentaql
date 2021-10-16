@@ -122,7 +122,7 @@ trait NormalizesDateFunctions
         if (isset($this->parameters['zoneInfo'])) {
             $this->parameters['zoneInfo'] = $queryBuilder->normalizeArgument(
                 $this->parameters['zoneInfo'],
-                ['Query', 'Reference', 'Bind']
+                ['Object', 'Query', 'Reference', 'Bind']
             );
         }
     }
@@ -143,7 +143,7 @@ trait NormalizesDateFunctions
         if (isset($this->parameters['zoneInfo'])) {
             $this->parameters['zoneInfo'] = $queryBuilder->normalizeArgument(
                 $this->parameters['zoneInfo'],
-                ['Query', 'Reference', 'Bind']
+                ['Object', 'Query', 'Reference', 'Bind']
             );
         }
     }

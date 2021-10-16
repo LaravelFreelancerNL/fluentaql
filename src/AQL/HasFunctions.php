@@ -19,4 +19,5 @@ trait HasFunctions
     use HasMiscellaneousFunctions;
     use HasNumericFunctions;
     use HasStringFunctions;
+    use HasTypeFunctions;
 }

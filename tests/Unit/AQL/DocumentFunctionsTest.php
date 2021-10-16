@@ -12,6 +12,14 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class DocumentFunctionsTest extends TestCase
 {
+    public function testAttributes()
+    {
+        $qb = new QueryBuilder();
+        $qb->for('doc', 'my-collection')->return($qb->attributes("doc"));
+
+        self::assertEquals('FOR doc IN my-collection RETURN ATTRIBUTES(doc, false, false)', $qb->get()->query);
+    }
+
     public function testKeepAttributes()
     {
         $qb = new QueryBuilder();

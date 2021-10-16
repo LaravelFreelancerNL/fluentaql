@@ -13,6 +13,16 @@ trait NormalizesNumericFunctions
         $this->normalizeArrays($queryBuilder);
     }
 
+    protected function normalizeCeil(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeFloor(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
     protected function normalizeMax(QueryBuilder $queryBuilder)
     {
         $this->normalizeArrays($queryBuilder);
@@ -21,6 +31,21 @@ trait NormalizesNumericFunctions
     protected function normalizeMin(QueryBuilder $queryBuilder)
     {
         $this->normalizeArrays($queryBuilder);
+    }
+
+    protected function normalizeProduct(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeArrays($queryBuilder);
+    }
+
+    protected function normalizeRange(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeRound(QueryBuilder $queryBuilder)
+    {
+        $this->normalizeNumbers($queryBuilder);
     }
 
     protected function normalizeSum(QueryBuilder $queryBuilder)

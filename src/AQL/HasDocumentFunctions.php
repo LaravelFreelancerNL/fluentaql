@@ -16,6 +16,25 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait HasDocumentFunctions
 {
     /**
+     * Return the top-level attribute keys of the document as an array.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#attributes
+     *
+     * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     */
+    public function attributes(
+        string|QueryBuilder|Expression $document,
+        bool|QueryBuilder|Expression $removeInternal = false,
+        bool|QueryBuilder|Expression $sort = false
+    ): FunctionExpression {
+        return new FunctionExpression('ATTRIBUTES', [
+            'document' => $document,
+            'removeInternal' => $removeInternal,
+            'sort' => $sort,
+        ]);
+    }
+
+    /**
      * Keep only the defined attributes of the document.
      * All other attributes will be removed from the result.
      *
@@ -37,7 +56,6 @@ trait HasDocumentFunctions
         ];
         return new FunctionExpression('KEEP', $arguments);
     }
-
 
     /**
      * Compare the given document against each example document provided.
