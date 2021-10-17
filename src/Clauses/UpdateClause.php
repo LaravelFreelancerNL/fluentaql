@@ -2,18 +2,36 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class UpdateClause extends Clause
 {
-    protected $document;
+    /**
+     * @var array<mixed>|object|string $document
+     */
+    protected array|object|string $document;
 
-    protected $with;
+    /**
+     * @var array<mixed>|object|string $with
+     */
+    protected array|object|string $with;
 
-    protected $collection;
+    /**
+     * @var string|QueryBuilder|Expression $collection
+     */
+    protected string|QueryBuilder|Expression $collection;
 
-    public function __construct($document, $with, $collection)
-    {
+    /**
+     * @param array<mixed>|object|string $document
+     * @param array<mixed>|object|string $with
+     * @param string|QueryBuilder|Expression $collection
+     */
+    public function __construct(
+        array|object|string $document,
+        array|object|string $with,
+        string|QueryBuilder|Expression $collection
+    ) {
         parent::__construct();
 
         $this->document = $document;

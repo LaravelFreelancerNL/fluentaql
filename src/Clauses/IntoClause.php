@@ -2,17 +2,20 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class IntoClause extends Clause
 {
 
-    protected $groupsVariable;
+    protected string|QueryBuilder|Expression $groupsVariable;
 
-    protected $projectionExpression;
+    protected mixed $projectionExpression;
 
-    public function __construct($groupsVariable, $projectionExpression = null)
-    {
+    public function __construct(
+        string|QueryBuilder|Expression $groupsVariable,
+        mixed $projectionExpression = null
+    ) {
         $this->groupsVariable = $groupsVariable;
         $this->projectionExpression = $projectionExpression;
     }

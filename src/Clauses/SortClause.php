@@ -8,12 +8,16 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class SortClause extends Clause
 {
     /**
-     * @var array $references
+     * @var array<mixed> $references
      */
     protected $references;
 
-    public function __construct($references)
-    {
+    /**
+     * @param array<mixed> $references
+     */
+    public function __construct(
+        array $references
+    ) {
         parent::__construct();
 
         $this->references = $references;

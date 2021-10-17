@@ -53,20 +53,13 @@ trait HasQueryClauses
      * Filter results from a for clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-filter.html
-     *
-     * @param mixed $leftOperand
-     * @param string|array|null $comparisonOperator
-     * @param mixed  $rightOperand
-     * @param string $logicalOperator
-     *
-     * @return QueryBuilder
      */
     public function filter(
-        $leftOperand,
-        $comparisonOperator = null,
-        $rightOperand = null,
-        $logicalOperator = null
-    ): QueryBuilder {
+        mixed $leftOperand,
+        string $comparisonOperator = null,
+        mixed $rightOperand = null,
+        string $logicalOperator = null
+    ): self {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
@@ -113,12 +106,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
-     * @param string|array|null $variableName
-     * @param string|null $expression
-     * @return QueryBuilder
+     * @param string|array<mixed>|null $variableName
      */
-    public function collect(string|array $variableName = null, string $expression = null): QueryBuilder
-    {
+    public function collect(
+        string|array $variableName = null,
+        string $expression = null
+    ): self {
         $groups = [];
         if (is_string($variableName)) {
             $groups[0][0] = $variableName;
@@ -211,14 +204,11 @@ trait HasQueryClauses
      * Limit results.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-limit.html
-     *
-     * @param int $offsetOrCount
-     * @param int|null $count
-     *
-     * @return QueryBuilder
      */
-    public function limit(int $offsetOrCount, int $count = null): QueryBuilder
-    {
+    public function limit(
+        int|QueryBuilder|Expression $offsetOrCount,
+        int|QueryBuilder|Expression $count = null
+    ): self {
         $this->addCommand(new LimitClause($offsetOrCount, $count));
 
         return $this;
@@ -240,7 +230,10 @@ trait HasQueryClauses
         return $this;
     }
 
-    public function options($options): QueryBuilder
+    /**
+     * @param array<mixed>|object $options
+     */
+    public function options(array|object $options): self
     {
         $this->addCommand(new OptionsClause($options));
 
@@ -252,8 +245,9 @@ trait HasQueryClauses
      * running totals, rolling averages, and other statistical properties
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-window.html
+     *
+     * @param array<mixed>|object $offsets
      */
-
     public function window(
         array|object $offsets,
         null|string|object $rangeValue = null

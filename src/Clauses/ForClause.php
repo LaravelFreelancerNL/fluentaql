@@ -16,8 +16,12 @@ class ForClause extends Clause
     /**
      * @var array<mixed>|Expression|ExpressionInterface|QueryBuilder|string|null
      */
-    protected $in;
+    protected array|Expression|ExpressionInterface|QueryBuilder|string|null $in;
 
+    /**
+     * @param array<mixed>|string|Expression $variables
+     * @param array<mixed>|string|QueryBuilder|Expression|null $in
+     */
     public function __construct(
         array|string|Expression $variables,
         array|string|QueryBuilder|Expression $in = null

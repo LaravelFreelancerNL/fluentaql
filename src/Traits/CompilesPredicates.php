@@ -2,17 +2,18 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
-/**
- * Trait hasFunctions.
- *
- * AQL Function API calls.
- */
 trait CompilesPredicates
 {
-    public function compilePredicates(PredicateExpression|array $predicates): string
-    {
+    /**
+     * @param array<mixed>|PredicateExpression $predicates
+     */
+    public function compilePredicates(
+        array|PredicateExpression $predicates
+    ): string {
         if (! is_array($predicates)) {
             $predicates = [$predicates];
         }
@@ -40,8 +41,15 @@ trait CompilesPredicates
         return $compiledPredicate . $predicate->compile($this);
     }
 
-    protected function compilePredicateGroup(array $predicates, $position = 0): string
-    {
+    /**
+     * @param array<mixed> $predicates
+     * @param int|QueryBuilder|Expression $position
+     * @return string
+     */
+    protected function compilePredicateGroup(
+        array $predicates,
+        int|QueryBuilder|Expression $position = 0
+    ): string {
         $compiledPredicates = [];
         $logicalOperator = '';
         if ($predicates[0] instanceof PredicateExpression) {
@@ -52,7 +60,7 @@ trait CompilesPredicates
         }
 
         $groupCompilation = '';
-        if ($position > 0) {
+        if ((int) $position > 0) {
             $groupCompilation = $logicalOperator . ' ';
         }
         return $groupCompilation . '(' . implode(' ', $compiledPredicates) . ')';

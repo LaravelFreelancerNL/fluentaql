@@ -9,8 +9,14 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class EdgeCollectionsClause extends Clause
 {
-    protected $edgeCollections;
+    /**
+     * @var mixed[] $edgeCollections
+     */
+    protected array $edgeCollections;
 
+    /**
+     * @param mixed[] $edgeCollections
+     */
     public function __construct(array $edgeCollections)
     {
         parent::__construct();

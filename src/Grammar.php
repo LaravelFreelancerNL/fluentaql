@@ -15,9 +15,9 @@ class Grammar
     /**
      * All of the available predicate operators.
      *
-     * @var array
+     * @var array|int[]
      */
-    protected $comparisonOperators = [
+    protected array $comparisonOperators = [
         '=='      => 1,
         '!='      => 1,
         '<'       => 1,
@@ -52,7 +52,10 @@ class Grammar
         'NONE IN' => 1,
     ];
 
-    protected $arithmeticOperators = [
+    /**
+     * @var array|int[]
+     */
+    protected array $arithmeticOperators = [
         '+' => 1,
         '-' => 1,
         '*' => 1,
@@ -60,7 +63,10 @@ class Grammar
         '%' => 1,
     ];
 
-    protected $logicalOperators = [
+    /**
+     * @var array|int[]
+     */
+    protected array $logicalOperators = [
         'AND' => 1,
         '&&'  => 1,
         'OR'  => 1,
@@ -69,9 +75,12 @@ class Grammar
         '!'   => 1,
     ];
 
-    protected $rangeOperator = '..';
+    protected string $rangeOperator = '..';
 
-    protected $keywords = [
+    /**
+     * @var string[]
+     */
+    protected array $keywords = [
         'FOR', 'FILTER', 'SEARCH', 'SORT', 'ASC', 'DESC', 'LIMIT', 'COLLECT', 'INTO', 'AGGREGATE', 'RETURN', 'DISTINCT',
         'WITH', 'GRAPH', 'INBOUND', 'OUTBOUND', 'ANY', 'SHORTEST_PATH', 'K_SHORTEST_PATH', 'PRUNE',
         'LET', 'INSERT', 'UPDATE', 'REPLACE', 'UPSERT', 'REMOVE',
@@ -79,11 +88,13 @@ class Grammar
         'FALSE', 'TRUE', 'NULL',
     ];
 
-    /*
+    /**
      * List of recognizable data and the accompanying Expression type it will be mapped too.
      * Strings of an unrecognized nature are always bound.
+     *
+     * @var array|string[]
      */
-    protected $argumentTypeExpressionMap = [
+    protected array $argumentTypeExpressionMap = [
         'AssociativeArray'   => 'Object',
         'Attribute'          => 'Literal',
         'Bind'               => 'Bind',
@@ -110,11 +121,13 @@ class Grammar
         'String'             => 'Bind',
     ];
 
-    /*
+    /**
      * List of default allowed Data Types
      * The order matters in the compilation of the data
+     *
+     * @var array|string[]
      */
-    protected $defaultAllowedExpressionTypes = [
+    protected array $defaultAllowedExpressionTypes = [
         'Number'    => 'Number',
         'Boolean'   => 'Boolean',
         'Null'      => 'Null',
@@ -134,18 +147,22 @@ class Grammar
         return 'Y-m-d\TH:i:s.v\Z';
     }
 
-    public function wrap(string $value): string
-    {
+    public function wrap(
+        string $value
+    ): string {
         return '`' . addcslashes($value, '`') . '`';
     }
 
-    public function mapArgumentTypeToExpressionType($argumentType): string
-    {
+    public function mapArgumentTypeToExpressionType(
+        string $argumentType
+    ): string {
         return $this->argumentTypeExpressionMap[$argumentType];
     }
 
-    public function formatBind(string $bindVariableName, bool $collection = null): string
-    {
+    public function formatBind(
+        string $bindVariableName,
+        bool $collection = null
+    ): string {
         if (stripos($bindVariableName, '@') === 0) {
             $bindVariableName = $this->wrap($bindVariableName);
         }
@@ -158,7 +175,10 @@ class Grammar
         return $prefix . $bindVariableName;
     }
 
-    public function getAllowedExpressionTypes()
+    /**
+     * @return array|string[]
+     */
+    public function getAllowedExpressionTypes(): array
     {
         return $this->defaultAllowedExpressionTypes;
     }

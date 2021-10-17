@@ -56,6 +56,9 @@ trait HasStatementClauses
      * Update a document in a collection with the supplied data.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-update.html
+     *
+     * @param array<mixed>|string|object $document
+     * @param array<mixed>|string|object $with
      */
     public function update(
         array|string|object $document,
@@ -71,6 +74,9 @@ trait HasStatementClauses
      * Replace a document in a collection with the supplied data.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-replace.html
+     *
+     * @param array<mixed>|object|string $document
+     * @param array<mixed>|object|string $with
      */
     public function replace(
         array|object|string $document,

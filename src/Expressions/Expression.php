@@ -6,6 +6,9 @@ use LaravelFreelancerNL\FluentAQL\QueryElement;
 
 abstract class Expression extends QueryElement
 {
+    /**
+     * @var mixed
+     */
     protected $expression;
 
     /**

@@ -2,16 +2,25 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class InsertClause extends Clause
 {
-    protected $document;
+    /**
+     * @var object|string|mixed[] $document
+     */
+    protected array|object|string $document;
 
-    protected $collection;
+    protected string|QueryBuilder|Expression $collection;
 
-    public function __construct($document, $collection)
-    {
+    /**
+     * @param array<mixed>|object|string $document
+     */
+    public function __construct(
+        array|object|string $document,
+        string|QueryBuilder|Expression $collection
+    ) {
         parent::__construct();
 
         $this->document = $document;

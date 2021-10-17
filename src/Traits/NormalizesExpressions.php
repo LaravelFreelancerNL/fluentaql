@@ -90,15 +90,16 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param  string[]|null  $allowedExpressionTypes
+     * @param iterable<mixed> $argument
+     * @param string[]|null $allowedExpressionTypes
+     * @return iterable<Expression>|Expression
      * @throws ExpressionTypeException
-     *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function normalizeIterable(
         iterable $argument,
         array|string $allowedExpressionTypes = null
-    ): iterable {
+    ): iterable|Expression {
         foreach ($argument as $attribute => $value) {
             $argument[$attribute] = $this->normalizeArgument($value);
         }
@@ -108,11 +109,12 @@ trait NormalizesExpressions
 
     /**
      * @param array<mixed>|PredicateExpression $predicates
-     *
-     * @return array|object
+     * @return array<mixed>|PredicateExpression
+     * @throws ExpressionTypeException
      */
-    public function normalizePredicates(array|PredicateExpression $predicates)
-    {
+    public function normalizePredicates(
+        array|PredicateExpression $predicates
+    ): array|PredicateExpression {
         if ($this->grammar->isPredicate($predicates)) {
             return $this->normalizePredicate($predicates);
         }

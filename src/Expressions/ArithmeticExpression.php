@@ -51,12 +51,14 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
 
     /**
      * @param  QueryBuilder  $queryBuilder
-     * @param  array  $calculation
+     * @param  array<mixed>  $calculation
      * @return array<mixed>
      * @throws ExpressionTypeException
      */
-    public function normalizeCalculation(QueryBuilder $queryBuilder, array $calculation): array
-    {
+    public function normalizeCalculation(
+        QueryBuilder $queryBuilder,
+        array $calculation
+    ): array {
         $normalizedCalculation = [];
 
         $leftOperand = $queryBuilder->normalizeArgument($calculation[0]);

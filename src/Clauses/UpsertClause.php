@@ -30,6 +30,9 @@ class UpsertClause extends Clause
      * UpsertClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @param array<mixed>|string|QueryBuilder|Expression $search
+     * @param array<mixed>|string|QueryBuilder|Expression $insert
+     * @param array<mixed>|string|object $update
      */
     public function __construct(
         array|string|QueryBuilder|Expression $search,

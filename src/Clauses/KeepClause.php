@@ -2,13 +2,14 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class KeepClause extends Clause
 {
-    protected $keepVariable;
+    protected string|QueryBuilder|Expression $keepVariable;
 
-    public function __construct($keepVariable)
+    public function __construct(string|QueryBuilder|Expression $keepVariable)
     {
         $this->keepVariable = $keepVariable;
     }

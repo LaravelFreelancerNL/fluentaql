@@ -40,12 +40,13 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#keep
      *
-     * @param string|object $document
-     * @param string|array|object $attributes
-     * @return FunctionExpression
+     * @param string|array<mixed>|object  $document
+     * @param string|array<mixed>|object $attributes
      */
-    public function keepAttributes(mixed $document, mixed $attributes): FunctionExpression
-    {
+    public function keepAttributes(
+        string|array|object $document,
+        string|array|object $attributes
+    ): FunctionExpression {
         if (! is_array($attributes)) {
             $attributes = [$attributes];
         }
@@ -64,13 +65,16 @@ trait HasDocumentFunctions
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param array|object|object $document
-     * @param array|object $examples
-     * @param boolean|object $returnIndex
+     * @param array<mixed>|object $document
+     * @param array<mixed>|object $examples
+     * @param bool|QueryBuilder|Expression $returnIndex
      * @return FunctionExpression
      */
-    public function matches(mixed $document, mixed $examples, mixed $returnIndex = false): FunctionExpression
-    {
+    public function matches(
+        array|object $document,
+        array|object $examples,
+        bool|QueryBuilder|Expression $returnIndex = false
+    ): FunctionExpression {
         $arguments = [
             "document" => $document,
             "examples" => $examples,
@@ -85,10 +89,10 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#merge
      *
-     * @param  array  $documents
+     * @param  array<mixed>  $documents
      * @return FunctionExpression
      */
-    public function merge(...$documents): FunctionExpression
+    public function merge(array ...$documents): FunctionExpression
     {
         return new FunctionExpression('MERGE', $documents);
     }
@@ -111,12 +115,12 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#unset
      *
-     * @param string|object $document
-     * @param string|array|object $attributes
-     * @return FunctionExpression
+     * @param string|array<mixed>|object $attributes
      */
-    public function unset(mixed $document, mixed $attributes): FunctionExpression
-    {
+    public function unset(
+        string|object $document,
+        string|array|object $attributes
+    ): FunctionExpression {
         if (! is_array($attributes)) {
             $attributes = [$attributes];
         }

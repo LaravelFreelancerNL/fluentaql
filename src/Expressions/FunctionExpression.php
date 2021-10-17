@@ -49,8 +49,15 @@ class FunctionExpression extends Expression implements ExpressionInterface
         return $output;
     }
 
-    protected function compileParameters(?array $parameters, QueryBuilder $queryBuilder): array
-    {
+    /**
+     * @param array<mixed>|null $parameters
+     * @param QueryBuilder $queryBuilder
+     * @return array<mixed>
+     */
+    protected function compileParameters(
+        ?array $parameters,
+        QueryBuilder $queryBuilder
+    ): array {
         $compiledParameters = [];
         foreach ($parameters as $key => $parameter) {
             if ($key === 'predicates') {

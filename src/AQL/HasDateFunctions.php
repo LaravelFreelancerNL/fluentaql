@@ -194,6 +194,8 @@ trait HasDateFunctions
      * Converts date assumed in Zulu time (UTC) to the given timezone.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_utctolocal
+     *
+     * @param array<mixed>|object|null $zoneInfo
      */
     public function dateUtcToLocal(
         int|string|object $date,
@@ -215,6 +217,8 @@ trait HasDateFunctions
      * Converts date assumed in the given timezone to Zulu time (UTC).
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_localtoutc
+     *
+     * @param array<mixed>|object|null $zoneInfo
      */
     public function dateLocalToUtc(
         int|string|object $date,

@@ -6,9 +6,15 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class OptionsClause extends Clause
 {
-    protected $options;
+    /**
+     * @var mixed[]|object $options
+     */
+    protected array|object $options;
 
-    public function __construct($options)
+    /**
+     * @param array<mixed>|object $options
+     */
+    public function __construct(array|object $options)
     {
         $this->options = $options;
     }

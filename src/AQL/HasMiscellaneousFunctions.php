@@ -20,6 +20,9 @@ trait HasMiscellaneousFunctions
      * Return one or more specific documents from a collection.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
+     *
+     * @param string|array<mixed>|QueryBuilder|Expression $collection
+     * @param string|array<mixed>|QueryBuilder|Expression|null $id
      */
     public function document(
         string|array|QueryBuilder|Expression $collection,

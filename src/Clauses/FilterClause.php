@@ -17,10 +17,11 @@ class FilterClause extends Clause
     /**
      * Filter statement.
      *
-     * @param array $predicates
+     * @param array<mixed> $predicates
      */
-    public function __construct(array|PredicateExpression $predicates)
-    {
+    public function __construct(
+        array|PredicateExpression $predicates
+    ) {
         parent::__construct();
 
         $this->predicates = $predicates;
@@ -36,7 +37,7 @@ class FilterClause extends Clause
     }
 
     /**
-     * @return PredicateExpression|array
+     * @return PredicateExpression|array<mixed>
      */
     public function getPredicates(): array|PredicateExpression
     {

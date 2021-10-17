@@ -7,12 +7,22 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ReplaceClause extends Clause
 {
+    /**
+     * @var array<mixed>|string|QueryBuilder|Expression
+     */
     protected array|string|QueryBuilder|Expression $document;
 
+    /**
+     * @var array<mixed>|string|QueryBuilder|Expression
+     */
     protected array|string|QueryBuilder|Expression $with;
 
     protected string|QueryBuilder|Expression $collection;
 
+    /**
+     * @param array<mixed>|string|QueryBuilder|Expression $document
+     * @param array<mixed>|string|QueryBuilder|Expression $with
+     */
     public function __construct(
         array|string|QueryBuilder|Expression $document,
         array|string|QueryBuilder|Expression $with,

@@ -2,16 +2,19 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class LetClause extends Clause
 {
-    protected $variableName;
+    protected string|QueryBuilder|Expression $variableName;
 
-    protected $expression;
+    protected mixed $expression;
 
-    public function __construct($variableName, $expression)
-    {
+    public function __construct(
+        string|QueryBuilder|Expression $variableName,
+        mixed $expression
+    ) {
         parent::__construct();
 
         $this->variableName = $variableName;

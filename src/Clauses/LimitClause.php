@@ -2,22 +2,19 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class LimitClause extends Clause
 {
-    protected $count;
+    protected int|QueryBuilder|Expression $count;
 
-    protected $offset;
+    protected null|int|QueryBuilder|Expression $offset;
 
-    /**
-     * ForClause constructor.
-     *
-     * @param mixed      $offsetOrCount
-     * @param mixed $count
-     */
-    public function __construct($offsetOrCount, $count = null)
-    {
+    public function __construct(
+        int|QueryBuilder|Expression $offsetOrCount,
+        int|QueryBuilder|Expression $count = null
+    ) {
         if ($count === null) {
             $this->count = $offsetOrCount;
             $this->offset = null;

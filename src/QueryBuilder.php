@@ -54,19 +54,23 @@ class QueryBuilder
     /**
      * List of read/write/exclusive collections required for transactions.
      *
-     * @var array
+     * @var array<mixed> $collections
      */
     public $collections = [];
 
     /**
      * List of Clauses to be compiled into a query.
+     *
+     * @var array<mixed> $commands
      */
     protected $commands = [];
 
     /**
      * Registry of variable names used in this query.
+     *
+     * @var array<mixed> $variables
      */
-    protected $variables = [];
+    protected array $variables = [];
 
     /**
      * ID of the query
@@ -160,6 +164,7 @@ class QueryBuilder
 
     /**
      * Register variables on declaration for later data normalization.
+     * @param string|array<mixed>|object $variableName
      */
     public function registerVariable(
         string|array|object $variableName
@@ -282,7 +287,10 @@ class QueryBuilder
         return $this->toAql();
     }
 
-    public function getVariables()
+    /**
+     * @return array<mixed>
+     */
+    public function getVariables(): array
     {
         return $this->variables;
     }

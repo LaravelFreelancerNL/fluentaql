@@ -19,13 +19,17 @@ trait HasNumericFunctions
      * Return the average (arithmetic mean) of the values in array.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average
+     * @param array<mixed>|string|QueryBuilder|Expression $value
      */
-    public function average(mixed $value): FunctionExpression
+    public function average(array|string|QueryBuilder|Expression $value): FunctionExpression
     {
         return new FunctionExpression('AVERAGE', [$value]);
     }
 
-    public function avg($value): \LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression
+    /**
+     * @param array<mixed>|string|QueryBuilder|Expression $value
+     */
+    public function avg(array|string|QueryBuilder|Expression $value): FunctionExpression
     {
         return $this->average($value);
     }
@@ -84,6 +88,8 @@ trait HasNumericFunctions
      * Return the product of the values in array
      *
      * https://www.arangodb.com/docs/stable/aql/functions-numeric.html#product
+     *
+     * @param array<mixed>|object $array
      */
     public function product(
         array|object $array

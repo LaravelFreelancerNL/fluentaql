@@ -37,12 +37,12 @@ trait HasGeoFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_area
      *
-     * @param string|array|Object|object $geoJson
-     * @param string|object $ellipsoid
-     * @return FunctionExpression
+     * @param string|array<mixed>|object  $geoJson
      */
-    public function geoArea(mixed $geoJson, mixed $ellipsoid = "sphere"): FunctionExpression
-    {
+    public function geoArea(
+        string|array|object $geoJson,
+        string|object $ellipsoid = "sphere"
+    ): FunctionExpression {
         return new FunctionExpression('GEO_AREA', [$geoJson, $ellipsoid]);
     }
 
@@ -51,12 +51,13 @@ trait HasGeoFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_contains
      *
-     * @param string|array|Object|object $geoJsonA
-     * @param string|array|Object|object $geoJsonB
-     * @return FunctionExpression
+     * @param string|array<mixed>|object  $geoJsonA
+     * @param string|array<mixed>|object  $geoJsonB
      */
-    public function geoContains(mixed $geoJsonA, mixed $geoJsonB): FunctionExpression
-    {
+    public function geoContains(
+        string|array|object $geoJsonA,
+        string|array|object $geoJsonB
+    ): FunctionExpression {
         return new FunctionExpression('GEO_CONTAINS', [$geoJsonA, $geoJsonB]);
     }
 
@@ -65,13 +66,14 @@ trait HasGeoFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_distance
      *
-     * @param string|array|Object|object $geoJsonA
-     * @param string|array|Object|object $geoJsonB
-     * @param string|object $ellipsoid
-     * @return FunctionExpression
+     * @param string|array<mixed>|object $geoJsonA
+     * @param string|array<mixed>|object $geoJsonB
      */
-    public function geoDistance(mixed $geoJsonA, mixed $geoJsonB, mixed $ellipsoid = "sphere"): FunctionExpression
-    {
+    public function geoDistance(
+        string|array|object $geoJsonA,
+        string|array|object $geoJsonB,
+        string|QueryBuilder|Expression $ellipsoid = "sphere"
+    ): FunctionExpression {
         return new FunctionExpression('GEO_DISTANCE', [$geoJsonA, $geoJsonB, $ellipsoid]);
     }
 
@@ -80,12 +82,14 @@ trait HasGeoFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_equals
      *
-     * @param string|array|Object|object $geoJsonA
-     * @param string|array|Object|object $geoJsonB
+     * @param string|array<mixed>|object $geoJsonA
+     * @param string|array<mixed>|object $geoJsonB
      * @return FunctionExpression
      */
-    public function geoEquals(mixed $geoJsonA, mixed $geoJsonB): FunctionExpression
-    {
+    public function geoEquals(
+        string|array|object $geoJsonA,
+        string|array|object $geoJsonB
+    ): FunctionExpression {
         return new FunctionExpression('GEO_EQUALS', [$geoJsonA, $geoJsonB]);
     }
 
@@ -109,21 +113,16 @@ trait HasGeoFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_in_range
      *
-     * @param array|Object|object $geoJsonA
-     * @param array|Object|object $geoJsonB
-     * @param int|float|object $low
-     * @param int|float|object $high
-     * @param null|bool|object $includeLow
-     * @param null|bool|object $includeHigh
-     * @return FunctionExpression
+     * @param array<mixed>|object|string $geoJsonA
+     * @param array<mixed>|object|string $geoJsonB
      */
     public function geoInRange(
-        mixed $geoJsonA,
-        mixed $geoJsonB,
-        mixed $low,
-        mixed $high,
-        mixed $includeLow = null,
-        mixed $includeHigh = null,
+        array|object|string $geoJsonA,
+        array|object|string $geoJsonB,
+        int|float|QueryBuilder|Expression $low,
+        int|float|QueryBuilder|Expression $high,
+        bool|QueryBuilder|Expression $includeLow = null,
+        bool|QueryBuilder|Expression $includeHigh = null,
     ): FunctionExpression {
         $arguments = [
             "geoJsonA" => $geoJsonA,

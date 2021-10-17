@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class RawClause extends Clause
 {
-    protected $aql;
+    protected string $aql;
 
     public function __construct(string $aql)
     {

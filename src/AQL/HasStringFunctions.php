@@ -173,6 +173,8 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
+     * @param string|array<mixed>|object $search
+     * @param string|array<mixed>|object $replace
      */
     public function substitute(
         string|object $value,

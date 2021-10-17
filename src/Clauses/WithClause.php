@@ -2,19 +2,24 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class WithClause extends Clause
 {
-    protected $collections;
+    /**
+     * @var array<string|Expression>
+     */
+    protected array $collections;
 
     /**
      * WithClause constructor.
      *
-     * @param array $collections
+     * @param array<string|Expression> $collections
      */
-    public function __construct($collections)
-    {
+    public function __construct(
+        array $collections
+    ) {
         parent::__construct();
 
         $this->collections = $collections;

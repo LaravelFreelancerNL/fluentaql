@@ -2,13 +2,14 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class GraphClause extends Clause
 {
-    protected $graphName;
+    protected string|QueryBuilder|Expression $graphName;
 
-    public function __construct($graphName)
+    public function __construct(string|QueryBuilder|Expression $graphName)
     {
         $this->graphName = $graphName;
     }

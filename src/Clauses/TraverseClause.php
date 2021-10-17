@@ -2,29 +2,26 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class TraverseClause extends Clause
 {
-    protected $direction;
+    protected string|QueryBuilder|Expression $direction;
 
-    protected $startVertex;
+    protected string|QueryBuilder|Expression $startVertex;
 
-    protected $toVertex;
+    protected null|string|QueryBuilder|Expression $toVertex;
 
     /**
      * TraverseClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @param string  $startVertex
-     * @param string  $direction
-     * @param string|null  $toVertex
      */
     public function __construct(
-        string $startVertex,
-        $direction = 'outbound',
-        $toVertex = null
+        string|QueryBuilder|Expression $startVertex,
+        string|QueryBuilder|Expression $direction = 'outbound',
+        string|QueryBuilder|Expression $toVertex = null
     ) {
         $this->direction = $direction;
         $this->startVertex = $startVertex;
