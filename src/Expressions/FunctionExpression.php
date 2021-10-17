@@ -50,12 +50,12 @@ class FunctionExpression extends Expression implements ExpressionInterface
     }
 
     /**
-     * @param array<mixed>|null $parameters
+     * @param array<mixed>$parameters
      * @param QueryBuilder $queryBuilder
      * @return array<mixed>
      */
     protected function compileParameters(
-        ?array $parameters,
+        array $parameters,
         QueryBuilder $queryBuilder
     ): array {
         $compiledParameters = [];

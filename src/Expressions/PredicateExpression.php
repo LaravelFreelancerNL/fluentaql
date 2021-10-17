@@ -29,9 +29,9 @@ class PredicateExpression extends Expression implements ExpressionInterface
         ?string $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;
-        $this->comparisonOperator = strtoupper($comparisonOperator);
+        $this->comparisonOperator = strtoupper((string) $comparisonOperator);
         $this->rightOperand = $rightOperand;
-        $this->logicalOperator = strtoupper($logicalOperator);
+        $this->logicalOperator = strtoupper((string) $logicalOperator);
     }
 
     /**
@@ -42,6 +42,7 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     public function compile(QueryBuilder $queryBuilder = null): string
     {
+        /* @phpstan-ignore-next-line */
         $compiledPredicate = $this->leftOperand->compile($queryBuilder);
         if (isset($this->comparisonOperator) && $this->comparisonOperator !== '') {
             $compiledPredicate .= ' ' . $this->comparisonOperator;
@@ -49,6 +50,7 @@ class PredicateExpression extends Expression implements ExpressionInterface
             if (! isset($this->rightOperand)) {
                 $this->rightOperand = new NullExpression();
             }
+            /* @phpstan-ignore-next-line */
             $compiledPredicate .= ' ' . $this->rightOperand->compile($queryBuilder);
         }
         return $compiledPredicate;

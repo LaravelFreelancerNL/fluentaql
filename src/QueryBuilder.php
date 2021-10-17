@@ -281,7 +281,7 @@ class QueryBuilder
      */
     public function toAql()
     {
-        return $this->get()->query;
+        return $this->get()->query ?: "";
     }
 
     public function __toString()

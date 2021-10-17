@@ -34,6 +34,7 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
      */
     public function compile(QueryBuilder $queryBuilder = null): string
     {
+        /** @phpstan-ignore-next-line */
         $normalizedCalculation = $this->normalizeCalculation($queryBuilder, $this->calculation);
 
         $leftOperand = $normalizedCalculation['leftOperand']->compile($queryBuilder);
