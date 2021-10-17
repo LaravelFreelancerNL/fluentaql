@@ -19,6 +19,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use phpDocumentor\Reflection\Types\ArrayKey;
 
 /**
  * Trait hasQueryClauses
@@ -158,7 +159,7 @@ trait HasQueryClauses
     /**
      * withCount clause
      * Count the collected and grouped data.
-     * withCount can only be used after a into clause.
+     * withCount can only be used after an into clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#group-length-calculation
      */
@@ -246,14 +247,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-window.html
      *
-     * @param array<mixed>|object $offsets
+     * @param array<ArrayKey, string>|object $offsets
      */
     public function window(
         array|object $offsets,
-        null|string|object $rangeValue = null
+        string|QueryBuilder|Expression $rangeValue = null
     ): QueryBuilder {
-
-
         $this->addCommand(new WindowClause($offsets, $rangeValue));
 
         return $this;

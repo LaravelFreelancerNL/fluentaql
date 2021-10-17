@@ -8,24 +8,24 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class ReplaceClause extends Clause
 {
     /**
-     * @var array<mixed>|string|QueryBuilder|Expression
+     * @var array<mixed>|string|object
      */
-    protected array|string|QueryBuilder|Expression $document;
+    protected array|string|object $document;
 
     /**
-     * @var array<mixed>|string|QueryBuilder|Expression
+     * @var array<mixed>|string|object
      */
-    protected array|string|QueryBuilder|Expression $with;
+    protected array|string|object $with;
 
     protected string|QueryBuilder|Expression $collection;
 
     /**
-     * @param array<mixed>|string|QueryBuilder|Expression $document
-     * @param array<mixed>|string|QueryBuilder|Expression $with
+     * @param array<mixed>|string|object  $document
+     * @param array<mixed>|string|object  $with
      */
     public function __construct(
-        array|string|QueryBuilder|Expression $document,
-        array|string|QueryBuilder|Expression $with,
+        array|string|object $document,
+        array|string|object $with,
         string|QueryBuilder|Expression $collection
     ) {
         parent::__construct();

@@ -10,10 +10,11 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class ListExpression extends Expression implements ExpressionInterface
 {
     /**
-     * @param array<mixed> $expression
+     * @param iterable<mixed>|Expression $expression
      */
-    public function __construct(array $expression)
-    {
+    public function __construct(
+        iterable|Expression $expression
+    ) {
         $this->expression = $expression;
     }
 

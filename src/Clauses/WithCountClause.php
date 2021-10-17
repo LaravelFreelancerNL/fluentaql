@@ -7,10 +7,10 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class WithCountClause extends Clause
 {
-    protected string|Expression $countVariableName;
+    protected string|QueryBuilder|Expression $countVariableName;
 
     public function __construct(
-        string $countVariableName
+        string|QueryBuilder|Expression $countVariableName
     ) {
         $this->countVariableName = $countVariableName;
     }

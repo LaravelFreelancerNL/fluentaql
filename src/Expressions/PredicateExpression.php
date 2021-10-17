@@ -6,11 +6,11 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class PredicateExpression extends Expression implements ExpressionInterface
 {
-    protected string|Expression $leftOperand;
+    protected Expression $leftOperand;
 
     protected string|null $comparisonOperator;
 
-    protected string|Expression|null $rightOperand;
+    protected Expression|null $rightOperand;
 
     public string $logicalOperator;
 

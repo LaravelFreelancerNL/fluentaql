@@ -72,11 +72,13 @@ trait NormalizesExpressions
     }
 
     /**
+     * @param array<mixed>|object $argument
      * @param string[]|null $allowedExpressionTypes
+     * @return Expression
      * @throws ExpressionTypeException
      */
     protected function normalizeCompound(
-        mixed $argument,
+        array|object $argument,
         array|string $allowedExpressionTypes = null
     ): Expression {
         if (is_array($argument)) {
@@ -86,20 +88,20 @@ trait NormalizesExpressions
             return $this->normalizeObject($argument, $allowedExpressionTypes);
         }
 
-        return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
+        return new ObjectExpression($this->normalizeIterable((array) $argument, $allowedExpressionTypes));
     }
 
     /**
-     * @param iterable<mixed> $argument
-     * @param string[]|null $allowedExpressionTypes
-     * @return iterable<Expression>|Expression
+     * @param array<mixed> $argument
+     * @param array<mixed>|string|null $allowedExpressionTypes
+     * @return array<mixed>|Expression
      * @throws ExpressionTypeException
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     protected function normalizeIterable(
-        iterable $argument,
+        array $argument,
         array|string $allowedExpressionTypes = null
-    ): iterable|Expression {
+    ): array|Expression {
         foreach ($argument as $attribute => $value) {
             $argument[$attribute] = $this->normalizeArgument($value);
         }
@@ -120,15 +122,17 @@ trait NormalizesExpressions
         }
 
         $normalizedPredicates = [];
-        foreach ($predicates as $predicate) {
-            $normalizedPredicates[] = $this->normalizePredicates($predicate);
+        if (is_iterable($predicates)) {
+            foreach ($predicates as $predicate) {
+                $normalizedPredicates[] = $this->normalizePredicates($predicate);
+            }
         }
 
         return $normalizedPredicates;
     }
 
     /**
-     * @param non-empty-array<mixed>|PredicateExpression $predicate
+     * @param array<mixed>|PredicateExpression $predicate
      * @return PredicateExpression
      * @throws ExpressionTypeException
      */

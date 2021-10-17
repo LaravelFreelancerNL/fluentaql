@@ -45,8 +45,10 @@ class CollectClause extends Clause
             if ($groupOutput !== '') {
                 $groupOutput .= ',';
             }
-            $groupOutput .= ' ' . $group[0]->compile($queryBuilder)
-                . ' = ' . $group[1]->compile($queryBuilder);
+            /** @phpstan-ignore-next-line */
+            $groupOutput .= ' ' . $group[0]->compile($queryBuilder);
+            /** @phpstan-ignore-next-line */
+            $groupOutput .=  ' = ' . $group[1]->compile($queryBuilder);
         }
 
         return $output . $groupOutput;

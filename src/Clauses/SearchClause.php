@@ -8,9 +8,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class SearchClause extends FilterClause
 {
     /**
-     * @var array<mixed>|PredicateExpression
+     * @var array<mixed>|PredicateExpression $predicates
      */
-    protected array|PredicateExpression $predicates = [];
+    protected array|PredicateExpression $predicates;
 
     protected string $defaultLogicalOperator = 'AND';
 

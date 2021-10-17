@@ -9,9 +9,9 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class ForClause extends Clause
 {
     /**
-     * @var array<mixed>|string|Expression
+     * @var array<mixed>
      */
-    protected array|string|Expression $variables;
+    protected array $variables;
 
     /**
      * @var array<mixed>|Expression|ExpressionInterface|QueryBuilder|string|null
@@ -28,6 +28,9 @@ class ForClause extends Clause
     ) {
         parent::__construct();
 
+        if (!is_array($variables)) {
+            $variables = [$variables];
+        }
         $this->variables = $variables;
 
         $this->in = $in;

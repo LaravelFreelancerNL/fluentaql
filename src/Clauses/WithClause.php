@@ -35,6 +35,7 @@ class WithClause extends Clause
         $output = "WITH ";
         $implosion = '';
         foreach ($this->collections as $key => $collection) {
+            /** @phpstan-ignore-next-line */
             $implosion .= ', ' . $collection->compile($queryBuilder);
         }
         $output .= ltrim($implosion, ', ');

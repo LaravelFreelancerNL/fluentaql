@@ -8,14 +8,14 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class UpsertClause extends Clause
 {
     /**
-     * @var array<mixed>|string|QueryBuilder|Expression $search
+     * @var array<mixed>|string|object $search
      */
-    protected array|string|QueryBuilder|Expression $search;
+    protected array|string|object $search;
 
     /**
-     * @var array<mixed>|string|QueryBuilder|Expression $insert
+     * @var array<mixed>|string|object $insert
      */
-    protected array|string|QueryBuilder|Expression $insert;
+    protected array|string|object $insert;
 
     /**
      * @var array<mixed>|object $update
@@ -30,14 +30,14 @@ class UpsertClause extends Clause
      * UpsertClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     * @param array<mixed>|string|QueryBuilder|Expression $search
-     * @param array<mixed>|string|QueryBuilder|Expression $insert
+     * @param array<mixed>|string|object $search
+     * @param array<mixed>|string|object $insert
      * @param array<mixed>|string|object $update
      */
     public function __construct(
-        array|string|QueryBuilder|Expression $search,
-        array|string|QueryBuilder|Expression $insert,
-        array|string|object $update,
+        array|object|string $search,
+        array|object|string $insert,
+        array|object|string $update,
         string|QueryBuilder|Expression $collection,
         bool $replace = false
     ) {

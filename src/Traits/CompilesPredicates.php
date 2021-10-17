@@ -43,12 +43,12 @@ trait CompilesPredicates
 
     /**
      * @param array<mixed> $predicates
-     * @param int|QueryBuilder|Expression $position
+     * @param int $position
      * @return string
      */
     protected function compilePredicateGroup(
         array $predicates,
-        int|QueryBuilder|Expression $position = 0
+        int $position = 0
     ): string {
         $compiledPredicates = [];
         $logicalOperator = '';

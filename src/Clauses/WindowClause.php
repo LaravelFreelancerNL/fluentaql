@@ -9,7 +9,7 @@ use phpDocumentor\Reflection\Types\ArrayKey;
 class WindowClause extends Clause
 {
     /**
-     * @var array<array<ArrayKey, string>>
+     * @var array<ArrayKey, string>|object $offsets
      */
     protected array|object $offsets;
 
@@ -19,10 +19,10 @@ class WindowClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<array<ArrayKey, string>>|QueryBuilder|Expression $offsets
+     * @param  array<ArrayKey, string>|object $offsets
      */
     public function __construct(
-        mixed $offsets,
+        array|object $offsets,
         null|string|QueryBuilder|Expression $rangeValue = null
     ) {
         $this->offsets = $offsets;
@@ -45,6 +45,7 @@ class WindowClause extends Clause
 
         $output = 'WINDOW';
         if (isset($this->rangeValue)) {
+            /** @phpstan-ignore-next-line */
             $output .= ' ' . $this->rangeValue->compile($queryBuilder);
             $output .= ' WITH';
         }

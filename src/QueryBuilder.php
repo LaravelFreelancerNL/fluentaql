@@ -176,7 +176,9 @@ class QueryBuilder
             $variableName = [$variableName => $variableName];
         }
 
-        $this->variables = array_unique(array_merge($this->variables, $variableName));
+        if (is_array($variableName)) {
+            $this->variables = array_unique(array_merge($this->variables, $variableName));
+        }
 
         return $this;
     }
