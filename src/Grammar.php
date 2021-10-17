@@ -1,13 +1,14 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL;
+declare(strict_types=1);
 
-/*
- * Provides AQL syntax functions
- */
+namespace LaravelFreelancerNL\FluentAQL;
 
 use LaravelFreelancerNL\FluentAQL\Traits\ValidatesExpressions;
 
+/**
+ * Provides AQL syntax functions
+ */
 class Grammar
 {
     use ValidatesExpressions;

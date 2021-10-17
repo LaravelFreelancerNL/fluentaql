@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
-use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class EdgeCollectionsClause extends Clause

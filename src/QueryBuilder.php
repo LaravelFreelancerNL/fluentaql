@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL;
 
 use LaravelFreelancerNL\FluentAQL\AQL\HasFunctions;

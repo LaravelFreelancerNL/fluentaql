@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Trait hasFunctions.

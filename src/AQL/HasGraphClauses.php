@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\EdgeCollectionsClause;
@@ -75,7 +77,7 @@ trait HasGraphClauses
         string|QueryBuilder|Expression $fromVertex,
         string|QueryBuilder|Expression $inDirection,
         string|QueryBuilder|Expression $toVertex
-    ): QueryBuilder {
+    ): self {
         $this->addCommand(new TraverseKShortestPathsClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
@@ -90,7 +92,7 @@ trait HasGraphClauses
         string|QueryBuilder|Expression $fromVertex,
         string|QueryBuilder|Expression $inDirection,
         string|QueryBuilder|Expression $toVertex
-    ): QueryBuilder {
+    ): self {
         $this->addCommand(new TraverseKPathsClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
@@ -104,7 +106,7 @@ trait HasGraphClauses
      */
     public function graph(
         string|QueryBuilder|Expression $graphName
-    ): QueryBuilder {
+    ): self {
         $this->addCommand(new GraphClause($graphName));
 
         return $this;
@@ -119,7 +121,7 @@ trait HasGraphClauses
      *
      * @param  array<mixed>  $edgeCollections
      */
-    public function edgeCollections(...$edgeCollections): QueryBuilder
+    public function edgeCollections(...$edgeCollections): self
     {
         $this->addCommand(new EdgeCollectionsClause($edgeCollections));
 
@@ -136,7 +138,7 @@ trait HasGraphClauses
         string|QueryBuilder|Expression $comparisonOperator = null,
         mixed $rightOperand = null,
         string|QueryBuilder|Expression $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\AggregateClause;
@@ -10,14 +12,12 @@ use LaravelFreelancerNL\FluentAQL\Clauses\IntoClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\KeepClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\LimitClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\OptionsClause;
-use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReturnClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SearchClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\SortClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WindowClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use phpDocumentor\Reflection\Types\ArrayKey;
 
@@ -75,20 +75,13 @@ trait HasQueryClauses
      * Search a view.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-search.html
-     *
-     * @param mixed $leftOperand
-     * @param string|null $comparisonOperator
-     * @param mixed $rightOperand
-     * @param string|null $logicalOperator
-     *
-     * @return QueryBuilder
      */
     public function search(
         mixed $leftOperand,
         string $comparisonOperator = null,
         mixed $rightOperand = null,
         string $logicalOperator = null
-    ): QueryBuilder {
+    ): self {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {
             $predicates = [$predicates];
@@ -194,7 +187,7 @@ trait HasQueryClauses
      * @param mixed ...$references
      * @return QueryBuilder
      */
-    public function sort(...$references): QueryBuilder
+    public function sort(...$references): self
     {
         $this->addCommand(new SortClause($references));
 
@@ -252,7 +245,7 @@ trait HasQueryClauses
     public function window(
         array|object $offsets,
         string|QueryBuilder|Expression $rangeValue = null
-    ): QueryBuilder {
+    ): self {
         $this->addCommand(new WindowClause($offsets, $rangeValue));
 
         return $this;
