@@ -2,15 +2,18 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class AggregateClause extends Clause
 {
-    protected $variableName;
-    protected $aggregateExpression;
+    protected string|QueryBuilder|Expression$variableName;
+    protected string|QueryBuilder|Expression $aggregateExpression;
 
-    public function __construct($variableName, $aggregateExpression)
-    {
+    public function __construct(
+        string|QueryBuilder|Expression $variableName,
+        string|QueryBuilder|Expression $aggregateExpression
+    ) {
         $this->variableName = $variableName;
 
         $this->aggregateExpression = $aggregateExpression;

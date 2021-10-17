@@ -23,8 +23,8 @@ trait HasDateFunctions
     public function dateCompare(
         string|int|object $date1,
         string|int|object $date2,
-        string|QueryBuilder|Expression $unitRangeStart,
-        null|string|QueryBuilder|Expression $unitRangeEnd
+        string|object $unitRangeStart,
+        null|string|object $unitRangeEnd
     ): FunctionExpression {
         $arguments = [
             "date1" => $date1,
@@ -56,7 +56,7 @@ trait HasDateFunctions
      */
     public function dateFormat(
         string|int|object $date,
-        string|QueryBuilder|Expression $format
+        string|object $format
     ): FunctionExpression {
         return new FunctionExpression('DATE_FORMAT', [$date, $format]);
     }
@@ -161,7 +161,7 @@ trait HasDateFunctions
      */
     public function dateTrunc(
         int|string|object $date,
-        string|QueryBuilder|Expression $unit
+        string|object $unit
     ): FunctionExpression {
         $arguments = [
             "date" => $date,
@@ -178,8 +178,8 @@ trait HasDateFunctions
      */
     public function dateRound(
         int|string|object $date,
-        int|QueryBuilder|Expression $amount,
-        string|QueryBuilder|Expression $unit
+        int|object $amount,
+        string|object $unit
     ): FunctionExpression {
         $arguments = [
             "date" => $date,
@@ -197,7 +197,7 @@ trait HasDateFunctions
      */
     public function dateUtcToLocal(
         int|string|object $date,
-        string|QueryBuilder|Expression $timezone,
+        string|object $timezone,
         null|array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [
@@ -218,7 +218,7 @@ trait HasDateFunctions
      */
     public function dateLocalToUtc(
         int|string|object $date,
-        string|QueryBuilder|Expression $timezone,
+        string|object $timezone,
         null|array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [

@@ -19,7 +19,7 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#concat
      */
     public function concat(
-        string|QueryBuilder|Expression ...$arguments
+        string|object ...$arguments
     ): FunctionExpression {
         return new FunctionExpression('CONCAT', $arguments);
     }
@@ -30,7 +30,7 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator
      */
     public function concatSeparator(
-        string|QueryBuilder|Expression ...$arguments
+        string|object ...$arguments
     ): FunctionExpression {
         return new FunctionExpression('CONCAT_SEPARATOR', $arguments);
     }
@@ -43,9 +43,9 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function contains(
-        string|QueryBuilder|Expression $text,
-        string|QueryBuilder|Expression $search,
-        bool|QueryBuilder|Expression $returnIndex = false
+        string|object $text,
+        string|object $search,
+        bool|object $returnIndex = false
     ): FunctionExpression {
         return new FunctionExpression('CONTAINS', [$text, $search, $returnIndex]);
     }
@@ -56,8 +56,8 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#levenshtein_distance
      */
     public function levenshteinDistance(
-        string|QueryBuilder|Expression $value1,
-        string|QueryBuilder|Expression $value2
+        string|object $value1,
+        string|object $value2
     ): FunctionExpression {
         return new FunctionExpression('LEVENSHTEIN_DISTANCE', [$value1, $value2]);
     }
@@ -68,7 +68,7 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#lower
      */
     public function lower(
-        string|QueryBuilder|Expression $value,
+        string|object $value,
     ): FunctionExpression {
         return new FunctionExpression('LOWER', [$value]);
     }
@@ -81,9 +81,9 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function regexMatches(
-        string|QueryBuilder|Expression $text,
-        string|QueryBuilder|Expression $regex,
-        bool|QueryBuilder|Expression $caseInsensitive = false
+        string|object $text,
+        string|object $regex,
+        bool|object $caseInsensitive = false
     ): FunctionExpression {
         return new FunctionExpression('REGEX_MATCHES', [$text, $regex, $caseInsensitive]);
     }
@@ -96,10 +96,10 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function regexReplace(
-        string|QueryBuilder|Expression $text,
-        string|QueryBuilder|Expression $regex,
-        string|QueryBuilder|Expression $replacement,
-        bool|QueryBuilder|Expression $caseInsensitive = false
+        string|object $text,
+        string|object $regex,
+        string|object $replacement,
+        bool|object $caseInsensitive = false
     ): FunctionExpression {
         return new FunctionExpression('REGEX_REPLACE', [$text, $regex, $replacement, $caseInsensitive]);
     }
@@ -112,10 +112,10 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function regexSplit(
-        string|QueryBuilder|Expression $text,
-        string|QueryBuilder|Expression $splitExpression,
-        bool|QueryBuilder|Expression $caseInsensitive = false,
-        int|QueryBuilder|Expression $limit = null
+        string|object $text,
+        string|object $splitExpression,
+        bool|object $caseInsensitive = false,
+        int|object $limit = null
     ): FunctionExpression {
         $arguments = [
             'text' => $text,
@@ -137,9 +137,9 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function regexTest(
-        string|QueryBuilder|Expression $text,
-        string|QueryBuilder|Expression $search,
-        bool|QueryBuilder|Expression $caseInsensitive = false
+        string|object $text,
+        string|object $search,
+        bool|object $caseInsensitive = false
     ): FunctionExpression {
         return new FunctionExpression('REGEX_TEST', [$text, $search, $caseInsensitive]);
     }
@@ -152,9 +152,9 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function split(
-        string|QueryBuilder|Expression $value,
-        string|QueryBuilder|Expression $separator,
-        int|QueryBuilder|Expression $limit = null
+        string|object $value,
+        string|object $separator,
+        int|object $limit = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -175,10 +175,10 @@ trait HasStringFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function substitute(
-        string|QueryBuilder|Expression $value,
-        string|array|QueryBuilder|Expression $search,
-        string|array|QueryBuilder|Expression $replace,
-        int|QueryBuilder|Expression $limit = null
+        string|object $value,
+        string|array|object $search,
+        string|array|object $replace,
+        int|object $limit = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -197,9 +197,9 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#substring
      */
     public function substring(
-        string|QueryBuilder|Expression $value,
-        int|QueryBuilder|Expression $offset,
-        int|QueryBuilder|Expression $length = null
+        string|object $value,
+        int|object $offset,
+        int|object $length = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -218,8 +218,8 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#tokens
      */
     public function tokens(
-        string|QueryBuilder|Expression $input,
-        string|QueryBuilder|Expression $analyzer
+        string|object $input,
+        string|object $analyzer
     ): FunctionExpression {
         return new FunctionExpression('TOKENS', [$input, $analyzer]);
     }
@@ -230,8 +230,8 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#trim
      */
     public function trim(
-        string|QueryBuilder|Expression $value,
-        int|QueryBuilder|Expression $type
+        string|object $value,
+        int|object $type
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -247,7 +247,7 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#upper
      */
     public function upper(
-        string|QueryBuilder|Expression $value,
+        string|object $value,
     ): FunctionExpression {
         return new FunctionExpression('UPPER', [$value]);
     }

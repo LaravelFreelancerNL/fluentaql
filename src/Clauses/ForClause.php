@@ -2,23 +2,26 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ForClause extends Clause
 {
-    protected $variables;
-
-    protected $in;
+    /**
+     * @var array<mixed>|string|Expression
+     */
+    protected array|string|Expression $variables;
 
     /**
-     * ForClause constructor.
-     *
-     * @param $variables
-     * @param  ExpressionInterface  $in
+     * @var array<mixed>|Expression|ExpressionInterface|QueryBuilder|string|null
      */
-    public function __construct($variables, $in = null)
-    {
+    protected $in;
+
+    public function __construct(
+        array|string|Expression $variables,
+        array|string|QueryBuilder|Expression $in = null
+    ) {
         parent::__construct();
 
         $this->variables = $variables;
@@ -40,8 +43,10 @@ class ForClause extends Clause
 
         $inExpression = '';
         if ($this->in !== null) {
-            $this->in = $queryBuilder
-                ->normalizeArgument($this->in, ['Collection', 'Range', 'List', 'Reference', 'Query', 'CollectionBind']);
+            $this->in = $queryBuilder->normalizeArgument(
+                $this->in,
+                ['Collection', 'Range', 'List', 'Reference', 'Query', 'CollectionBind']
+            );
             $inExpression = $this->in->compile($queryBuilder);
         }
 

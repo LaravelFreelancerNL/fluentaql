@@ -36,7 +36,7 @@ trait NormalizesDateFunctions
         }
     }
 
-    protected function normalizeDateDay(QueryBuilder $queryBuilder)
+    protected function normalizeDateDay(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -44,7 +44,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateFormat(QueryBuilder $queryBuilder)
+    protected function normalizeDateFormat(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -57,7 +57,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateHour(QueryBuilder $queryBuilder)
+    protected function normalizeDateHour(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -65,12 +65,12 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateIso8601(QueryBuilder $queryBuilder)
+    protected function normalizeDateIso8601(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
 
-    protected function normalizeDateMillisecond(QueryBuilder $queryBuilder)
+    protected function normalizeDateMillisecond(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -78,7 +78,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateMinute(QueryBuilder $queryBuilder)
+    protected function normalizeDateMinute(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -86,7 +86,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateMonth(QueryBuilder $queryBuilder)
+    protected function normalizeDateMonth(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -94,7 +94,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateSecond(QueryBuilder $queryBuilder)
+    protected function normalizeDateSecond(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -102,7 +102,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateTimestamp(QueryBuilder $queryBuilder)
+    protected function normalizeDateTimestamp(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
@@ -179,7 +179,7 @@ trait NormalizesDateFunctions
         );
     }
 
-    protected function normalizeDateYear(QueryBuilder $queryBuilder)
+    protected function normalizeDateYear(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],

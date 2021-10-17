@@ -5,7 +5,6 @@ namespace LaravelFreelancerNL\FluentAQL\AQL;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use MongoDB\Driver\Query;
 
 /**
  * Trait hasNumericFunctions.
@@ -20,17 +19,13 @@ trait HasNumericFunctions
      * Return the average (arithmetic mean) of the values in array.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average
-     *
-     * @param mixed $value
-     *
-     * @return FunctionExpression
      */
-    public function average($value)
+    public function average(mixed $value): FunctionExpression
     {
         return new FunctionExpression('AVERAGE', [$value]);
     }
 
-    public function avg($value)
+    public function avg($value): \LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression
     {
         return $this->average($value);
     }
@@ -39,13 +34,10 @@ trait HasNumericFunctions
      * Return the integer closest but not less than value.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#ceil
-     *
-     * @param mixed $value
-     *
-     * @return FunctionExpression
      */
-    public function ceil(int|float|QueryBuilder|Expression $value)
-    {
+    public function ceil(
+        int|float|QueryBuilder|Expression $value
+    ): FunctionExpression {
         return new FunctionExpression('CEIL', [$value]);
     }
 
@@ -53,13 +45,10 @@ trait HasNumericFunctions
      * Return the integer closest but not greater than value.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#floor
-     *
-     * @param mixed $value
-     *
-     * @return FunctionExpression
      */
-    public function floor(int|float|QueryBuilder|Expression $value)
-    {
+    public function floor(
+        int|float|QueryBuilder|Expression $value
+    ): FunctionExpression {
         return new FunctionExpression('FLOOR', [$value]);
     }
 
@@ -97,7 +86,7 @@ trait HasNumericFunctions
      * https://www.arangodb.com/docs/stable/aql/functions-numeric.html#product
      */
     public function product(
-        array|QueryBuilder|Expression $array
+        array|object $array
     ): FunctionExpression {
         return new FunctionExpression('PRODUCT', [$array]);
     }
@@ -120,9 +109,9 @@ trait HasNumericFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#range
      */
     public function range(
-        int|float|QueryBuilder|Expression $start,
-        int|float|QueryBuilder|Expression $stop,
-        int|float|QueryBuilder|Expression $step
+        int|float|object $start,
+        int|float|object $stop,
+        int|float|object $step
     ): FunctionExpression {
         return new FunctionExpression('RANGE', [$start, $stop, $step]);
     }
@@ -131,12 +120,8 @@ trait HasNumericFunctions
      * Return the integer closest to value.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#round
-     *
-     * @param mixed $value
-     *
-     * @return FunctionExpression
      */
-    public function round(int|float|QueryBuilder|Expression $value)
+    public function round(int|float|QueryBuilder|Expression $value): FunctionExpression
     {
         return new FunctionExpression('ROUND', [$value]);
     }

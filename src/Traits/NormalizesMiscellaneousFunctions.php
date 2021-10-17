@@ -11,7 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesMiscellaneousFunctions
 {
-    protected function normalizeDocument(QueryBuilder $queryBuilder)
+    protected function normalizeDocument(QueryBuilder $queryBuilder): void
     {
         if ($this->parameters['id']  === null) {
             $this->parameters['id']  = $this->parameters['collection'];
@@ -30,7 +30,7 @@ trait NormalizesMiscellaneousFunctions
         );
     }
 
-    protected function normalizeFirstDocument(QueryBuilder $queryBuilder)
+    protected function normalizeFirstDocument(QueryBuilder $queryBuilder): void
     {
         $this->normalizeAny($queryBuilder);
     }

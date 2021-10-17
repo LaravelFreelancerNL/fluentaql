@@ -13,17 +13,17 @@ trait NormalizesStringFunctions
 {
     abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
 
-    protected function normalizeConcat(QueryBuilder $queryBuilder)
+    protected function normalizeConcat(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }
 
-    protected function normalizeConcatSeparator(QueryBuilder $queryBuilder)
+    protected function normalizeConcatSeparator(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }
 
-    protected function normalizeContains(QueryBuilder $queryBuilder)
+    protected function normalizeContains(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -41,17 +41,17 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeLevenshteinDistance(QueryBuilder $queryBuilder)
+    protected function normalizeLevenshteinDistance(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }
 
-    protected function normalizeLower(QueryBuilder $queryBuilder)
+    protected function normalizeLower(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }
 
-    protected function normalizeRegexMatches(QueryBuilder $queryBuilder)
+    protected function normalizeRegexMatches(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -69,7 +69,7 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeRegexReplace(QueryBuilder $queryBuilder)
+    protected function normalizeRegexReplace(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -92,7 +92,7 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeRegexSplit(QueryBuilder $queryBuilder)
+    protected function normalizeRegexSplit(QueryBuilder $queryBuilder): void
     {
         $this->parameters['text'] = $queryBuilder->normalizeArgument(
             $this->parameters['text'],
@@ -117,7 +117,7 @@ trait NormalizesStringFunctions
         }
     }
 
-    protected function normalizeRegexTest(QueryBuilder $queryBuilder)
+    protected function normalizeRegexTest(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -135,7 +135,7 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeSplit(QueryBuilder $queryBuilder)
+    protected function normalizeSplit(QueryBuilder $queryBuilder): void
     {
         $this->parameters['value'] = $queryBuilder->normalizeArgument(
             $this->parameters['value'],
@@ -155,7 +155,7 @@ trait NormalizesStringFunctions
         }
     }
 
-    protected function normalizeSubstitute(QueryBuilder $queryBuilder)
+    protected function normalizeSubstitute(QueryBuilder $queryBuilder): void
     {
         $this->parameters['value'] = $queryBuilder->normalizeArgument(
             $this->parameters['value'],
@@ -178,7 +178,7 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeSubstring(QueryBuilder $queryBuilder)
+    protected function normalizeSubstring(QueryBuilder $queryBuilder): void
     {
         $this->parameters['value'] = $queryBuilder->normalizeArgument(
             $this->parameters['value'],
@@ -196,12 +196,12 @@ trait NormalizesStringFunctions
          );
     }
 
-    protected function normalizeTokens(QueryBuilder $queryBuilder)
+    protected function normalizeTokens(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }
 
-    protected function normalizeTrim(QueryBuilder $queryBuilder)
+    protected function normalizeTrim(QueryBuilder $queryBuilder): void
     {
         $this->parameters['value'] = $queryBuilder->normalizeArgument(
             $this->parameters['value'],
@@ -214,7 +214,7 @@ trait NormalizesStringFunctions
         );
     }
 
-    protected function normalizeUpper(QueryBuilder $queryBuilder)
+    protected function normalizeUpper(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
     }

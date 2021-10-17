@@ -15,7 +15,7 @@ trait HasSupportCommands
 {
 
     abstract public function addCommand($command);
-    abstract public function bind($data, $to = null);
+    abstract public function bind(mixed $data, string $to = null);
     abstract public function registerCollections($collections, $mode = 'write');
 
     /**

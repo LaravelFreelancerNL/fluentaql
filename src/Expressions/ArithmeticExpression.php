@@ -17,8 +17,8 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
      * Create predicate expression.
      *
      * @param mixed $leftOperand
-     * @param string $rightOperand
-     * @param mixed $operator
+     * @param string $operator
+     * @param mixed $rightOperand
      */
     public function __construct(mixed $leftOperand, string $operator, mixed $rightOperand)
     {

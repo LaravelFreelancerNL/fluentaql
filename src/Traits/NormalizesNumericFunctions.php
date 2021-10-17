@@ -8,47 +8,47 @@ trait NormalizesNumericFunctions
 {
     abstract protected function normalizeArrays(QueryBuilder $queryBuilder);
 
-    protected function normalizeAverage(QueryBuilder $queryBuilder)
+    protected function normalizeAverage(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeCeil(QueryBuilder $queryBuilder)
+    protected function normalizeCeil(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
 
-    protected function normalizeFloor(QueryBuilder $queryBuilder)
+    protected function normalizeFloor(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
 
-    protected function normalizeMax(QueryBuilder $queryBuilder)
+    protected function normalizeMax(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeMin(QueryBuilder $queryBuilder)
+    protected function normalizeMin(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeProduct(QueryBuilder $queryBuilder)
+    protected function normalizeProduct(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeRange(QueryBuilder $queryBuilder)
+    protected function normalizeRange(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
 
-    protected function normalizeRound(QueryBuilder $queryBuilder)
+    protected function normalizeRound(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }
 
-    protected function normalizeSum(QueryBuilder $queryBuilder)
+    protected function normalizeSum(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }

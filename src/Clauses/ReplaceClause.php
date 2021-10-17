@@ -2,18 +2,22 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ReplaceClause extends Clause
 {
-    protected $document;
+    protected array|string|QueryBuilder|Expression $document;
 
-    protected $with;
+    protected array|string|QueryBuilder|Expression $with;
 
-    protected $collection;
+    protected string|QueryBuilder|Expression $collection;
 
-    public function __construct($document, $with, $collection)
-    {
+    public function __construct(
+        array|string|QueryBuilder|Expression $document,
+        array|string|QueryBuilder|Expression $with,
+        string|QueryBuilder|Expression $collection
+    ) {
         parent::__construct();
 
         $this->document = $document;

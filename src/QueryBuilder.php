@@ -36,23 +36,20 @@ class QueryBuilder
     /**
      * The database query grammar instance.
      *
-     * @var Grammar
      */
-    public $grammar;
+    public Grammar $grammar;
 
     /**
      * The AQL query.
-     *
-     * @var
      */
-    public $query;
+    public ?string $query = null;
 
     /**
      * Bindings for $query.
      *
-     * @var
+     * @var array<mixed> $binds
      */
-    public $binds = [];
+    public array $binds = [];
 
     /**
      * List of read/write/exclusive collections required for transactions.
@@ -90,6 +87,8 @@ class QueryBuilder
      * Add an AQL command (raw AQL and Clauses.
      *
      * @param Clause|Expression|QueryBuilder $command
+     *
+     * @return void
      */
     public function addCommand($command)
     {
@@ -163,7 +162,7 @@ class QueryBuilder
      * Register variables on declaration for later data normalization.
      */
     public function registerVariable(
-        string|array|QueryBuilder|Expression $variableName
+        string|array|object $variableName
     ): self {
         if ($variableName instanceof ExpressionInterface) {
             $variableName = $variableName->compile($this);
@@ -180,13 +179,12 @@ class QueryBuilder
     /**
      * Bind data to a variable.
      *
-     * @param $data
-     * @param string|null $to
      * @throws BindException
-     * @return BindExpression
      */
-    public function bind($data, $to = null): BindExpression
-    {
+    public function bind(
+        mixed $data,
+        string $to = null
+    ): BindExpression {
         $this->validateBindVariable($to);
 
         $to = $this->generateBindVariable($to);
@@ -201,13 +199,12 @@ class QueryBuilder
     /**
      * Bind a collection name to a variable.
      *
-     * @param $data
-     * @param string|null $to
      * @throws BindException
-     * @return BindExpression
      */
-    public function bindCollection($data, $to = null): BindExpression
-    {
+    public function bindCollection(
+        mixed $data,
+        string $to = null
+    ): BindExpression {
         $this->validateBindVariable($to);
 
         $to = $this->generateBindVariable($to);
@@ -219,14 +216,19 @@ class QueryBuilder
         return new BindExpression($to);
     }
 
-    protected function validateBindVariable($to)
+    protected function validateBindVariable(?string $to): void
     {
         if (isset($to) && !$this->grammar->isBindParameter($to)) {
             throw new BindException('Invalid bind parameter.');
         }
     }
 
-    protected function generateBindVariable($to)
+    /**
+     * @param null|string $to
+     *
+     * @return string
+     */
+    protected function generateBindVariable(?string $to): string
     {
         if ($to == null) {
             $to = $this->queryId . '_' . (count($this->binds) + 1);
@@ -237,8 +239,6 @@ class QueryBuilder
 
     /**
      * Compile the query with its bindings and collection list.
-     *
-     * @return mixed
      */
     public function compile(): self
     {
@@ -262,9 +262,9 @@ class QueryBuilder
     }
 
     /**
-     * @return QueryBuilder $this
+     * @return int $this
      */
-    public function getQueryId()
+    public function getQueryId(): int
     {
         return $this->queryId;
     }
@@ -288,8 +288,8 @@ class QueryBuilder
     }
 
     /**
-     * @param array $arguments
-     * @return array
+     * @param array<mixed> $arguments
+     * @return array<mixed>
      */
     public function unsetNullValues(array $arguments): array
     {

@@ -10,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKPathsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseKShortestPathsClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\TraverseShortestPathClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithClause;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -18,7 +19,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasGraphClauses
 {
-
     abstract public function addCommand($command);
 
     /**
@@ -26,8 +26,6 @@ trait HasGraphClauses
      * This is required in clusters.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-with.html
-     *
-     * @return QueryBuilder
      */
     public function with(): self
     {
@@ -43,14 +41,10 @@ trait HasGraphClauses
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @param $fromVertex
-     * @param  string  $inDirection
-     * @return QueryBuilder
      */
     public function traverse(
-        $fromVertex,
-        $inDirection = 'outbound'
+        string|QueryBuilder|Expression $fromVertex,
+        string|QueryBuilder|Expression $inDirection = 'outbound'
     ): self {
         $this->addCommand(new TraverseClause($fromVertex, $inDirection));
 
@@ -61,15 +55,12 @@ trait HasGraphClauses
      * Shortest path alias for traverse.
      *
      * @link arangodb.com/docs/stable/aql/graphs-shortest-path.html
-     *
-     * @param $fromVertex
-     * @param string $inDirection
-     * @param string $toVertex
-     *
-     * @return QueryBuilder
      */
-    public function shortestPath($fromVertex, $inDirection, $toVertex): self
-    {
+    public function shortestPath(
+        string|QueryBuilder|Expression $fromVertex,
+        string|QueryBuilder|Expression $inDirection,
+        string|QueryBuilder|Expression $toVertex
+    ): self {
         $this->addCommand(new TraverseShortestPathClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
@@ -79,15 +70,12 @@ trait HasGraphClauses
      * K Shortest Paths alias for traverse.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-kshortest-paths.html
-     *
-     * @param $fromVertex
-     * @param string $inDirection
-     * @param string $toVertex
-     *
-     * @return QueryBuilder
      */
-    public function kShortestPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
-    {
+    public function kShortestPaths(
+        string|QueryBuilder|Expression $fromVertex,
+        string|QueryBuilder|Expression $inDirection,
+        string|QueryBuilder|Expression $toVertex
+    ): QueryBuilder {
         $this->addCommand(new TraverseKShortestPathsClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
@@ -97,33 +85,26 @@ trait HasGraphClauses
      * K Paths alias for traverse.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-k-paths.html
-     *
-     * @param $fromVertex
-     * @param string $inDirection
-     * @param string $toVertex
-     *
-     * @return QueryBuilder
      */
-    public function kPaths($fromVertex, $inDirection, $toVertex): QueryBuilder
-    {
+    public function kPaths(
+        string|QueryBuilder|Expression $fromVertex,
+        string|QueryBuilder|Expression $inDirection,
+        string|QueryBuilder|Expression $toVertex
+    ): QueryBuilder {
         $this->addCommand(new TraverseKPathsClause($fromVertex, $inDirection, $toVertex));
 
         return $this;
     }
-
 
     /**
      * Named Graph clause
      * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
-     *
-     * @param string $graphName
-     *
-     * @return QueryBuilder
      */
-    public function graph(string $graphName): QueryBuilder
-    {
+    public function graph(
+        string|QueryBuilder|Expression $graphName
+    ): QueryBuilder {
         $this->addCommand(new GraphClause($graphName));
 
         return $this;
@@ -136,8 +117,7 @@ trait HasGraphClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
      *
-     * @param  array  $edgeCollections
-     * @return QueryBuilder
+     * @param  array<mixed>  $edgeCollections
      */
     public function edgeCollections(...$edgeCollections): QueryBuilder
     {
@@ -150,19 +130,12 @@ trait HasGraphClauses
      * Prune a graph traversal.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
-     *
-     * @param $leftOperand
-     * @param  string  $comparisonOperator
-     * @param  null  $rightOperand
-     * @param  string  $logicalOperator
-     *
-     * @return QueryBuilder
      */
     public function prune(
-        $leftOperand,
-        $comparisonOperator = null,
-        $rightOperand = null,
-        $logicalOperator = null
+        mixed $leftOperand,
+        string|QueryBuilder|Expression $comparisonOperator = null,
+        mixed $rightOperand = null,
+        string|QueryBuilder|Expression $logicalOperator = null
     ): QueryBuilder {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {

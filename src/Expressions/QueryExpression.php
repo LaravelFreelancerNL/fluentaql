@@ -21,7 +21,7 @@ class QueryExpression extends Expression implements ExpressionInterface
     {
         $this->expression->registerVariable($queryBuilder->getVariables());
 
-        $this->expression = $this->expression->compile($queryBuilder);
+        $this->expression = $this->expression->compile();
 
         $queryBuilder->binds = array_unique(array_merge($queryBuilder->binds, $this->expression->binds));
 

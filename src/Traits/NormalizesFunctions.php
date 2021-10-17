@@ -21,7 +21,7 @@ trait NormalizesFunctions
     use NormalizesStringFunctions;
     use NormalizesTypeFunctions;
 
-    protected function normalizeAny(QueryBuilder $queryBuilder)
+    protected function normalizeAny(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
@@ -31,7 +31,7 @@ trait NormalizesFunctions
         }
     }
 
-    protected function normalizeArrays(QueryBuilder $queryBuilder)
+    protected function normalizeArrays(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
@@ -41,7 +41,7 @@ trait NormalizesFunctions
         }
     }
 
-    protected function normalizeDocuments(QueryBuilder $queryBuilder)
+    protected function normalizeDocuments(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
@@ -52,7 +52,7 @@ trait NormalizesFunctions
     }
 
 
-    protected function normalizeNumbers(QueryBuilder $queryBuilder)
+    protected function normalizeNumbers(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
@@ -62,7 +62,7 @@ trait NormalizesFunctions
         }
     }
 
-    protected function normalizeStrings(QueryBuilder $queryBuilder)
+    protected function normalizeStrings(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(

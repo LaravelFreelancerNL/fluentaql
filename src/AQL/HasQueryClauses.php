@@ -34,13 +34,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
-     * @param string|array<mixed>|ExpressionInterface $variableName
-     * @param mixed        $in
-     *
-     * @return QueryBuilder
+     * @param string|array<mixed>|Expression $variableName
      */
-    public function for($variableName, $in = null): self
-    {
+    public function for(
+        string|array|Expression $variableName,
+        mixed $in = null
+    ): self {
         if (!is_array($variableName)) {
             $variableName = [$variableName];
         }
@@ -139,14 +138,11 @@ trait HasQueryClauses
      * Creates the INTO clause of a collect clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#grouping-syntaxes
-     *
-     * @param $groupsVariable
-     * @param null $projectionExpression
-     *
-     * @return QueryBuilder
      */
-    public function into($groupsVariable, $projectionExpression = null): QueryBuilder
-    {
+    public function into(
+        string|QueryBuilder|Expression $groupsVariable,
+        mixed $projectionExpression = null
+    ): self {
         $this->addCommand(new IntoClause($groupsVariable, $projectionExpression));
 
         return $this;
@@ -157,13 +153,10 @@ trait HasQueryClauses
      * Limits the attributes of the data that is grouped.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#discarding-obsolete-variables
-     *
-     * @param $keepVariable
-     *
-     * @return QueryBuilder
      */
-    public function keep($keepVariable): QueryBuilder
-    {
+    public function keep(
+        string|QueryBuilder|Expression $keepVariable
+    ): self {
         $this->addCommand(new KeepClause($keepVariable));
 
         return $this;
@@ -175,13 +168,10 @@ trait HasQueryClauses
      * withCount can only be used after a into clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#group-length-calculation
-     *
-     * @param $countVariableName
-     *
-     * @return QueryBuilder
      */
-    public function withCount($countVariableName): QueryBuilder
-    {
+    public function withCount(
+        string|QueryBuilder|Expression $countVariableName
+    ): self {
         $this->addCommand(new WithCountClause($countVariableName));
 
         return $this;
@@ -192,14 +182,11 @@ trait HasQueryClauses
      * Creates the INTO clause of a collect clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html#aggregation
-     *
-     * @param $variableName
-     * @param $aggregateExpression
-     *
-     * @return QueryBuilder
      */
-    public function aggregate($variableName, $aggregateExpression): QueryBuilder
-    {
+    public function aggregate(
+        string|QueryBuilder|Expression $variableName,
+        string|QueryBuilder|Expression $aggregateExpression
+    ): self {
         $this->addCommand(new AggregateClause($variableName, $aggregateExpression));
 
         return $this;
@@ -243,14 +230,11 @@ trait HasQueryClauses
      * @link https://www.arangodb.com/docs/stable/aql/operations-return.html
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @param $expression
-     * @param bool $distinct
-     *
-     * @return QueryBuilder
      */
-    public function return($expression, $distinct = false): QueryBuilder
-    {
+    public function return(
+        mixed $expression,
+        bool $distinct = false
+    ): self {
         $this->addCommand(new ReturnClause($expression, $distinct));
 
         return $this;
@@ -271,8 +255,8 @@ trait HasQueryClauses
      */
 
     public function window(
-        array|QueryBuilder|Expression $offsets,
-        null|string|QueryBuilder|Expression $rangeValue = null
+        array|object $offsets,
+        null|string|object $rangeValue = null
     ): QueryBuilder {
 
 

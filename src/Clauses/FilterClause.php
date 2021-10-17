@@ -36,9 +36,9 @@ class FilterClause extends Clause
     }
 
     /**
-     * @return array<mixed>
+     * @return PredicateExpression|array
      */
-    public function getPredicates(): array
+    public function getPredicates(): array|PredicateExpression
     {
         return $this->predicates;
     }

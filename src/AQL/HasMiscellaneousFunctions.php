@@ -2,8 +2,10 @@
 
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Trait hasFunctions.
@@ -18,14 +20,11 @@ trait HasMiscellaneousFunctions
      * Return one or more specific documents from a collection.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
-     *
-     * @param $collection
-     * @param null|string|array|ListExpression $id
-     *
-     * @return FunctionExpression
      */
-    public function document($collection, $id = null)
-    {
+    public function document(
+        string|array|QueryBuilder|Expression $collection,
+        string|array|QueryBuilder|Expression $id = null
+    ): FunctionExpression {
         return new FunctionExpression('DOCUMENT', ['collection' => $collection, 'id' => $id]);
     }
 

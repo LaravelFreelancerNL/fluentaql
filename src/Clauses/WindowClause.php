@@ -11,7 +11,7 @@ class WindowClause extends Clause
     /**
      * @var array<array<ArrayKey, string>>
      */
-    protected array|QueryBuilder|Expression $offsets;
+    protected array|object $offsets;
 
     protected null|string|QueryBuilder|Expression $rangeValue;
 
@@ -20,10 +20,11 @@ class WindowClause extends Clause
     /**
      * CollectClause constructor.
      * @param  array<array<ArrayKey, string>>|QueryBuilder|Expression $offsets
-     * @param  null|string|QueryBuilder|Expression $rangeValue
      */
-    public function __construct(mixed $offsets, $rangeValue = null)
-    {
+    public function __construct(
+        mixed $offsets,
+        null|string|QueryBuilder|Expression $rangeValue = null
+    ) {
         $this->offsets = $offsets;
         $this->rangeValue = $rangeValue;
     }

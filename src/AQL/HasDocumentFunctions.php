@@ -23,9 +23,9 @@ trait HasDocumentFunctions
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      */
     public function attributes(
-        string|QueryBuilder|Expression $document,
-        bool|QueryBuilder|Expression $removeInternal = false,
-        bool|QueryBuilder|Expression $sort = false
+        string|object $document,
+        bool|object $removeInternal = false,
+        bool|object $sort = false
     ): FunctionExpression {
         return new FunctionExpression('ATTRIBUTES', [
             'document' => $document,
@@ -40,8 +40,8 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#keep
      *
-     * @param string|QueryBuilder|Expression $document
-     * @param string|array|QueryBuilder|Expression $attributes
+     * @param string|object $document
+     * @param string|array|object $attributes
      * @return FunctionExpression
      */
     public function keepAttributes(mixed $document, mixed $attributes): FunctionExpression
@@ -64,9 +64,9 @@ trait HasDocumentFunctions
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param array|object|QueryBuilder|Expression $document
-     * @param array|QueryBuilder|Expression $examples
-     * @param boolean|QueryBuilder|Expression $returnIndex
+     * @param array|object|object $document
+     * @param array|object $examples
+     * @param boolean|object $returnIndex
      * @return FunctionExpression
      */
     public function matches(mixed $document, mixed $examples, mixed $returnIndex = false): FunctionExpression
@@ -98,7 +98,7 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#parse_identifier
      *
-     * @param string|QueryBuilder|Expression $documentHandle
+     * @param string|object $documentHandle
      * @return FunctionExpression
      */
     public function parseIdentifier(mixed $documentHandle): FunctionExpression
@@ -111,8 +111,8 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#unset
      *
-     * @param string|QueryBuilder|Expression $document
-     * @param string|array|QueryBuilder|Expression $attributes
+     * @param string|object $document
+     * @param string|array|object $attributes
      * @return FunctionExpression
      */
     public function unset(mixed $document, mixed $attributes): FunctionExpression

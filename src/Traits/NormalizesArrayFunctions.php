@@ -11,7 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesArrayFunctions
 {
-    protected function normalizeAppend(QueryBuilder $queryBuilder)
+    protected function normalizeAppend(QueryBuilder $queryBuilder): void
     {
         $this->parameters['array'] = $queryBuilder->normalizeArgument(
             $this->parameters['array'],
@@ -31,17 +31,17 @@ trait NormalizesArrayFunctions
         }
     }
 
-    protected function normalizeCountDistinct(QueryBuilder $queryBuilder)
+    protected function normalizeCountDistinct(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeFirst(QueryBuilder $queryBuilder)
+    protected function normalizeFirst(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeFlatten(QueryBuilder $queryBuilder)
+    protected function normalizeFlatten(QueryBuilder $queryBuilder): void
     {
         $this->parameters['array'] = $queryBuilder->normalizeArgument(
             $this->parameters['array'],
@@ -54,17 +54,17 @@ trait NormalizesArrayFunctions
         );
     }
 
-    protected function normalizeLast(QueryBuilder $queryBuilder)
+    protected function normalizeLast(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeLength(QueryBuilder $queryBuilder)
+    protected function normalizeLength(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
     }
 
-    protected function normalizeShift(QueryBuilder $queryBuilder)
+    protected function normalizeShift(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -72,7 +72,7 @@ trait NormalizesArrayFunctions
         );
     }
 
-    protected function normalizeUnique(QueryBuilder $queryBuilder)
+    protected function normalizeUnique(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],

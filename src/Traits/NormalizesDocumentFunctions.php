@@ -13,7 +13,7 @@ trait NormalizesDocumentFunctions
 {
     abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
 
-    protected function normalizeAttributes(QueryBuilder $queryBuilder)
+    protected function normalizeAttributes(QueryBuilder $queryBuilder): void
     {
         $this->parameters['document'] = $queryBuilder->normalizeArgument(
             $this->parameters['document'],
@@ -31,7 +31,7 @@ trait NormalizesDocumentFunctions
         );
     }
 
-    protected function normalizeKeep(QueryBuilder $queryBuilder)
+    protected function normalizeKeep(QueryBuilder $queryBuilder): void
     {
         $this->parameters['document'] = $queryBuilder->normalizeArgument(
             $this->parameters['document'],
@@ -44,7 +44,7 @@ trait NormalizesDocumentFunctions
         );
     }
 
-    protected function normalizeMatches(QueryBuilder $queryBuilder)
+    protected function normalizeMatches(QueryBuilder $queryBuilder): void
     {
         $this->parameters['document'] = $queryBuilder->normalizeArgument(
             $this->parameters['document'],
@@ -62,12 +62,12 @@ trait NormalizesDocumentFunctions
         );
     }
 
-    protected function normalizeMerge(QueryBuilder $queryBuilder)
+    protected function normalizeMerge(QueryBuilder $queryBuilder): void
     {
         $this->normalizeDocuments($queryBuilder);
     }
 
-    protected function normalizeParseIdentifier(QueryBuilder $queryBuilder)
+    protected function normalizeParseIdentifier(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -75,7 +75,7 @@ trait NormalizesDocumentFunctions
         );
     }
 
-    protected function normalizeUnset(QueryBuilder $queryBuilder)
+    protected function normalizeUnset(QueryBuilder $queryBuilder): void
     {
         $this->parameters['document'] = $queryBuilder->normalizeArgument(
             $this->parameters['document'],

@@ -6,19 +6,19 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ReturnClause extends Clause
 {
-    protected $expression;
-    protected $distinct;
+    protected mixed $expression;
+
+    protected bool $distinct;
 
     /**
      * ReturnClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     *
-     * @param $expression
-     * @param bool $distinct
      */
-    public function __construct($expression, $distinct = false)
-    {
+    public function __construct(
+        mixed $expression,
+        bool $distinct = false
+    ) {
         parent::__construct();
 
         $this->expression = $expression;

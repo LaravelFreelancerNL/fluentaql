@@ -20,7 +20,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#append
      *
-     * @param array<mixed>|QueryBuilder|Expression $array
+     * @param array<mixed>|object $array
      * @param mixed $values
      * @param bool|null $unique
      * @return FunctionExpression
@@ -83,8 +83,8 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#flatten
      *
-     * @param array<mixed>|QueryBuilder|Expression $array
-     * @param int|QueryBuilder|Expression $depth
+     * @param array<mixed>|object $array
+     * @param int|object $depth
      * @return FunctionExpression
      */
     public function flatten(mixed $array, mixed $depth = 1): FunctionExpression
@@ -129,7 +129,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#shift
      *
-     * @param array<mixed>|QueryBuilder|Expression $array
+     * @param array<mixed>|object $array
      * @return FunctionExpression
      */
     public function shift(mixed $array): FunctionExpression
@@ -142,7 +142,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#unique
      *
-     * @param array<mixed>|QueryBuilder|Expression $array
+     * @param array<mixed>|object $array
      * @return FunctionExpression
      */
     public function unique(mixed $array): FunctionExpression

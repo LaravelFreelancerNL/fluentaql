@@ -8,6 +8,7 @@ use LaravelFreelancerNL\FluentAQL\Clauses\RemoveClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\ReplaceClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\UpdateClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\UpsertClause;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -24,13 +25,12 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-let.html
      *
-     * @param $variableName
-     * @param $expression
-     *
-     * @return $this
+     * @param array<mixed>|string|QueryBuilder|Expression $expression
      */
-    public function let($variableName, $expression): self
-    {
+    public function let(
+        string $variableName,
+        mixed $expression
+    ): self {
         $this->addCommand(new LetClause($variableName, $expression));
 
         return $this;
@@ -41,13 +41,12 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-insert.html
      *
-     * @param $document
-     * @param string $collection
-     *
-     * @return QueryBuilder
+     * @param array<mixed>|object|string $document
      */
-    public function insert($document, string $collection): self
-    {
+    public function insert(
+        array|object|string $document,
+        string|QueryBuilder|Expression $collection
+    ): self {
         $this->addCommand(new InsertClause($document, $collection));
 
         return $this;
@@ -57,15 +56,12 @@ trait HasStatementClauses
      * Update a document in a collection with the supplied data.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-update.html
-     *
-     * @param $document
-     * @param $with
-     * @param $collection
-     *
-     * @return QueryBuilder
      */
-    public function update($document, $with, $collection): self
-    {
+    public function update(
+        array|string|object $document,
+        array|string|object $with,
+        string|QueryBuilder|Expression $collection
+    ): self {
         $this->addCommand(new UpdateClause($document, $with, $collection));
 
         return $this;
@@ -75,15 +71,12 @@ trait HasStatementClauses
      * Replace a document in a collection with the supplied data.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-replace.html
-     *
-     * @param $document
-     * @param $with
-     * @param $collection
-     *
-     * @return QueryBuilder
      */
-    public function replace($document, $with, string $collection): self
-    {
+    public function replace(
+        array|object|string $document,
+        array|object|string $with,
+        string|QueryBuilder|Expression $collection
+    ): self {
         $this->addCommand(new ReplaceClause($document, $with, $collection));
 
         return $this;
@@ -96,17 +89,18 @@ trait HasStatementClauses
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param mixed  $search
-     * @param mixed  $insert
-     * @param mixed  $with
-     * @param string $collection
-     * @param bool   $replace
-     *
-     * @return QueryBuilder
+     * @param array<mixed>|object|string $search
+     * @param array<mixed>|object|string $insert
+     * @param array<mixed>|object|string $update
      */
-    public function upsert($search, $insert, $with, string $collection, bool $replace = false): self
-    {
-        $this->addCommand(new UpsertClause($search, $insert, $with, $collection, $replace));
+    public function upsert(
+        array|object|string $search,
+        array|object|string $insert,
+        array|object|string $update,
+        string|QueryBuilder|Expression $collection,
+        bool $replace = false
+    ): self {
+        $this->addCommand(new UpsertClause($search, $insert, $update, $collection, $replace));
 
         return $this;
     }
@@ -115,14 +109,12 @@ trait HasStatementClauses
      * Remove a document from a collection.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-remove.html
-     *
-     * @param mixed  $document
-     * @param string $collection
-     *
-     * @return QueryBuilder
+     * @param array<mixed>|string|object $document
      */
-    public function remove($document, string $collection): self
-    {
+    public function remove(
+        array|object|string $document,
+        string|QueryBuilder|Expression $collection
+    ): self {
         $this->addCommand(new RemoveClause($document, $collection));
 
         return $this;

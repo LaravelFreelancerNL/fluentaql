@@ -16,14 +16,12 @@ trait HasOperatorExpressions
      * Evaluate a condition
      *
      * @link https://www.arangodb.com/docs/stable/aql/operators.html#ternary-operator
-     *
-     * @param $conditions
-     * @param $then
-     * @param $else
-     * @return TernaryExpression
      */
-    public function if($conditions, $then, $else)
-    {
+    public function if(
+        mixed $conditions,
+        mixed $then,
+        mixed $else
+    ): TernaryExpression {
         return new TernaryExpression($conditions, $then, $else);
     }
 
@@ -31,14 +29,12 @@ trait HasOperatorExpressions
      * Perform an arithmetic operation on two numbers
      *
      * @link https://www.arangodb.com/docs/stable/aql/operators.html#arithmetic-operators
-     *
-     * @param $leftOperand
-     * @param $operator
-     * @param $rightOperand
-     * @return ArithmeticExpression
      */
-    public function calc($leftOperand, $operator, $rightOperand)
-    {
+    public function calc(
+        mixed $leftOperand,
+        string $operator,
+        mixed $rightOperand
+    ): ArithmeticExpression {
         return new ArithmeticExpression($leftOperand, $operator, $rightOperand);
     }
 }

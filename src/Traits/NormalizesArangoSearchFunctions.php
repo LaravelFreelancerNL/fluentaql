@@ -11,7 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesArangoSearchFunctions
 {
-    protected function normalizeAnalyzer(QueryBuilder $queryBuilder)
+    protected function normalizeAnalyzer(QueryBuilder $queryBuilder): void
     {
         $this->parameters['predicates'] = $queryBuilder->normalizePredicates($this->parameters['predicates']);
         $this->parameters['analyzer'] = $queryBuilder->normalizeArgument(
@@ -20,7 +20,7 @@ trait NormalizesArangoSearchFunctions
         );
     }
 
-    protected function normalizeBoost(QueryBuilder $queryBuilder)
+    protected function normalizeBoost(QueryBuilder $queryBuilder): void
     {
         $this->parameters['predicates'] = $queryBuilder->normalizePredicates($this->parameters['predicates']);
         $this->parameters['boost'] = $queryBuilder->normalizeArgument(
@@ -29,7 +29,7 @@ trait NormalizesArangoSearchFunctions
         );
     }
 
-    protected function normalizeBm25(QueryBuilder $queryBuilder)
+    protected function normalizeBm25(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -49,7 +49,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizeTfidf(QueryBuilder $queryBuilder)
+    protected function normalizeTfidf(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -63,7 +63,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizeExists(QueryBuilder $queryBuilder)
+    protected function normalizeExists(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -77,7 +77,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizeInRange(QueryBuilder $queryBuilder)
+    protected function normalizeInRange(QueryBuilder $queryBuilder): void
     {
         $this->parameters['path'] = $queryBuilder->normalizeArgument(
             $this->parameters['path'],
@@ -109,7 +109,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizeLevenshteinMatch(QueryBuilder $queryBuilder)
+    protected function normalizeLevenshteinMatch(QueryBuilder $queryBuilder): void
     {
         $this->parameters['path'] = $queryBuilder->normalizeArgument(
             $this->parameters['path'],
@@ -144,7 +144,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizeLike(QueryBuilder $queryBuilder)
+    protected function normalizeLike(QueryBuilder $queryBuilder): void
     {
         $this->parameters['path'] = $queryBuilder->normalizeArgument(
             $this->parameters['path'],
@@ -156,7 +156,7 @@ trait NormalizesArangoSearchFunctions
         );
     }
 
-    protected function normalizeNgramMatch(QueryBuilder $queryBuilder)
+    protected function normalizeNgramMatch(QueryBuilder $queryBuilder): void
     {
         $this->parameters['path'] = $queryBuilder->normalizeArgument(
             $this->parameters['path'],
@@ -182,7 +182,7 @@ trait NormalizesArangoSearchFunctions
         }
     }
 
-    protected function normalizePhrase(QueryBuilder $queryBuilder)
+    protected function normalizePhrase(QueryBuilder $queryBuilder): void
     {
         foreach ($this->parameters as $key => $parameter) {
             if ($key === 0) {

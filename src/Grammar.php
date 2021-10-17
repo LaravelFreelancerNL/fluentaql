@@ -134,7 +134,7 @@ class Grammar
         return 'Y-m-d\TH:i:s.v\Z';
     }
 
-    public function wrap($value): string
+    public function wrap(string $value): string
     {
         return '`' . addcslashes($value, '`') . '`';
     }
@@ -144,7 +144,7 @@ class Grammar
         return $this->argumentTypeExpressionMap[$argumentType];
     }
 
-    public function formatBind(string $bindVariableName, bool $collection = null)
+    public function formatBind(string $bindVariableName, bool $collection = null): string
     {
         if (stripos($bindVariableName, '@') === 0) {
             $bindVariableName = $this->wrap($bindVariableName);

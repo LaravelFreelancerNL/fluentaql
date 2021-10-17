@@ -101,8 +101,9 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#exists
      *
-     * @param string|QueryBuilder|Expression $path
-     * @param QueryBuilder|Expression|string|null $type
+     * @param Expression|QueryBuilder|string $path
+     * @param Expression|QueryBuilder|null|string $type
+     *
      * @return FunctionExpression
      */
     public function exists(
@@ -123,7 +124,7 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#in_range
      *
-     * @param string|QueryBuilder|Expression $path
+     * @param string|object $path
      * @param mixed $low
      * @param mixed $high
      * @param mixed|null $includeLow
@@ -155,12 +156,12 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#levenshtein_match
      *
-     * @param string|QueryBuilder|Expression $path
-     * @param string|QueryBuilder|Expression $target
-     * @param int|QueryBuilder|Expression $distance
-     * @param null|bool|QueryBuilder|Expression $transpositions
-     * @param null|int|QueryBuilder|Expression $maxTerms
-     * @param null|string|QueryBuilder|Expression $prefix
+     * @param string|object $path
+     * @param string|object $target
+     * @param int|object $distance
+     * @param null|bool|object $transpositions
+     * @param null|int|object $maxTerms
+     * @param null|string|object $prefix
      * @return FunctionExpression
      */
     public function levenshteinMatch(
@@ -188,13 +189,9 @@ trait HasArangoSearchFunctions
      * Check whether the pattern search is contained in the attribute denoted by path, using wildcard matching.
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#like
-     *
-     * @param string|QueryBuilder|Expression $path
-     * @param string|QueryBuilder|Expression $target
-     * @return FunctionExpression
      */
     public function like(
-        mixed $path,
+        string|object $path,
         mixed $search
     ): FunctionExpression {
         $arguments = [
@@ -211,10 +208,10 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#levenshtein_match
      *
-     * @param string|QueryBuilder|Expression $path
-     * @param string|QueryBuilder|Expression $target
-     * @param null|int|float|QueryBuilder|Expression $threshold
-     * @param null|string|QueryBuilder|Expression $analyzer
+     * @param string|object $path
+     * @param string|object $target
+     * @param null|int|float|object $threshold
+     * @param null|string|object $analyzer
      * @return FunctionExpression
      */
     public function ngramMatch(

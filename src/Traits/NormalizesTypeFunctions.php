@@ -8,7 +8,7 @@ trait NormalizesTypeFunctions
 {
     abstract protected function normalizeNumbers(QueryBuilder $queryBuilder);
 
-    protected function normalizeToArray(QueryBuilder $queryBuilder)
+    protected function normalizeToArray(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -16,7 +16,7 @@ trait NormalizesTypeFunctions
         );
     }
 
-    protected function normalizeToBool(QueryBuilder $queryBuilder)
+    protected function normalizeToBool(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -24,7 +24,7 @@ trait NormalizesTypeFunctions
         );
     }
 
-    protected function normalizeToNumber(QueryBuilder $queryBuilder)
+    protected function normalizeToNumber(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
@@ -32,7 +32,7 @@ trait NormalizesTypeFunctions
         );
     }
 
-    protected function normalizeToString(QueryBuilder $queryBuilder)
+    protected function normalizeToString(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
             $this->parameters[0],
