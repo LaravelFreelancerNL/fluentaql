@@ -42,10 +42,8 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array|string|int|float|bool|null $argument
+     * @param array<mixed>|string|int|float|bool|null $argument
      * @param string[] $allowedExpressionTypes
-     *
-     * @return BindExpression
      * @throws ExpressionTypeException
      */
     protected function normalizeScalar(
@@ -92,10 +90,7 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param  iterable  $argument
      * @param  string[]|null  $allowedExpressionTypes
-     *
-     * @return array<mixed>|object
      * @throws ExpressionTypeException
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)

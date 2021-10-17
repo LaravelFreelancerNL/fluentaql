@@ -6,26 +6,26 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class PredicateExpression extends Expression implements ExpressionInterface
 {
-    protected string|ExpressionInterface $leftOperand;
+    protected string|Expression $leftOperand;
 
     protected string|null $comparisonOperator;
 
-    protected string|ExpressionInterface|null $rightOperand;
+    protected string|Expression|null $rightOperand;
 
     public string $logicalOperator;
 
     /**
      * Create predicate expression.
      *
-     * @param ExpressionInterface $leftOperand
+     * @param Expression $leftOperand
      * @param ?string $comparisonOperator
-     * @param ?ExpressionInterface $rightOperand
+     * @param ?Expression $rightOperand
      * @param string|null $logicalOperator
      */
     public function __construct(
-        ExpressionInterface $leftOperand,
+        Expression $leftOperand,
         ?string $comparisonOperator = null,
-        ?ExpressionInterface $rightOperand = null,
+        ?Expression $rightOperand = null,
         ?string $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;

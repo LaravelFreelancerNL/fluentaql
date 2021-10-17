@@ -7,7 +7,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class AggregateClause extends Clause
 {
-    protected string|QueryBuilder|Expression$variableName;
+    protected string|QueryBuilder|Expression $variableName;
     protected string|QueryBuilder|Expression $aggregateExpression;
 
     public function __construct(
