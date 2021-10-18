@@ -222,7 +222,7 @@ trait HasArangoSearchFunctions
      * @param null|string|object $analyzer
      * @return FunctionExpression
      */
-    public function ngramMatch(
+    public function nGramMatch(
         mixed $path,
         mixed $target,
         mixed $threshold = null,

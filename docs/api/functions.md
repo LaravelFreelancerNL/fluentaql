@@ -20,8 +20,16 @@ $qb->for('i', '1..100')
 ## ArangoSearch functions
 | Description           | AQL Function |
 | :-------------------- | :-------------------------------------------------------------------------------------------- |
-| analyzer(string&#124;array $leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [ANALYZER(expr, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#analyzer) |
-| boost(string&#124;array $leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [BOOST(expr, boost)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#boost) |
+| analyzer($leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [ANALYZER(expr, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#analyzer) |
+| bm25($doc, $k = null,$b = null) | [BM25(doc, k, b)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#bm25) |
+| boost($leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [BOOST(expr, boost)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#boost) |
+| exists($path,$type = null) | [EXISTS(path)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#exists) |
+| inRange($path, $low, $high, $includeLow, $includeHigh) | [IN_RANGE(path, low, high, includeLow, includeHigh)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#in_range) |
+| levenshteinMatch($path, $target, $distance, $transpositions, $maxTerms, $prefix) | [LEVENSHTEIN_MATCH(path, target, distance, transpositions, maxTerms, prefix)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#levenshtein_match) |
+| like($path, $search)| [LIKE(path, search)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#like) |
+| nGramMatch($path, $target, $threshold, $analyzer) | [NGRAM_MATCH(path, target, threshold, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#ngram_match) |
+| phrase(path, $phrasePart1, $skipTokens1, ... $phrasePartN, $skipTokensN ], $analyzer) | [PHRASE(path, [ phrasePart1, skipTokens1, ... phrasePartN, skipTokensN ], analyzer)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#phrase) |
+| tfidf($doc, $normalize) | [TFIDF(doc, normalize)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#tfidf) |
 
 
 ## Array functions

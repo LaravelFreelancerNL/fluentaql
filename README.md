@@ -110,7 +110,8 @@ $qb->bind('your data', 'your-bind-id')
     - [Subqueries](docs/core-concepts/subqueries.md): how to create subqueries, joins etc.
 - Core Concepts
     - [Terminology](docs/core-concepts/terminology.md): definitions of terms used in the documentation 
-    - [Data binding](docs/core-concepts/data-binding.md): How to inject external data and collections 
+    - [Data binding](docs/core-concepts/data-binding.md): How to inject external data and collections
+    - [Predicates](docs/core-concepts/predicates.md): How to use predicates in filter clauses and functions
     - [Subqueries](docs/core-concepts/subqueries.md): Subquery creation
 
 ## References & resources 

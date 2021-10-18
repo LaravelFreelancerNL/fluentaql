@@ -248,7 +248,7 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->ngramMatch("doc.text", "quick fox"))
+            ->search($qb->nGramMatch("doc.text", "quick fox"))
             ->return('doc.text');
 
         self::assertEquals(
@@ -262,7 +262,7 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->ngramMatch("doc.text", "quick fox", 0.8, "bigram"))
+            ->search($qb->nGramMatch("doc.text", "quick fox", 0.8, "bigram"))
             ->return('doc.text');
 
         self::assertEquals(
