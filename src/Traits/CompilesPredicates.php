@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait CompilesPredicates
 {
@@ -62,7 +60,7 @@ trait CompilesPredicates
         }
 
         $groupCompilation = '';
-        if ((int) $position > 0) {
+        if ($position > 0) {
             $groupCompilation = $logicalOperator . ' ';
         }
         return $groupCompilation . '(' . implode(' ', $compiledPredicates) . ')';

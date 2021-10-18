@@ -19,6 +19,6 @@ class RawClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        return (string) $this->aql;
+        return $this->aql;
     }
 }

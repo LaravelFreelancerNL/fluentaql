@@ -240,7 +240,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-window.html
      *
-     * @param array<ArrayKey, string>|object $offsets
+     * @param array<array-key, string>|object $offsets
      */
     public function window(
         array|object $offsets,

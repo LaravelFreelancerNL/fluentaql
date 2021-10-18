@@ -52,7 +52,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
     }
 
     /**
-     * @param array<mixed>$parameters
+     * @param array<mixed> $parameters
      * @param QueryBuilder $queryBuilder
      * @return array<mixed>
      */

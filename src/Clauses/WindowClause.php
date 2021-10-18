@@ -21,7 +21,7 @@ class WindowClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<ArrayKey, string>|object $offsets
+     * @param  array<array-key, string>|object $offsets
      */
     public function __construct(
         array|object $offsets,
