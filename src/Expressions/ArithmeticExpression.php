@@ -7,7 +7,7 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
-class ArithmeticExpression extends PredicateExpression implements ExpressionInterface
+class ArithmeticExpression extends Expression implements ExpressionInterface
 {
 
     /**

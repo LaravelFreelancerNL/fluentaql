@@ -17,8 +17,6 @@ class WindowClause extends Clause
 
     protected null|string|QueryBuilder|Expression $rangeValue;
 
-    protected string|null $expression;
-
     /**
      * CollectClause constructor.
      * @param  array<array-key, string>|object $offsets

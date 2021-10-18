@@ -27,10 +27,8 @@ class QueryExpression extends Expression implements ExpressionInterface
         $queryBuilder->binds = array_unique(array_merge($queryBuilder->binds, $this->queryBuilder->binds));
 
         // Extract collections
-        if (isset($this->queryBuilder->collections)) {
-            foreach (array_keys($this->queryBuilder->collections) as $mode) {
-                $queryBuilder->registerCollections($this->queryBuilder->collections[$mode], $mode);
-            }
+        foreach (array_keys($this->queryBuilder->collections) as $mode) {
+            $queryBuilder->registerCollections($this->queryBuilder->collections[$mode], $mode);
         }
 
         return '(' . $this->queryBuilder . ')';

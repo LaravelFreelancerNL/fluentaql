@@ -15,8 +15,6 @@ class CollectClause extends Clause
      */
     protected array $groups;
 
-    protected string|null $expression;
-
     /**
      * CollectClause constructor.
      * @param  array<string[]> $groups

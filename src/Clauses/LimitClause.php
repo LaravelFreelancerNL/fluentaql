@@ -17,10 +17,9 @@ class LimitClause extends Clause
         int|QueryBuilder|Expression $offsetOrCount,
         int|QueryBuilder|Expression $count = null
     ) {
-        if ($count === null) {
-            $this->count = $offsetOrCount;
-            $this->offset = null;
-        }
+        $this->count = $offsetOrCount;
+        $this->offset = null;
+
         if ($count !== null) {
             $this->count = $count;
             $this->offset = $offsetOrCount;
