@@ -30,13 +30,12 @@ class ArithmeticExpression extends PredicateExpression implements ExpressionInte
     /**
      * Compile calculation.
      *
-     * @param  QueryBuilder|null  $queryBuilder
+     * @param  QueryBuilder  $queryBuilder
      * @return string
      * @throws \Exception
      */
-    public function compile(QueryBuilder $queryBuilder = null): string
+    public function compile(QueryBuilder $queryBuilder): string
     {
-        /** @phpstan-ignore-next-line */
         $normalizedCalculation = $this->normalizeCalculation($queryBuilder, $this->calculation);
 
         $leftOperand = $normalizedCalculation['leftOperand']->compile($queryBuilder);

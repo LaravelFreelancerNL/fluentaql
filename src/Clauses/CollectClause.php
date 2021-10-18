@@ -28,14 +28,15 @@ class CollectClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder): string
     {
+        $groups = [];
         foreach ($this->groups as $key => $group) {
-            $this->groups[$key][0] = $queryBuilder->normalizeArgument(
+            $groups[$key][0] = $queryBuilder->normalizeArgument(
                 $group[0],
                 'Variable'
             );
             $queryBuilder->registerVariable($this->groups[$key][0]);
 
-            $this->groups[$key][1] = $queryBuilder->normalizeArgument(
+            $groups[$key][1] = $queryBuilder->normalizeArgument(
                 $group[1],
                 ['Reference', 'Function', 'Query', 'Bind']
             );
@@ -43,11 +44,12 @@ class CollectClause extends Clause
 
         $output = 'COLLECT';
         $groupOutput = '';
-        foreach ($this->groups as $group) {
+        foreach ($groups as $group) {
             if ($groupOutput !== '') {
                 $groupOutput .= ',';
             }
             $groupOutput .= ' ' . $group[0]->compile($queryBuilder);
+            /** @psalm-suppress PossiblyUndefinedArrayOffset */
             $groupOutput .=  ' = ' . $group[1]->compile($queryBuilder);
         }
 

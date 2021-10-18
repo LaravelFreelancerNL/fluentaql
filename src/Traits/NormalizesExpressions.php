@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
@@ -56,6 +57,14 @@ trait NormalizesExpressions
         return $this->createExpression($argument, $argumentType);
     }
 
+    /**
+     * @psalm-suppress MoreSpecificReturnType
+     *
+     * @param mixed $argument
+     * @param string $argumentType
+     * @return Expression
+     * @throws BindException
+     */
     protected function createExpression(
         mixed $argument,
         string $argumentType

@@ -20,7 +20,7 @@ class UpsertClause extends Clause
     protected array|string|object $insert;
 
     /**
-     * @var array<mixed>|object $update
+     * @var array<mixed>|object|string $update
      */
     protected array|string|object $update;
 

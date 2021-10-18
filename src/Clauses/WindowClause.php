@@ -11,7 +11,7 @@ use phpDocumentor\Reflection\Types\ArrayKey;
 class WindowClause extends Clause
 {
     /**
-     * @var array<ArrayKey, string>|object $offsets
+     * @var array<array-key, string>|object $offsets
      */
     protected array|object $offsets;
 

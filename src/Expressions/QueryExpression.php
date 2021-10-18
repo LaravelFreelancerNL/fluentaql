@@ -11,29 +11,28 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 class QueryExpression extends Expression implements ExpressionInterface
 {
-    /** @var QueryBuilder */
-    protected $expression;
+    protected QueryBuilder $queryBuilder;
 
-    public function __construct(QueryBuilder $expression)
+    public function __construct(QueryBuilder $queryBuilder)
     {
-        parent::__construct($expression);
+        $this->queryBuilder = $queryBuilder;
     }
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        $this->expression->registerVariable($queryBuilder->getVariables());
+        $this->queryBuilder->registerVariable($queryBuilder->getVariables());
 
-        $this->expression = $this->expression->compile();
+        $this->queryBuilder = $this->queryBuilder->compile();
 
-        $queryBuilder->binds = array_unique(array_merge($queryBuilder->binds, $this->expression->binds));
+        $queryBuilder->binds = array_unique(array_merge($queryBuilder->binds, $this->queryBuilder->binds));
 
         // Extract collections
-        if (isset($this->expression->collections)) {
-            foreach (array_keys($this->expression->collections) as $mode) {
-                $queryBuilder->registerCollections($this->expression->collections[$mode], $mode);
+        if (isset($this->queryBuilder->collections)) {
+            foreach (array_keys($this->queryBuilder->collections) as $mode) {
+                $queryBuilder->registerCollections($this->queryBuilder->collections[$mode], $mode);
             }
         }
 
-        return '(' . $this->expression . ')';
+        return '(' . $this->queryBuilder . ')';
     }
 }

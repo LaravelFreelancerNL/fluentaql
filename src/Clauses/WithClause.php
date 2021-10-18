@@ -29,15 +29,15 @@ class WithClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder): string
     {
+        $collections = [];
         foreach ($this->collections as $key => $collection) {
-            $this->collections[$key] = $queryBuilder->normalizeArgument($collection, 'Collection');
+            $collections[$key] = $queryBuilder->normalizeArgument($collection, 'Collection');
             $queryBuilder->registerCollections($collection, 'read');
         }
 
         $output = "WITH ";
         $implosion = '';
-        foreach ($this->collections as $key => $collection) {
-            /** @phpstan-ignore-next-line */
+        foreach ($collections as $key => $collection) {
             $implosion .= ', ' . $collection->compile($queryBuilder);
         }
         $output .= ltrim($implosion, ', ');
