@@ -188,10 +188,11 @@ class QueryBuilder
     /**
      * Bind data to a variable.
      *
+     * @param object|array<mixed>|string|int|float|bool|null $data
      * @throws BindException
      */
     public function bind(
-        mixed $data,
+        object|array|string|int|float|bool|null $data,
         string $to = null
     ): BindExpression {
         $this->validateBindVariable($to);
@@ -203,6 +204,21 @@ class QueryBuilder
         $to = $this->grammar->formatBind($to, false);
 
         return new BindExpression($to);
+    }
+
+    /**
+     * @param array<array-key, array<array-key, mixed>|object|scalar|null> $array
+     * @throws BindException
+     */
+    protected function bindArrayValues(array $array): void
+    {
+        foreach ($array as $key => $value) {
+            $to = null;
+            if (is_string($key)) {
+                $to = $key;
+            }
+            $this->bind($value, $to);
+        }
     }
 
     /**
@@ -252,6 +268,7 @@ class QueryBuilder
     public function compile(): self
     {
         $this->query = '';
+        /** @var Expression|Clause @command */
         foreach ($this->commands as $command) {
             $this->query .= ' ' . $command->compile($this);
         }

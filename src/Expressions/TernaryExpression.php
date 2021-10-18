@@ -8,14 +8,22 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class TernaryExpression extends Expression implements ExpressionInterface
 {
-    protected mixed $predicates = [];
+    /**
+     * @var PredicateExpression|mixed[]
+     */
+    protected array|PredicateExpression $predicates = [];
 
     protected mixed $then = '';
 
     protected mixed $else = '';
 
+    /**
+     * @param array<mixed>|PredicateExpression $predicates
+     * @param mixed $then
+     * @param mixed|null $else
+     */
     public function __construct(
-        mixed $predicates,
+        array|PredicateExpression $predicates,
         mixed $then,
         mixed $else = null
     ) {

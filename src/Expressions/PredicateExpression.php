@@ -29,18 +29,18 @@ class PredicateExpression extends Expression implements ExpressionInterface
      * @param object|array<mixed>|string|int|float|bool|null $leftOperand
      * @param ?string $comparisonOperator
      * @param object|array<mixed>|string|int|float|bool|null $rightOperand
-     * @param string|null $logicalOperator
+     * @param string $logicalOperator
      */
     public function __construct(
         object|array|string|int|float|bool|null $leftOperand,
         ?string $comparisonOperator = null,
         object|array|string|int|float|bool|null $rightOperand = null,
-        ?string $logicalOperator = 'AND'
+        string $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;
         $this->comparisonOperator = strtoupper((string) $comparisonOperator);
         $this->rightOperand = $rightOperand;
-        $this->logicalOperator = strtoupper((string) $logicalOperator);
+        $this->logicalOperator = strtoupper($logicalOperator);
     }
 
     /**

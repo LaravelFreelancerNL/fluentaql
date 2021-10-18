@@ -35,11 +35,12 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
-     * @param string|array<mixed>|Expression $variableName
+     * @param string|array<string|Expression>|Expression $variableName
+     * @param string|array<mixed>|QueryBuilder|Expression|null $in
      */
     public function for(
         string|array|Expression $variableName,
-        mixed $in = null
+        string|array|QueryBuilder|Expression $in = null
     ): self {
         if (!is_array($variableName)) {
             $variableName = [$variableName];
@@ -54,11 +55,14 @@ trait HasQueryClauses
      * Filter results from a for clause.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-filter.html
+     *
+     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
+     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
      */
     public function filter(
-        mixed $leftOperand,
+        object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        mixed $rightOperand = null,
+        object|array|string|int|float|bool|null $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
@@ -75,11 +79,14 @@ trait HasQueryClauses
      * Search a view.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-search.html
+     *
+     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
+     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
      */
     public function search(
-        mixed $leftOperand,
+        object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        mixed $rightOperand = null,
+        object|array|string|int|float|bool|null $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
@@ -100,7 +107,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
-     * @param string|array<mixed>|null $variableName
+     * @param array<array-key, array<array-key, string>>|string|null $variableName
      */
     public function collect(
         string|array $variableName = null,

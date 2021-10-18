@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -15,6 +16,12 @@ trait NormalizesArangoSearchFunctions
 {
     protected function normalizeAnalyzer(QueryBuilder $queryBuilder): void
     {
+        if (
+            ! is_array($this->parameters['predicates'])
+            && ! $this->parameters['predicates'] instanceof PredicateExpression
+        ) {
+            $this->parameters['predicates'] = [$this->parameters['predicates']];
+        }
         $this->parameters['predicates'] = $queryBuilder->normalizePredicates($this->parameters['predicates']);
         $this->parameters['analyzer'] = $queryBuilder->normalizeArgument(
             $this->parameters['analyzer'],
@@ -22,9 +29,19 @@ trait NormalizesArangoSearchFunctions
         );
     }
 
+    /**
+     * @psalm-suppress MixedArgument
+     */
     protected function normalizeBoost(QueryBuilder $queryBuilder): void
     {
+        if (
+            ! is_array($this->parameters['predicates'])
+            && ! $this->parameters['predicates'] instanceof PredicateExpression
+        ) {
+            $this->parameters['predicates'] = [$this->parameters['predicates']];
+        }
         $this->parameters['predicates'] = $queryBuilder->normalizePredicates($this->parameters['predicates']);
+
         $this->parameters['boost'] = $queryBuilder->normalizeArgument(
             $this->parameters['boost'],
             ['Number', 'Reference', 'Query', 'Bind']
@@ -186,6 +203,7 @@ trait NormalizesArangoSearchFunctions
 
     protected function normalizePhrase(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             if ($key === 0) {
                 $this->parameters[$key] = $queryBuilder->normalizeArgument(

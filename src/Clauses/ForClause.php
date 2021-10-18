@@ -11,7 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class ForClause extends Clause
 {
     /**
-     * @var array<mixed>
+     * @var array<string|Expression>
      */
     protected array $variables;
 
@@ -21,7 +21,7 @@ class ForClause extends Clause
     protected array|Expression|ExpressionInterface|QueryBuilder|string|null $in;
 
     /**
-     * @param array<mixed>|string|Expression $variables
+     * @param array<string|Expression>|string|Expression $variables
      * @param array<mixed>|string|QueryBuilder|Expression|null $in
      */
     public function __construct(
@@ -40,13 +40,14 @@ class ForClause extends Clause
 
     public function compile(QueryBuilder $queryBuilder): string
     {
+        $variables = [];
         foreach ($this->variables as $key => $value) {
-            $this->variables [$key] = $queryBuilder->normalizeArgument($value, 'Variable');
-            $queryBuilder->registerVariable($this->variables[$key]->compile($queryBuilder));
+            $variables[$key] = $queryBuilder->normalizeArgument($value, 'Variable');
+            $queryBuilder->registerVariable($variables[$key]->compile($queryBuilder));
         }
         $variableExpression =  array_map(function ($variable) use ($queryBuilder) {
             return $variable->compile($queryBuilder);
-        }, $this->variables);
+        }, $variables);
 
         $variableExpression = implode(', ', $variableExpression);
 

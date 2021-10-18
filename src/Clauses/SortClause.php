@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\ExpressionInterface;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -31,7 +32,8 @@ class SortClause extends Clause
             return 'SORT null';
         }
 
-        $this->references = array_map(function ($reference) use ($queryBuilder) {
+        /** @var array<string|Expression> $references */
+        $references = array_map(function ($reference) use ($queryBuilder) {
             if (!$queryBuilder->grammar->isSortDirection($reference)) {
                 return $queryBuilder->normalizeArgument($reference, ['Reference', 'Null', 'Query', 'Bind']);
             }
@@ -39,7 +41,7 @@ class SortClause extends Clause
         }, $this->references);
 
         $output = '';
-        foreach ($this->references as $value) {
+        foreach ($references as $value) {
             if ($value instanceof ExpressionInterface) {
                 $output .= ', ' . $value->compile($queryBuilder);
             }

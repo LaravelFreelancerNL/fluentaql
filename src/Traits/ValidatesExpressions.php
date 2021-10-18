@@ -146,7 +146,7 @@ trait ValidatesExpressions
         return false;
     }
 
-    public function isBindParameter(mixed $bindParameter): bool
+    public function isBindParameter(string $bindParameter): bool
     {
         if (preg_match('/^@?[a-zA-Z0-9][a-zA-Z0-9_]*$/', $bindParameter)) {
             return true;

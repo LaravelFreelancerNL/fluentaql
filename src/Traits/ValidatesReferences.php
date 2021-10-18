@@ -37,10 +37,10 @@ trait ValidatesReferences
     }
 
     /**
-     * @param  array<mixed>  $registeredVariables
+     * @param  array<array-key, mixed>  $registeredVariables
      */
     public function isRegisteredVariable(
-        mixed $value,
+        int|string $value,
         array $registeredVariables = []
     ): bool {
         return isset($registeredVariables[$value]);
@@ -61,16 +61,14 @@ trait ValidatesReferences
     }
 
     /**
-     * @param array<mixed> $registeredVariables
+     * @param array<array-key, null|object|scalar> $registeredVariables
      */
     public function isReference(
         mixed $value,
         array $registeredVariables = []
     ): bool {
-        $variables = '';
-        if (!empty($registeredVariables)) {
-            $variables = implode('|', $registeredVariables);
-        }
+        /** @psalm-suppress  ArgumentTypeCoercion */
+        $variables = implode('|', $registeredVariables);
 
         if (! is_string($value) || empty($value)) {
             return false;

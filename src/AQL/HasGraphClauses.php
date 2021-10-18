@@ -31,7 +31,9 @@ trait HasGraphClauses
      */
     public function with(): self
     {
-        $this->addCommand(new WithClause(func_get_args()));
+        /** @var array<array-key, Expression|string> $arguments */
+        $arguments = func_get_args();
+        $this->addCommand(new WithClause($arguments));
 
         return $this;
     }
@@ -118,11 +120,12 @@ trait HasGraphClauses
      * Only usable after traverse/shortestPath/kShortestPaths Clauses.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html
-     *
-     * @param  array<mixed>  $edgeCollections
      */
-    public function edgeCollections(...$edgeCollections): self
+    public function edgeCollections(): self
     {
+        /** @var array<array<string>|Expression> $edgeCollections */
+        $edgeCollections = func_get_args();
+
         $this->addCommand(new EdgeCollectionsClause($edgeCollections));
 
         return $this;
@@ -132,11 +135,14 @@ trait HasGraphClauses
      * Prune a graph traversal.
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
+     *
+     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
+     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
      */
     public function prune(
-        mixed $leftOperand,
+        object|array|string|int|float|bool|null $leftOperand,
         string|QueryBuilder|Expression $comparisonOperator = null,
-        mixed $rightOperand = null,
+        object|array|string|int|float|bool|null $rightOperand = null,
         string|QueryBuilder|Expression $logicalOperator = null
     ): self {
         $predicates = $leftOperand;

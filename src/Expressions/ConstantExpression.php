@@ -19,6 +19,6 @@ class ConstantExpression extends LiteralExpression implements ExpressionInterfac
      */
     public function compile(QueryBuilder $queryBuilder = null): string
     {
-        return strtoupper($this->expression);
+        return strtoupper((string) $this->expression);
     }
 }

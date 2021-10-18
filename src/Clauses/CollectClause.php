@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use phpDocumentor\Reflection\Types\ArrayKey;
 
@@ -17,22 +19,27 @@ class CollectClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<string[]> $groups
+     * @param  array<array<string|null>> $groups
      */
     public function __construct(array $groups = [])
     {
         $this->groups = $groups;
     }
 
+    /**
+     * @throws ExpressionTypeException
+     */
     public function compile(QueryBuilder $queryBuilder): string
     {
+        /** @var array<array<Expression>>  $groups */
         $groups = [];
+        /** @var array<int, string|null>  $group */
         foreach ($this->groups as $key => $group) {
             $groups[$key][0] = $queryBuilder->normalizeArgument(
                 $group[0],
                 'Variable'
             );
-            $queryBuilder->registerVariable($this->groups[$key][0]);
+            $queryBuilder->registerVariable($groups[$key][0]);
 
             $groups[$key][1] = $queryBuilder->normalizeArgument(
                 $group[1],

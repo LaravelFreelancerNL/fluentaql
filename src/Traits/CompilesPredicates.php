@@ -56,7 +56,9 @@ trait CompilesPredicates
             $logicalOperator = $predicates[0]->logicalOperator;
         }
         for ($i = 0; $i < count($predicates); $i++) {
-            $compiledPredicates[] = $this->compilePredicate($predicates[$i], $i);
+            if ($predicates[$i] instanceof PredicateExpression) {
+                $compiledPredicates[] = $this->compilePredicate($predicates[$i], $i);
+            }
         }
 
         $groupCompilation = '';

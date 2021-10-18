@@ -11,19 +11,22 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
 {
 
     /**
-     * @var array<mixed>
+     * @var array<int|string|float|null|Expression|QueryBuilder>
      */
     protected array $calculation = [];
 
     /**
      * Create predicate expression.
      *
-     * @param mixed $leftOperand
+     * @param int|float|null|Expression|QueryBuilder $leftOperand
      * @param string $operator
-     * @param mixed $rightOperand
+     * @param int|float|null|Expression|QueryBuilder $rightOperand
      */
-    public function __construct(mixed $leftOperand, string $operator, mixed $rightOperand)
-    {
+    public function __construct(
+        int|float|null|Expression|QueryBuilder $leftOperand,
+        string $operator,
+        int|float|null|Expression|QueryBuilder $rightOperand
+    ) {
         $this->calculation = [$leftOperand, $operator, $rightOperand];
     }
 
@@ -36,6 +39,7 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
      */
     public function compile(QueryBuilder $queryBuilder): string
     {
+        /** @var Expression[] $normalizedCalculation */
         $normalizedCalculation = $this->normalizeCalculation($queryBuilder, $this->calculation);
 
         $leftOperand = $normalizedCalculation['leftOperand']->compile($queryBuilder);
@@ -43,17 +47,19 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
             $leftOperand = '(' . $leftOperand . ')';
         }
 
+        $arithmeticOperator = $normalizedCalculation['arithmeticOperator']->compile($queryBuilder);
+
         $rightOperand = $normalizedCalculation['rightOperand']->compile($queryBuilder);
         if ($normalizedCalculation['rightOperand'] instanceof ArithmeticExpression) {
             $rightOperand = '(' . $rightOperand . ')';
         }
 
-        return $leftOperand . ' ' . $normalizedCalculation['arithmeticOperator'] . ' ' . $rightOperand;
+        return $leftOperand . ' ' . $arithmeticOperator . ' ' . $rightOperand;
     }
 
     /**
      * @param  QueryBuilder  $queryBuilder
-     * @param  array<mixed>  $calculation
+     * @param  array<int|float|string|null|Expression|QueryBuilder>  $calculation
      * @return array<mixed>
      * @throws ExpressionTypeException
      */
@@ -66,8 +72,9 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
         $leftOperand = $queryBuilder->normalizeArgument($calculation[0]);
 
         $arithmeticOperator = '+';
+        /** @var string $calculation[1] */
         if ($queryBuilder->grammar->isArithmeticOperator($calculation[1])) {
-            $arithmeticOperator = $calculation[1];
+            $arithmeticOperator = new LiteralExpression($calculation[1]);
         }
 
         $rightOperand = $queryBuilder->normalizeArgument($calculation[2]);

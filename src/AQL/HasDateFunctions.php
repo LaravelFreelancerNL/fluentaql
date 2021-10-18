@@ -79,6 +79,7 @@ trait HasDateFunctions
      */
     public function dateIso8601(): FunctionExpression
     {
+        /** @var array<int|string> $arguments */
         $arguments = func_get_args();
         if (empty($arguments)) {
             $arguments[] = time();
@@ -148,6 +149,7 @@ trait HasDateFunctions
      */
     public function dateTimestamp(): FunctionExpression
     {
+        /** @var array<int|string> $arguments */
         $arguments = func_get_args();
         if (empty($arguments)) {
             $arguments[] = time();

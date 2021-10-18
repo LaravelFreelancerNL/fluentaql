@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -25,6 +26,7 @@ trait NormalizesFunctions
 
     protected function normalizeAny(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,
@@ -35,6 +37,7 @@ trait NormalizesFunctions
 
     protected function normalizeArrays(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,
@@ -45,6 +48,7 @@ trait NormalizesFunctions
 
     protected function normalizeDocuments(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,
@@ -53,9 +57,9 @@ trait NormalizesFunctions
         }
     }
 
-
     protected function normalizeNumbers(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,
@@ -66,6 +70,7 @@ trait NormalizesFunctions
 
     protected function normalizeStrings(QueryBuilder $queryBuilder): void
     {
+        /** @var mixed $parameter */
         foreach ($this->parameters as $key => $parameter) {
             $this->parameters[$key] = $queryBuilder->normalizeArgument(
                 $parameter,

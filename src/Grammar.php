@@ -93,7 +93,7 @@ class Grammar
      * List of recognizable data and the accompanying Expression type it will be mapped too.
      * Strings of an unrecognized nature are always bound.
      *
-     * @var array|string[]
+     * @var string[]
      */
     protected array $argumentTypeExpressionMap = [
         'AssociativeArray'   => 'Object',

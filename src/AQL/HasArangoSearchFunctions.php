@@ -24,6 +24,7 @@ trait HasArangoSearchFunctions
     {
         $arguments = func_get_args();
 
+        /** @var string $analyzer */
         $analyzer = array_pop($arguments);
 
         $predicates = $arguments;
@@ -48,6 +49,7 @@ trait HasArangoSearchFunctions
     {
         $arguments = func_get_args();
 
+        /** @var int|float $boost */
         $boost = array_pop($arguments);
 
         $predicates = $arguments;
@@ -68,8 +70,11 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#bm25
      */
-    public function bm25(mixed $doc, mixed $k = null, mixed $b = null): FunctionExpression
-    {
+    public function bm25(
+        string|Expression $doc,
+        int|float|Expression|QueryBuilder $k = null,
+        int|float|Expression|QueryBuilder $b = null
+    ): FunctionExpression {
         $arguments = [
             $doc,
             $k,
@@ -85,13 +90,16 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#tfidf
      */
-    public function tfidf(mixed $doc, mixed $normalize = null): FunctionExpression
-    {
+    public function tfidf(
+        string|Expression $doc,
+        bool|Expression|QueryBuilder $normalize = null
+    ): FunctionExpression {
         $arguments = [
             $doc,
-            $normalize,
         ];
-        $arguments = array_filter($arguments);
+        if (isset($normalize)) {
+            $arguments[] = $normalize;
+        }
 
         return new FunctionExpression('TFIDF', $arguments);
     }
@@ -124,19 +132,19 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#in_range
      *
-     * @param string|object $path
-     * @param mixed $low
-     * @param mixed $high
-     * @param mixed|null $includeLow
-     * @param mixed|null $includeHigh
+     * @param string|Expression $path
+     * @param int|float|string|Expression|QueryBuilder $low
+     * @param int|float|string|Expression|QueryBuilder $high
+     * @param bool|Expression|QueryBuilder|null $includeLow
+     * @param bool|Expression|QueryBuilder|null $includeHigh
      * @return FunctionExpression
      */
     public function inRange(
-        mixed $path,
-        mixed $low,
-        mixed $high,
-        mixed $includeLow = null,
-        mixed $includeHigh = null
+        string|Expression $path,
+        int|float|string|Expression|QueryBuilder $low,
+        int|float|string|Expression|QueryBuilder $high,
+        bool|Expression|QueryBuilder $includeLow = null,
+        bool|Expression|QueryBuilder $includeHigh = null
     ): FunctionExpression {
         $arguments = [
             "path" => $path,

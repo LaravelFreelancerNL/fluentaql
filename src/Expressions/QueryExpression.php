@@ -28,7 +28,7 @@ class QueryExpression extends Expression implements ExpressionInterface
 
         // Extract collections
         foreach (array_keys($this->queryBuilder->collections) as $mode) {
-            $queryBuilder->registerCollections($this->queryBuilder->collections[$mode], $mode);
+            $queryBuilder->registerCollections($this->queryBuilder->collections[(string) $mode], (string) $mode);
         }
 
         return '(' . $this->queryBuilder . ')';

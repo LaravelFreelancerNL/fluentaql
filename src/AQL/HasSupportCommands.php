@@ -6,7 +6,10 @@ namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Clauses\RawClause;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
+use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Trait hasFunctions.
@@ -18,11 +21,17 @@ trait HasSupportCommands
 
     abstract public function addCommand($command);
 
-    abstract public function bind(mixed $data, string $to = null);
+    /**
+     * @param object|array<mixed>|string|int|float|bool|null $data
+     */
+    abstract public function bind(
+        object|array|string|int|float|bool|null $data,
+        string $to = null
+    ): BindExpression;
 
     /**
-     * @param array<mixed> $binds
-     * @param array<mixed> $collections
+     * @param array<object|array<mixed>|string|int|float|bool|null> $binds
+     * @param array<string, string|Expression|QueryBuilder> $collections
      * @throws BindException
      */
     public function raw(
@@ -30,9 +39,7 @@ trait HasSupportCommands
         array $binds = [],
         array $collections = []
     ): self {
-        foreach ($binds as $key => $value) {
-            $this->bind($value, $key);
-        }
+        $this->bindArrayValues($binds);
 
         foreach ($collections as $mode => $modeCollections) {
             $this->registerCollections($modeCollections, $mode);
@@ -46,8 +53,8 @@ trait HasSupportCommands
     abstract public function registerCollections($collections, $mode = 'write');
 
     /**
-     * @param array<mixed> $binds
-     * @param array<mixed> $collections
+     * @param array<array-key, array<array-key, mixed>|null|object|scalar> $binds
+     * @param array<string, string|Expression|QueryBuilder> $collections
      * @throws BindException
      */
     public function rawExpression(
@@ -55,9 +62,7 @@ trait HasSupportCommands
         array $binds = [],
         array $collections = []
     ): LiteralExpression {
-        foreach ($binds as $key => $value) {
-            $this->bind($value, $key);
-        }
+        $this->bindArrayValues($binds);
 
         foreach ($collections as $mode => $modeCollections) {
             $this->registerCollections($modeCollections, $mode);

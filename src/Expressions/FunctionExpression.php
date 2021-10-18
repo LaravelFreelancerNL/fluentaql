@@ -17,18 +17,20 @@ class FunctionExpression extends Expression implements ExpressionInterface
     protected string $functionName;
 
     /**
-     * @var array<mixed>
+     * @var array<array-key, mixed>
      */
-    protected $parameters = [];
+    protected array $parameters = [];
 
     /**
      * FunctionExpression constructor.
      *
      * @param string $functionName
-     * @param mixed $parameters
+     * @param array<array-key, mixed>|object|scalar|null $parameters
      */
-    public function __construct(string $functionName, mixed $parameters = [])
-    {
+    public function __construct(
+        string $functionName,
+        object|array|string|int|float|bool|null $parameters = []
+    ) {
         $this->functionName = $functionName;
 
         if (! is_array($parameters)) {
@@ -44,6 +46,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
             $normalizeFunction = $this->getNormalizeFunctionName();
             $this->$normalizeFunction($queryBuilder);
         }
+
         $output = strtoupper($this->functionName) . '(';
         $output .= implode(', ', $this->compileParameters($this->parameters, $queryBuilder));
         $output .= ')';
@@ -54,15 +57,18 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * @param array<mixed> $parameters
      * @param QueryBuilder $queryBuilder
-     * @return array<mixed>
+     * @return array<string>
      */
     protected function compileParameters(
         array $parameters,
         QueryBuilder $queryBuilder
     ): array {
         $compiledParameters = [];
+
+        /** @var Expression $parameter */
         foreach ($parameters as $key => $parameter) {
             if ($key === 'predicates') {
+                /** @var PredicateExpression $parameter */
                 $compiledParameters[] = $queryBuilder->compilePredicates($parameter);
 
                 continue;

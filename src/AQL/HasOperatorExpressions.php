@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\ArithmeticExpression;
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\TernaryExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Trait hasFunctions.
@@ -18,11 +21,13 @@ trait HasOperatorExpressions
      * Evaluate a condition
      *
      * @link https://www.arangodb.com/docs/stable/aql/operators.html#ternary-operator
+     *
+     * @param array<mixed>|PredicateExpression $conditions
      */
     public function if(
-        mixed $conditions,
+        array|PredicateExpression $conditions,
         mixed $then,
-        mixed $else
+        mixed $else = null
     ): TernaryExpression {
         return new TernaryExpression($conditions, $then, $else);
     }
@@ -33,9 +38,9 @@ trait HasOperatorExpressions
      * @link https://www.arangodb.com/docs/stable/aql/operators.html#arithmetic-operators
      */
     public function calc(
-        mixed $leftOperand,
+        int|float|null|Expression|QueryBuilder $leftOperand,
         string $operator,
-        mixed $rightOperand
+        int|float|null|Expression|QueryBuilder $rightOperand
     ): ArithmeticExpression {
         return new ArithmeticExpression($leftOperand, $operator, $rightOperand);
     }
