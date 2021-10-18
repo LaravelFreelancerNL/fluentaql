@@ -20,7 +20,7 @@ trait NormalizesExpressions
     abstract public function bind(mixed $data, string $to = null);
 
     /**
-     * @param null|string[] $allowedExpressionTypes
+     * @param null|string[]|string $allowedExpressionTypes
      * @throws ExpressionTypeException
      */
     public function normalizeArgument(

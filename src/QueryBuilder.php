@@ -130,13 +130,13 @@ class QueryBuilder
     /**
      * Remove the last, or the specified, Command.
      *
-     * @param numeric|null $index
+     * @param int|null $index
      * @return bool
      */
-    public function removeCommand($index = null): bool
+    public function removeCommand(int $index = null): bool
     {
         if ($index === null) {
-            return (array_pop($this->commands)) ? true : false;
+            return (bool)array_pop($this->commands);
         }
         if (isset($this->commands[$index])) {
             unset($this->commands[$index]);

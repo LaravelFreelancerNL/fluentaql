@@ -11,7 +11,7 @@ class CollectClause extends Clause
 {
 
     /**
-     * @var array<array<ArrayKey, string>>
+     * @var array<array<string[]>>|array<mixed>
      */
     protected array $groups;
 
@@ -19,7 +19,7 @@ class CollectClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<array<ArrayKey, string>> $groups
+     * @param  array<string[]> $groups
      */
     public function __construct(array $groups = [])
     {
@@ -47,9 +47,7 @@ class CollectClause extends Clause
             if ($groupOutput !== '') {
                 $groupOutput .= ',';
             }
-            /** @phpstan-ignore-next-line */
             $groupOutput .= ' ' . $group[0]->compile($queryBuilder);
-            /** @phpstan-ignore-next-line */
             $groupOutput .=  ' = ' . $group[1]->compile($queryBuilder);
         }
 
