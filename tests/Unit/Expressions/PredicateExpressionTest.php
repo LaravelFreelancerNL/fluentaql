@@ -62,4 +62,28 @@ class PredicateExpressionTest extends TestCase
 
         self::assertEquals('x == null', $result);
     }
+
+    public function testGroupOfPredicateExpressions()
+    {
+        $qb = new QueryBuilder();
+        $predicate1 = new PredicateExpression(
+            (new LiteralExpression('u.name')),
+            '==',
+            'Cookie Monster'
+        );
+        $predicate2 = new PredicateExpression(
+            (new LiteralExpression('u.age')),
+            '==',
+            27
+        );
+
+        $result = $qb->for('u', 'users')
+        ->filter([$predicate1, $predicate2])
+        ->return('u');
+
+        self::assertEquals(
+            'FOR u IN users FILTER u.name == @' . $qb->getQueryId() . '_1 AND u.age == 27 RETURN u',
+            $result->get()->query
+        );
+    }
 }

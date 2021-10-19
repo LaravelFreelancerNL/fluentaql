@@ -6,6 +6,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
 /**
+ * @covers \LaravelFreelancerNL\FluentAQL\QueryBuilder
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasSupportCommands
  * @covers \LaravelFreelancerNL\FluentAQL\Clauses\RawClause
  */

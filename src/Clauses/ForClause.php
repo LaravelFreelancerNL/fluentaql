@@ -21,18 +21,15 @@ class ForClause extends Clause
     protected array|Expression|ExpressionInterface|QueryBuilder|string|null $in;
 
     /**
-     * @param array<string|Expression>|string|Expression $variables
+     * @param array<string|Expression> $variables
      * @param array<mixed>|string|QueryBuilder|Expression|null $in
      */
     public function __construct(
-        array|string|Expression $variables,
+        array $variables,
         array|string|QueryBuilder|Expression $in = null
     ) {
         parent::__construct();
 
-        if (!is_array($variables)) {
-            $variables = [$variables];
-        }
         $this->variables = $variables;
 
         $this->in = $in;

@@ -19,7 +19,6 @@ use LaravelFreelancerNL\FluentAQL\Clauses\WindowClause;
 use LaravelFreelancerNL\FluentAQL\Clauses\WithCountClause;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use phpDocumentor\Reflection\Types\ArrayKey;
 
 /**
  * Trait hasQueryClauses
@@ -192,7 +191,6 @@ trait HasQueryClauses
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
      * @param mixed ...$references
-     * @return QueryBuilder
      */
     public function sort(...$references): self
     {

@@ -439,4 +439,29 @@ class QueryClausesTest extends TestCase
             $result->query
         );
     }
+
+    public function testWindowClauseUnbounded()
+    {
+        $result = (new QueryBuilder())
+            ->for('t', 'observations')
+            ->window(['preceding' => 'unbounded', 'following' => 10], 't.time')
+            ->get();
+
+        self::assertEquals(
+            'FOR t IN observations WINDOW t.time WITH {"preceding":"unbounded","following":10}',
+            $result->query
+        );
+    }
+    public function testWindowClauseDurationBasedAggregation()
+    {
+        $qb = new QueryBuilder();
+        $qb->for('t', 'observations')
+            ->window(['preceding' => 'PT30M'], $qb->dateTimestamp('t.time'))
+            ->get();
+
+        self::assertEquals(
+            'FOR t IN observations WINDOW DATE_TIMESTAMP(t.time) WITH {"preceding":"PT30M"}',
+            $qb->get()->query
+        );
+    }
 }
