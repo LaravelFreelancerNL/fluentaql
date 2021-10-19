@@ -85,7 +85,7 @@ trait HasDocumentFunctions
     }
 
     /**
-     * Calculate the distance between two coordinates with the Haversine formula.
+     * Merge the documents document1 to documentN into a single document.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#merge
      *
