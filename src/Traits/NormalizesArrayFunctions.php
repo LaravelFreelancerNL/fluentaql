@@ -74,6 +74,16 @@ trait NormalizesArrayFunctions
         );
     }
 
+    protected function normalizeUnion(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeArrays($queryBuilder);
+    }
+
+    protected function normalizeUnionDistinct(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeArrays($queryBuilder);
+    }
+
     protected function normalizeUnique(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(

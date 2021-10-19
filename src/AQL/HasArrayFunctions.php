@@ -138,6 +138,34 @@ trait HasArrayFunctions
     }
 
     /**
+     * Return the union of all arrays specified.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#union
+     *
+     * @param array<mixed>|Expression|QueryBuilder $arrays
+     * @return FunctionExpression
+     */
+    public function union(
+        array|Expression|QueryBuilder ...$arrays
+    ): FunctionExpression {
+        return new FunctionExpression('UNION', [$arrays]);
+    }
+
+    /**
+     * Return the union of distinct values of all arrays specified.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#union_distinct
+     *
+     * @param array<mixed>|Expression|QueryBuilder $arrays
+     * @return FunctionExpression
+     */
+    public function unionDistinct(
+        array|Expression|QueryBuilder ...$arrays
+    ): FunctionExpression {
+        return new FunctionExpression('UNION_DISTINCT', [$arrays]);
+    }
+
+    /**
      * Return all unique elements in an Array.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#unique

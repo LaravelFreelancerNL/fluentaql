@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
+use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Geo AQL functions.
@@ -28,10 +30,17 @@ trait HasStringFunctions
      * Concatenate the strings passed as arguments value1 to valueN using the separator string.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator
+     *
+     * @param string|Expression|QueryBuilder $separator
+     * @param array<int, string|array<string>|Expression|QueryBuilder> ...$values
+     * @return FunctionExpression
      */
     public function concatSeparator(
-        string|object ...$arguments
+        string|Expression|QueryBuilder $separator,
+        string|array|Expression|QueryBuilder ...$values
     ): FunctionExpression {
+        $arguments = array_merge([$separator], $values);
+
         return new FunctionExpression('CONCAT_SEPARATOR', $arguments);
     }
 

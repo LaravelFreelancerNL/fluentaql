@@ -74,6 +74,29 @@ class ArrayFunctionsTest extends TestCase
         self::assertEquals('RETURN SHIFT([1,3,4,5])', $qb->get()->query);
     }
 
+    public function testUnion()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->union([ 1, 2, 3 ], [ 1, 2 ]));
+
+        self::assertSame(
+            'RETURN UNION([[1,2,3],[1,2]])',
+            $qb->get()->query
+        );
+    }
+
+    public function testUnionDistinct()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->unionDistinct([ 1, 2, 3 ], [ 1, 2 ]));
+
+        self::assertSame(
+            'RETURN UNION_DISTINCT([[1,2,3],[1,2]])',
+            $qb->get()->query
+        );
+    }
+
+
     public function testUnique()
     {
         $qb = new QueryBuilder();
