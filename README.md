@@ -2,7 +2,7 @@
 
 Fluent PHP query builder for [ArangoDB’s](https://www.arangodb.com) Query Language ([AQL](https://www.arangodb.com/docs/stable/aql/)).
 
-[![Latest Unstable Version](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/v/unstable)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
+[![Latest Version](https://poser.pugx.org/laravel-freelancer-nl/fluentaql/v/stable)](//packagist.org/packages/laravel-freelancer-nl/fluentaql)
 ![Github CI tests](https://github.com/LaravelFreelancerNL/fluentaql/workflows/Continuous%20Integration/badge.svg)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/quality-score.png?b=next)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=next)
 [![Code Coverage](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/badges/coverage.png?b=next)](https://scrutinizer-ci.com/g/LaravelFreelancerNL/fluentaql/?branch=next)
