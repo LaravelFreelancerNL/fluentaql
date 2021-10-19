@@ -89,10 +89,10 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#merge
      *
-     * @param  array<mixed>  $documents
+     * @param  array<mixed>|string|Expression  $documents
      * @return FunctionExpression
      */
-    public function merge(array ...$documents): FunctionExpression
+    public function merge(string|array|Expression ...$documents): FunctionExpression
     {
         return new FunctionExpression('MERGE', $documents);
     }

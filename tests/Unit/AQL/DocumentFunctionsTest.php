@@ -69,6 +69,29 @@ class DocumentFunctionsTest extends TestCase
         self::assertEquals('RETURN MERGE({"user1":{"name":"Janet"}}, {"user2":{"name":"Tom"}})', $qb->get()->query);
     }
 
+    public function testMergeVariable()
+    {
+        $qb = new QueryBuilder();
+
+        $qb->for('u', 'users')
+            ->return(
+                $qb->merge(
+                    'u',
+                    [
+                        'user1' => ['name' => 'Janet']
+                    ],
+                    [
+                        'user2' => ['name' => 'Tom']
+                    ]
+                )
+            );
+
+        self::assertEquals(
+            'FOR u IN users RETURN MERGE(u, {"user1":{"name":"Janet"}}, {"user2":{"name":"Tom"}})',
+            $qb->get()->query
+        );
+    }
+
     public function testMergeWithArrayOfDocuments()
     {
         $qb = new QueryBuilder();

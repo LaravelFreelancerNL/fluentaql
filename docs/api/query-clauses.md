@@ -294,6 +294,31 @@ FOR user IN users
 
 [ArangoDB AGGREGATE documentation](https://www.arangodb.com/docs/stable/aql/operations-collect.html#aggregation)
 
+## WINDOW
+```
+window(
+        array|object $offsets,
+        string|QueryBuilder|Expression $rangeValue = null
+    )
+```
+Aggregate adjacent documents or value ranges with a sliding window
+to calculate running totals, rolling averages, and other statistical properties
+
+**Example 1:**
+```php
+$qb->window(['preceding' => 5, 'following' => 10])
+``` 
+Resulting AQL: `... WINDOW { "preceding": 5, "following": 10 } ...`
+
+**Example 2: using range-based aggregation**
+```php
+$qb->window(['preceding' => 5, 'following' => 10], 't.time')
+``` 
+Resulting AQL: `... WINDOW t.time WITH { "preceding": 5, "following": 10 } ...`
+
+[ArangoDB WINDOW documentation](https://www.arangodb.com/docs/stable/aql/operations-window.html)
+
+
 ## Other clauses
 
 ### OPTIONS
