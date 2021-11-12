@@ -47,6 +47,7 @@ The following functions are directly supported in FluentAql.
 | countDistinct($value) | [COUNT_DISTINCT(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-array.html#count) |
 | first($value)         | [FIRST(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-array.html#first) | 
 | flatten($array, $depth)| [FLATTEN(anyArray, depth)](https://www.arangodb.com/docs/stable/aql/functions-array.html#flatten) | 
+| intersection($arrays) | [INTERSECTION(array1, array2, ... arrayN)](https://www.arangodb.com/docs/stable/aql/functions-array.html#intersection) | 
 | last($value)          | [LAST(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-array.html#last) | 
 | length($value)        | [LENGTH(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-array.html#length) | 
 | shift($array)         | [SHIFT(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-array.html#shift) | 
@@ -108,8 +109,13 @@ The following functions are directly supported in FluentAql.
 ### Miscellaneous functions
 | Description           | AQL Function |
 | :-------------------- | :-------------------------------------------------------------------------------------------- |
+| assert($leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [ASSERT(expr, message)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#assert--warn) |
+| currentDatabase()| [CURRENT_DATABASE()](https://www.arangodb.com/docs/stable/aql/functions-string.html#current_user) | 
+| currentUser()| [CURRENT_USER()](https://www.arangodb.com/docs/stable/aql/functions-string.html#current_user) |
+| document($collection, $id) | [DOCUMENT(collection, id)](https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document) | 
 | document($collection, $id) | [DOCUMENT(collection, id)](https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document) | 
 | firstDocument(...$arguments) | [FIRST_DOCUMENT(alternative, ...)](https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#first_document) | 
+| warn($leftOperand, $comparisonOperand, $rightOperand, $analyzer) | [WARN(expr, message)](https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#assert--warn) |
 
 
 ### Numeric functions

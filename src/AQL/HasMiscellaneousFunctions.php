@@ -19,6 +19,32 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait HasMiscellaneousFunctions
 {
     /**
+     * Throws an error if the given predicate fails.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#assert--warn
+     */
+    public function assert(): FunctionExpression
+    {
+        $arguments = func_get_args();
+
+        /** @var string $errorMessage */
+        $errorMessage = array_pop($arguments);
+
+        $predicates = $arguments;
+        if (! is_array($predicates[0])) {
+            $predicates = [[
+                ...$predicates
+            ]];
+        }
+        $preppedArguments = [
+            'predicates' => $predicates,
+            'errorMessage' => $errorMessage
+        ];
+
+        return new FunctionExpression('ASSERT', $preppedArguments);
+    }
+
+    /**
      * Return one or more specific documents from a collection.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
@@ -31,6 +57,31 @@ trait HasMiscellaneousFunctions
         string|array|QueryBuilder|Expression $id = null
     ): FunctionExpression {
         return new FunctionExpression('DOCUMENT', ['collection' => $collection, 'id' => $id]);
+    }
+
+
+    /**
+     * Returns the name of the current database.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#current_database
+     *
+     * @return FunctionExpression
+     */
+    public function currentDatabase()
+    {
+        return new FunctionExpression('CURRENT_DATABASE');
+    }
+
+    /**
+     * Return the name of the current user.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#current_user
+     *
+     * @return FunctionExpression
+     */
+    public function currentUser()
+    {
+        return new FunctionExpression('CURRENT_USER');
     }
 
     /**
@@ -46,4 +97,31 @@ trait HasMiscellaneousFunctions
     {
         return new FunctionExpression('FIRST_DOCUMENT', $arguments);
     }
+
+    /**
+     * Returns false and gives a warning if the given predicate fails.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#assert--warn
+     */
+    public function warn(): FunctionExpression
+    {
+        $arguments = func_get_args();
+
+        /** @var string $errorMessage */
+        $errorMessage = array_pop($arguments);
+
+        $predicates = $arguments;
+        if (! is_array($predicates[0])) {
+            $predicates = [[
+                ...$predicates
+            ]];
+        }
+        $preppedArguments = [
+            'predicates' => $predicates,
+            'errorMessage' => $errorMessage
+        ];
+
+        return new FunctionExpression('WARN', $preppedArguments);
+    }
+
 }

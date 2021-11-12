@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -13,6 +14,21 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait NormalizesMiscellaneousFunctions
 {
+    protected function normalizeAssert(QueryBuilder $queryBuilder): void
+    {
+        if (
+            ! is_array($this->parameters['predicates'])
+            && ! $this->parameters['predicates'] instanceof PredicateExpression
+        ) {
+            $this->parameters['predicates'] = [$this->parameters['predicates']];
+        }
+        $this->parameters['predicates'] = $queryBuilder->normalizePredicates($this->parameters['predicates']);
+        $this->parameters['errorMessage'] = $queryBuilder->normalizeArgument(
+            $this->parameters['errorMessage'],
+            ['Reference', 'Query', 'Bind']
+        );
+    }
+
     protected function normalizeDocument(QueryBuilder $queryBuilder): void
     {
         if ($this->parameters['id']  === null) {
@@ -35,5 +51,10 @@ trait NormalizesMiscellaneousFunctions
     protected function normalizeFirstDocument(QueryBuilder $queryBuilder): void
     {
         $this->normalizeAny($queryBuilder);
+    }
+
+    protected function normalizeWarn(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeAssert($queryBuilder);
     }
 }

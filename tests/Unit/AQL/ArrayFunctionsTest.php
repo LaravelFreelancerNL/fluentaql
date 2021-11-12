@@ -53,6 +53,13 @@ class ArrayFunctionsTest extends TestCase
         self::assertEquals('RETURN FLATTEN([1,2,[3,4],5,[6,7],[8,[9,10]]], 1)', $qb->get()->query);
     }
 
+    public function testIntersection()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->intersection([1, 2, 3], [ 3, 4 ], [5], [ 6, 7 ], [ 8, [ 9, 10 ] ]));
+        self::assertEquals('RETURN INTERSECTION([1,2,3], [3,4], [5], [6,7], [8,[9,10]])', $qb->get()->query);
+    }
+
     public function testLast()
     {
         $qb = new QueryBuilder();

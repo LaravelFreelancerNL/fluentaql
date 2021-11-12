@@ -97,6 +97,18 @@ trait HasArrayFunctions
         return new FunctionExpression('FLATTEN', $arguments);
     }
 
+    /**
+     * Return the intersection of all arrays specified.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#intersection
+     *
+     * @param array<mixed> ...$arrays
+     * @return FunctionExpression
+     */
+    public function intersection(array ...$arrays): FunctionExpression
+    {
+        return new FunctionExpression('INTERSECTION', $arrays);
+    }
 
     /**
      * Get the last element of an array.

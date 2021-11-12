@@ -56,6 +56,11 @@ trait NormalizesArrayFunctions
         );
     }
 
+    protected function normalizeIntersection(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeArrays($queryBuilder);
+    }
+
     protected function normalizeLast(QueryBuilder $queryBuilder): void
     {
         $this->normalizeArrays($queryBuilder);
