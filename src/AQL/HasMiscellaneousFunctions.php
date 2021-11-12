@@ -123,5 +123,4 @@ trait HasMiscellaneousFunctions
 
         return new FunctionExpression('WARN', $preppedArguments);
     }
-
 }

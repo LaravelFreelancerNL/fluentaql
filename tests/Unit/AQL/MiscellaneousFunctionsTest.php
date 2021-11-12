@@ -115,6 +115,4 @@ class MiscellaneousFunctionsTest extends TestCase
             $qb->get()->query
         );
     }
-
-
 }
