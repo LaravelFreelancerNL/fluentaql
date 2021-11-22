@@ -203,7 +203,7 @@ class QueryBuilder
 
         $to = $this->grammar->formatBind($to, false);
 
-        return new BindExpression($to);
+        return new BindExpression($to, $data);
     }
 
     /**

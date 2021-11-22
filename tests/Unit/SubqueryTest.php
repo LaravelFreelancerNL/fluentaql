@@ -44,6 +44,7 @@ class SubqueryTest extends TestCase
             ->filter('u.active', '==', 'something to bind')
             ->return('u._key')
             ->get();
+
         self::assertEquals(
             'FOR u IN users FILTER u.active == @' . $subQuery->getQueryId() . '_1 RETURN u._key',
             $subQuery->query

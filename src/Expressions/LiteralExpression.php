@@ -17,7 +17,7 @@ class LiteralExpression extends Expression implements ExpressionInterface
      * @param  QueryBuilder  $queryBuilder
      * @return string
      */
-    public function compile(QueryBuilder $queryBuilder = null): string
+    public function compile(QueryBuilder $queryBuilder): string
     {
         return (string) $this->expression;
     }

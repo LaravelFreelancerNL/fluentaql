@@ -18,7 +18,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 trait NormalizesExpressions
 {
-
     /**
      * @param object|array<mixed>|string|int|float|bool|null $data
      */
@@ -36,6 +35,8 @@ trait NormalizesExpressions
         array|string $allowedExpressionTypes = null
     ): Expression {
         if ($argument instanceof Expression) {
+            $argument = $this->processBindExpression($argument);
+
             return $argument;
         }
 
@@ -265,5 +266,17 @@ trait NormalizesExpressions
         }
 
         return new ObjectExpression($this->normalizeIterable((array) $argument, $allowedExpressionTypes));
+    }
+
+    public function processBindExpression(Expression $argument): Expression
+    {
+        if ($argument instanceof BindExpression) {
+            $bindKey = ltrim($argument->getBindVariable(), '@');
+
+            if (!isset($this->binds[$bindKey])) {
+                $this->binds[$bindKey] = $argument->getData();
+            }
+        }
+        return $argument;
     }
 }
