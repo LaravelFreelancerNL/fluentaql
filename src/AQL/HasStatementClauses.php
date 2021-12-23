@@ -19,7 +19,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasStatementClauses
 {
-
     abstract public function addCommand($command);
 
     /**

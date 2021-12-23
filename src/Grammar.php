@@ -14,9 +14,9 @@ class Grammar
     use ValidatesExpressions;
 
     /**
-     * All of the available predicate operators.
+     * Available predicate operators.
      *
-     * @var array|int[]
+     * @var array<string, int>
      */
     protected array $comparisonOperators = [
         '=='      => 1,
@@ -140,12 +140,13 @@ class Grammar
 
     /**
      * Get the format for database stored dates.
+     * ArangoDB's date functions support ISO8601 strings up to milliseconds. We default to Zulu time (UTC)
      *
      * @return string
      */
     public function getDateFormat()
     {
-        return 'Y-m-d\TH:i:s.v\Z';
+        return 'Y-m-d\TH:i:s.u\Z';
     }
 
     public function wrap(
@@ -182,5 +183,13 @@ class Grammar
     public function getAllowedExpressionTypes(): array
     {
         return $this->defaultAllowedExpressionTypes;
+    }
+
+    /**
+     * @return array<string, int>
+     */
+    public function getComparisonOperators(): array
+    {
+        return $this->comparisonOperators;
     }
 }

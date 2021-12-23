@@ -33,7 +33,6 @@ use stdClass;
  */
 class QueryClausesTest extends TestCase
 {
-
     public function testForClause()
     {
         $result = (new QueryBuilder())

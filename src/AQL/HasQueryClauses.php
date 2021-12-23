@@ -26,7 +26,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasQueryClauses
 {
-
     abstract public function addCommand($command);
 
     /**

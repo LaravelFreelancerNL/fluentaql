@@ -471,4 +471,15 @@ class GrammarTest extends TestCase
         $result = $qb->grammar->getDateformat();
         self::assertEquals('Y-m-d\TH:i:s.v\Z', $result);
     }
+
+    public function testGetComparisonOperators()
+    {
+        $qb = new QueryBuilder();
+
+        $operators = $qb->grammar->getComparisonOperators();
+
+        $this->assertCount(32, $operators);
+        $this->assertArrayHasKey('LIKE', $operators);
+        $this->assertSame(1, $operators['==']);
+    }
 }

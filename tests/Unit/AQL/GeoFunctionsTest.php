@@ -11,7 +11,6 @@ use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
  */
 class GeoFunctionsTest extends TestCase
 {
-
     public function testDistance()
     {
         $qb = new QueryBuilder();

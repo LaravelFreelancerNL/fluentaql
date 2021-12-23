@@ -7,11 +7,9 @@ namespace LaravelFreelancerNL\FluentAQL\Clauses;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use phpDocumentor\Reflection\Types\ArrayKey;
 
 class CollectClause extends Clause
 {
-
     /**
      * @var array<array<string[]>>|array<mixed>
      */

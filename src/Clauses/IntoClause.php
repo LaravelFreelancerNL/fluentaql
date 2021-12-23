@@ -9,7 +9,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class IntoClause extends Clause
 {
-
     protected string|QueryBuilder|Expression $groupsVariable;
 
     protected mixed $projectionExpression;

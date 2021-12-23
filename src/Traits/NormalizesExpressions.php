@@ -70,8 +70,6 @@ trait NormalizesExpressions
      * @psalm-suppress MoreSpecificReturnType
      *
      * @param array<array-key, mixed>|object|scalar $argument
-     * @param string $argumentType
-     * @return Expression
      * @throws BindException
      */
     protected function createExpression(
@@ -87,6 +85,7 @@ trait NormalizesExpressions
         }
         $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
 
+        /** @phpstan-ignore-next-line */
         return new $expressionClass($argument);
     }
 

@@ -18,7 +18,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
  */
 trait HasSupportCommands
 {
-
     abstract public function addCommand($command);
 
     /**

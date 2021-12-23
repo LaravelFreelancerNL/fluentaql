@@ -9,7 +9,6 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 class ArithmeticExpression extends Expression implements ExpressionInterface
 {
-
     /**
      * @var array<int|string|float|null|Expression|QueryBuilder>
      */
