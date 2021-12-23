@@ -146,7 +146,7 @@ class Grammar
      */
     public function getDateFormat()
     {
-        return 'Y-m-d\TH:i:s.u\Z';
+        return 'Y-m-d\TH:i:s.v\Z';
     }
 
     public function wrap(
