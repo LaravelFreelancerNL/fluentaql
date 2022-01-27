@@ -43,6 +43,60 @@ trait NormalizesStringFunctions
         );
     }
 
+    protected function normalizeFindFirst(QueryBuilder $queryBuilder): void
+    {
+        $this->parameters['text'] = $queryBuilder->normalizeArgument(
+            $this->parameters['text'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters['search'] = $queryBuilder->normalizeArgument(
+            $this->parameters['search'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        if (isset($this->parameters['start'])) {
+            $this->parameters['start'] = $queryBuilder->normalizeArgument(
+                $this->parameters['start'],
+                ['Number', 'Query', 'Reference', 'Bind']
+            );
+        }
+
+        if (isset($this->parameters['end'])) {
+            $this->parameters['end'] = $queryBuilder->normalizeArgument(
+                $this->parameters['end'],
+                ['Number', 'Query', 'Reference', 'Bind']
+            );
+        }
+    }
+
+    protected function normalizeFindLast(QueryBuilder $queryBuilder): void
+    {
+        $this->parameters['text'] = $queryBuilder->normalizeArgument(
+            $this->parameters['text'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters['search'] = $queryBuilder->normalizeArgument(
+            $this->parameters['search'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        if (isset($this->parameters['start'])) {
+            $this->parameters['start'] = $queryBuilder->normalizeArgument(
+                $this->parameters['start'],
+                ['Number', 'Query', 'Reference', 'Bind']
+            );
+        }
+
+        if (isset($this->parameters['end'])) {
+            $this->parameters['end'] = $queryBuilder->normalizeArgument(
+                $this->parameters['end'],
+                ['Number', 'Query', 'Reference', 'Bind']
+            );
+        }
+    }
+
     protected function normalizeLevenshteinDistance(QueryBuilder $queryBuilder): void
     {
         $this->normalizeStrings($queryBuilder);
@@ -161,6 +215,11 @@ trait NormalizesStringFunctions
             $this->parameters['char'],
             ['Query', 'Reference', 'Bind']
         );
+    }
+
+    protected function normalizeSoundex(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeStrings($queryBuilder);
     }
 
     protected function normalizeSplit(QueryBuilder $queryBuilder): void

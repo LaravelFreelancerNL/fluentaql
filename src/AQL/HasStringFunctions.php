@@ -60,6 +60,57 @@ trait HasStringFunctions
     }
 
     /**
+     * Return the position of the first occurrence of the string search inside the string text. Positions start at 0.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#find_first
+     */
+    public function findFirst(
+        string|object $text,
+        string|object $search,
+        int|object $start = null,
+        int|object $end = null
+    ): FunctionExpression {
+        $arguments = [
+            'text' => $text,
+            'search' => $search,
+        ];
+        if (isset($start)) {
+            $arguments['start'] = $start;
+        }
+        if (isset($end)) {
+            $arguments['end'] = $end;
+        }
+
+        return new FunctionExpression('FIND_FIRST', $arguments);
+    }
+
+
+    /**
+     * Return the position of the last occurrence of the string search inside the string text. Positions start at 0.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#find_last
+     */
+    public function findLast(
+        string|object $text,
+        string|object $search,
+        int|object $start = null,
+        int|object $end = null
+    ): FunctionExpression {
+        $arguments = [
+            'text' => $text,
+            'search' => $search,
+        ];
+        if (isset($start)) {
+            $arguments['start'] = $start;
+        }
+        if (isset($end)) {
+            $arguments['end'] = $end;
+        }
+
+        return new FunctionExpression('FIND_LAST', $arguments);
+    }
+
+    /**
      * Calculate the Damerau-Levenshtein distance between two strings.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#levenshtein_distance
@@ -185,6 +236,17 @@ trait HasStringFunctions
         ];
 
         return new FunctionExpression('RTRIM', $arguments);
+    }
+
+    /**
+     * Return the soundex fingerprint of value.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#soundex
+     */
+    public function soundex(
+        string|object $value,
+    ): FunctionExpression {
+        return new FunctionExpression('SOUNDEX', [$value]);
     }
 
     /**

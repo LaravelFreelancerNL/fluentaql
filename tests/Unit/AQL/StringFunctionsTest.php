@@ -51,6 +51,90 @@ class StringFunctionsTest extends TestCase
         );
     }
 
+    public function testContainsReturnsIndex()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->contains('foobarbaz', 'bar', true));
+        self::assertEquals(
+            'RETURN CONTAINS(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, true)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindFirst()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findFirst('foobarbaz', 'bar'));
+        self::assertEquals(
+            'RETURN FIND_FIRST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindFirstWithStart()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findFirst('foobarbaz', 'bar', 3));
+        self::assertEquals(
+            'RETURN FIND_FIRST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, 3)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindFirstWithStartAndEnd()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findFirst('foobarbaz', 'bar', 3, 12));
+        self::assertEquals(
+            'RETURN FIND_FIRST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, 3, 12)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindLast()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findLast('foobarbaz', 'bar'));
+        self::assertEquals(
+            'RETURN FIND_LAST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindLastWithStart()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findLast('foobarbaz', 'bar', 3));
+        self::assertEquals(
+            'RETURN FIND_LAST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, 3)',
+            $qb->get()->query
+        );
+    }
+
+    public function testFindLastWithStartAndEnd()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->findLast('foobarbaz', 'bar', 3, 12));
+        self::assertEquals(
+            'RETURN FIND_LAST(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2, 3, 12)',
+            $qb->get()->query
+        );
+    }
+
     public function testContainsReturnIndex()
     {
         $qb = new QueryBuilder();
@@ -166,6 +250,17 @@ class StringFunctionsTest extends TestCase
             'RETURN RTRIM(@'
             . $qb->getQueryId() . '_1, @'
             . $qb->getQueryId() . '_2)',
+            $qb->get()->query
+        );
+    }
+
+    public function testSoundex()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->soundex('foobarbaz'));
+        self::assertEquals(
+            'RETURN SOUNDEX(@'
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
