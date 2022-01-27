@@ -83,6 +83,23 @@ trait HasStringFunctions
     }
 
     /**
+     * Return the string value with whitespace (or supplied characters) stripped from the start.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#ltrim
+     */
+    public function ltrim(
+        string|object $value,
+        null|string|object $char = null
+    ): FunctionExpression {
+        $arguments = [
+            'value' => $value,
+            'char' => $char,
+        ];
+
+        return new FunctionExpression('LTRIM', $arguments);
+    }
+
+    /**
      * Check whether the string search is contained in the string text.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#contains
@@ -151,6 +168,23 @@ trait HasStringFunctions
         bool|object $caseInsensitive = false
     ): FunctionExpression {
         return new FunctionExpression('REGEX_TEST', [$text, $search, $caseInsensitive]);
+    }
+
+    /**
+     * Return the string value with whitespace (or supplied characters) stripped from the end.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#rtrim
+     */
+    public function rtrim(
+        string|object $value,
+        null|string|object $char = null
+    ): FunctionExpression {
+        $arguments = [
+            'value' => $value,
+            'char' => $char,
+        ];
+
+        return new FunctionExpression('RTRIM', $arguments);
     }
 
     /**
@@ -242,7 +276,7 @@ trait HasStringFunctions
      */
     public function trim(
         string|object $value,
-        int|object $type
+        null|string|int|object $type = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,

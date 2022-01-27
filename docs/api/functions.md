@@ -135,23 +135,25 @@ The following functions are directly supported in FluentAql.
 
 
 ### String functions
-| Description           | AQL Function |
-| :-------------------- | :-------------------------------------------------------------------------------------------- |
-| concat(...$arguments) | [CONCAT(value1, value2, ... valueN)](https://www.arangodb.com/docs/stable/aql/functions-string.html#concat) | 
-| concatSeparator($separator, $values) | [CONCAT_SEPARATOR(separator, value1, value2, ... valueN)](https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator) | 
-| levenshteinDistance($value1, $value2) | [LEVENSHTEIN_DISTANCE(value1, value2)](https://www.arangodb.com/docs/stable/aql/functions-string.html#levenshtein_distance) | 
-| lower($value)| [LOWER(value)](https://www.arangodb.com/docs/stable/aql/functions-string.html#lower) | 
-| regexMatches($text, $regex, $caseInsensitive)| [REGEX_MATCHES(text, regex, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_matches) | 
-| regexReplace($text, $regex, $replacement, $caseInsensitive)| [REGEX_REPLACE(text, search, replacement, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_replace) | 
-| regexSplit($text, $splitExpression, $caseInsensitive, $limit)| [REGEX_SPLIT(text, splitExpression, caseInsensitive, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_split) | 
-| regexTest($text, $search, $caseInsensitive)| [REGEX_TEST(text, search, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_test) | 
-| split($value, $separator, $limit)| [SPLIT(value, separator, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#split) | 
-| substitute($text, $search, $replace, $limit)| [SUBSTITUTE(value, search, replace, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute) | 
-| substring($value, $offset, $length)| [SUBSTRING(value, offset, length)](https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute) | 
-| tokens($input, $analyzer)| [TOKENS(input, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-string.html#tokens) | 
-| trim($value, $type)| [TRIM(value, type)](https://www.arangodb.com/docs/stable/aql/functions-string.html#trim) | 
-| upper($value)| [UPPER(value)](https://www.arangodb.com/docs/stable/aql/functions-string.html#upper) | 
-| uuid()| [UUID()](https://www.arangodb.com/docs/stable/aql/functions-string.html#uuid) | 
+| Description                                                    | AQL Function                                                                                                                               |
+|:---------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------|
+| concat(...$arguments)                                          | [CONCAT(value1, value2, ... valueN)](https://www.arangodb.com/docs/stable/aql/functions-string.html#concat)                                | 
+| concatSeparator($separator, $values)                           | [CONCAT_SEPARATOR(separator, value1, value2, ... valueN)](https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator) | 
+| levenshteinDistance($value1, $value2)                          | [LEVENSHTEIN_DISTANCE(value1, value2)](https://www.arangodb.com/docs/stable/aql/functions-string.html#levenshtein_distance)                | 
+| lower($value)                                                  | [LOWER(value)](https://www.arangodb.com/docs/stable/aql/functions-string.html#lower)                                                       | 
+| ltrim($value, $char)                                           | [LTRIM(value, char)](https://www.arangodb.com/docs/stable/aql/functions-string.html#ltrim)                                                 | 
+| regexMatches($text, $regex, $caseInsensitive)                  | [REGEX_MATCHES(text, regex, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_matches)                | 
+| regexReplace($text, $regex, $replacement, $caseInsensitive)    | [REGEX_REPLACE(text, search, replacement, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_replace)  | 
+| regexSplit($text, $splitExpression, $caseInsensitive, $limit)  | [REGEX_SPLIT(text, splitExpression, caseInsensitive, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_split)   | 
+| regexTest($text, $search, $caseInsensitive)                    | [REGEX_TEST(text, search, caseInsensitive)](https://www.arangodb.com/docs/stable/aql/functions-string.html#regex_test)                     | 
+| rtrim($value, $char)                                           | [RTRIM(value, char)](https://www.arangodb.com/docs/stable/aql/functions-string.html#rtrim)                                                 | 
+| split($value, $separator, $limit)                              | [SPLIT(value, separator, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#split)                                     | 
+| substitute($text, $search, $replace, $limit)                   | [SUBSTITUTE(value, search, replace, limit)](https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute)                     | 
+| substring($value, $offset, $length)                            | [SUBSTRING(value, offset, length)](https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute)                              | 
+| tokens($input, $analyzer)                                      | [TOKENS(input, analyzer)](https://www.arangodb.com/docs/stable/aql/functions-string.html#tokens)                                           | 
+| trim($value, $type)                                            | [TRIM(value, type)](https://www.arangodb.com/docs/stable/aql/functions-string.html#trim)                                                   | 
+| upper($value)                                                  | [UPPER(value)](https://www.arangodb.com/docs/stable/aql/functions-string.html#upper)                                                       | 
+| uuid()                                                         | [UUID()](https://www.arangodb.com/docs/stable/aql/functions-string.html#uuid)                                                              | 
 
 
 ### Type functions

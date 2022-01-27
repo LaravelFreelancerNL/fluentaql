@@ -75,6 +75,29 @@ class StringFunctionsTest extends TestCase
         );
     }
 
+    public function testLeftTrim()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->ltrim("/   Lörem ipsüm, DOLOR SIT Ämet./"));
+        self::assertEquals(
+            'RETURN LTRIM(@'
+            . $qb->getQueryId() . '_1, null)',
+            $qb->get()->query
+        );
+    }
+
+    public function testLeftTrimWithChar()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->ltrim("/   Lörem ipsüm, DOLOR SIT Ämet./", '/'));
+        self::assertEquals(
+            'RETURN LTRIM(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2)',
+            $qb->get()->query
+        );
+    }
+
     public function testRegexMatches()
     {
         $qb = new QueryBuilder();
@@ -120,6 +143,29 @@ class StringFunctionsTest extends TestCase
             'RETURN REGEX_TEST(@'
             . $qb->getQueryId() . '_1, @'
             . $qb->getQueryId() . '_2, true)',
+            $qb->get()->query
+        );
+    }
+
+    public function testRightTrim()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->rtrim("/   Lörem ipsüm, DOLOR SIT Ämet./"));
+        self::assertEquals(
+            'RETURN RTRIM(@'
+            . $qb->getQueryId() . '_1, null)',
+            $qb->get()->query
+        );
+    }
+
+    public function testRightTrimWithChar()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->rtrim("/   Lörem ipsüm, DOLOR SIT Ämet./", '/'));
+        self::assertEquals(
+            'RETURN RTRIM(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }
@@ -172,13 +218,37 @@ class StringFunctionsTest extends TestCase
         );
     }
 
+
     public function testTrim()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->trim("   Lörem ipsüm, DOLOR SIT Ämet."));
+        self::assertEquals(
+            'RETURN TRIM(@'
+            . $qb->getQueryId() . '_1, null)',
+            $qb->get()->query
+        );
+    }
+
+    public function testTrimWithType()
     {
         $qb = new QueryBuilder();
         $qb->return($qb->trim("   Lörem ipsüm, DOLOR SIT Ämet.", 1));
         self::assertEquals(
             'RETURN TRIM(@'
             . $qb->getQueryId() . '_1, 1)',
+            $qb->get()->query
+        );
+    }
+
+    public function testTrimWithChar()
+    {
+        $qb = new QueryBuilder();
+        $qb->return($qb->trim("/   Lörem ipsüm, DOLOR SIT Ämet./", '/'));
+        self::assertEquals(
+            'RETURN TRIM(@'
+            . $qb->getQueryId() . '_1, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }

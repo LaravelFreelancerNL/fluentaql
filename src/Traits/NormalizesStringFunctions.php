@@ -53,6 +53,19 @@ trait NormalizesStringFunctions
         $this->normalizeStrings($queryBuilder);
     }
 
+    protected function normalizeLtrim(QueryBuilder $queryBuilder): void
+    {
+        $this->parameters['value'] = $queryBuilder->normalizeArgument(
+            $this->parameters['value'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters['char'] = $queryBuilder->normalizeArgument(
+            $this->parameters['char'],
+            ['Query', 'Reference', 'Bind']
+        );
+    }
+
     protected function normalizeRegexMatches(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(
@@ -134,6 +147,19 @@ trait NormalizesStringFunctions
         $this->parameters[2] = $queryBuilder->normalizeArgument(
             $this->parameters[2],
             ['Boolean', 'Query', 'Reference', 'Bind']
+        );
+    }
+
+    protected function normalizeRtrim(QueryBuilder $queryBuilder): void
+    {
+        $this->parameters['value'] = $queryBuilder->normalizeArgument(
+            $this->parameters['value'],
+            ['Query', 'Reference', 'Bind']
+        );
+
+        $this->parameters['char'] = $queryBuilder->normalizeArgument(
+            $this->parameters['char'],
+            ['Query', 'Reference', 'Bind']
         );
     }
 
