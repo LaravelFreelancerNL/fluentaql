@@ -165,7 +165,7 @@ trait ValidatesExpressions
     public function isAssociativeArray(array $array): bool
     {
         if (empty($array)) {
-            return true;
+            return false;
         }
 
         return !ctype_digit(implode('', array_keys($array)));

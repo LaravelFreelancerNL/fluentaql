@@ -78,13 +78,16 @@ class StatementClausesTest extends TestCase
 
     public function testInsertEmptyArrayStatement()
     {
-        $result = (new QueryBuilder())->insert('{
-          "traits": []
-        }', 'Characters')->get();
+        $characterData = [
+            "tags" => []
+        ];
 
-        self::assertEquals('{
-          "traits": []
-        }', $result->binds[$result->getQueryId() . '_1']);
+        $result = (new QueryBuilder())->insert($characterData, 'Characters')->get();
+
+        self::assertEquals(
+            'INSERT {"tags":[]} IN Characters',
+            $result->query
+        );
     }
 
 

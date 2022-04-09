@@ -405,7 +405,7 @@ class GrammarTest extends TestCase
         ];
 
         $result = $this->grammar->isAssociativeArray($emptyArray);
-        self::assertTrue($result);
+        self::assertFalse($result);
 
         $result = $this->grammar->isAssociativeArray($associativeArray);
         self::assertTrue($result);

@@ -74,7 +74,8 @@ class QueryClausesTest extends TestCase
                 )
             )
             ->get();
-        self::assertEquals('LET x = [1,2,3,4] FOR u IN (1 > 0) ? x : {}', $aqb->query);
+
+        self::assertEquals('LET x = [1,2,3,4] FOR u IN (1 > 0) ? x : []', $aqb->query);
     }
 
     public function testFilterClause()
