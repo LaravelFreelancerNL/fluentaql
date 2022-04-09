@@ -76,6 +76,18 @@ class StatementClausesTest extends TestCase
         self::assertEquals('INSERT @' . $result->getQueryId() . '_1 IN Characters', $result->query);
     }
 
+    public function testInsertEmptyArrayStatement()
+    {
+        $result = (new QueryBuilder())->insert('{
+          "traits": []
+        }', 'Characters')->get();
+
+        self::assertEquals('{
+          "traits": []
+        }', $result->binds[$result->getQueryId() . '_1']);
+    }
+
+
     public function testUpdateClause()
     {
         $result = (new QueryBuilder())
