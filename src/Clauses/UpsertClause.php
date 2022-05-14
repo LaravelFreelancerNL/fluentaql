@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -52,6 +53,9 @@ class UpsertClause extends Clause
         $this->replace = $replace;
     }
 
+    /**
+     * @throws ExpressionTypeException
+     */
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->search = $queryBuilder->normalizeArgument($this->search, ['RegisteredVariable', 'Key', 'Bind']);
@@ -66,7 +70,7 @@ class UpsertClause extends Clause
         }
 
         return "UPSERT {$this->search->compile($queryBuilder)} " .
-            "INSERT {$this->insert->compile($queryBuilder)} {$withClause} {$this->update->compile($queryBuilder)} " .
+            "INSERT {$this->insert->compile($queryBuilder)} $withClause {$this->update->compile($queryBuilder)} " .
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

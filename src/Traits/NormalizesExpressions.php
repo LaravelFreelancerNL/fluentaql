@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Traits;
 
+use DateTimeInterface;
 use LaravelFreelancerNL\FluentAQL\Exceptions\BindException;
 use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
@@ -28,16 +29,14 @@ trait NormalizesExpressions
 
     /**
      * @param null|string[]|string $allowedExpressionTypes
-     * @throws ExpressionTypeException
+     * @throws ExpressionTypeException|BindException
      */
     public function normalizeArgument(
         mixed $argument,
         array|string $allowedExpressionTypes = null
     ): Expression {
         if ($argument instanceof Expression) {
-            $argument = $this->processBindExpression($argument);
-
-            return $argument;
+            return $this->processBindExpression($argument);
         }
 
         if (is_scalar($argument)) {
@@ -91,9 +90,10 @@ trait NormalizesExpressions
 
     /**
      * @param array<mixed>|object $argument
-     * @param array<string>|string|null  $allowedExpressionTypes
+     * @param array<string>|string|null $allowedExpressionTypes
      * @return Expression
      * @throws ExpressionTypeException
+     * @throws BindException
      */
     protected function normalizeCompound(
         array|object $argument,
@@ -115,7 +115,7 @@ trait NormalizesExpressions
      * @param array<mixed> $argument
      * @param array<string>|string|null $allowedExpressionTypes
      * @return array<array-key, Expression>
-     * @throws ExpressionTypeException
+     * @throws ExpressionTypeException|BindException
      */
     protected function normalizeIterable(
         array $argument,
@@ -135,6 +135,7 @@ trait NormalizesExpressions
      * @param array<array-key, mixed>|PredicateExpression $predicates
      * @return array<array-key, mixed>|PredicateExpression
      * @throws ExpressionTypeException
+     * @throws BindException
      */
     public function normalizePredicates(
         array|PredicateExpression $predicates
@@ -157,7 +158,7 @@ trait NormalizesExpressions
     /**
      * @param array<mixed>|PredicateExpression $predicate
      * @return PredicateExpression
-     * @throws ExpressionTypeException
+     * @throws ExpressionTypeException|BindException
      */
     protected function normalizePredicate(array|PredicateExpression $predicate): PredicateExpression
     {
@@ -179,7 +180,11 @@ trait NormalizesExpressions
         }
 
         $logicalOperator = 'AND';
-        if (isset($predicate[3]) && $this->grammar->isLogicalOperator((string) $predicate[3])) {
+        if (
+            isset($predicate[3])
+            && isStringable($predicate[3])
+            && $this->grammar->isLogicalOperator((string) $predicate[3])
+        ) {
             $logicalOperator = (string) $predicate[3];
         }
 
@@ -224,18 +229,24 @@ trait NormalizesExpressions
             }
         }
 
-        throw new ExpressionTypeException(
-            "This argument, 
-            '{$argument}', does not match one of these expression types: "
+        $errorMessage = "The argument does not match one of these expression types: "
+            . implode(', ', $allowedExpressionTypes)
+            . '.';
+
+        if (isStringable($argument)) {
+            $errorMessage = "This argument '$argument', does not match one of these expression types: "
                 . implode(', ', $allowedExpressionTypes)
-                . '.'
-        );
+                . '.';
+        }
+
+        throw new ExpressionTypeException($errorMessage);
     }
 
     /**
      * @param array<mixed> $argument
-     * @param array<string>|string|null  $allowedExpressionTypes
+     * @param array<string>|string|null $allowedExpressionTypes
      * @throws ExpressionTypeException
+     * @throws BindException
      */
     protected function normalizeArray(
         array $argument,
@@ -251,13 +262,14 @@ trait NormalizesExpressions
     /**
      * @param array<string>|string|null $allowedExpressionTypes
      * @throws ExpressionTypeException
+     * @throws BindException
      */
     protected function normalizeObject(
         object $argument,
         null|array|string $allowedExpressionTypes = null
     ): Expression {
-        if ($argument instanceof \DateTimeInterface) {
-            return new StringExpression($argument->format(\DateTime::ATOM));
+        if ($argument instanceof DateTimeInterface) {
+            return new StringExpression($argument->format(DateTimeInterface::ATOM));
         }
 
         if ($argument instanceof QueryBuilder) {

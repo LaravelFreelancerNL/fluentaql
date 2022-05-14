@@ -37,7 +37,10 @@
     "psr-4": {
       "LaravelFreelancerNL\\FluentAQL\\": "src",
       "Tests\\":  "tests"
-    }
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "autoload-dev": {
     "classmap": [

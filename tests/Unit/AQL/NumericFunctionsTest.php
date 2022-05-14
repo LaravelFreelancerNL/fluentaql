@@ -39,11 +39,60 @@ class NumericFunctionsTest extends TestCase
         self::assertEquals('LET x = CEIL(0.4)', $qb->get()->query);
     }
 
+    public function testCosineSimilarity()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->cosineSimilarity([0,1], [1,0]));
+        self::assertEquals('LET x = COSINE_SIMILARITY([0,1], [1,0])', $qb->get()->query);
+    }
+
+    public function testDecayGauss()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->decayGauss(41, 40, 5, 5, 0.5));
+        self::assertEquals('LET x = DECAY_GAUSS(41, 40, 5, 5, 0.5)', $qb->get()->query);
+    }
+
+    public function testDecayGaussWithArray()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->decayGauss([20, 41], 40, 5, 5, 0.5));
+        self::assertEquals('LET x = DECAY_GAUSS([20,41], 40, 5, 5, 0.5)', $qb->get()->query);
+    }
+
+    public function testDecayExp()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->decayExp(49.9889, 50, 0.001, 0.001, 0.2));
+        self::assertEquals('LET x = DECAY_EXP(49.9889, 50, 0.001, 0.001, 0.2)', $qb->get()->query);
+    }
+
+    public function testDecayLinear()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->decayLinear(9.8, 0, 10, 0, 0.2));
+        self::assertEquals('LET x = DECAY_LINEAR(9.8, 0, 10, 0, 0.2)', $qb->get()->query);
+    }
+
     public function testFloor()
     {
         $qb = new QueryBuilder();
         $qb->let('x', $qb->floor(0.4));
         self::assertEquals('LET x = FLOOR(0.4)', $qb->get()->query);
+    }
+
+    public function testL1Distance()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->l1Distance([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1]));
+        self::assertEquals('LET x = L1_DISTANCE([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1])', $qb->get()->query);
+    }
+
+    public function testL2Distance()
+    {
+        $qb = new QueryBuilder();
+        $qb->let('x', $qb->l2Distance([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1]));
+        self::assertEquals('LET x = L2_DISTANCE([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1])', $qb->get()->query);
     }
 
     public function testMax()

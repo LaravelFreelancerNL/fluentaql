@@ -119,19 +119,25 @@ The following functions are directly supported in FluentAql.
 
 
 ### Numeric functions
-| Description           | AQL Function |
-| :-------------------- | :-------------------------------------------------------------------------------------------- |
-| average($value) | [AVERAGE(numArray](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average) | 
-| avg($value) | [AVG(numArray](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average) | 
-| ceil($value) | [CEIL(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#ceil) | 
-| floor($value) | [FLOOR(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#floor) | 
-| max($value) | [MAX(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#max) | 
-| min($value) | [MIN(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min) | 
-| product($array) | [PRODUCT(numArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min) | 
-| rand() | [RAND()](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#rand) | 
-| range($start, $stop, $step) | [RANGE(start, stop, step)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#range) | 
-| round($value) | [ROUND(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#round) | 
-| sum($value) | [SUM(numArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum) | 
+| Description                                           | AQL Function                                                                                                                      |
+|:------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------|
+| average($value)                                       | [AVERAGE(numArray](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average)                                       | 
+| avg($value)                                           | [AVG(numArray](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average)                                           | 
+| ceil($value)                                          | [CEIL(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#ceil)                                               | 
+| cosineSimilarity($x, $y)                              | [COSINE_SIMILARITY(x, y)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#cosine_similarity)                      | 
+| decayGauss($value, $origin, $scale, $offset, $decay)  | [DECAY_GAUSS(value, origin, scale, offset, decay)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_gauss)   | 
+| decayExp($value, $origin, $scale, $offset, $decay)    | [DECAY_EXP(value, origin, scale, offset, decay)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_exp)       | 
+| decayLinear($value, $origin, $scale, $offset, $decay) | [DECAY_LINEAR(value, origin, scale, offset, decay)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_linear) | 
+| floor($value)                                         | [FLOOR(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#floor)                                             | 
+| l1Distance($x, $y)                                    | [L1_DISTANCE(x, y)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l1_distance)                                  | 
+| l2Distance($x, $y)                                    | [L2_DISTANCE(x, y)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l2_distance)                                  | 
+| max($value)                                           | [MAX(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#max)                                              | 
+| min($value)                                           | [MIN(anyArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min)                                              | 
+| product($array)                                       | [PRODUCT(numArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min)                                          | 
+| rand()                                                | [RAND()](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#rand)                                                    | 
+| range($start, $stop, $step)                           | [RANGE(start, stop, step)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#range)                                 | 
+| round($value)                                         | [ROUND(value)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#round)                                             | 
+| sum($value)                                           | [SUM(numArray)](https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum)                                              | 
 
 
 ### String functions

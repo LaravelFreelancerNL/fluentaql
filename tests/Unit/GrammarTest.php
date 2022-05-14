@@ -469,7 +469,7 @@ class GrammarTest extends TestCase
     {
         $qb = new QueryBuilder();
         $result = $qb->grammar->getDateformat();
-        self::assertEquals('Y-m-d\TH:i:s.v\Z', $result);
+        self::assertEquals('Y-m-d\TH:i:s.vp', $result);
     }
 
     public function testGetComparisonOperators()

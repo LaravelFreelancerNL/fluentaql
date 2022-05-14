@@ -20,7 +20,37 @@ trait NormalizesNumericFunctions
         $this->normalizeNumbers($queryBuilder);
     }
 
+    protected function normalizeCosineSimilarity(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeDecayGauss(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeDecayExp(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeDecayLinear(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
     protected function normalizeFloor(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeL1Distance(QueryBuilder $queryBuilder): void
+    {
+        $this->normalizeNumbers($queryBuilder);
+    }
+
+    protected function normalizeL2Distance(QueryBuilder $queryBuilder): void
     {
         $this->normalizeNumbers($queryBuilder);
     }

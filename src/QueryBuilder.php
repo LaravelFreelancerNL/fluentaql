@@ -58,14 +58,14 @@ class QueryBuilder
      *
      * @var array<mixed> $collections
      */
-    public $collections = [];
+    public array $collections = [];
 
     /**
      * List of Clauses to be compiled into a query.
      *
      * @var array<mixed> $commands
      */
-    protected $commands = [];
+    protected array $commands = [];
 
     /**
      * Registry of variable names used in this query.
@@ -77,10 +77,8 @@ class QueryBuilder
     /**
      * ID of the query
      * Used as prefix for automatically generated bindings.
-     *
-     * @var int
      */
-    protected $queryId = 1;
+    protected int $queryId = 1;
 
     public function __construct()
     {
@@ -93,32 +91,24 @@ class QueryBuilder
      * Add an AQL command (raw AQL and Clauses.
      *
      * @param Clause|Expression|QueryBuilder $command
-     *
-     * @return void
      */
-    public function addCommand($command)
+    public function addCommand($command): void
     {
         $this->commands[] = $command;
     }
 
     /**
      * Get the clause list.
-     *
-     * @return mixed
      */
-    public function getCommands()
+    public function getCommands(): mixed
     {
         return $this->commands;
     }
 
     /**
      * Get the last, or a specific, command.
-     *
-     * @param int|null $index
-     *
-     * @return mixed
      */
-    public function getCommand(int $index = null)
+    public function getCommand(int $index = null): mixed
     {
         if ($index === null) {
             return end($this->commands);
@@ -129,9 +119,6 @@ class QueryBuilder
 
     /**
      * Remove the last, or the specified, Command.
-     *
-     * @param int|null $index
-     * @return bool
      */
     public function removeCommand(int $index = null): bool
     {
@@ -241,6 +228,9 @@ class QueryBuilder
         return new BindExpression($to);
     }
 
+    /**
+     * @throws BindException
+     */
     protected function validateBindVariable(?string $to): void
     {
         if (isset($to) && !$this->grammar->isBindParameter($to)) {
@@ -248,11 +238,6 @@ class QueryBuilder
         }
     }
 
-    /**
-     * @param null|string $to
-     *
-     * @return string
-     */
     protected function generateBindVariable(?string $to): string
     {
         if ($to == null) {
@@ -277,28 +262,19 @@ class QueryBuilder
         return $this;
     }
 
-    /**
-     * @return QueryBuilder $this
-     */
-    public function get()
+    public function get(): static
     {
         $this->compile();
 
         return $this;
     }
 
-    /**
-     * @return int $this
-     */
     public function getQueryId(): int
     {
         return $this->queryId;
     }
 
-    /**
-     * @return string
-     */
-    public function toAql()
+    public function toAql(): string
     {
         return $this->get()->query ?: "";
     }

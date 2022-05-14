@@ -48,6 +48,72 @@ trait HasNumericFunctions
     }
 
     /**
+     * Return the cosine similarity between x and y.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#cosine_similarity
+     *
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     */
+    public function cosineSimilarity(
+        array|QueryBuilder|Expression $x,
+        array|QueryBuilder|Expression $y
+    ): FunctionExpression {
+        return new FunctionExpression('COSINE_SIMILARITY', [$x, $y]);
+    }
+
+    /**
+     * Calculate the score for one or multiple values with a Gaussian function that decays
+     * depending on the distance of a numeric value from a user-given origin.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_gauss
+     *
+     * @param array<int|float>|int|float $value
+     */
+    public function decayGauss(
+        array|int|float|QueryBuilder|Expression $value,
+        int|float|QueryBuilder|Expression $origin,
+        int|float|QueryBuilder|Expression $scale,
+        int|float|QueryBuilder|Expression $offset,
+        int|float|QueryBuilder|Expression $decay,
+    ): FunctionExpression {
+        return new FunctionExpression('DECAY_GAUSS', [$value, $origin, $scale, $offset, $decay]);
+    }
+
+    /**
+     * Calculate the score for one or multiple values with an exponential function that decays depending
+     * on the distance of a numeric value from a user-given origin.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_exp
+     */
+    public function decayExp(
+        int|float|QueryBuilder|Expression $value,
+        int|float|QueryBuilder|Expression $origin,
+        int|float|QueryBuilder|Expression $scale,
+        int|float|QueryBuilder|Expression $offset,
+        int|float|QueryBuilder|Expression $decay,
+    ): FunctionExpression {
+        return new FunctionExpression('DECAY_EXP', [$value, $origin, $scale, $offset, $decay]);
+    }
+
+    /**
+     * Calculate the score for one or multiple values with a linear function that decays depending
+     * on the distance of a numeric value from a user-given origin.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_linear
+     */
+    public function decayLinear(
+        int|float|QueryBuilder|Expression $value,
+        int|float|QueryBuilder|Expression $origin,
+        int|float|QueryBuilder|Expression $scale,
+        int|float|QueryBuilder|Expression $offset,
+        int|float|QueryBuilder|Expression $decay,
+    ): FunctionExpression {
+        return new FunctionExpression('DECAY_LINEAR', [$value, $origin, $scale, $offset, $decay]);
+    }
+
+
+    /**
      * Return the integer closest but not greater than value.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#floor
@@ -56,6 +122,36 @@ trait HasNumericFunctions
         int|float|QueryBuilder|Expression $value
     ): FunctionExpression {
         return new FunctionExpression('FLOOR', [$value]);
+    }
+
+    /**
+     * Return the Manhattan distance between x and y.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l1_distance
+     *
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     */
+    public function l1Distance(
+        array|QueryBuilder|Expression $x,
+        array|QueryBuilder|Expression $y
+    ): FunctionExpression {
+        return new FunctionExpression('L1_DISTANCE', [$x, $y]);
+    }
+
+    /**
+     * Return the Euclidean distance between x and y.
+     *
+     * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l2_distance
+     *
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
+     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     */
+    public function l2Distance(
+        array|QueryBuilder|Expression $x,
+        array|QueryBuilder|Expression $y
+    ): FunctionExpression {
+        return new FunctionExpression('L2_DISTANCE', [$x, $y]);
     }
 
     /**

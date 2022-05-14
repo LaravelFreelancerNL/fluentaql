@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
@@ -27,6 +28,9 @@ class WithClause extends Clause
         $this->collections = $collections;
     }
 
+    /**
+     * @throws ExpressionTypeException
+     */
     public function compile(QueryBuilder $queryBuilder): string
     {
         $collections = [];

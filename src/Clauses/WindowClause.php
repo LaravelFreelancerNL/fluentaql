@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Clauses;
 
+use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use phpDocumentor\Reflection\Types\ArrayKey;
 
 class WindowClause extends Clause
 {
@@ -25,10 +25,15 @@ class WindowClause extends Clause
         array|object $offsets,
         null|string|QueryBuilder|Expression $rangeValue = null
     ) {
+        parent::__construct();
+
         $this->offsets = $offsets;
         $this->rangeValue = $rangeValue;
     }
 
+    /**
+     * @throws ExpressionTypeException
+     */
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->offsets = $queryBuilder->normalizeArgument(
