@@ -6,11 +6,6 @@ namespace Tests\Unit;
 
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 
-/**
- * Class StructureTest.
- *
- * @covers \LaravelFreelancerNL\FluentAQL\Helpers
- */
 class HelpersTest extends TestCase
 {
     public function testValidateBindParameterSyntax()
