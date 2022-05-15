@@ -158,4 +158,28 @@ class GraphClausesTest extends TestCase
              ->get();
         self::assertEquals('FOR u IN Users PRUNE u.active == true AND u.age > 18', $result->query);
     }
+
+    /**
+     * @covers \LaravelFreelancerNL\FluentAQL\Clauses\PruneClause
+     */
+    public function testPruneClauseWithVariable()
+    {
+        $result = (new QueryBuilder())
+            ->for('u', 'users')
+            ->prune('u.active', '==', 'true', null, 'pruneCondition')
+            ->get();
+        self::assertEquals('FOR u IN users PRUNE pruneCondition = u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune('u.active', '==', 'true', 'OR', 'pruneCondition')
+            ->get();
+        self::assertEquals('FOR u IN Users PRUNE pruneCondition = u.active == true', $result->query);
+
+        $result = (new QueryBuilder())
+            ->for('u', 'Users')
+            ->prune(['u.active', '==', 'true'], pruneVariable: 'pruneCondition')
+            ->get();
+        self::assertEquals('FOR u IN Users PRUNE pruneCondition = u.active == true', $result->query);
+    }
 }

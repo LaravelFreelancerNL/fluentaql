@@ -143,14 +143,15 @@ trait HasGraphClauses
         object|array|string|int|float|bool|null $leftOperand,
         string|QueryBuilder|Expression $comparisonOperator = null,
         object|array|string|int|float|bool|null $rightOperand = null,
-        string|QueryBuilder|Expression $logicalOperator = null
+        string|QueryBuilder|Expression $logicalOperator = null,
+        string $pruneVariable = null
     ): self {
         $predicates = $leftOperand;
         if (! is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
-        $this->addCommand(new PruneClause($predicates));
+        $this->addCommand(new PruneClause($predicates, $pruneVariable));
 
         return $this;
     }
