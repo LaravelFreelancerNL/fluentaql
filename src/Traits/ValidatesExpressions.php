@@ -129,7 +129,7 @@ trait ValidatesExpressions
     {
         if (
             is_string($value) &&
-            preg_match("/^[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%]+$/", $value)
+            preg_match("/^[a-zA-Z0-9_-]+\/(\/?[a-zA-Z0-9_\-\:\.\@\(\)\+\,\=\;\$\!\*\'\%])+$/", $value)
         ) {
             return true;
         }

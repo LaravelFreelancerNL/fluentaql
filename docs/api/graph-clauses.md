@@ -181,27 +181,102 @@ Resulting AQL: `WITH users, cities FOR v, e, p ANY "users/1" edge1, INBOUND edge
 
 ## PRUNE
 ```
-prune($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = null)
+prune($leftOperand, $comparisonOperator = null, $rightOperand = null, $logicalOperator = null, $pruneVariable)
 ```
 Filter out data not matching the given predicate(s).
 
 **Example - single predicate:**
 ```
-    $qb = new QueryBuilder();
+    $qb = (new QueryBuilder());
     $qb->for(['v', 'e', 'p'], '1..5')
         ->traverse('circles/A', 'OUTBOUND')
         ->graph("traversalGraph")
-        ->prune('e.theTruth' '==' true)
+        ->prune('e.theTruth', '==', true)
         ->return([
             'vertices' => 'p.vertices[*]._key',
             'edges' => 'p.edges[*].label'
-        ]);
+        ])
+        ->get();
 ``` 
 Resulting AQL: 
 ```
-FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
+FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
     PRUNE e.theTruth == true
-    RETURN { vertices: p.vertices[*]._key, edges: p.edges[*].label }
+    RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}
+```
+
+**Example - multiple predicates:**
+```
+    $qb = (new QueryBuilder());
+    $qb->for(['v', 'e', 'p'], '1..5')
+        ->traverse('circles/A', 'OUTBOUND')
+        ->graph("traversalGraph")
+        ->prune([['e.active', '==', 'true'], ['e.age', '>', 18]])
+        ->return([
+            'vertices' => 'p.vertices[*]._key',
+            'edges' => 'p.edges[*].label'
+        ])
+        ->get();
+``` 
+Resulting AQL:
+```
+FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"
+    PRUNE e.active == true AND e.age > 18
+    RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}
+```
+
+**Example - store condition in variable:**
+```
+    $qb = (new QueryBuilder());
+    $qb->for(['v', 'e', 'p'], '1..5')
+        ->traverse('circles/A', 'OUTBOUND')
+        ->graph("traversalGraph")
+        ->prune(
+            'e.theTruth',
+            '==',
+            true,
+            'OR',
+            'pruneCondition'
+        )
+        ->return([
+            'vertices' => 'p.vertices[*]._key',
+            'edges' => 'p.edges[*].label'
+        ])
+        ->get();
+``` 
+Resulting AQL:
+```
+    FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"
+        PRUNE pruneCondition = e.theTruth == true
+        RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}
+```
+
+
+**Example - multiple predicates stored in variable:**
+```
+    $qb = (new QueryBuilder());
+    $qb->for(['v', 'e', 'p'], '1..5')
+        ->traverse('circles/A', 'OUTBOUND')
+        ->graph("traversalGraph")
+        ->prune(
+            [
+                'e.theTruth',
+                '==',
+                true
+            ],
+            pruneVariable: 'pruneCondition'
+        )
+        ->return([
+            'vertices' => 'p.vertices[*]._key',
+            'edges' => 'p.edges[*].label'
+        ])
+        ->get();
+``` 
+Resulting AQL:
+```
+    FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"
+        PRUNE pruneCondition = e.theTruth == true
+        RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}
 ```
 
 [ArangoDB PRUNE documentation](https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#using-filters-and-the-explainer-to-extrapolate-the-costs)

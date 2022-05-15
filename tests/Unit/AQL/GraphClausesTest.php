@@ -128,23 +128,39 @@ class GraphClausesTest extends TestCase
      */
     public function testPruneClause()
     {
-        $result = (new QueryBuilder())
-            ->for('u', 'users')
-            ->prune('u.active', '==', 'true')
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune('e.theTruth', '==', true)
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
             ->get();
-        self::assertEquals('FOR u IN users PRUNE u.active == true', $result->query);
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
 
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->prune('u.active', '==', 'true', 'OR')
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune('e.theTruth', '==', true, 'OR')
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
             ->get();
-        self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
-
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->prune('u.active', '==', 'true')
-            ->get();
-        self::assertEquals('FOR u IN Users PRUNE u.active == true', $result->query);
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
     }
 
     /**
@@ -152,11 +168,22 @@ class GraphClausesTest extends TestCase
      */
     public function testPruneClauseWithMultiplePredicates()
     {
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->prune([['u.active', '==', 'true'], ['u.age', '>', 18]])
-             ->get();
-        self::assertEquals('FOR u IN Users PRUNE u.active == true AND u.age > 18', $result->query);
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune([['e.active', '==', 'true'], ['e.age', '>', 18]])
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
+            ->get();
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE e.active == true AND e.age > 18'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
     }
 
     /**
@@ -164,22 +191,78 @@ class GraphClausesTest extends TestCase
      */
     public function testPruneClauseWithVariable()
     {
-        $result = (new QueryBuilder())
-            ->for('u', 'users')
-            ->prune('u.active', '==', 'true', null, 'pruneCondition')
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune(
+                'e.theTruth',
+                '==',
+                true,
+                'OR',
+                'pruneCondition'
+            )
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
             ->get();
-        self::assertEquals('FOR u IN users PRUNE pruneCondition = u.active == true', $result->query);
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE pruneCondition = e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
 
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->prune('u.active', '==', 'true', 'OR', 'pruneCondition')
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune(
+                [
+                    'e.theTruth',
+                    '==',
+                    true
+                ],
+                pruneVariable: 'pruneCondition'
+            )
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
             ->get();
-        self::assertEquals('FOR u IN Users PRUNE pruneCondition = u.active == true', $result->query);
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE pruneCondition = e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
 
-        $result = (new QueryBuilder())
-            ->for('u', 'Users')
-            ->prune(['u.active', '==', 'true'], pruneVariable: 'pruneCondition')
+        $qb = (new QueryBuilder());
+        $qb->for(['v', 'e', 'p'], '1..5')
+            ->traverse('circles/A', 'OUTBOUND')
+            ->graph("traversalGraph")
+            ->prune(
+                [
+                    [
+                        'e.theTruth', '==', true
+                    ],
+                    [
+                        'e.theTruth', '!=', false
+                    ]
+                ],
+                pruneVariable: 'pruneCondition'
+            )
+            ->return([
+                'vertices' => 'p.vertices[*]._key',
+                'edges' => 'p.edges[*].label'
+            ])
             ->get();
-        self::assertEquals('FOR u IN Users PRUNE pruneCondition = u.active == true', $result->query);
+        self::assertEquals(
+            'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
+            . ' PRUNE pruneCondition = e.theTruth == true AND e.theTruth != false'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            $qb->query
+        );
     }
 }
