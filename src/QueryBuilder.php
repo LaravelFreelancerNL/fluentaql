@@ -164,7 +164,6 @@ class QueryBuilder
         if (is_string($variableName)) {
             $variableName = [$variableName => $variableName];
         }
-
         if (is_array($variableName)) {
             $this->variables = array_unique(array_merge($this->variables, $variableName));
         }

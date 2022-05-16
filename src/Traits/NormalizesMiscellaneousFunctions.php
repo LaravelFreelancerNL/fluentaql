@@ -44,7 +44,7 @@ trait NormalizesMiscellaneousFunctions
         }
         $this->parameters['id'] = $queryBuilder->normalizeArgument(
             $this->parameters['id'],
-            ['Id', 'Key', 'Query', 'List', 'Bind']
+            ['RegisteredVariable', 'Reference', 'Id', 'Key', 'Query', 'List', 'Bind']
         );
     }
 

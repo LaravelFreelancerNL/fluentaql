@@ -65,6 +65,16 @@ class MiscellaneousFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->document(['users/john', 'users/amy']));
         self::assertEquals('RETURN DOCUMENT(["users/john","users/amy"])', $qb->get()->query);
+
+
+        $qb = new QueryBuilder();
+        $qb->let('variable', 'collection/a')
+            ->return($qb->document("pages", 'variable'));
+
+        self::assertEquals(
+            'LET variable = @' . $qb->getQueryId() . '_1 RETURN DOCUMENT(pages, variable)',
+            $qb->get()->query
+        );
     }
 
     public function testCurrentDatabase()
