@@ -52,17 +52,21 @@ class SubqueryTest extends TestCase
 
         $result = (new QueryBuilder())
             ->for('u', 'users')
+            ->filter('u.name', '==', 'some name')
             ->filter('u._key', '==', $subQuery)
             ->return('u')
             ->get();
 
         self::assertEquals(
-            'FOR u IN users FILTER u._key == (FOR u IN users FILTER u.active == @' .
+            'FOR u IN users FILTER u.name == @' .
+            $result->getQueryId() .
+            '_1 FILTER u._key == (FOR u IN users FILTER u.active == @' .
                 $subQuery->getQueryId() .
                 '_1 RETURN u._key) RETURN u',
             $result->query
         );
 
+        self::assertArrayHasKey($result->getQueryId() . '_1', $result->binds);
         self::assertArrayHasKey($subQuery->getQueryId() . '_1', $result->binds);
     }
 
