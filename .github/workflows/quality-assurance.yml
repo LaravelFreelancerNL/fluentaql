@@ -1,4 +1,4 @@
-name: CI tests
+name: Quality Assurance
 
 on: [workflow_dispatch, push, pull_request]
 
@@ -7,23 +7,31 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php-versions: [8.0, 8.1]
-    name:  Quality checks PHP ${{ matrix.php-versions }}
+        php: [8.0]
+    name:  Quality checks P${{ matrix.php }}
+
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-composer-${{ hashFiles('composer.json') }}-php-${{ matrix.php }}
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-versions }}
+          php-version: ${{ matrix.php }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, short_open_tag=On
-          coverage: xdebug
+          coverage: none
           tools: composer:v2
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest
+        run: |
+          composer update --prefer-dist --no-interaction
 
       - name: Run all QA tests
         if: ${{ always() }}

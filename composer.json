@@ -24,14 +24,15 @@
   },
   "require-dev": {
     "ergebnis/composer-normalize": "^2.6",
+    "laravel/pint": "^0.1.7",
     "mockery/mockery": "^1.4",
     "nikic/php-parser": "^4.2@dev",
     "phpmd/phpmd": "^2.9",
     "phpstan/phpstan": "^1.2",
     "phpunit/phpunit": "^9.5",
-    "squizlabs/php_codesniffer": "^3.5",
-    "vimeo/psalm": "^4.10",
-    "scrutinizer/ocular": "^1.8"
+    "scrutinizer/ocular": "^1.8",
+    "sebastian/phpcpd": "^6.0",
+    "squizlabs/php_codesniffer": "^3.7"
   },
   "autoload": {
     "psr-4": {
@@ -47,5 +48,14 @@
       "tests/TestCase.php"
     ]
   },
-  "repositories": []
+  "repositories": [],
+  "scripts": {
+    "analyse": "vendor/bin/phpstan analyse",
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage",
+    "style": "vendor/bin/pint"
+  },
+  "config": {
+    "sort-packages": true
+  }
 }

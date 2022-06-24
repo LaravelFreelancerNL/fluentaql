@@ -1,9 +1,10 @@
 *.cache*
 .cache
 .idea
+clover.xml
 composer.phar
 composer.lock
 phpunit.phar
 ray.php
-clover.xml
+/build
 /vendor
