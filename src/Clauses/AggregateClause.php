@@ -10,6 +10,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class AggregateClause extends Clause
 {
     protected string|QueryBuilder|Expression $variableName;
+
     protected string|QueryBuilder|Expression $aggregateExpression;
 
     public function __construct(
@@ -31,7 +32,7 @@ class AggregateClause extends Clause
             ['Reference', 'Function', 'Query', 'Bind']
         );
 
-        return "AGGREGATE {$this->variableName->compile($queryBuilder)} " .
+        return "AGGREGATE {$this->variableName->compile($queryBuilder)} ".
             "= {$this->aggregateExpression->compile($queryBuilder)}";
     }
 }

@@ -14,7 +14,7 @@ class PruneClause extends FilterClause
     /**
      * Filter statement.
      *
-     * @param array<mixed> $predicates
+     * @param  array<mixed>  $predicates
      */
     public function __construct(
         array|PredicateExpression $predicates,
@@ -25,20 +25,19 @@ class PruneClause extends FilterClause
         $this->pruneVariable = $pruneVariable;
     }
 
-
     public function compile(QueryBuilder $queryBuilder): string
     {
         $aql = 'PRUNE ';
 
         if (isset($this->pruneVariable)) {
             $pruneVariable = $queryBuilder->normalizeArgument($this->pruneVariable, 'Variable');
-            $aql .= $pruneVariable->compile($queryBuilder) . ' = ';
+            $aql .= $pruneVariable->compile($queryBuilder).' = ';
         }
 
         $this->predicates = $queryBuilder->normalizePredicates($this->predicates);
 
         $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
-        return  $aql . rtrim($compiledPredicates);
+        return  $aql.rtrim($compiledPredicates);
     }
 }

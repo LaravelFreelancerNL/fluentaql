@@ -15,7 +15,7 @@ class ListExpression extends Expression implements ExpressionInterface
     /**
      * @psalm-suppress MixedArgumentTypeCoercion
      *
-     * @param array<array-key, null|object|scalar>|Expression $expression
+     * @param  array<array-key, null|object|scalar>|Expression  $expression
      */
     public function __construct(
         array|Expression $expression
@@ -43,6 +43,6 @@ class ListExpression extends Expression implements ExpressionInterface
             $outputStrings[] = $expressionElement->compile($queryBuilder);
         }
 
-        return '[' . implode(',', $outputStrings) . ']';
+        return '['.implode(',', $outputStrings).']';
     }
 }

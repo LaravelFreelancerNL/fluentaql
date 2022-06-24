@@ -21,7 +21,7 @@ class ArangoSearchFunctionsTest extends TestCase
             ->return($qb->analyzer('doc.text', '==', 'bar', 'text_en'));
 
         self::assertEquals(
-            'FOR doc IN viewName RETURN ANALYZER(doc.text == "bar", @' . $qb->getQueryId() . '_1)',
+            'FOR doc IN viewName RETURN ANALYZER(doc.text == "bar", @'.$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -37,7 +37,7 @@ class ArangoSearchFunctionsTest extends TestCase
 
         self::assertEquals(
             'FOR doc IN viewName RETURN ANALYZER((doc.text == "foo" OR doc.text == "bar"), @'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -73,13 +73,13 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer("bar", "text_en"))
+            ->search($qb->analyzer('bar', 'text_en'))
             ->sort($qb->bm25('doc'), 'desc')
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER("bar", @'
-            . $qb->getQueryId() . '_1) SORT BM25(doc) desc RETURN doc',
+            .$qb->getQueryId().'_1) SORT BM25(doc) desc RETURN doc',
             $qb->get()->query
         );
     }
@@ -88,45 +88,43 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer("bar", "text_en"))
+            ->search($qb->analyzer('bar', 'text_en'))
             ->sort($qb->bm25('doc', 0.75), 'desc')
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER("bar", @'
-            . $qb->getQueryId() . '_1) SORT BM25(doc, 0.75) desc RETURN doc',
+            .$qb->getQueryId().'_1) SORT BM25(doc, 0.75) desc RETURN doc',
             $qb->get()->query
         );
     }
-
 
     public function testBm25WithKAndB()
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer("bar", "text_en"))
+            ->search($qb->analyzer('bar', 'text_en'))
             ->sort($qb->bm25('doc', 0.75, 1), 'desc')
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER("bar", @'
-            . $qb->getQueryId() . '_1) SORT BM25(doc, 0.75, 1) desc RETURN doc',
+            .$qb->getQueryId().'_1) SORT BM25(doc, 0.75, 1) desc RETURN doc',
             $qb->get()->query
         );
     }
-
 
     public function testTfidf()
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer("bar", "text_en"))
+            ->search($qb->analyzer('bar', 'text_en'))
             ->sort($qb->tfidf('doc'), 'desc')
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER("bar", @'
-            . $qb->getQueryId() . '_1) SORT TFIDF(doc) desc RETURN doc',
+            .$qb->getQueryId().'_1) SORT TFIDF(doc) desc RETURN doc',
             $qb->get()->query
         );
     }
@@ -135,13 +133,13 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer("bar", "text_en"))
+            ->search($qb->analyzer('bar', 'text_en'))
             ->sort($qb->tfidf('doc', true), 'desc')
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER("bar", @'
-            . $qb->getQueryId() . '_1) SORT TFIDF(doc, true) desc RETURN doc',
+            .$qb->getQueryId().'_1) SORT TFIDF(doc, true) desc RETURN doc',
             $qb->get()->query
         );
     }
@@ -150,7 +148,7 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->exists("doc.text"))
+            ->search($qb->exists('doc.text'))
             ->return('doc');
 
         self::assertEquals(
@@ -159,17 +157,16 @@ class ArangoSearchFunctionsTest extends TestCase
         );
     }
 
-
     public function testExistsWithTypeCheck()
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->exists("doc.text", "string"))
+            ->search($qb->exists('doc.text', 'string'))
             ->return('doc');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH EXISTS(doc.text, @'
-            . $qb->getQueryId() . '_1) RETURN doc',
+            .$qb->getQueryId().'_1) RETURN doc',
             $qb->get()->query
         );
     }
@@ -178,7 +175,7 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->inRange("doc.value", 3, 5))
+            ->search($qb->inRange('doc.value', 3, 5))
             ->return('doc.value');
 
         self::assertEquals(
@@ -191,7 +188,7 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->inRange("doc.value", 3, 5, true, false))
+            ->search($qb->inRange('doc.value', 3, 5, true, false))
             ->return('doc.value');
 
         self::assertEquals(
@@ -204,12 +201,12 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->levenshteinMatch("doc.text", "quikc", 2))
+            ->search($qb->levenshteinMatch('doc.text', 'quikc', 2))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH LEVENSHTEIN_MATCH(doc.text, @'
-            . $qb->getQueryId() . '_1, 2) RETURN doc.text',
+            .$qb->getQueryId().'_1, 2) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -218,13 +215,13 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->levenshteinMatch("doc.text", "quikc", 2, false, 0, "now"))
+            ->search($qb->levenshteinMatch('doc.text', 'quikc', 2, false, 0, 'now'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH LEVENSHTEIN_MATCH(doc.text, @'
-            . $qb->getQueryId() . '_1, 2, false, 0, @'
-            . $qb->getQueryId() . '_2) RETURN doc.text',
+            .$qb->getQueryId().'_1, 2, false, 0, @'
+            .$qb->getQueryId().'_2) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -233,13 +230,13 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->analyzer($qb->like("doc.text", "foo%b_r"), "text_en"))
+            ->search($qb->analyzer($qb->like('doc.text', 'foo%b_r'), 'text_en'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH ANALYZER(LIKE(doc.text, @'
-            . $qb->getQueryId() . '_2), @'
-            . $qb->getQueryId() . '_1) RETURN doc.text',
+            .$qb->getQueryId().'_2), @'
+            .$qb->getQueryId().'_1) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -248,12 +245,12 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->nGramMatch("doc.text", "quick fox"))
+            ->search($qb->nGramMatch('doc.text', 'quick fox'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH NGRAM_MATCH(doc.text, @'
-            . $qb->getQueryId() . '_1) RETURN doc.text',
+            .$qb->getQueryId().'_1) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -262,13 +259,13 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->nGramMatch("doc.text", "quick fox", 0.8, "bigram"))
+            ->search($qb->nGramMatch('doc.text', 'quick fox', 0.8, 'bigram'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH NGRAM_MATCH(doc.text, @'
-            . $qb->getQueryId() . '_1, 0.8, @'
-            . $qb->getQueryId() . '_2) RETURN doc.text',
+            .$qb->getQueryId().'_1, 0.8, @'
+            .$qb->getQueryId().'_2) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -277,12 +274,12 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->phrase("doc.text", "quick fox"))
+            ->search($qb->phrase('doc.text', 'quick fox'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH PHRASE(doc.text, @'
-            . $qb->getQueryId() . '_1) RETURN doc.text',
+            .$qb->getQueryId().'_1) RETURN doc.text',
             $qb->get()->query
         );
     }
@@ -291,30 +288,29 @@ class ArangoSearchFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->phrase("doc.text", "quick fox", "text_en"))
+            ->search($qb->phrase('doc.text', 'quick fox', 'text_en'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH PHRASE(doc.text, @'
-            . $qb->getQueryId() . '_1, @'
-            . $qb->getQueryId() . '_2) RETURN doc.text',
+            .$qb->getQueryId().'_1, @'
+            .$qb->getQueryId().'_2) RETURN doc.text',
             $qb->get()->query
         );
     }
-
 
     public function testPhraseWithSkipsPartsAndAnalyzer()
     {
         $qb = new QueryBuilder();
         $qb->for('doc', 'viewName')
-            ->search($qb->phrase("doc.text", "ipsum", 2, "amet", "text_en"))
+            ->search($qb->phrase('doc.text', 'ipsum', 2, 'amet', 'text_en'))
             ->return('doc.text');
 
         self::assertEquals(
             'FOR doc IN viewName SEARCH PHRASE(doc.text, @'
-            . $qb->getQueryId() . '_1, 2, @'
-            . $qb->getQueryId() . '_2, @'
-            . $qb->getQueryId() . '_3) RETURN doc.text',
+            .$qb->getQueryId().'_1, 2, @'
+            .$qb->getQueryId().'_2, @'
+            .$qb->getQueryId().'_3) RETURN doc.text',
             $qb->get()->query
         );
     }

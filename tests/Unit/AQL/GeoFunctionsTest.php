@@ -26,8 +26,8 @@ class GeoFunctionsTest extends TestCase
             ->return($qb->distance('l.lat', 'l.lon', 'u.lat', 'u.lon'));
         self::assertEquals(
             'FOR l IN locations'
-            . ' FOR u IN users'
-            . ' RETURN DISTANCE(l.lat, l.lon, u.lat, u.lon)',
+            .' FOR u IN users'
+            .' RETURN DISTANCE(l.lat, l.lon, u.lat, u.lon)',
             $qb->get()->query
         );
     }
@@ -37,15 +37,15 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->return($qb->geoArea('polygon', 'wgs84'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' RETURN GEO_AREA(polygon, @'
-            . $qb->getQueryId() . '_1)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' RETURN GEO_AREA(polygon, @'
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -55,16 +55,16 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->return($qb->geoContains('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' RETURN GEO_CONTAINS(polygon, loc.address.geometry)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' RETURN GEO_CONTAINS(polygon, loc.address.geometry)',
             $qb->get()->query
         );
     }
@@ -74,7 +74,7 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->let('distance', $qb->geoDistance('loc.geometry', 'polygon'))
@@ -82,11 +82,11 @@ class GeoFunctionsTest extends TestCase
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' LET distance = GEO_DISTANCE(loc.geometry, polygon, @'
-            . $qb->getQueryId() . '_1)'
-            . ' RETURN distance',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' LET distance = GEO_DISTANCE(loc.geometry, polygon, @'
+            .$qb->getQueryId().'_1)'
+            .' RETURN distance',
             $qb->get()->query
         );
     }
@@ -96,16 +96,16 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->return($qb->geoEquals('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' RETURN GEO_EQUALS(polygon, loc.address.geometry)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' RETURN GEO_EQUALS(polygon, loc.address.geometry)',
             $qb->get()->query
         );
     }
@@ -115,16 +115,16 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->return($qb->geoIntersects('polygon', 'loc.address.geometry'));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' RETURN GEO_INTERSECTS(polygon, loc.address.geometry)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' RETURN GEO_INTERSECTS(polygon, loc.address.geometry)',
             $qb->get()->query
         );
     }
@@ -134,27 +134,26 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->return($qb->geoInRange('polygon', 'loc.address.geometry', 10, 100));
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' RETURN GEO_IN_RANGE(polygon, loc.address.geometry, 10, 100)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' RETURN GEO_IN_RANGE(polygon, loc.address.geometry, 10, 100)',
             $qb->get()->query
         );
     }
-
 
     public function testGeoInRangeIncludeEdges()
     {
         $qb = new QueryBuilder();
         $qb->let('polygon', [
             'type' => 'Polygon',
-            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]]
+            'coordinates' => [[[-11.5, 23.5], [-10.5, 26.1], [-11.2, 27.1], [-11.5, 23.5]]],
         ])
             ->for('loc', 'locations')
             ->return(
@@ -170,9 +169,9 @@ class GeoFunctionsTest extends TestCase
 
         self::assertEquals(
             'LET polygon = {"type":"Polygon",'
-            . '"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
-            . ' FOR loc IN locations'
-            . ' RETURN GEO_IN_RANGE(polygon, loc.address.geometry, 10, 100, false, true)',
+            .'"coordinates":[[[-11.5,23.5],[-10.5,26.1],[-11.2,27.1],[-11.5,23.5]]]}'
+            .' FOR loc IN locations'
+            .' RETURN GEO_IN_RANGE(polygon, loc.address.geometry, 10, 100, false, true)',
             $qb->get()->query
         );
     }
@@ -181,7 +180,7 @@ class GeoFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->return($qb->geoLineString([
-            [35, 10], [45, 45]
+            [35, 10], [45, 45],
         ]));
 
         self::assertEquals(
@@ -195,7 +194,7 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->geoMultiLineString([
             [[100.0, 0.0], [101.0, 1.0]],
-            [[102.0, 2.0], [101.0, 2.3]]
+            [[102.0, 2.0], [101.0, 2.3]],
         ]));
 
         self::assertEquals(
@@ -207,7 +206,7 @@ class GeoFunctionsTest extends TestCase
     public function testGeoMultiPoint()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->geoMultiPoint([[35,10],[45,45]]));
+        $qb->return($qb->geoMultiPoint([[35, 10], [45, 45]]));
 
         self::assertEquals(
             'RETURN GEO_MULTIPOINT([[35,10],[45,45]])',
@@ -242,17 +241,17 @@ class GeoFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->geoMultiPolygon([
             [
-                [[40, 40], [20, 45], [45, 30], [40, 40]]
+                [[40, 40], [20, 45], [45, 30], [40, 40]],
             ],
             [
                 [[20, 35], [10, 30], [10, 10], [30, 5], [45, 20], [20, 35]],
-                [[30, 20], [20, 15], [20, 25], [30, 20]]
-            ]
+                [[30, 20], [20, 15], [20, 25], [30, 20]],
+            ],
         ]));
 
         self::assertEquals(
             'RETURN GEO_MULTIPOLYGON([[[[40,40],[20,45],[45,30],[40,40]]'
-            . '],[[[20,35],[10,30],[10,10],[30,5],[45,20],[20,35]],[[30,20],[20,15],[20,25],[30,20]]]])',
+            .'],[[[20,35],[10,30],[10,10],[30,5],[45,20],[20,35]],[[30,20],[20,15],[20,25],[30,20]]]])',
             $qb->get()->query
         );
     }

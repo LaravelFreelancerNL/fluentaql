@@ -30,13 +30,14 @@ trait HasArangoSearchFunctions
         $predicates = $arguments;
         if (! is_array($predicates[0])) {
             $predicates = [[
-                ...$predicates
+                ...$predicates,
             ]];
         }
         $preppedArguments = [
             'predicates' => $predicates,
-            'analyzer' => $analyzer
+            'analyzer' => $analyzer,
         ];
+
         return new FunctionExpression('ANALYZER', $preppedArguments);
     }
 
@@ -55,13 +56,14 @@ trait HasArangoSearchFunctions
         $predicates = $arguments;
         if (! is_array($predicates[0])) {
             $predicates = [[
-                ...$predicates
+                ...$predicates,
             ]];
         }
         $preppedArguments = [
             'predicates' => $predicates,
-            'boost' => $boost
+            'boost' => $boost,
         ];
+
         return new FunctionExpression('BOOST', $preppedArguments);
     }
 
@@ -78,7 +80,7 @@ trait HasArangoSearchFunctions
         $arguments = [
             $doc,
             $k,
-            $b
+            $b,
         ];
         $arguments = array_filter($arguments);
 
@@ -109,9 +111,8 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#exists
      *
-     * @param Expression|QueryBuilder|string $path
-     * @param Expression|QueryBuilder|null|string $type
-     *
+     * @param  Expression|QueryBuilder|string  $path
+     * @param  Expression|QueryBuilder|null|string  $type
      * @return FunctionExpression
      */
     public function exists(
@@ -132,11 +133,11 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#in_range
      *
-     * @param string|Expression $path
-     * @param int|float|string|Expression|QueryBuilder $low
-     * @param int|float|string|Expression|QueryBuilder $high
-     * @param bool|Expression|QueryBuilder|null $includeLow
-     * @param bool|Expression|QueryBuilder|null $includeHigh
+     * @param  string|Expression  $path
+     * @param  int|float|string|Expression|QueryBuilder  $low
+     * @param  int|float|string|Expression|QueryBuilder  $high
+     * @param  bool|Expression|QueryBuilder|null  $includeLow
+     * @param  bool|Expression|QueryBuilder|null  $includeHigh
      * @return FunctionExpression
      */
     public function inRange(
@@ -147,11 +148,11 @@ trait HasArangoSearchFunctions
         bool|Expression|QueryBuilder $includeHigh = null
     ): FunctionExpression {
         $arguments = [
-            "path" => $path,
-            "low" => $low,
-            "high" => $high,
-            "includeLow" => $includeLow,
-            "includeHigh" => $includeHigh
+            'path' => $path,
+            'low' => $low,
+            'high' => $high,
+            'includeLow' => $includeLow,
+            'includeHigh' => $includeHigh,
         ];
         $arguments = $this->unsetNullValues($arguments);
 
@@ -164,12 +165,12 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#levenshtein_match
      *
-     * @param string|object $path
-     * @param string|object $target
-     * @param int|object $distance
-     * @param null|bool|object $transpositions
-     * @param null|int|object $maxTerms
-     * @param null|string|object $prefix
+     * @param  string|object  $path
+     * @param  string|object  $target
+     * @param  int|object  $distance
+     * @param  null|bool|object  $transpositions
+     * @param  null|int|object  $maxTerms
+     * @param  null|string|object  $prefix
      * @return FunctionExpression
      */
     public function levenshteinMatch(
@@ -181,12 +182,12 @@ trait HasArangoSearchFunctions
         mixed $prefix = null
     ): FunctionExpression {
         $arguments = [
-            "path" => $path,
-            "target" => $target,
-            "distance" => $distance,
-            "transpositions" => $transpositions,
-            "maxTerms" => $maxTerms,
-            "prefix" => $prefix,
+            'path' => $path,
+            'target' => $target,
+            'distance' => $distance,
+            'transpositions' => $transpositions,
+            'maxTerms' => $maxTerms,
+            'prefix' => $prefix,
         ];
         $arguments = $this->unsetNullValues($arguments);
 
@@ -203,8 +204,8 @@ trait HasArangoSearchFunctions
         mixed $search
     ): FunctionExpression {
         $arguments = [
-            "path" => $path,
-            "search" => $search,
+            'path' => $path,
+            'search' => $search,
         ];
 
         return new FunctionExpression('LIKE', $arguments);
@@ -216,10 +217,10 @@ trait HasArangoSearchFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#levenshtein_match
      *
-     * @param string|object $path
-     * @param string|object $target
-     * @param null|int|float|object $threshold
-     * @param null|string|object $analyzer
+     * @param  string|object  $path
+     * @param  string|object  $target
+     * @param  null|int|float|object  $threshold
+     * @param  null|string|object  $analyzer
      * @return FunctionExpression
      */
     public function nGramMatch(
@@ -229,10 +230,10 @@ trait HasArangoSearchFunctions
         mixed $analyzer = null
     ): FunctionExpression {
         $arguments = [
-            "path" => $path,
-            "target" => $target,
-            "threshold" => $threshold,
-            "analyzer" => $analyzer
+            'path' => $path,
+            'target' => $target,
+            'threshold' => $threshold,
+            'analyzer' => $analyzer,
         ];
         $arguments = $this->unsetNullValues($arguments);
 

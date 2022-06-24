@@ -14,14 +14,14 @@ class ArrayFunctionsTest extends TestCase
     public function testAppend()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->append([1, 2, 3, 4], [5,6]));
+        $qb->return($qb->append([1, 2, 3, 4], [5, 6]));
         self::assertEquals('RETURN APPEND([1,2,3,4], [5,6])', $qb->get()->query);
     }
 
     public function testAppendUnique()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->append([1, 2, 3, 4], [5,6], true));
+        $qb->return($qb->append([1, 2, 3, 4], [5, 6], true));
         self::assertEquals('RETURN APPEND([1,2,3,4], [5,6], true)', $qb->get()->query);
     }
 
@@ -49,14 +49,14 @@ class ArrayFunctionsTest extends TestCase
     public function testFlatten()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->flatten([ 1, 2, [ 3, 4 ], 5, [ 6, 7 ], [ 8, [ 9, 10 ] ] ]));
+        $qb->return($qb->flatten([1, 2, [3, 4], 5, [6, 7], [8, [9, 10]]]));
         self::assertEquals('RETURN FLATTEN([1,2,[3,4],5,[6,7],[8,[9,10]]], 1)', $qb->get()->query);
     }
 
     public function testIntersection()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->intersection([1, 2, 3], [ 3, 4 ], [5], [ 6, 7 ], [ 8, [ 9, 10 ] ]));
+        $qb->return($qb->intersection([1, 2, 3], [3, 4], [5], [6, 7], [8, [9, 10]]));
         self::assertEquals('RETURN INTERSECTION([1,2,3], [3,4], [5], [6,7], [8,[9,10]])', $qb->get()->query);
     }
 
@@ -77,14 +77,14 @@ class ArrayFunctionsTest extends TestCase
     public function testShift()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->shift([1,3,4,5]));
+        $qb->return($qb->shift([1, 3, 4, 5]));
         self::assertEquals('RETURN SHIFT([1,3,4,5])', $qb->get()->query);
     }
 
     public function testUnion()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->union([ 1, 2, 3 ], [ 1, 2 ]));
+        $qb->return($qb->union([1, 2, 3], [1, 2]));
 
         self::assertSame(
             'RETURN UNION([[1,2,3],[1,2]])',
@@ -95,7 +95,7 @@ class ArrayFunctionsTest extends TestCase
     public function testUnionDistinct()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->unionDistinct([ 1, 2, 3 ], [ 1, 2 ]));
+        $qb->return($qb->unionDistinct([1, 2, 3], [1, 2]));
 
         self::assertSame(
             'RETURN UNION_DISTINCT([[1,2,3],[1,2]])',
@@ -103,11 +103,10 @@ class ArrayFunctionsTest extends TestCase
         );
     }
 
-
     public function testUnique()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->unique([ 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5 ]));
+        $qb->return($qb->unique([1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5]));
         self::assertEquals('RETURN UNIQUE([1,2,2,3,3,3,4,4,4,4,5,5,5,5,5])', $qb->get()->query);
     }
 }

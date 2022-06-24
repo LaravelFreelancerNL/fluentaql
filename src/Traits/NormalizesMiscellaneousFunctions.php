@@ -31,8 +31,8 @@ trait NormalizesMiscellaneousFunctions
 
     protected function normalizeDocument(QueryBuilder $queryBuilder): void
     {
-        if ($this->parameters['id']  === null) {
-            $this->parameters['id']  = $this->parameters['collection'];
+        if ($this->parameters['id'] === null) {
+            $this->parameters['id'] = $this->parameters['collection'];
             unset($this->parameters['collection']);
         }
 

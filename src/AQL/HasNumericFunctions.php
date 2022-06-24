@@ -21,7 +21,8 @@ trait HasNumericFunctions
      * Return the average (arithmetic mean) of the values in array.
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#average
-     * @param array<mixed>|string|QueryBuilder|Expression $value
+     *
+     * @param  array<mixed>|string|QueryBuilder|Expression  $value
      */
     public function average(array|string|QueryBuilder|Expression $value): FunctionExpression
     {
@@ -29,7 +30,7 @@ trait HasNumericFunctions
     }
 
     /**
-     * @param array<mixed>|string|QueryBuilder|Expression $value
+     * @param  array<mixed>|string|QueryBuilder|Expression  $value
      */
     public function avg(array|string|QueryBuilder|Expression $value): FunctionExpression
     {
@@ -52,8 +53,8 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#cosine_similarity
      *
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $x
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $y
      */
     public function cosineSimilarity(
         array|QueryBuilder|Expression $x,
@@ -68,7 +69,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#decay_gauss
      *
-     * @param array<int|float>|int|float $value
+     * @param  array<int|float>|int|float  $value
      */
     public function decayGauss(
         array|int|float|QueryBuilder|Expression $value,
@@ -112,7 +113,6 @@ trait HasNumericFunctions
         return new FunctionExpression('DECAY_LINEAR', [$value, $origin, $scale, $offset, $decay]);
     }
 
-
     /**
      * Return the integer closest but not greater than value.
      *
@@ -129,8 +129,8 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l1_distance
      *
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $x
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $y
      */
     public function l1Distance(
         array|QueryBuilder|Expression $x,
@@ -144,8 +144,8 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#l2_distance
      *
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $x
-     * @param array<array<int|float>|int|float>|QueryBuilder|Expression $y
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $x
+     * @param  array<array<int|float>|int|float>|QueryBuilder|Expression  $y
      */
     public function l2Distance(
         array|QueryBuilder|Expression $x,
@@ -159,8 +159,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#max
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function max($value)
@@ -173,8 +172,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#min
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function min($value)
@@ -187,7 +185,7 @@ trait HasNumericFunctions
      *
      * https://www.arangodb.com/docs/stable/aql/functions-numeric.html#product
      *
-     * @param array<mixed>|object $array
+     * @param  array<mixed>|object  $array
      */
     public function product(
         array|object $array
@@ -235,8 +233,7 @@ trait HasNumericFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-numeric.html#sum
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function sum($value)

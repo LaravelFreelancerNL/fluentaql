@@ -26,7 +26,7 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-let.html
      *
-     * @param array<mixed>|string|QueryBuilder|Expression $expression
+     * @param  array<mixed>|string|QueryBuilder|Expression  $expression
      */
     public function let(
         string $variableName,
@@ -42,7 +42,7 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-insert.html
      *
-     * @param array<mixed>|object|string $document
+     * @param  array<mixed>|object|string  $document
      */
     public function insert(
         array|object|string $document,
@@ -58,8 +58,8 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-update.html
      *
-     * @param array<mixed>|string|object $document
-     * @param array<mixed>|string|object $with
+     * @param  array<mixed>|string|object  $document
+     * @param  array<mixed>|string|object  $with
      */
     public function update(
         array|string|object $document,
@@ -76,8 +76,8 @@ trait HasStatementClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-replace.html
      *
-     * @param array<mixed>|object|string $document
-     * @param array<mixed>|object|string $with
+     * @param  array<mixed>|object|string  $document
+     * @param  array<mixed>|object|string  $with
      */
     public function replace(
         array|object|string $document,
@@ -96,9 +96,9 @@ trait HasStatementClauses
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param array<mixed>|object|string $search
-     * @param array<mixed>|object|string $insert
-     * @param array<mixed>|object|string $update
+     * @param  array<mixed>|object|string  $search
+     * @param  array<mixed>|object|string  $insert
+     * @param  array<mixed>|object|string  $update
      */
     public function upsert(
         array|object|string $search,
@@ -116,7 +116,8 @@ trait HasStatementClauses
      * Remove a document from a collection.
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-remove.html
-     * @param array<mixed>|string|object $document
+     *
+     * @param  array<mixed>|string|object  $document
      */
     public function remove(
         array|object|string $document,

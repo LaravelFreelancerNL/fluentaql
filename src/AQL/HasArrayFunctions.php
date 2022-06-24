@@ -20,9 +20,9 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#append
      *
-     * @param array<mixed>|object $array
-     * @param mixed $values
-     * @param bool|null $unique
+     * @param  array<mixed>|object  $array
+     * @param  mixed  $values
+     * @param  bool|null  $unique
      * @return FunctionExpression
      */
     public function append(mixed $array, mixed $values, bool $unique = null): FunctionExpression
@@ -34,6 +34,7 @@ trait HasArrayFunctions
         if (isset($unique)) {
             $arguments['unique'] = $unique;
         }
+
         return new FunctionExpression('APPEND', $arguments);
     }
 
@@ -42,7 +43,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function count($value): FunctionExpression
@@ -55,13 +56,12 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#count_distinct
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function countDistinct($value): FunctionExpression
     {
-         return new FunctionExpression('COUNT_DISTINCT', [$value]);
+        return new FunctionExpression('COUNT_DISTINCT', [$value]);
     }
 
     /**
@@ -69,8 +69,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#first
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function first($value): FunctionExpression
@@ -83,8 +82,8 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#flatten
      *
-     * @param array<mixed>|object $array
-     * @param int|object $depth
+     * @param  array<mixed>|object  $array
+     * @param  int|object  $depth
      * @return FunctionExpression
      */
     public function flatten(mixed $array, mixed $depth = 1): FunctionExpression
@@ -102,7 +101,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#intersection
      *
-     * @param array<mixed> ...$arrays
+     * @param  array<mixed>  ...$arrays
      * @return FunctionExpression
      */
     public function intersection(array ...$arrays): FunctionExpression
@@ -115,8 +114,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#last
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function last($value): FunctionExpression
@@ -127,8 +125,7 @@ trait HasArrayFunctions
     /**
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#length
      *
-     * @param mixed $value
-     *
+     * @param  mixed  $value
      * @return FunctionExpression
      */
     public function length(mixed $value): FunctionExpression
@@ -141,7 +138,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#shift
      *
-     * @param array<mixed>|object $array
+     * @param  array<mixed>|object  $array
      * @return FunctionExpression
      */
     public function shift(mixed $array): FunctionExpression
@@ -154,7 +151,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#union
      *
-     * @param array<mixed>|Expression|QueryBuilder $arrays
+     * @param  array<mixed>|Expression|QueryBuilder  $arrays
      * @return FunctionExpression
      */
     public function union(
@@ -168,7 +165,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#union_distinct
      *
-     * @param array<mixed>|Expression|QueryBuilder $arrays
+     * @param  array<mixed>|Expression|QueryBuilder  $arrays
      * @return FunctionExpression
      */
     public function unionDistinct(
@@ -182,7 +179,7 @@ trait HasArrayFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-array.html#unique
      *
-     * @param array<mixed>|object $array
+     * @param  array<mixed>|object  $array
      * @return FunctionExpression
      */
     public function unique(mixed $array): FunctionExpression

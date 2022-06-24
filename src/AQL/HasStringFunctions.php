@@ -31,8 +31,8 @@ trait HasStringFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator
      *
-     * @param string|Expression|QueryBuilder $separator
-     * @param array<int, string|array<string>|Expression|QueryBuilder> ...$values
+     * @param  string|Expression|QueryBuilder  $separator
+     * @param  array<int, string|array<string>|Expression|QueryBuilder>  ...$values
      * @return FunctionExpression
      */
     public function concatSeparator(
@@ -83,7 +83,6 @@ trait HasStringFunctions
 
         return new FunctionExpression('FIND_FIRST', $arguments);
     }
-
 
     /**
      * Return the position of the last occurrence of the string search inside the string text. Positions start at 0.
@@ -197,7 +196,7 @@ trait HasStringFunctions
         $arguments = [
             'text' => $text,
             'splitExpression' => $splitExpression,
-            'caseInsensitive' => $caseInsensitive
+            'caseInsensitive' => $caseInsensitive,
         ];
         if (isset($limit)) {
             $arguments['limit'] = $limit;
@@ -278,8 +277,9 @@ trait HasStringFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#substitute
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     * @param string|array<mixed>|object $search
-     * @param string|array<mixed>|object $replace
+     *
+     * @param  string|array<mixed>|object  $search
+     * @param  string|array<mixed>|object  $replace
      */
     public function substitute(
         string|object $value,
@@ -295,6 +295,7 @@ trait HasStringFunctions
         if (isset($limit)) {
             $arguments['limit'] = $limit;
         }
+
         return new FunctionExpression('SUBSTITUTE', $arguments);
     }
 

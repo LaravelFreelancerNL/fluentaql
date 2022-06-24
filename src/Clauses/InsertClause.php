@@ -10,14 +10,14 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class InsertClause extends Clause
 {
     /**
-     * @var object|string|mixed[] $document
+     * @var object|string|mixed[]
      */
     protected array|object|string $document;
 
     protected string|QueryBuilder|Expression $collection;
 
     /**
-     * @param array<mixed>|object|string $document
+     * @param  array<mixed>|object|string  $document
      */
     public function __construct(
         array|object|string $document,
@@ -36,7 +36,6 @@ class InsertClause extends Clause
 
         $queryBuilder->registerCollections($this->collection);
         $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
-
 
         return "INSERT {$this->document->compile($queryBuilder)} IN {$this->collection->compile($queryBuilder)}";
     }

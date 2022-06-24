@@ -9,12 +9,12 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class OptionsClause extends Clause
 {
     /**
-     * @var mixed[]|object $options
+     * @var mixed[]|object
      */
     protected array|object $options;
 
     /**
-     * @param array<mixed>|object $options
+     * @param  array<mixed>|object  $options
      */
     public function __construct(array|object $options)
     {
@@ -25,6 +25,6 @@ class OptionsClause extends Clause
     {
         $this->options = $queryBuilder->normalizeArgument($this->options, 'Object');
 
-        return 'OPTIONS ' . $this->options->compile($queryBuilder);
+        return 'OPTIONS '.$this->options->compile($queryBuilder);
     }
 }

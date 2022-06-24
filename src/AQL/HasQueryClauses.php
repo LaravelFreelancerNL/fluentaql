@@ -33,14 +33,14 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-for.html
      *
-     * @param string|array<string|Expression>|Expression $variableName
-     * @param string|array<mixed>|QueryBuilder|Expression|null $in
+     * @param  string|array<string|Expression>|Expression  $variableName
+     * @param  string|array<mixed>|QueryBuilder|Expression|null  $in
      */
     public function for(
         string|array|Expression $variableName,
         string|array|QueryBuilder|Expression $in = null
     ): self {
-        if (!is_array($variableName)) {
+        if (! is_array($variableName)) {
             $variableName = [$variableName];
         }
 
@@ -54,8 +54,8 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-filter.html
      *
-     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
-     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $leftOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $rightOperand
      */
     public function filter(
         object|array|string|int|float|bool|null $leftOperand,
@@ -78,8 +78,8 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-search.html
      *
-     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
-     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $leftOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $rightOperand
      */
     public function search(
         object|array|string|int|float|bool|null $leftOperand,
@@ -105,7 +105,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-collect.html
      *
-     * @param array<array-key, array<array-key, string>>|string|null $variableName
+     * @param  array<array-key, array<array-key, string>>|string|null  $variableName
      */
     public function collect(
         string|array $variableName = null,
@@ -117,7 +117,7 @@ trait HasQueryClauses
             $groups[0][1] = $expression;
         }
         if (is_array($variableName)) {
-            $groups =  $variableName;
+            $groups = $variableName;
         }
 
         $this->addCommand(new CollectClause($groups));
@@ -189,7 +189,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-sort.html
      *
-     * @param mixed ...$references
+     * @param  mixed  ...$references
      */
     public function sort(...$references): self
     {
@@ -229,7 +229,7 @@ trait HasQueryClauses
     }
 
     /**
-     * @param array<mixed>|object $options
+     * @param  array<mixed>|object  $options
      */
     public function options(array|object $options): self
     {
@@ -244,7 +244,7 @@ trait HasQueryClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/operations-window.html
      *
-     * @param array<array-key, string>|object $offsets
+     * @param  array<array-key, string>|object  $offsets
      */
     public function window(
         array|object $offsets,

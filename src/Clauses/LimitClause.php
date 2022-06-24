@@ -30,15 +30,13 @@ class LimitClause extends Clause
     {
         $this->count = $queryBuilder->normalizeArgument($this->count, ['Number', 'Reference', 'Query', 'Bind']);
 
-
-
         $output = 'LIMIT ';
         if ($this->offset !== null) {
             $this->offset = $queryBuilder->normalizeArgument($this->offset, ['Number', 'Reference', 'Query', 'Bind']);
 
-            $output .= $this->offset->compile($queryBuilder) . ', ';
+            $output .= $this->offset->compile($queryBuilder).', ';
         }
 
-        return $output . $this->count->compile($queryBuilder);
+        return $output.$this->count->compile($queryBuilder);
     }
 }

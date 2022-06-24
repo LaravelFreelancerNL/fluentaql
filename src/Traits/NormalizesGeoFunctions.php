@@ -45,6 +45,7 @@ trait NormalizesGeoFunctions
             ['Query', 'Reference', 'Bind']
         );
     }
+
     protected function normalizeGeoDistance(QueryBuilder $queryBuilder): void
     {
         $this->parameters[0] = $queryBuilder->normalizeArgument(

@@ -21,7 +21,7 @@ trait HasSupportCommands
     abstract public function addCommand($command);
 
     /**
-     * @param object|array<mixed>|string|int|float|bool|null $data
+     * @param  object|array<mixed>|string|int|float|bool|null  $data
      */
     abstract public function bind(
         object|array|string|int|float|bool|null $data,
@@ -29,8 +29,9 @@ trait HasSupportCommands
     ): BindExpression;
 
     /**
-     * @param array<object|array<mixed>|string|int|float|bool|null> $binds
-     * @param array<string, string|Expression|QueryBuilder> $collections
+     * @param  array<object|array<mixed>|string|int|float|bool|null>  $binds
+     * @param  array<string, string|Expression|QueryBuilder>  $collections
+     *
      * @throws BindException
      */
     public function raw(
@@ -52,8 +53,9 @@ trait HasSupportCommands
     abstract public function registerCollections($collections, $mode = 'write');
 
     /**
-     * @param array<array-key, array<array-key, mixed>|null|object|scalar> $binds
-     * @param array<string, string|Expression|QueryBuilder> $collections
+     * @param  array<array-key, array<array-key, mixed>|null|object|scalar>  $binds
+     * @param  array<string, string|Expression|QueryBuilder>  $collections
+     *
      * @throws BindException
      */
     public function rawExpression(

@@ -39,14 +39,13 @@ class TraverseClause extends Clause
             $this->toVertex = $queryBuilder->normalizeArgument($this->toVertex, 'Id');
         }
 
-
         $output = $this->direction->compile($queryBuilder);
 
         $output .= $this->traverseType();
 
-        $output .= ' ' . $this->startVertex->compile($queryBuilder);
+        $output .= ' '.$this->startVertex->compile($queryBuilder);
         if (isset($this->toVertex)) {
-            $output .= ' TO ' . $this->toVertex->compile($queryBuilder);
+            $output .= ' TO '.$this->toVertex->compile($queryBuilder);
         }
 
         return $output;

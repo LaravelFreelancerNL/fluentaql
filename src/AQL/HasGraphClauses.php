@@ -136,8 +136,8 @@ trait HasGraphClauses
      *
      * @link https://www.arangodb.com/docs/stable/aql/graphs-traversals.html#pruning
      *
-     * @param object|array<mixed>|string|int|float|bool|null $leftOperand
-     * @param object|array<mixed>|string|int|float|bool|null $rightOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $leftOperand
+     * @param  object|array<mixed>|string|int|float|bool|null  $rightOperand
      */
     public function prune(
         object|array|string|int|float|bool|null $leftOperand,

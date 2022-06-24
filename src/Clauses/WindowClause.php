@@ -11,7 +11,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class WindowClause extends Clause
 {
     /**
-     * @var array<array-key, string>|object $offsets
+     * @var array<array-key, string>|object
      */
     protected array|object $offsets;
 
@@ -19,7 +19,8 @@ class WindowClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<array-key, string>|object $offsets
+     *
+     * @param  array<array-key, string>|object  $offsets
      */
     public function __construct(
         array|object $offsets,
@@ -51,10 +52,10 @@ class WindowClause extends Clause
         $output = 'WINDOW';
         if (isset($this->rangeValue)) {
             /** @phpstan-ignore-next-line */
-            $output .= ' ' . $this->rangeValue->compile($queryBuilder);
+            $output .= ' '.$this->rangeValue->compile($queryBuilder);
             $output .= ' WITH';
         }
-        $output .= ' ' . $this->offsets->compile($queryBuilder);
+        $output .= ' '.$this->offsets->compile($queryBuilder);
 
         return $output;
     }

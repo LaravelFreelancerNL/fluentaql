@@ -31,6 +31,6 @@ class WithCountClause extends Clause
         );
         $queryBuilder->registerVariable($this->countVariableName);
 
-        return 'WITH COUNT INTO ' . $this->countVariableName->compile($queryBuilder);
+        return 'WITH COUNT INTO '.$this->countVariableName->compile($queryBuilder);
     }
 }

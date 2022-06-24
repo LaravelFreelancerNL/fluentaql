@@ -17,7 +17,8 @@ class CollectClause extends Clause
 
     /**
      * CollectClause constructor.
-     * @param  array<array<string|null>> $groups
+     *
+     * @param  array<array<string|null>>  $groups
      */
     public function __construct(array $groups = [])
     {
@@ -29,7 +30,7 @@ class CollectClause extends Clause
      */
     public function compile(QueryBuilder $queryBuilder): string
     {
-        /** @var array<array<Expression>>  $groups */
+        /** @var array<array<Expression>> $groups */
         $groups = [];
         /** @var array<int, string|null>  $group */
         foreach ($this->groups as $key => $group) {
@@ -51,11 +52,11 @@ class CollectClause extends Clause
             if ($groupOutput !== '') {
                 $groupOutput .= ',';
             }
-            $groupOutput .= ' ' . $group[0]->compile($queryBuilder);
+            $groupOutput .= ' '.$group[0]->compile($queryBuilder);
             /** @psalm-suppress PossiblyUndefinedArrayOffset */
-            $groupOutput .=  ' = ' . $group[1]->compile($queryBuilder);
+            $groupOutput .= ' = '.$group[1]->compile($queryBuilder);
         }
 
-        return $output . $groupOutput;
+        return $output.$groupOutput;
     }
 }

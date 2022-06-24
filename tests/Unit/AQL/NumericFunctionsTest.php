@@ -42,7 +42,7 @@ class NumericFunctionsTest extends TestCase
     public function testCosineSimilarity()
     {
         $qb = new QueryBuilder();
-        $qb->let('x', $qb->cosineSimilarity([0,1], [1,0]));
+        $qb->let('x', $qb->cosineSimilarity([0, 1], [1, 0]));
         self::assertEquals('LET x = COSINE_SIMILARITY([0,1], [1,0])', $qb->get()->query);
     }
 
@@ -84,14 +84,14 @@ class NumericFunctionsTest extends TestCase
     public function testL1Distance()
     {
         $qb = new QueryBuilder();
-        $qb->let('x', $qb->l1Distance([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1]));
+        $qb->let('x', $qb->l1Distance([[1, 2, 3], [-1, -2, -3], [3, 4, 5], [-5, 2, 1]], [1, 1, 1]));
         self::assertEquals('LET x = L1_DISTANCE([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1])', $qb->get()->query);
     }
 
     public function testL2Distance()
     {
         $qb = new QueryBuilder();
-        $qb->let('x', $qb->l2Distance([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1]));
+        $qb->let('x', $qb->l2Distance([[1, 2, 3], [-1, -2, -3], [3, 4, 5], [-5, 2, 1]], [1, 1, 1]));
         self::assertEquals('LET x = L2_DISTANCE([[1,2,3],[-1,-2,-3],[3,4,5],[-5,2,1]], [1,1,1])', $qb->get()->query);
     }
 

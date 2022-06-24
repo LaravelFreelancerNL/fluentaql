@@ -26,7 +26,7 @@ class PredicateExpressionTest extends TestCase
     public function testPredicateExpressionWithLogicalOperatorAnd()
     {
         $qb = new QueryBuilder();
-        $expression = new PredicateExpression((new LiteralExpression('x')), '==', (new LiteralExpression(10)), "AND");
+        $expression = new PredicateExpression((new LiteralExpression('x')), '==', (new LiteralExpression(10)), 'AND');
         $expression->compile($qb);
 
         self::assertEquals('AND', $expression->logicalOperator);
@@ -35,7 +35,7 @@ class PredicateExpressionTest extends TestCase
     public function testPredicateExpressionWithLogicalOperatorOr()
     {
         $qb = new QueryBuilder();
-        $expression = new PredicateExpression((new LiteralExpression('x')), '==', (new LiteralExpression(10)), "OR");
+        $expression = new PredicateExpression((new LiteralExpression('x')), '==', (new LiteralExpression(10)), 'OR');
         $expression->compile($qb);
 
         self::assertEquals('OR', $expression->logicalOperator);
@@ -82,7 +82,7 @@ class PredicateExpressionTest extends TestCase
         ->return('u');
 
         self::assertEquals(
-            'FOR u IN users FILTER u.name == @' . $qb->getQueryId() . '_1 AND u.age == 27 RETURN u',
+            'FOR u IN users FILTER u.name == @'.$qb->getQueryId().'_1 AND u.age == 27 RETURN u',
             $result->get()->query
         );
     }

@@ -33,7 +33,7 @@ class StatementClausesTest extends TestCase
             "C"
           ]
         }')->get();
-        self::assertEquals('LET x = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('LET x = @'.$result->getQueryId().'_1', $result->query);
 
         $qb = new QueryBuilder();
         $object = new stdClass();
@@ -46,18 +46,18 @@ class StatementClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'LET x = {"name":"Catelyn","surname":"Stark","alive":false,"age":40,"traits":[@'
-            . $result->getQueryId()
-            . '_1,@'
-            . $result->getQueryId()
-            . '_2,@'
-            . $result->getQueryId()
-            . '_3]}',
+            .$result->getQueryId()
+            .'_1,@'
+            .$result->getQueryId()
+            .'_2,@'
+            .$result->getQueryId()
+            .'_3]}',
             $result->query
         );
 
         $result = (new QueryBuilder())->let('x', 'y')
             ->get();
-        self::assertEquals('LET x = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('LET x = @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testInsertStatement()
@@ -73,13 +73,13 @@ class StatementClausesTest extends TestCase
             "C"
           ]
         }', 'Characters')->get();
-        self::assertEquals('INSERT @' . $result->getQueryId() . '_1 IN Characters', $result->query);
+        self::assertEquals('INSERT @'.$result->getQueryId().'_1 IN Characters', $result->query);
     }
 
     public function testInsertEmptyArrayStatement()
     {
         $characterData = [
-            "tags" => []
+            'tags' => [],
         ];
 
         $result = (new QueryBuilder())->insert($characterData, 'Characters')->get();
@@ -90,7 +90,6 @@ class StatementClausesTest extends TestCase
         );
     }
 
-
     public function testUpdateClause()
     {
         $result = (new QueryBuilder())
@@ -100,7 +99,7 @@ class StatementClausesTest extends TestCase
                 '{ name: CONCAT(u.firstName, " ", u.lastName) }',
                 'users'
             )->get();
-        self::assertEquals('FOR u IN users UPDATE u WITH @' . $result->getQueryId() . '_1 IN users', $result->query);
+        self::assertEquals('FOR u IN users UPDATE u WITH @'.$result->getQueryId().'_1 IN users', $result->query);
     }
 
     public function testUpdateMaintainsNullValue()
@@ -128,7 +127,7 @@ class StatementClausesTest extends TestCase
                 'users'
             )
             ->get();
-        self::assertEquals('FOR u IN users REPLACE u WITH @' . $result->getQueryId() . '_1 IN users', $result->query);
+        self::assertEquals('FOR u IN users REPLACE u WITH @'.$result->getQueryId().'_1 IN users', $result->query);
     }
 
     public function testUpsertStatement()
@@ -142,12 +141,12 @@ class StatementClausesTest extends TestCase
             )->get();
         self::assertEquals(
             'UPSERT @'
-            . $result->getQueryId()
-            . '_1 INSERT @'
-            . $result->getQueryId()
-            . '_2 UPDATE @'
-            . $result->getQueryId()
-            . '_3 IN users',
+            .$result->getQueryId()
+            .'_1 INSERT @'
+            .$result->getQueryId()
+            .'_2 UPDATE @'
+            .$result->getQueryId()
+            .'_3 IN users',
             $result->query
         );
 
@@ -161,12 +160,12 @@ class StatementClausesTest extends TestCase
             )->get();
         self::assertEquals(
             'UPSERT @'
-            . $result->getQueryId()
-            . '_1 INSERT @'
-            . $result->getQueryId()
-            . '_2 REPLACE @'
-            . $result->getQueryId()
-            . '_3 IN users',
+            .$result->getQueryId()
+            .'_1 INSERT @'
+            .$result->getQueryId()
+            .'_2 REPLACE @'
+            .$result->getQueryId()
+            .'_3 IN users',
             $result->query
         );
     }
@@ -188,6 +187,6 @@ class StatementClausesTest extends TestCase
             ->for('i', '1..1000')
             ->remove('{ _key: CONCAT(\'test\', i) }', 'users')
             ->get();
-        self::assertEquals('FOR i IN 1..1000 REMOVE @' . $result->getQueryId() . '_1 IN users', $result->query);
+        self::assertEquals('FOR i IN 1..1000 REMOVE @'.$result->getQueryId().'_1 IN users', $result->query);
     }
 }

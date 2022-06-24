@@ -40,8 +40,8 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#keep
      *
-     * @param string|array<mixed>|object  $document
-     * @param string|array<mixed>|object $attributes
+     * @param  string|array<mixed>|object  $document
+     * @param  string|array<mixed>|object  $attributes
      */
     public function keepAttributes(
         string|array|object $document,
@@ -52,9 +52,10 @@ trait HasDocumentFunctions
         }
 
         $arguments = [
-            "document" => $document,
-            "attributes" => $attributes,
+            'document' => $document,
+            'attributes' => $attributes,
         ];
+
         return new FunctionExpression('KEEP', $arguments);
     }
 
@@ -65,9 +66,9 @@ trait HasDocumentFunctions
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      *
-     * @param array<mixed>|object $document
-     * @param array<mixed>|object $examples
-     * @param bool|QueryBuilder|Expression $returnIndex
+     * @param  array<mixed>|object  $document
+     * @param  array<mixed>|object  $examples
+     * @param  bool|QueryBuilder|Expression  $returnIndex
      * @return FunctionExpression
      */
     public function matches(
@@ -76,9 +77,9 @@ trait HasDocumentFunctions
         bool|QueryBuilder|Expression $returnIndex = false
     ): FunctionExpression {
         $arguments = [
-            "document" => $document,
-            "examples" => $examples,
-            "returnIndex" => $returnIndex,
+            'document' => $document,
+            'examples' => $examples,
+            'returnIndex' => $returnIndex,
         ];
 
         return new FunctionExpression('MATCHES', $arguments);
@@ -102,7 +103,7 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#parse_identifier
      *
-     * @param string|object $documentHandle
+     * @param  string|object  $documentHandle
      * @return FunctionExpression
      */
     public function parseIdentifier(mixed $documentHandle): FunctionExpression
@@ -115,7 +116,7 @@ trait HasDocumentFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#unset
      *
-     * @param string|array<mixed>|object $attributes
+     * @param  string|array<mixed>|object  $attributes
      */
     public function unset(
         string|object $document,
@@ -126,9 +127,10 @@ trait HasDocumentFunctions
         }
 
         $arguments = [
-            "document" => $document,
-            "attributes" => $attributes,
+            'document' => $document,
+            'attributes' => $attributes,
         ];
+
         return new FunctionExpression('UNSET', $arguments);
     }
 }

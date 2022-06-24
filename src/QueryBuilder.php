@@ -37,7 +37,6 @@ class QueryBuilder
 
     /**
      * The database query grammar instance.
-     *
      */
     public Grammar $grammar;
 
@@ -49,28 +48,28 @@ class QueryBuilder
     /**
      * Bindings for $query.
      *
-     * @var array<mixed> $binds
+     * @var array<mixed>
      */
     public array $binds = [];
 
     /**
      * List of read/write/exclusive collections required for transactions.
      *
-     * @var array<mixed> $collections
+     * @var array<mixed>
      */
     public array $collections = [];
 
     /**
      * List of Clauses to be compiled into a query.
      *
-     * @var array<mixed> $commands
+     * @var array<mixed>
      */
     protected array $commands = [];
 
     /**
      * Registry of variable names used in this query.
      *
-     * @var array<mixed> $variables
+     * @var array<mixed>
      */
     protected array $variables = [];
 
@@ -90,7 +89,7 @@ class QueryBuilder
     /**
      * Add an AQL command (raw AQL and Clauses.
      *
-     * @param Clause|Expression|QueryBuilder $command
+     * @param  Clause|Expression|QueryBuilder  $command
      */
     public function addCommand($command): void
     {
@@ -123,7 +122,7 @@ class QueryBuilder
     public function removeCommand(int $index = null): bool
     {
         if ($index === null) {
-            return (bool)array_pop($this->commands);
+            return (bool) array_pop($this->commands);
         }
         if (isset($this->commands[$index])) {
             unset($this->commands[$index]);
@@ -135,14 +134,13 @@ class QueryBuilder
     }
 
     /**
-     * @param mixed  $collections
-     * @param string $mode
-     *
+     * @param  mixed  $collections
+     * @param  string  $mode
      * @return QueryBuilder
      */
     public function registerCollections($collections, $mode = 'write'): self
     {
-        if (!is_array($collections)) {
+        if (! is_array($collections)) {
             $collections = [$collections];
         }
 
@@ -153,7 +151,8 @@ class QueryBuilder
 
     /**
      * Register variables on declaration for later data normalization.
-     * @param string|array<mixed>|object $variableName
+     *
+     * @param  string|array<mixed>|object  $variableName
      */
     public function registerVariable(
         string|array|object $variableName
@@ -174,7 +173,8 @@ class QueryBuilder
     /**
      * Bind data to a variable.
      *
-     * @param object|array<mixed>|string|int|float|bool|null $data
+     * @param  object|array<mixed>|string|int|float|bool|null  $data
+     *
      * @throws BindException
      */
     public function bind(
@@ -193,7 +193,8 @@ class QueryBuilder
     }
 
     /**
-     * @param array<array-key, array<array-key, mixed>|object|scalar|null> $array
+     * @param  array<array-key, array<array-key, mixed>|object|scalar|null>  $array
+     *
      * @throws BindException
      */
     protected function bindArrayValues(array $array): void
@@ -232,7 +233,7 @@ class QueryBuilder
      */
     protected function validateBindVariable(?string $to): void
     {
-        if (isset($to) && !$this->grammar->isBindParameter($to)) {
+        if (isset($to) && ! $this->grammar->isBindParameter($to)) {
             throw new BindException('Invalid bind parameter.');
         }
     }
@@ -240,11 +241,11 @@ class QueryBuilder
     protected function generateBindVariable(?string $to): string
     {
         if ($to == null) {
-            $to = $this->queryId . '_' . (count($this->binds) + 1);
+            $to = $this->queryId.'_'.(count($this->binds) + 1);
         }
+
         return $to;
     }
-
 
     /**
      * Compile the query with its bindings and collection list.
@@ -254,7 +255,7 @@ class QueryBuilder
         $this->query = '';
         /** @var Expression|Clause @command */
         foreach ($this->commands as $command) {
-            $this->query .= ' ' . $command->compile($this);
+            $this->query .= ' '.$command->compile($this);
         }
         $this->query = trim($this->query);
 
@@ -275,7 +276,7 @@ class QueryBuilder
 
     public function toAql(): string
     {
-        return $this->get()->query ?: "";
+        return $this->get()->query ?: '';
     }
 
     public function __toString()
@@ -292,7 +293,7 @@ class QueryBuilder
     }
 
     /**
-     * @param array<mixed> $arguments
+     * @param  array<mixed>  $arguments
      * @return array<mixed>
      */
     public function unsetNullValues(array $arguments): array
@@ -300,7 +301,7 @@ class QueryBuilder
         return array_filter(
             $arguments,
             function ($value) {
-                return !is_null($value);
+                return ! is_null($value);
             }
         );
     }

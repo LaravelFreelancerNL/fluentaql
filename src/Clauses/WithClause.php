@@ -18,7 +18,7 @@ class WithClause extends Clause
     /**
      * WithClause constructor.
      *
-     * @param array<string|Expression> $collections
+     * @param  array<string|Expression>  $collections
      */
     public function __construct(
         array $collections
@@ -39,10 +39,10 @@ class WithClause extends Clause
             $queryBuilder->registerCollections($collection, 'read');
         }
 
-        $output = "WITH ";
+        $output = 'WITH ';
         $implosion = '';
         foreach ($collections as $collection) {
-            $implosion .= ', ' . $collection->compile($queryBuilder);
+            $implosion .= ', '.$collection->compile($queryBuilder);
         }
         $output .= ltrim($implosion, ', ');
 

@@ -22,8 +22,8 @@ class ReplaceClause extends Clause
     protected string|QueryBuilder|Expression $collection;
 
     /**
-     * @param array<mixed>|string|object  $document
-     * @param array<mixed>|string|object  $with
+     * @param  array<mixed>|string|object  $document
+     * @param  array<mixed>|string|object  $with
      */
     public function __construct(
         array|string|object $document,
@@ -49,9 +49,8 @@ class ReplaceClause extends Clause
         $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
         $queryBuilder->registerCollections($this->collection->compile($queryBuilder));
 
-
-        return "REPLACE {$this->document->compile($queryBuilder)} " .
-            "WITH {$this->with->compile($queryBuilder)} " .
+        return "REPLACE {$this->document->compile($queryBuilder)} ".
+            "WITH {$this->with->compile($queryBuilder)} ".
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

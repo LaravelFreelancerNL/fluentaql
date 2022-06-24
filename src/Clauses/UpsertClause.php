@@ -11,17 +11,17 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class UpsertClause extends Clause
 {
     /**
-     * @var array<mixed>|string|object $search
+     * @var array<mixed>|string|object
      */
     protected array|string|object $search;
 
     /**
-     * @var array<mixed>|string|object $insert
+     * @var array<mixed>|string|object
      */
     protected array|string|object $insert;
 
     /**
-     * @var array<mixed>|object|string $update
+     * @var array<mixed>|object|string
      */
     protected array|string|object $update;
 
@@ -33,9 +33,10 @@ class UpsertClause extends Clause
      * UpsertClause constructor.
      *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
-     * @param array<mixed>|string|object $search
-     * @param array<mixed>|string|object $insert
-     * @param array<mixed>|string|object $update
+     *
+     * @param  array<mixed>|string|object  $search
+     * @param  array<mixed>|string|object  $insert
+     * @param  array<mixed>|string|object  $update
      */
     public function __construct(
         array|object|string $search,
@@ -69,8 +70,8 @@ class UpsertClause extends Clause
             $withClause = 'REPLACE';
         }
 
-        return "UPSERT {$this->search->compile($queryBuilder)} " .
-            "INSERT {$this->insert->compile($queryBuilder)} $withClause {$this->update->compile($queryBuilder)} " .
+        return "UPSERT {$this->search->compile($queryBuilder)} ".
+            "INSERT {$this->insert->compile($queryBuilder)} $withClause {$this->update->compile($queryBuilder)} ".
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\Expressions;
 
-use LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
+use LaravelFreelancerNL\FluentAQL\Traits\NormalizesFunctions;
 
 /**
  * AQL literal expression.
@@ -24,8 +24,8 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * FunctionExpression constructor.
      *
-     * @param string $functionName
-     * @param array<array-key, mixed>|object|scalar|null $parameters
+     * @param  string  $functionName
+     * @param  array<array-key, mixed>|object|scalar|null  $parameters
      */
     public function __construct(
         string $functionName,
@@ -47,7 +47,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
             $this->$normalizeFunction($queryBuilder);
         }
 
-        $output = strtoupper($this->functionName) . '(';
+        $output = strtoupper($this->functionName).'(';
         $output .= implode(', ', $this->compileParameters($this->parameters, $queryBuilder));
         $output .= ')';
 
@@ -55,8 +55,8 @@ class FunctionExpression extends Expression implements ExpressionInterface
     }
 
     /**
-     * @param array<mixed> $parameters
-     * @param QueryBuilder $queryBuilder
+     * @param  array<mixed>  $parameters
+     * @param  QueryBuilder  $queryBuilder
      * @return array<string>
      */
     protected function compileParameters(
@@ -86,6 +86,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
     {
         $value = ucwords(str_replace('_', ' ', strtolower($this->functionName)));
 
-        return 'normalize' . str_replace(' ', '', $value);
+        return 'normalize'.str_replace(' ', '', $value);
     }
 }

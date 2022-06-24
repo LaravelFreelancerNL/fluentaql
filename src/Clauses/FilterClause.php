@@ -19,7 +19,7 @@ class FilterClause extends Clause
     /**
      * Filter statement.
      *
-     * @param array<mixed> $predicates
+     * @param  array<mixed>  $predicates
      */
     public function __construct(
         array|PredicateExpression $predicates
@@ -35,7 +35,7 @@ class FilterClause extends Clause
 
         $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
-        return 'FILTER ' . rtrim($compiledPredicates);
+        return 'FILTER '.rtrim($compiledPredicates);
     }
 
     /**

@@ -15,7 +15,7 @@ class DocumentFunctionsTest extends TestCase
     public function testAttributes()
     {
         $qb = new QueryBuilder();
-        $qb->for('doc', 'my-collection')->return($qb->attributes("doc"));
+        $qb->for('doc', 'my-collection')->return($qb->attributes('doc'));
 
         self::assertEquals('FOR doc IN my-collection RETURN ATTRIBUTES(doc, false, false)', $qb->get()->query);
     }
@@ -23,7 +23,7 @@ class DocumentFunctionsTest extends TestCase
     public function testKeepAttributes()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->keepAttributes("doc", ["_id", "_key", "foo", "bar"]));
+        $qb->return($qb->keepAttributes('doc', ['_id', '_key', 'foo', 'bar']));
 
         self::assertEquals('RETURN KEEP(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
     }
@@ -31,7 +31,7 @@ class DocumentFunctionsTest extends TestCase
     public function testKeepAttributesSingleAttribute()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->keepAttributes("doc", "_id"));
+        $qb->return($qb->keepAttributes('doc', '_id'));
 
         self::assertEquals('RETURN KEEP(doc, ["_id"])', $qb->get()->query);
     }
@@ -41,10 +41,10 @@ class DocumentFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->matches(
             [
-                'user1' => ['name' => 'Janet']
+                'user1' => ['name' => 'Janet'],
             ],
             [
-                'user2' => ['name' => 'Tom']
+                'user2' => ['name' => 'Tom'],
             ]
         ));
 
@@ -59,10 +59,10 @@ class DocumentFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return($qb->merge(
             [
-                'user1' => ['name' => 'Janet']
+                'user1' => ['name' => 'Janet'],
             ],
             [
-                'user2' => ['name' => 'Tom']
+                'user2' => ['name' => 'Tom'],
             ]
         ));
 
@@ -78,10 +78,10 @@ class DocumentFunctionsTest extends TestCase
                 $qb->merge(
                     'u',
                     [
-                        'user1' => ['name' => 'Janet']
+                        'user1' => ['name' => 'Janet'],
                     ],
                     [
-                        'user2' => ['name' => 'Tom']
+                        'user2' => ['name' => 'Tom'],
                     ]
                 )
             );
@@ -100,11 +100,11 @@ class DocumentFunctionsTest extends TestCase
                 ['foo' => 'bar'],
                 [
                     'quux' => 'quetzalcoatl',
-                    'ruled' => true
+                    'ruled' => true,
                 ],
                 [
                     'bar' => 'baz',
-                    'foo' => 'done'
+                    'foo' => 'done',
                 ],
             ]
         ));
@@ -117,16 +117,16 @@ class DocumentFunctionsTest extends TestCase
     public function testParseIdentifier()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->parseIdentifier("_users/my-user"));
+        $qb->return($qb->parseIdentifier('_users/my-user'));
 
         self::assertEquals('RETURN PARSE_IDENTIFIER(@'
-            . $qb->getQueryId() . '_1)', $qb->get()->query);
+            .$qb->getQueryId().'_1)', $qb->get()->query);
     }
 
     public function testUnset()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->unset("doc", ["_id", "_key", "foo", "bar"]));
+        $qb->return($qb->unset('doc', ['_id', '_key', 'foo', 'bar']));
 
         self::assertEquals('RETURN UNSET(doc, ["_id","_key","foo","bar"])', $qb->get()->query);
     }
@@ -134,7 +134,7 @@ class DocumentFunctionsTest extends TestCase
     public function testUnsetSingleAttribute()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->unset("doc", "_id"));
+        $qb->return($qb->unset('doc', '_id'));
 
         self::assertEquals('RETURN UNSET(doc, ["_id"])', $qb->get()->query);
     }

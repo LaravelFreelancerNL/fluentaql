@@ -33,9 +33,9 @@ class IntoClause extends Clause
             );
         }
 
-        $output = 'INTO ' . $this->groupsVariable->compile($queryBuilder);
+        $output = 'INTO '.$this->groupsVariable->compile($queryBuilder);
         if (isset($this->projectionExpression)) {
-            $output .= ' = ' . $this->projectionExpression->compile($queryBuilder);
+            $output .= ' = '.$this->projectionExpression->compile($queryBuilder);
         }
 
         return $output;

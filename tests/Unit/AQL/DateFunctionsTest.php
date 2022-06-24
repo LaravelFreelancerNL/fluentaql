@@ -19,17 +19,17 @@ class DateFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->return($qb->dateCompare(
-            "1985-04-04",
+            '1985-04-04',
             $qb->dateNow(),
-            "months",
-            "days"
+            'months',
+            'days'
         ));
 
         self::assertEquals(
-            'RETURN DATE_COMPARE(@' . $qb->getQueryId()
-            . '_1, DATE_NOW(), @'
-            . $qb->getQueryId() . '_2, @'
-            . $qb->getQueryId() . '_3)',
+            'RETURN DATE_COMPARE(@'.$qb->getQueryId()
+            .'_1, DATE_NOW(), @'
+            .$qb->getQueryId().'_2, @'
+            .$qb->getQueryId().'_3)',
             $qb->get()->query
         );
     }
@@ -135,8 +135,8 @@ class DateFunctionsTest extends TestCase
     public function testDateFormat()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->dateFormat(1399472349522, "%q/%yyyy"));
-        self::assertEquals('RETURN DATE_FORMAT(1399472349522, @' . $qb->getQueryId() . '_1)', $qb->get()->query);
+        $qb->return($qb->dateFormat(1399472349522, '%q/%yyyy'));
+        self::assertEquals('RETURN DATE_FORMAT(1399472349522, @'.$qb->getQueryId().'_1)', $qb->get()->query);
     }
 
     public function testDateUtcToLocal()
@@ -144,15 +144,15 @@ class DateFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return(
             $qb->dateUtcToLocal(
-                "2021-10-16T15:09:00.000Z",
-                "Europe/Amsterdam"
+                '2021-10-16T15:09:00.000Z',
+                'Europe/Amsterdam'
             )
         );
 
         self::assertEquals(
-            'RETURN DATE_UTCTOLOCAL(@' . $qb->getQueryId()
-            . '_1, @'
-            . $qb->getQueryId() . '_2)',
+            'RETURN DATE_UTCTOLOCAL(@'.$qb->getQueryId()
+            .'_1, @'
+            .$qb->getQueryId().'_2)',
             $qb->get()->query
         );
     }
@@ -162,22 +162,22 @@ class DateFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return(
             $qb->dateUtcToLocal(
-                "2021-10-16T15:09:00.000Z",
-                "Europe/Amsterdam",
+                '2021-10-16T15:09:00.000Z',
+                'Europe/Amsterdam',
                 (object) [
                     'name' => 'UTC',
                     'begin' => null,
                     'end' => null,
                     'dst' => true,
-                    'offset' => 0
+                    'offset' => 0,
                 ]
             )
         );
 
         self::assertEquals(
-            'RETURN DATE_UTCTOLOCAL(@' . $qb->getQueryId()
-            . '_1, @'
-            . $qb->getQueryId() . '_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
+            'RETURN DATE_UTCTOLOCAL(@'.$qb->getQueryId()
+            .'_1, @'
+            .$qb->getQueryId().'_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
             $qb->get()->query
         );
     }
@@ -187,41 +187,40 @@ class DateFunctionsTest extends TestCase
         $qb = new QueryBuilder();
         $qb->return(
             $qb->dateLocalToUtc(
-                "2021-10-16",
-                "Europe/Amsterdam"
+                '2021-10-16',
+                'Europe/Amsterdam'
             )
         );
 
         self::assertEquals(
-            'RETURN DATE_LOCALTOUTC(@' . $qb->getQueryId()
-            . '_1, @'
-            . $qb->getQueryId() . '_2)',
+            'RETURN DATE_LOCALTOUTC(@'.$qb->getQueryId()
+            .'_1, @'
+            .$qb->getQueryId().'_2)',
             $qb->get()->query
         );
     }
-
 
     public function testDateLocalToUtcWithZoneInfo()
     {
         $qb = new QueryBuilder();
         $qb->return(
             $qb->dateLocalToUtc(
-                "2021-10-16",
-                "Europe/Amsterdam",
+                '2021-10-16',
+                'Europe/Amsterdam',
                 (object) [
                     'name' => 'UTC',
                     'begin' => null,
                     'end' => null,
                     'dst' => true,
-                    'offset' => 0
+                    'offset' => 0,
                 ]
             )
         );
 
         self::assertEquals(
-            'RETURN DATE_LOCALTOUTC(@' . $qb->getQueryId()
-            . '_1, @'
-            . $qb->getQueryId() . '_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
+            'RETURN DATE_LOCALTOUTC(@'.$qb->getQueryId()
+            .'_1, @'
+            .$qb->getQueryId().'_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
             $qb->get()->query
         );
     }
@@ -232,9 +231,9 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateTrunc('2017-02-03', 'month'));
 
         self::assertEquals(
-            'RETURN DATE_TRUNC(@' . $qb->getQueryId()
-            . '_1, @'
-            . $qb->getQueryId() . '_2)',
+            'RETURN DATE_TRUNC(@'.$qb->getQueryId()
+            .'_1, @'
+            .$qb->getQueryId().'_2)',
             $qb->get()->query
         );
     }
@@ -245,9 +244,9 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateRound('2017-02-03', 15, 'minutes'));
 
         self::assertEquals(
-            'RETURN DATE_ROUND(@' . $qb->getQueryId()
-            . '_1, 15, @'
-            . $qb->getQueryId() . '_2)',
+            'RETURN DATE_ROUND(@'.$qb->getQueryId()
+            .'_1, 15, @'
+            .$qb->getQueryId().'_2)',
             $qb->get()->query
         );
     }
@@ -259,7 +258,7 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateRound($date, 15, 'minutes'));
         self::assertEquals(
             'RETURN DATE_ROUND("2011-01-01T15:03:01+00:00", 15, @'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }

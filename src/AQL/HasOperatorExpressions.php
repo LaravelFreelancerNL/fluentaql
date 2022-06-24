@@ -22,7 +22,7 @@ trait HasOperatorExpressions
      *
      * @link https://www.arangodb.com/docs/stable/aql/operators.html#ternary-operator
      *
-     * @param array<mixed>|PredicateExpression $conditions
+     * @param  array<mixed>|PredicateExpression  $conditions
      */
     public function if(
         array|PredicateExpression $conditions,

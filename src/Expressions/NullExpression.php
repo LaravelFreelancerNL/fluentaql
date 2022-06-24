@@ -13,7 +13,6 @@ class NullExpression extends LiteralExpression implements ExpressionInterface
 {
     /**
      * Create an expression.
-     *
      */
     public function __construct()
     {

@@ -46,7 +46,7 @@ class SubqueryTest extends TestCase
             ->get();
 
         self::assertEquals(
-            'FOR u IN users FILTER u.active == @' . $subQuery->getQueryId() . '_1 RETURN u._key',
+            'FOR u IN users FILTER u.active == @'.$subQuery->getQueryId().'_1 RETURN u._key',
             $subQuery->query
         );
 
@@ -58,16 +58,16 @@ class SubqueryTest extends TestCase
             ->get();
 
         self::assertEquals(
-            'FOR u IN users FILTER u.name == @' .
-            $result->getQueryId() .
-            '_1 FILTER u._key == (FOR u IN users FILTER u.active == @' .
-                $subQuery->getQueryId() .
+            'FOR u IN users FILTER u.name == @'.
+            $result->getQueryId().
+            '_1 FILTER u._key == (FOR u IN users FILTER u.active == @'.
+                $subQuery->getQueryId().
                 '_1 RETURN u._key) RETURN u',
             $result->query
         );
 
-        self::assertArrayHasKey($result->getQueryId() . '_1', $result->binds);
-        self::assertArrayHasKey($subQuery->getQueryId() . '_1', $result->binds);
+        self::assertArrayHasKey($result->getQueryId().'_1', $result->binds);
+        self::assertArrayHasKey($subQuery->getQueryId().'_1', $result->binds);
     }
 
     public function testSubQueryWithManyToManyJoin()
@@ -84,10 +84,9 @@ class SubqueryTest extends TestCase
             ->return(['book' => 'b', 'authors' => 'a'])
             ->get();
 
-
         self::assertEquals(
             'FOR b IN books LET a = (FOR x IN b.authors FOR a IN authors FILTER x == a._id RETURN a)'
-            . ' RETURN {"book":b,"authors":a}',
+            .' RETURN {"book":b,"authors":a}',
             $result->query
         );
     }
@@ -106,10 +105,9 @@ class SubqueryTest extends TestCase
             ->return(['book' => 'b', 'authors' => 'a'])
             ->get();
 
-
         self::assertEquals(
             'FOR b IN books LET a = FIRST((FOR x IN b.authors FOR a IN authors FILTER x == a._id RETURN a))'
-            . ' RETURN {"book":b,"authors":a}',
+            .' RETURN {"book":b,"authors":a}',
             $result->query
         );
     }
@@ -148,11 +146,11 @@ class SubqueryTest extends TestCase
 
         self::assertEquals(
             'WITH persons'
-            . ' LET verteces = (FOR v IN 0..99 OUTBOUND "persons/123" relations RETURN v._key)'
-            . ' LET edges = (FOR v, e IN 1..99 OUTBOUND "persons/123" relations RETURN e._key)'
-            . ' LET vertexRemovals = (FOR vertexKey IN verteces REMOVE vertexKey IN persons)'
-            . ' LET edgeRemovals = (FOR edgeKey IN edges REMOVE edgeKey IN relations)'
-            . ' RETURN [vertexRemovals,edgeRemovals]',
+            .' LET verteces = (FOR v IN 0..99 OUTBOUND "persons/123" relations RETURN v._key)'
+            .' LET edges = (FOR v, e IN 1..99 OUTBOUND "persons/123" relations RETURN e._key)'
+            .' LET vertexRemovals = (FOR vertexKey IN verteces REMOVE vertexKey IN persons)'
+            .' LET edgeRemovals = (FOR edgeKey IN edges REMOVE edgeKey IN relations)'
+            .' RETURN [vertexRemovals,edgeRemovals]',
             $deleteQuery->query
         );
     }

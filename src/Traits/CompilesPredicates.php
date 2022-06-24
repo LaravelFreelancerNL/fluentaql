@@ -9,7 +9,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 trait CompilesPredicates
 {
     /**
-     * @param array<mixed>|PredicateExpression $predicates
+     * @param  array<mixed>|PredicateExpression  $predicates
      */
     public function compilePredicates(
         array|PredicateExpression $predicates
@@ -36,14 +36,15 @@ trait CompilesPredicates
     {
         $compiledPredicate = '';
         if ($position > 0) {
-            $compiledPredicate = $predicate->logicalOperator . ' ' ;
+            $compiledPredicate = $predicate->logicalOperator.' ';
         }
-        return $compiledPredicate . $predicate->compile($this);
+
+        return $compiledPredicate.$predicate->compile($this);
     }
 
     /**
-     * @param array<mixed> $predicates
-     * @param int $position
+     * @param  array<mixed>  $predicates
+     * @param  int  $position
      * @return string
      */
     protected function compilePredicateGroup(
@@ -63,8 +64,9 @@ trait CompilesPredicates
 
         $groupCompilation = '';
         if ($position > 0) {
-            $groupCompilation = $logicalOperator . ' ';
+            $groupCompilation = $logicalOperator.' ';
         }
-        return $groupCompilation . '(' . implode(' ', $compiledPredicates) . ')';
+
+        return $groupCompilation.'('.implode(' ', $compiledPredicates).')';
     }
 }

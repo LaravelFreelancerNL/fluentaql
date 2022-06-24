@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
-use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
  * Trait hasNumericFunctions.
@@ -29,9 +27,9 @@ trait HasDateFunctions
         null|string|object $unitRangeEnd
     ): FunctionExpression {
         $arguments = [
-            "date1" => $date1,
-            "date2" => $date2,
-            "unitRangeStart" => $unitRangeStart,
+            'date1' => $date1,
+            'date2' => $date2,
+            'unitRangeStart' => $unitRangeStart,
         ];
         if (isset($unitRangeEnd)) {
             $arguments['unitRangeEnd'] = $unitRangeEnd;
@@ -168,8 +166,8 @@ trait HasDateFunctions
         string|object $unit
     ): FunctionExpression {
         $arguments = [
-            "date" => $date,
-            "unit" => $unit
+            'date' => $date,
+            'unit' => $unit,
         ];
 
         return new FunctionExpression('DATE_TRUNC', $arguments);
@@ -186,9 +184,9 @@ trait HasDateFunctions
         string|object $unit
     ): FunctionExpression {
         $arguments = [
-            "date" => $date,
-            "amount" => $amount,
-            "unit" => $unit
+            'date' => $date,
+            'amount' => $amount,
+            'unit' => $unit,
         ];
 
         return new FunctionExpression('DATE_ROUND', $arguments);
@@ -199,7 +197,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_utctolocal
      *
-     * @param array<mixed>|object|null $zoneInfo
+     * @param  array<mixed>|object|null  $zoneInfo
      */
     public function dateUtcToLocal(
         int|string|object $date,
@@ -207,8 +205,8 @@ trait HasDateFunctions
         null|array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [
-            "date" => $date,
-            "timezone" => $timezone
+            'date' => $date,
+            'timezone' => $timezone,
         ];
         if (isset($zoneInfo)) {
             $arguments['zoneInfo'] = $zoneInfo;
@@ -222,7 +220,7 @@ trait HasDateFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-date.html#date_localtoutc
      *
-     * @param array<mixed>|object|null $zoneInfo
+     * @param  array<mixed>|object|null  $zoneInfo
      */
     public function dateLocalToUtc(
         int|string|object $date,
@@ -230,8 +228,8 @@ trait HasDateFunctions
         null|array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [
-            "date" => $date,
-            "timezone" => $timezone
+            'date' => $date,
+            'timezone' => $timezone,
         ];
         if (isset($zoneInfo)) {
             $arguments['zoneInfo'] = $zoneInfo;
@@ -239,7 +237,6 @@ trait HasDateFunctions
 
         return new FunctionExpression('DATE_LOCALTOUTC', $arguments);
     }
-
 
     /**
      * Get the year value of a date.

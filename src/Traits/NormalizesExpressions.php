@@ -20,7 +20,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 trait NormalizesExpressions
 {
     /**
-     * @param object|array<mixed>|string|int|float|bool|null $data
+     * @param  object|array<mixed>|string|int|float|bool|null  $data
      */
     abstract public function bind(
         object|array|string|int|float|bool|null $data,
@@ -28,7 +28,8 @@ trait NormalizesExpressions
     ): BindExpression;
 
     /**
-     * @param null|string[]|string $allowedExpressionTypes
+     * @param  null|string[]|string  $allowedExpressionTypes
+     *
      * @throws ExpressionTypeException|BindException
      */
     public function normalizeArgument(
@@ -52,8 +53,9 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array<mixed>|string|int|float|bool $argument
-     * @param array<string>|string|null  $allowedExpressionTypes
+     * @param  array<mixed>|string|int|float|bool  $argument
+     * @param  array<string>|string|null  $allowedExpressionTypes
+     *
      * @throws ExpressionTypeException|BindException
      */
     protected function normalizeScalar(
@@ -68,7 +70,8 @@ trait NormalizesExpressions
     /**
      * @psalm-suppress MoreSpecificReturnType
      *
-     * @param array<array-key, mixed>|object|scalar $argument
+     * @param  array<array-key, mixed>|object|scalar  $argument
+     *
      * @throws BindException
      */
     protected function createExpression(
@@ -82,16 +85,17 @@ trait NormalizesExpressions
         if ($expressionType == 'CollectionBind') {
             return $this->bindCollection($argument);
         }
-        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\' . $expressionType . 'Expression';
+        $expressionClass = '\LaravelFreelancerNL\FluentAQL\Expressions\\'.$expressionType.'Expression';
 
         /** @phpstan-ignore-next-line */
         return new $expressionClass($argument);
     }
 
     /**
-     * @param array<mixed>|object $argument
-     * @param array<string>|string|null $allowedExpressionTypes
+     * @param  array<mixed>|object  $argument
+     * @param  array<string>|string|null  $allowedExpressionTypes
      * @return Expression
+     *
      * @throws ExpressionTypeException
      * @throws BindException
      */
@@ -102,7 +106,7 @@ trait NormalizesExpressions
         if (is_array($argument)) {
             return $this->normalizeArray($argument, $allowedExpressionTypes);
         }
-        if (!is_iterable($argument)) {
+        if (! is_iterable($argument)) {
             return $this->normalizeObject($argument, $allowedExpressionTypes);
         }
 
@@ -112,9 +116,10 @@ trait NormalizesExpressions
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      *
-     * @param array<mixed> $argument
-     * @param array<string>|string|null $allowedExpressionTypes
+     * @param  array<mixed>  $argument
+     * @param  array<string>|string|null  $allowedExpressionTypes
      * @return array<array-key, Expression>
+     *
      * @throws ExpressionTypeException|BindException
      */
     protected function normalizeIterable(
@@ -132,8 +137,9 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array<array-key, mixed>|PredicateExpression $predicates
+     * @param  array<array-key, mixed>|PredicateExpression  $predicates
      * @return array<array-key, mixed>|PredicateExpression
+     *
      * @throws ExpressionTypeException
      * @throws BindException
      */
@@ -156,8 +162,9 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array<mixed>|PredicateExpression $predicate
+     * @param  array<mixed>|PredicateExpression  $predicate
      * @return PredicateExpression
+     *
      * @throws ExpressionTypeException|BindException
      */
     protected function normalizePredicate(array|PredicateExpression $predicate): PredicateExpression
@@ -172,7 +179,6 @@ trait NormalizesExpressions
         if (isset($predicate[1])) {
             $comparisonOperator = (string) $predicate[1];
         }
-
 
         $rightOperand = null;
         if (isset($predicate[2])) {
@@ -201,7 +207,8 @@ trait NormalizesExpressions
      *
      * @psalm-suppress MixedArgumentTypeCoercion
      *
-     * @param array<string>|string|null  $allowedExpressionTypes
+     * @param  array<string>|string|null  $allowedExpressionTypes
+     *
      * @throws ExpressionTypeException
      */
     protected function determineArgumentType(
@@ -217,7 +224,7 @@ trait NormalizesExpressions
 
         /** @var string $allowedExpressionType */
         foreach ($allowedExpressionTypes as $allowedExpressionType) {
-            $check = 'is' . $allowedExpressionType;
+            $check = 'is'.$allowedExpressionType;
             if ($allowedExpressionType == 'Reference' || $allowedExpressionType == 'RegisteredVariable') {
                 if ($this->grammar->$check($argument, $this->variables)) {
                     return $allowedExpressionType;
@@ -229,22 +236,23 @@ trait NormalizesExpressions
             }
         }
 
-        $errorMessage = "The argument does not match one of these expression types: "
-            . implode(', ', $allowedExpressionTypes)
-            . '.';
+        $errorMessage = 'The argument does not match one of these expression types: '
+            .implode(', ', $allowedExpressionTypes)
+            .'.';
 
         if (isStringable($argument)) {
             $errorMessage = "This argument '$argument', does not match one of these expression types: "
-                . implode(', ', $allowedExpressionTypes)
-                . '.';
+                .implode(', ', $allowedExpressionTypes)
+                .'.';
         }
 
         throw new ExpressionTypeException($errorMessage);
     }
 
     /**
-     * @param array<mixed> $argument
-     * @param array<string>|string|null $allowedExpressionTypes
+     * @param  array<mixed>  $argument
+     * @param  array<string>|string|null  $allowedExpressionTypes
+     *
      * @throws ExpressionTypeException
      * @throws BindException
      */
@@ -260,7 +268,8 @@ trait NormalizesExpressions
     }
 
     /**
-     * @param array<string>|string|null $allowedExpressionTypes
+     * @param  array<string>|string|null  $allowedExpressionTypes
+     *
      * @throws ExpressionTypeException
      * @throws BindException
      */
@@ -284,10 +293,11 @@ trait NormalizesExpressions
         if ($argument instanceof BindExpression) {
             $bindKey = ltrim($argument->getBindVariable(), '@');
 
-            if (!isset($this->binds[$bindKey])) {
+            if (! isset($this->binds[$bindKey])) {
                 $this->binds[$bindKey] = $argument->getData();
             }
         }
+
         return $argument;
     }
 }

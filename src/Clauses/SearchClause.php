@@ -10,7 +10,7 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class SearchClause extends FilterClause
 {
     /**
-     * @var array<mixed>|PredicateExpression $predicates
+     * @var array<mixed>|PredicateExpression
      */
     protected array|PredicateExpression $predicates;
 
@@ -22,6 +22,6 @@ class SearchClause extends FilterClause
 
         $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
-        return 'SEARCH ' . rtrim($compiledPredicates);
+        return 'SEARCH '.rtrim($compiledPredicates);
     }
 }

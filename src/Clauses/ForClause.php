@@ -21,8 +21,8 @@ class ForClause extends Clause
     protected array|Expression|ExpressionInterface|QueryBuilder|string|null $in;
 
     /**
-     * @param array<string|Expression> $variables
-     * @param array<mixed>|string|QueryBuilder|Expression|null $in
+     * @param  array<string|Expression>  $variables
+     * @param  array<mixed>|string|QueryBuilder|Expression|null  $in
      */
     public function __construct(
         array $variables,
@@ -42,7 +42,7 @@ class ForClause extends Clause
             $variables[$key] = $queryBuilder->normalizeArgument($value, 'Variable');
             $queryBuilder->registerVariable($variables[$key]->compile($queryBuilder));
         }
-        $variableExpression =  array_map(function ($variable) use ($queryBuilder) {
+        $variableExpression = array_map(function ($variable) use ($queryBuilder) {
             return $variable->compile($queryBuilder);
         }, $variables);
 

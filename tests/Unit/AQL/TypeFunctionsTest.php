@@ -15,10 +15,10 @@ class TypeFunctionsTest extends TestCase
     public function testToArray()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->toArray("whatever"));
+        $qb->return($qb->toArray('whatever'));
         self::assertEquals(
             'RETURN TO_ARRAY(@'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -26,10 +26,10 @@ class TypeFunctionsTest extends TestCase
     public function testToList()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->toList("whatever"));
+        $qb->return($qb->toList('whatever'));
         self::assertEquals(
             'RETURN TO_ARRAY(@'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -37,10 +37,10 @@ class TypeFunctionsTest extends TestCase
     public function testToBool()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->toBool("whatever"));
+        $qb->return($qb->toBool('whatever'));
         self::assertEquals(
             'RETURN TO_BOOL(@'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }
@@ -48,10 +48,10 @@ class TypeFunctionsTest extends TestCase
     public function testToNumber()
     {
         $qb = new QueryBuilder();
-        $qb->return($qb->toNumber("whatever"));
+        $qb->return($qb->toNumber('whatever'));
         self::assertEquals(
             'RETURN TO_NUMBER(@'
-            . $qb->getQueryId() . '_1)',
+            .$qb->getQueryId().'_1)',
             $qb->get()->query
         );
     }

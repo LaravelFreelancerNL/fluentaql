@@ -10,14 +10,14 @@ use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 class RemoveClause extends Clause
 {
     /**
-     * @var object|string|mixed[] $document
+     * @var object|string|mixed[]
      */
     protected array|object|string $document;
 
     protected string|QueryBuilder|Expression $collection;
 
     /**
-     * @param array<mixed>|object|string $document
+     * @param  array<mixed>|object|string  $document
      */
     public function __construct(
         array|object|string $document,

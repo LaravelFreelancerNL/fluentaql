@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\AQL;
 
-use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
 use stdClass;
@@ -58,13 +57,13 @@ class QueryClausesTest extends TestCase
             ->get();
 
         self::assertEquals('FOR u IN @@'
-            . $qb->getQueryId() . '_1', $qb->query);
+            .$qb->getQueryId().'_1', $qb->query);
     }
 
     public function testForClauseInExpression()
     {
         $aqb = (new QueryBuilder());
-        $aqb = $aqb->let('x', [1,2,3,4])
+        $aqb = $aqb->let('x', [1, 2, 3, 4])
             ->for(
                 'u',
                 $aqb->if(
@@ -115,7 +114,7 @@ class QueryClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR doc IN documents FILTER doc.attribute1 != null AND doc.attribute2 != null'
-            . ' AND doc.attribute3 != null RETURN doc',
+            .' AND doc.attribute3 != null RETURN doc',
             $result->query
         );
     }
@@ -160,8 +159,8 @@ class QueryClausesTest extends TestCase
             ['doc.attribute1', '==', 'null', 'OR'],
             [
                 ['doc.attribute2', '!=', null, 'AND'],
-                ['doc.attribute3', '!=', 'null', 'OR']
-            ]
+                ['doc.attribute3', '!=', 'null', 'OR'],
+            ],
         ];
         $result = (new QueryBuilder())
             ->for('doc', 'documents')
@@ -178,9 +177,9 @@ class QueryClausesTest extends TestCase
         $filter = [
             [
                 ['doc.attribute1', '!=', null, 'AND'],
-                ['doc.attribute2', '!=', 'null', 'OR']
+                ['doc.attribute2', '!=', 'null', 'OR'],
             ],
-            ['doc.attribute3', '==', 'null', 'OR']
+            ['doc.attribute3', '==', 'null', 'OR'],
         ];
         $result = (new QueryBuilder())
             ->for('doc', 'documents')
@@ -199,7 +198,7 @@ class QueryClausesTest extends TestCase
             ->filter('doc.test', '==', '')
             ->get();
         self::assertEquals(
-            'FOR doc IN documents FILTER doc.test == @' . $result->getQueryId() . '_1',
+            'FOR doc IN documents FILTER doc.test == @'.$result->getQueryId().'_1',
             $result->query
         );
     }
@@ -235,7 +234,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->collect('doc', 'expression')
             ->get();
-        self::assertEquals('COLLECT doc = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('COLLECT doc = @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
@@ -253,7 +252,7 @@ class QueryClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR u IN Users COLLECT hometown = u.city, surname = u.surname'
-            . ' RETURN [hometown,surname]',
+            .' RETURN [hometown,surname]',
             $result->query
         );
     }
@@ -268,14 +267,14 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->into('groupsVariable', 'projectionExpression')
             ->get();
-        self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('INTO groupsVariable = @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->into('groupsVariable', '{ 
     "name" : u.name, 
     "isActive" : u.status == "active"
   }')->get();
-        self::assertEquals('INTO groupsVariable = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('INTO groupsVariable = @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testKeepClause()
@@ -370,7 +369,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->aggregate('variableName', 'aggregateExpression')
             ->get();
-        self::assertEquals('AGGREGATE variableName = @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('AGGREGATE variableName = @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testReturnClause()
@@ -383,7 +382,7 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->return('u.name')
             ->get();
-        self::assertEquals('RETURN @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('RETURN @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->for('u', 'Users')
@@ -394,12 +393,12 @@ class QueryClausesTest extends TestCase
         $result = (new QueryBuilder())
             ->return('1 + 1')
             ->get();
-        self::assertEquals('RETURN @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('RETURN @'.$result->getQueryId().'_1', $result->query);
 
         $result = (new QueryBuilder())
             ->return('1 + 1', true)
             ->get();
-        self::assertEquals('RETURN DISTINCT @' . $result->getQueryId() . '_1', $result->query);
+        self::assertEquals('RETURN DISTINCT @'.$result->getQueryId().'_1', $result->query);
     }
 
     public function testOptionsClause()
@@ -452,6 +451,7 @@ class QueryClausesTest extends TestCase
             $result->query
         );
     }
+
     public function testWindowClauseDurationBasedAggregation()
     {
         $qb = new QueryBuilder();

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace LaravelFreelancerNL\FluentAQL\AQL;
 
-use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
-
 /**
  * Trait hasFunctions.
  *

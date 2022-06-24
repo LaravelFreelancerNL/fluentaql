@@ -131,34 +131,34 @@ class GraphClausesTest extends TestCase
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune('e.theTruth', '==', true)
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE e.theTruth == true'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE e.theTruth == true'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune('e.theTruth', '==', true, 'OR')
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE e.theTruth == true'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE e.theTruth == true'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }
@@ -171,17 +171,17 @@ class GraphClausesTest extends TestCase
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune([['e.active', '==', 'true'], ['e.age', '>', 18]])
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE e.active == true AND e.age > 18'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE e.active == true AND e.age > 18'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }
@@ -194,7 +194,7 @@ class GraphClausesTest extends TestCase
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune(
                 'e.theTruth',
                 '==',
@@ -204,64 +204,64 @@ class GraphClausesTest extends TestCase
             )
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE pruneCondition = e.theTruth == true'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE pruneCondition = e.theTruth == true'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune(
                 [
                     'e.theTruth',
                     '==',
-                    true
+                    true,
                 ],
                 pruneVariable: 'pruneCondition'
             )
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE pruneCondition = e.theTruth == true'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE pruneCondition = e.theTruth == true'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
         $qb = (new QueryBuilder());
         $qb->for(['v', 'e', 'p'], '1..5')
             ->traverse('circles/A', 'OUTBOUND')
-            ->graph("traversalGraph")
+            ->graph('traversalGraph')
             ->prune(
                 [
                     [
-                        'e.theTruth', '==', true
+                        'e.theTruth', '==', true,
                     ],
                     [
-                        'e.theTruth', '!=', false
-                    ]
+                        'e.theTruth', '!=', false,
+                    ],
                 ],
                 pruneVariable: 'pruneCondition'
             )
             ->return([
                 'vertices' => 'p.vertices[*]._key',
-                'edges' => 'p.edges[*].label'
+                'edges' => 'p.edges[*].label',
             ])
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            . ' PRUNE pruneCondition = e.theTruth == true AND e.theTruth != false'
-            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            .' PRUNE pruneCondition = e.theTruth == true AND e.theTruth != false'
+            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }

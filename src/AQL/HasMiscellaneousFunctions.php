@@ -6,7 +6,6 @@ namespace LaravelFreelancerNL\FluentAQL\AQL;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\Expression;
 use LaravelFreelancerNL\FluentAQL\Expressions\FunctionExpression;
-use LaravelFreelancerNL\FluentAQL\Expressions\ListExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 
 /**
@@ -33,12 +32,12 @@ trait HasMiscellaneousFunctions
         $predicates = $arguments;
         if (! is_array($predicates[0])) {
             $predicates = [[
-                ...$predicates
+                ...$predicates,
             ]];
         }
         $preppedArguments = [
             'predicates' => $predicates,
-            'errorMessage' => $errorMessage
+            'errorMessage' => $errorMessage,
         ];
 
         return new FunctionExpression('ASSERT', $preppedArguments);
@@ -49,8 +48,8 @@ trait HasMiscellaneousFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#document
      *
-     * @param string|array<mixed>|QueryBuilder|Expression $collection
-     * @param string|array<mixed>|QueryBuilder|Expression|null $id
+     * @param  string|array<mixed>|QueryBuilder|Expression  $collection
+     * @param  string|array<mixed>|QueryBuilder|Expression|null  $id
      */
     public function document(
         string|array|QueryBuilder|Expression $collection,
@@ -58,7 +57,6 @@ trait HasMiscellaneousFunctions
     ): FunctionExpression {
         return new FunctionExpression('DOCUMENT', ['collection' => $collection, 'id' => $id]);
     }
-
 
     /**
      * Returns the name of the current database.
@@ -89,8 +87,7 @@ trait HasMiscellaneousFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-miscellaneous.html#first_document
      *
-     * @param mixed $arguments
-     *
+     * @param  mixed  $arguments
      * @return FunctionExpression
      */
     public function firstDocument(...$arguments)
@@ -113,12 +110,12 @@ trait HasMiscellaneousFunctions
         $predicates = $arguments;
         if (! is_array($predicates[0])) {
             $predicates = [[
-                ...$predicates
+                ...$predicates,
             ]];
         }
         $preppedArguments = [
             'predicates' => $predicates,
-            'errorMessage' => $errorMessage
+            'errorMessage' => $errorMessage,
         ];
 
         return new FunctionExpression('WARN', $preppedArguments);

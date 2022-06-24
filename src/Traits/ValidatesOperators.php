@@ -7,7 +7,7 @@ namespace LaravelFreelancerNL\FluentAQL\Traits;
 trait ValidatesOperators
 {
     /**
-     * @param string $operator
+     * @param  string  $operator
      * @return bool
      */
     public function isLogicalOperator(string $operator): bool
@@ -16,7 +16,7 @@ trait ValidatesOperators
     }
 
     /**
-     * @param string $operator
+     * @param  string  $operator
      * @return bool
      */
     public function isComparisonOperator(string $operator): bool
@@ -25,7 +25,7 @@ trait ValidatesOperators
     }
 
     /**
-     * @param string $operator
+     * @param  string  $operator
      * @return bool
      */
     public function isArithmeticOperator(string $operator): bool

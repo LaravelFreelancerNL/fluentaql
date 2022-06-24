@@ -129,7 +129,6 @@ trait NormalizesDateFunctions
         }
     }
 
-
     protected function normalizeDateLocalToUtc(QueryBuilder $queryBuilder): void
     {
         $this->parameters['date'] = $queryBuilder->normalizeArgument(

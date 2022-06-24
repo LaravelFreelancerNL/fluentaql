@@ -62,7 +62,6 @@ class QueryBuilderTest extends TestCase
         self::assertEmpty($qb->getCommands());
     }
 
-
     public function testRemoveNonExistingCommand()
     {
         $qb = (new QueryBuilder());
@@ -110,11 +109,11 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@' . $qb->getQueryId() . '_1', $bind->compile($qb));
+        self::assertEquals('@'.$qb->getQueryId().'_1', $bind->compile($qb));
 
-        self::arrayHasKey($qb->getQueryId() . '_1');
-        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
-        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId() . '_1']));
+        self::arrayHasKey($qb->getQueryId().'_1');
+        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
+        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId().'_1']));
     }
 
     public function testBindCollection()
@@ -123,12 +122,12 @@ class QueryBuilderTest extends TestCase
 
         $bind = $qb->bindCollection('users');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@@' . $qb->getQueryId() . '_1', $bind->compile($qb));
+        self::assertEquals('@@'.$qb->getQueryId().'_1', $bind->compile($qb));
 
-        self::arrayHasKey($qb->getQueryId() . '_1');
-        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
+        self::arrayHasKey($qb->getQueryId().'_1');
+        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
 
-        self::assertEquals('users', $qb->binds[$qb->getQueryId() . '_1']);
+        self::assertEquals('users', $qb->binds[$qb->getQueryId().'_1']);
     }
 
     public function testInvalidBindVariable()
@@ -177,7 +176,6 @@ class QueryBuilderTest extends TestCase
 
     public function testUnsetNullValues()
     {
-
         $qb = new QueryBuilder();
         $results = $qb->unsetNullValues([
             null,
@@ -185,14 +183,14 @@ class QueryBuilderTest extends TestCase
             1,
             null,
             'test',
-            null
+            null,
         ]);
 
         $this->assertCount(3, $results);
         $this->assertSame([
             1 => false,
             2 => 1,
-            4 => 'test'
+            4 => 'test',
         ], $results);
     }
 }
