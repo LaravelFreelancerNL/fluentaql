@@ -24,7 +24,7 @@
   },
   "require-dev": {
     "ergebnis/composer-normalize": "^2.6",
-    "laravel/pint": "^0.1.7",
+    "laravel/pint": "^1.2.1",
     "mockery/mockery": "^1.4",
     "nikic/php-parser": "^4.2@dev",
     "phpmd/phpmd": "^2.9",
@@ -55,6 +55,9 @@
     "style": "vendor/bin/pint"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
+    }
   }
 }

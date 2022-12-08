@@ -24,9 +24,10 @@ class IntoClause extends Clause
     public function compile(QueryBuilder $queryBuilder): string
     {
         $this->groupsVariable = $queryBuilder->normalizeArgument($this->groupsVariable, 'Variable');
+
         $queryBuilder->registerVariable($this->groupsVariable);
 
-        if (isset($this->projectionExpression)) {
+        if ($this->projectionExpression !== null) {
             $this->projectionExpression = $queryBuilder->normalizeArgument(
                 $this->projectionExpression,
                 ['Reference', 'Object', 'Function', 'Query', 'Bind']
@@ -34,7 +35,7 @@ class IntoClause extends Clause
         }
 
         $output = 'INTO '.$this->groupsVariable->compile($queryBuilder);
-        if (isset($this->projectionExpression)) {
+        if ($this->projectionExpression !== null) {
             $output .= ' = '.$this->projectionExpression->compile($queryBuilder);
         }
 

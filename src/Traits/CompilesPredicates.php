@@ -19,7 +19,8 @@ trait CompilesPredicates
         }
 
         $compiledPredicates = [];
-        for ($i = 0; $i < count($predicates); $i++) {
+        $count = count($predicates);
+        for ($i = 0; $i < $count; $i++) {
             if ($predicates[$i] instanceof PredicateExpression) {
                 $compiledPredicates[] = $this->compilePredicate($predicates[$i], $i);
             }
@@ -56,7 +57,8 @@ trait CompilesPredicates
         if ($predicates[0] instanceof PredicateExpression) {
             $logicalOperator = $predicates[0]->logicalOperator;
         }
-        for ($i = 0; $i < count($predicates); $i++) {
+        $count = count($predicates);
+        for ($i = 0; $i < $count; $i++) {
             if ($predicates[$i] instanceof PredicateExpression) {
                 $compiledPredicates[] = $this->compilePredicate($predicates[$i], $i);
             }

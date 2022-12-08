@@ -61,13 +61,12 @@ trait ValidatesReferences
     }
 
     /**
-     * @param  array<array-key, null|object|scalar>  $registeredVariables
+     * @param  array<array-key, string>  $registeredVariables
      */
     public function isReference(
         mixed $value,
         array $registeredVariables = []
     ): bool {
-        /** @psalm-suppress  ArgumentTypeCoercion */
         $variables = implode('|', $registeredVariables);
 
         if (! is_string($value) || empty($value)) {
