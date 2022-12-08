@@ -389,18 +389,18 @@ class GrammarTest extends TestCase
     {
         $emptyArray = [];
         $numericArray = [
-            0   => 'Varys',
+            0 => 'Varys',
             '1' => 'Petyr Baelish',
             '2' => 'The Onion Knight',
         ];
         $associativeArray = [
-            'name'  => 'Drogon',
-            'race'  => 'dragon',
+            'name' => 'Drogon',
+            'race' => 'dragon',
             'color' => 'black',
         ];
         $mixedArray = [
-            'name'     => 'Varys',
-            '01'       => 'Eunuch',
+            'name' => 'Varys',
+            '01' => 'Eunuch',
             'employer' => 'The Realm',
         ];
 
@@ -421,18 +421,18 @@ class GrammarTest extends TestCase
     {
         $emptyArray = [];
         $numericArray = [
-            0   => 'Varys',
+            0 => 'Varys',
             '1' => 'Petyr Baelish',
             '2' => 'The Onion Knight',
         ];
         $associativeArray = [
-            'name'  => 'Drogon',
-            'race'  => 'dragon',
+            'name' => 'Drogon',
+            'race' => 'dragon',
             'color' => 'black',
         ];
         $mixedArray = [
-            'name'     => 'Varys',
-            '01'       => 'Eunuch',
+            'name' => 'Varys',
+            '01' => 'Eunuch',
             'employer' => 'The Realm',
         ];
 
@@ -452,13 +452,13 @@ class GrammarTest extends TestCase
     public function testGetAllowedExpressionTypes()
     {
         $defaultAllowedExpressionTypes = [
-            'Number'    => 'Number',
-            'Boolean'   => 'Boolean',
-            'Null'      => 'Null',
+            'Number' => 'Number',
+            'Boolean' => 'Boolean',
+            'Null' => 'Null',
             'Reference' => 'Reference',
-            'Id'        => 'Id',
-            'Key'       => 'Key',
-            'Bind'      => 'Bind',
+            'Id' => 'Id',
+            'Key' => 'Key',
+            'Bind' => 'Bind',
         ];
 
         $result = $this->grammar->getAllowedExpressionTypes();
