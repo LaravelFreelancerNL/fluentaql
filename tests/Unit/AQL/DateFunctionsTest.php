@@ -4,7 +4,7 @@ namespace Tests\Unit\AQL;
 
 use DateTime;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDateFunctions
@@ -26,10 +26,10 @@ class DateFunctionsTest extends TestCase
         ));
 
         self::assertEquals(
-            'RETURN DATE_COMPARE(@'.$qb->getQueryId()
-            .'_1, DATE_NOW(), @'
-            .$qb->getQueryId().'_2, @'
-            .$qb->getQueryId().'_3)',
+            'RETURN DATE_COMPARE(@' . $qb->getQueryId()
+            . '_1, DATE_NOW(), @'
+            . $qb->getQueryId() . '_2, @'
+            . $qb->getQueryId() . '_3)',
             $qb->get()->query
         );
     }
@@ -136,7 +136,7 @@ class DateFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->return($qb->dateFormat(1399472349522, '%q/%yyyy'));
-        self::assertEquals('RETURN DATE_FORMAT(1399472349522, @'.$qb->getQueryId().'_1)', $qb->get()->query);
+        self::assertEquals('RETURN DATE_FORMAT(1399472349522, @' . $qb->getQueryId() . '_1)', $qb->get()->query);
     }
 
     public function testDateUtcToLocal()
@@ -150,9 +150,9 @@ class DateFunctionsTest extends TestCase
         );
 
         self::assertEquals(
-            'RETURN DATE_UTCTOLOCAL(@'.$qb->getQueryId()
-            .'_1, @'
-            .$qb->getQueryId().'_2)',
+            'RETURN DATE_UTCTOLOCAL(@' . $qb->getQueryId()
+            . '_1, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }
@@ -175,9 +175,9 @@ class DateFunctionsTest extends TestCase
         );
 
         self::assertEquals(
-            'RETURN DATE_UTCTOLOCAL(@'.$qb->getQueryId()
-            .'_1, @'
-            .$qb->getQueryId().'_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
+            'RETURN DATE_UTCTOLOCAL(@' . $qb->getQueryId()
+            . '_1, @'
+            . $qb->getQueryId() . '_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
             $qb->get()->query
         );
     }
@@ -193,9 +193,9 @@ class DateFunctionsTest extends TestCase
         );
 
         self::assertEquals(
-            'RETURN DATE_LOCALTOUTC(@'.$qb->getQueryId()
-            .'_1, @'
-            .$qb->getQueryId().'_2)',
+            'RETURN DATE_LOCALTOUTC(@' . $qb->getQueryId()
+            . '_1, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }
@@ -218,9 +218,9 @@ class DateFunctionsTest extends TestCase
         );
 
         self::assertEquals(
-            'RETURN DATE_LOCALTOUTC(@'.$qb->getQueryId()
-            .'_1, @'
-            .$qb->getQueryId().'_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
+            'RETURN DATE_LOCALTOUTC(@' . $qb->getQueryId()
+            . '_1, @'
+            . $qb->getQueryId() . '_2, {"name":"UTC","begin":null,"end":null,"dst":true,"offset":0})',
             $qb->get()->query
         );
     }
@@ -231,9 +231,9 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateTrunc('2017-02-03', 'month'));
 
         self::assertEquals(
-            'RETURN DATE_TRUNC(@'.$qb->getQueryId()
-            .'_1, @'
-            .$qb->getQueryId().'_2)',
+            'RETURN DATE_TRUNC(@' . $qb->getQueryId()
+            . '_1, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }
@@ -244,9 +244,9 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateRound('2017-02-03', 15, 'minutes'));
 
         self::assertEquals(
-            'RETURN DATE_ROUND(@'.$qb->getQueryId()
-            .'_1, 15, @'
-            .$qb->getQueryId().'_2)',
+            'RETURN DATE_ROUND(@' . $qb->getQueryId()
+            . '_1, 15, @'
+            . $qb->getQueryId() . '_2)',
             $qb->get()->query
         );
     }
@@ -258,7 +258,7 @@ class DateFunctionsTest extends TestCase
         $qb->return($qb->dateRound($date, 15, 'minutes'));
         self::assertEquals(
             'RETURN DATE_ROUND("2011-01-01T15:03:01+00:00", 15, @'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }

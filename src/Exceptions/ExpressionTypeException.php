@@ -2,6 +2,4 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Exceptions;
 
-class ExpressionTypeException extends \Exception
-{
-}
+class ExpressionTypeException extends \Exception {}

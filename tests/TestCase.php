@@ -1,16 +1,23 @@
 <?php
 
-namespace LaravelFreelancerNL\FluentAQL\Tests;
+declare(strict_types=1);
+
+namespace Tests;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
 use PHPUnit\Framework\TestCase as PhpUnitTestCase;
 
-abstract class TestCase extends PhpUnitTestCase
+class TestCase extends PhpUnitTestCase
 {
     protected $aqb;
 
     public function setUp(): void
     {
         $this->aqb = new QueryBuilder();
+    }
+
+    public function testDummy()
+    {
+        self::assertEquals(true, true);
     }
 }

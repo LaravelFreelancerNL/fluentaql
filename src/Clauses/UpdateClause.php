@@ -19,15 +19,11 @@ class UpdateClause extends Clause
      */
     protected array|object|string $with;
 
-    /**
-     * @var string|QueryBuilder|Expression
-     */
     protected string|QueryBuilder|Expression $collection;
 
     /**
      * @param  array<mixed>|object|string  $document
      * @param  array<mixed>|object|string  $with
-     * @param  string|QueryBuilder|Expression  $collection
      */
     public function __construct(
         array|object|string $document,
@@ -51,8 +47,8 @@ class UpdateClause extends Clause
         $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
         $queryBuilder->registerCollections($this->collection->compile($queryBuilder));
 
-        return "UPDATE {$this->document->compile($queryBuilder)} ".
-            "WITH {$this->with->compile($queryBuilder)} ".
+        return "UPDATE {$this->document->compile($queryBuilder)} " .
+            "WITH {$this->with->compile($queryBuilder)} " .
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

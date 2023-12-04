@@ -40,7 +40,7 @@ trait HasQueryClauses
         string|array|Expression $variableName,
         string|array|QueryBuilder|Expression $in = null
     ): self {
-        if (! is_array($variableName)) {
+        if (!is_array($variableName)) {
             $variableName = [$variableName];
         }
 
@@ -60,11 +60,11 @@ trait HasQueryClauses
     public function filter(
         object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        object|array|string|int|float|bool|null $rightOperand = null,
+        object|array|string|int|float|bool $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
-        if (! is_array($predicates)) {
+        if (!is_array($predicates)) {
             $predicates = [[$leftOperand, $comparisonOperator, $rightOperand, $logicalOperator]];
         }
 
@@ -84,11 +84,11 @@ trait HasQueryClauses
     public function search(
         object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        object|array|string|int|float|bool|null $rightOperand = null,
+        object|array|string|int|float|bool $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
-        if (! is_array($predicates)) {
+        if (!is_array($predicates)) {
             $predicates = [$predicates];
         }
         if (is_string($comparisonOperator)) {

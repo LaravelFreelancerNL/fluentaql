@@ -14,15 +14,10 @@ class NullExpression extends LiteralExpression implements ExpressionInterface
     /**
      * Create an expression.
      */
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     /**
      * Compile expression output.
-     *
-     * @param  QueryBuilder|null  $queryBuilder
-     * @return string
      */
     public function compile(QueryBuilder $queryBuilder = null): string
     {

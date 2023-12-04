@@ -26,14 +26,14 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
  */
 class QueryBuilder
 {
-    use NormalizesExpressions;
     use CompilesPredicates;
+    use HasFunctions;
+    use HasGraphClauses;
+    use HasOperatorExpressions;
     use HasQueryClauses;
     use HasStatementClauses;
-    use HasGraphClauses;
-    use HasFunctions;
-    use HasOperatorExpressions;
     use HasSupportCommands;
+    use NormalizesExpressions;
 
     /**
      * The database query grammar instance.
@@ -136,11 +136,10 @@ class QueryBuilder
     /**
      * @param  mixed  $collections
      * @param  string  $mode
-     * @return QueryBuilder
      */
     public function registerCollections($collections, $mode = 'write'): self
     {
-        if (! is_array($collections)) {
+        if (!is_array($collections)) {
             $collections = [$collections];
         }
 
@@ -233,7 +232,7 @@ class QueryBuilder
      */
     protected function validateBindVariable(?string $to): void
     {
-        if (isset($to) && ! $this->grammar->isBindParameter($to)) {
+        if (isset($to) && !$this->grammar->isBindParameter($to)) {
             throw new BindException('Invalid bind parameter.');
         }
     }
@@ -241,7 +240,7 @@ class QueryBuilder
     protected function generateBindVariable(?string $to): string
     {
         if ($to == null) {
-            $to = $this->queryId.'_'.(count($this->binds) + 1);
+            $to = $this->queryId . '_' . (count($this->binds) + 1);
         }
 
         return $to;
@@ -255,7 +254,7 @@ class QueryBuilder
         $this->query = '';
         /** @var Expression|Clause @command */
         foreach ($this->commands as $command) {
-            $this->query .= ' '.$command->compile($this);
+            $this->query .= ' ' . $command->compile($this);
         }
         $this->query = trim($this->query);
 
@@ -301,7 +300,7 @@ class QueryBuilder
         return array_filter(
             $arguments,
             function ($value) {
-                return ! is_null($value);
+                return !is_null($value);
             }
         );
     }

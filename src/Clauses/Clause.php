@@ -15,7 +15,5 @@ use LaravelFreelancerNL\FluentAQL\QueryElement;
  */
 abstract class Clause extends QueryElement
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 }

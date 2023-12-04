@@ -31,6 +31,6 @@ class QueryExpression extends Expression implements ExpressionInterface
             $queryBuilder->registerCollections($this->queryBuilder->collections[(string) $mode], (string) $mode);
         }
 
-        return '('.$this->queryBuilder.')';
+        return '(' . $this->queryBuilder . ')';
     }
 }

@@ -25,6 +25,6 @@ class OptionsClause extends Clause
     {
         $this->options = $queryBuilder->normalizeArgument($this->options, 'Object');
 
-        return 'OPTIONS '.$this->options->compile($queryBuilder);
+        return 'OPTIONS ' . $this->options->compile($queryBuilder);
     }
 }

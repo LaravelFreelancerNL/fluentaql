@@ -34,7 +34,7 @@ class SortClause extends Clause
 
         /** @var array<string|Expression> $references */
         $references = array_map(function ($reference) use ($queryBuilder) {
-            if (! $queryBuilder->grammar->isSortDirection($reference)) {
+            if (!$queryBuilder->grammar->isSortDirection($reference)) {
                 return $queryBuilder->normalizeArgument($reference, ['Reference', 'Null', 'Query', 'Bind']);
             }
 
@@ -44,13 +44,13 @@ class SortClause extends Clause
         $output = '';
         foreach ($references as $value) {
             if ($value instanceof ExpressionInterface) {
-                $output .= ', '.$value->compile($queryBuilder);
+                $output .= ', ' . $value->compile($queryBuilder);
             }
             if (is_string($value)) {
-                $output .= ' '.$value;
+                $output .= ' ' . $value;
             }
         }
 
-        return 'SORT '.ltrim($output, ', ');
+        return 'SORT ' . ltrim($output, ', ');
     }
 }

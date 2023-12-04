@@ -9,7 +9,7 @@ use LaravelFreelancerNL\FluentAQL\Exceptions\ExpressionTypeException;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\QueryBuilder
@@ -109,11 +109,11 @@ class QueryBuilderTest extends TestCase
   ]
 }');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@'.$qb->getQueryId().'_1', $bind->compile($qb));
+        self::assertEquals('@' . $qb->getQueryId() . '_1', $bind->compile($qb));
 
-        self::arrayHasKey($qb->getQueryId().'_1');
-        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
-        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId().'_1']));
+        self::arrayHasKey($qb->getQueryId() . '_1');
+        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
+        self::assertEquals(121, strlen($qb->binds[$qb->getQueryId() . '_1']));
     }
 
     public function testBindCollection()
@@ -122,12 +122,12 @@ class QueryBuilderTest extends TestCase
 
         $bind = $qb->bindCollection('users');
         self::assertInstanceOf(BindExpression::class, $bind);
-        self::assertEquals('@@'.$qb->getQueryId().'_1', $bind->compile($qb));
+        self::assertEquals('@@' . $qb->getQueryId() . '_1', $bind->compile($qb));
 
-        self::arrayHasKey($qb->getQueryId().'_1');
-        self::assertIsString($qb->binds[$qb->getQueryId().'_1']);
+        self::arrayHasKey($qb->getQueryId() . '_1');
+        self::assertIsString($qb->binds[$qb->getQueryId() . '_1']);
 
-        self::assertEquals('users', $qb->binds[$qb->getQueryId().'_1']);
+        self::assertEquals('users', $qb->binds[$qb->getQueryId() . '_1']);
     }
 
     public function testInvalidBindVariable()

@@ -19,8 +19,6 @@ class TernaryExpression extends Expression implements ExpressionInterface
 
     /**
      * @param  array<mixed>|PredicateExpression  $predicates
-     * @param  mixed  $then
-     * @param  mixed|null  $else
      */
     public function __construct(
         array|PredicateExpression $predicates,
@@ -38,8 +36,8 @@ class TernaryExpression extends Expression implements ExpressionInterface
         $this->then = $queryBuilder->normalizeArgument($this->then);
         $this->else = $queryBuilder->normalizeArgument($this->else);
 
-        return '('.$queryBuilder->compilePredicates($this->predicates).')'.
-            ' ? '.$this->then->compile($queryBuilder).
-            ' : '.$this->else->compile($queryBuilder);
+        return '(' . $queryBuilder->compilePredicates($this->predicates) . ')' .
+            ' ? ' . $this->then->compile($queryBuilder) .
+            ' : ' . $this->else->compile($queryBuilder);
     }
 }

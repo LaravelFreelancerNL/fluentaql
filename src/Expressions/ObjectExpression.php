@@ -27,9 +27,9 @@ class ObjectExpression extends Expression implements ExpressionInterface
             if ($output != '') {
                 $output .= ',';
             }
-            $output .= '"'.$key.'":'.$value->compile($queryBuilder);
+            $output .= '"' . $key . '":' . $value->compile($queryBuilder);
         }
 
-        return '{'.$output.'}';
+        return '{' . $output . '}';
     }
 }

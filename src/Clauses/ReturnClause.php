@@ -39,6 +39,6 @@ class ReturnClause extends Clause
             $output .= ' DISTINCT';
         }
 
-        return $output.' '.$this->expression->compile($queryBuilder);
+        return $output . ' ' . $this->expression->compile($queryBuilder);
     }
 }
