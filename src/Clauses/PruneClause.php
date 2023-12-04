@@ -38,6 +38,6 @@ class PruneClause extends FilterClause
 
         $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
-        return  $aql.rtrim($compiledPredicates);
+        return $aql.rtrim($compiledPredicates);
     }
 }

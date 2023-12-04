@@ -78,8 +78,8 @@ class PredicateExpressionTest extends TestCase
         );
 
         $result = $qb->for('u', 'users')
-        ->filter([$predicate1, $predicate2])
-        ->return('u');
+            ->filter([$predicate1, $predicate2])
+            ->return('u');
 
         self::assertEquals(
             'FOR u IN users FILTER u.name == @'.$qb->getQueryId().'_1 AND u.age == 27 RETURN u',

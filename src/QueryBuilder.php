@@ -26,14 +26,14 @@ use LaravelFreelancerNL\FluentAQL\Traits\NormalizesExpressions;
  */
 class QueryBuilder
 {
-    use NormalizesExpressions;
     use CompilesPredicates;
+    use HasFunctions;
+    use HasGraphClauses;
+    use HasOperatorExpressions;
     use HasQueryClauses;
     use HasStatementClauses;
-    use HasGraphClauses;
-    use HasFunctions;
-    use HasOperatorExpressions;
     use HasSupportCommands;
+    use NormalizesExpressions;
 
     /**
      * The database query grammar instance.
@@ -136,7 +136,6 @@ class QueryBuilder
     /**
      * @param  mixed  $collections
      * @param  string  $mode
-     * @return QueryBuilder
      */
     public function registerCollections($collections, $mode = 'write'): self
     {

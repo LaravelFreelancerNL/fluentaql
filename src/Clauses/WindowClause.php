@@ -24,7 +24,7 @@ class WindowClause extends Clause
      */
     public function __construct(
         array|object $offsets,
-        null|string|QueryBuilder|Expression $rangeValue = null
+        string|QueryBuilder|Expression $rangeValue = null
     ) {
         parent::__construct();
 

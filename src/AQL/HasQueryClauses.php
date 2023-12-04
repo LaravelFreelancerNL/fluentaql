@@ -60,7 +60,7 @@ trait HasQueryClauses
     public function filter(
         object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        object|array|string|int|float|bool|null $rightOperand = null,
+        object|array|string|int|float|bool $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;
@@ -84,7 +84,7 @@ trait HasQueryClauses
     public function search(
         object|array|string|int|float|bool|null $leftOperand,
         string $comparisonOperator = null,
-        object|array|string|int|float|bool|null $rightOperand = null,
+        object|array|string|int|float|bool $rightOperand = null,
         string $logicalOperator = null
     ): self {
         $predicates = $leftOperand;

@@ -19,8 +19,6 @@ class TernaryExpression extends Expression implements ExpressionInterface
 
     /**
      * @param  array<mixed>|PredicateExpression  $predicates
-     * @param  mixed  $then
-     * @param  mixed|null  $else
      */
     public function __construct(
         array|PredicateExpression $predicates,

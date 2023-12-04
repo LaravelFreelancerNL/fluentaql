@@ -49,7 +49,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isFunction($value): bool
     {
@@ -58,7 +57,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isSortDirection($value): bool
     {
@@ -71,7 +69,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isGraphDirection($value): bool
     {
@@ -84,7 +81,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isCollection($value): bool
     {
@@ -97,7 +93,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isGraph($value): bool
     {
@@ -106,7 +101,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isKey($value): bool
     {
@@ -122,7 +116,6 @@ trait ValidatesExpressions
 
     /**
      * @param  mixed  $value
-     * @return bool
      */
     public function isId($value): bool
     {
@@ -158,7 +151,6 @@ trait ValidatesExpressions
      * Check if the array is associative.
      *
      * @param  array<mixed>  $array
-     * @return bool
      */
     public function isAssociativeArray(array $array): bool
     {
@@ -173,7 +165,6 @@ trait ValidatesExpressions
      * Check if the array is numeric.
      *
      * @param  array<mixed>  $array
-     * @return bool
      */
     public function isIndexedArray(array $array): bool
     {

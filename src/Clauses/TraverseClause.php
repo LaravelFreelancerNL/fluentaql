@@ -53,8 +53,6 @@ class TraverseClause extends Clause
 
     /**
      * Default path type
-     *
-     * @return string
      */
     protected function traverseType(): string
     {

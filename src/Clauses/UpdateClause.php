@@ -19,15 +19,11 @@ class UpdateClause extends Clause
      */
     protected array|object|string $with;
 
-    /**
-     * @var string|QueryBuilder|Expression
-     */
     protected string|QueryBuilder|Expression $collection;
 
     /**
      * @param  array<mixed>|object|string  $document
      * @param  array<mixed>|object|string  $with
-     * @param  string|QueryBuilder|Expression  $collection
      */
     public function __construct(
         array|object|string $document,

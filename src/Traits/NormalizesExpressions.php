@@ -60,7 +60,7 @@ trait NormalizesExpressions
      */
     protected function normalizeScalar(
         array|string|int|float|bool $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): Expression {
         $argumentType = $this->determineArgumentType($argument, $allowedExpressionTypes);
 
@@ -94,14 +94,13 @@ trait NormalizesExpressions
     /**
      * @param  array<mixed>|object  $argument
      * @param  array<string>|string|null  $allowedExpressionTypes
-     * @return Expression
      *
      * @throws ExpressionTypeException
      * @throws BindException
      */
     protected function normalizeCompound(
         array|object $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): Expression {
         if (is_array($argument)) {
             return $this->normalizeArray($argument, $allowedExpressionTypes);
@@ -124,7 +123,7 @@ trait NormalizesExpressions
      */
     protected function normalizeIterable(
         array $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): array {
         $result = [];
         /** @var mixed $value */
@@ -163,7 +162,6 @@ trait NormalizesExpressions
 
     /**
      * @param  array<mixed>|PredicateExpression  $predicate
-     * @return PredicateExpression
      *
      * @throws ExpressionTypeException|BindException
      */
@@ -213,7 +211,7 @@ trait NormalizesExpressions
      */
     protected function determineArgumentType(
         mixed $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): string {
         if (is_string($allowedExpressionTypes)) {
             $allowedExpressionTypes = [$allowedExpressionTypes];
@@ -258,7 +256,7 @@ trait NormalizesExpressions
      */
     protected function normalizeArray(
         array $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): Expression {
         if ($this->grammar->isAssociativeArray($argument)) {
             return new ObjectExpression($this->normalizeIterable($argument, $allowedExpressionTypes));
@@ -275,7 +273,7 @@ trait NormalizesExpressions
      */
     protected function normalizeObject(
         object $argument,
-        null|array|string $allowedExpressionTypes = null
+        array|string $allowedExpressionTypes = null
     ): Expression {
         if ($argument instanceof DateTimeInterface) {
             return new StringExpression($argument->format(DateTimeInterface::ATOM));

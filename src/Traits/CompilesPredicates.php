@@ -45,8 +45,6 @@ trait CompilesPredicates
 
     /**
      * @param  array<mixed>  $predicates
-     * @param  int  $position
-     * @return string
      */
     protected function compilePredicateGroup(
         array $predicates,

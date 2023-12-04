@@ -24,7 +24,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * FunctionExpression constructor.
      *
-     * @param  string  $functionName
      * @param  array<array-key, mixed>|object|scalar|null  $parameters
      */
     public function __construct(
@@ -56,7 +55,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     /**
      * @param  array<mixed>  $parameters
-     * @param  QueryBuilder  $queryBuilder
      * @return array<string>
      */
     protected function compileParameters(
