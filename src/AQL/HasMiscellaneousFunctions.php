@@ -30,7 +30,7 @@ trait HasMiscellaneousFunctions
         $errorMessage = array_pop($arguments);
 
         $predicates = $arguments;
-        if (! is_array($predicates[0])) {
+        if (!is_array($predicates[0])) {
             $predicates = [[
                 ...$predicates,
             ]];
@@ -108,7 +108,7 @@ trait HasMiscellaneousFunctions
         $errorMessage = array_pop($arguments);
 
         $predicates = $arguments;
-        if (! is_array($predicates[0])) {
+        if (!is_array($predicates[0])) {
             $predicates = [[
                 ...$predicates,
             ]];

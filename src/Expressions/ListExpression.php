@@ -43,6 +43,6 @@ class ListExpression extends Expression implements ExpressionInterface
             $outputStrings[] = $expressionElement->compile($queryBuilder);
         }
 
-        return '['.implode(',', $outputStrings).']';
+        return '[' . implode(',', $outputStrings) . ']';
     }
 }

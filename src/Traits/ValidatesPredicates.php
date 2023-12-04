@@ -17,8 +17,8 @@ trait ValidatesPredicates
         if (
             is_array($value)
             && isset($value[0])
-            && ! is_array($value[0])
-            && ! $value[0] instanceof PredicateExpression
+            && !is_array($value[0])
+            && !$value[0] instanceof PredicateExpression
         ) {
             return true;
         }

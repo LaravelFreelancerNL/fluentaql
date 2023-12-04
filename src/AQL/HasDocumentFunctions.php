@@ -47,7 +47,7 @@ trait HasDocumentFunctions
         string|array|object $document,
         string|array|object $attributes
     ): FunctionExpression {
-        if (! is_array($attributes)) {
+        if (!is_array($attributes)) {
             $attributes = [$attributes];
         }
 
@@ -68,8 +68,6 @@ trait HasDocumentFunctions
      *
      * @param  array<mixed>|object  $document
      * @param  array<mixed>|object  $examples
-     * @param  bool|QueryBuilder|Expression  $returnIndex
-     * @return FunctionExpression
      */
     public function matches(
         array|object $document,
@@ -91,7 +89,6 @@ trait HasDocumentFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#merge
      *
      * @param  array<mixed>|string|Expression  $documents
-     * @return FunctionExpression
      */
     public function merge(string|array|Expression ...$documents): FunctionExpression
     {
@@ -104,7 +101,6 @@ trait HasDocumentFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-document.html#parse_identifier
      *
      * @param  string|object  $documentHandle
-     * @return FunctionExpression
      */
     public function parseIdentifier(mixed $documentHandle): FunctionExpression
     {
@@ -122,7 +118,7 @@ trait HasDocumentFunctions
         string|object $document,
         string|array|object $attributes
     ): FunctionExpression {
-        if (! is_array($attributes)) {
+        if (!is_array($attributes)) {
             $attributes = [$attributes];
         }
 

@@ -3,7 +3,7 @@
 namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasArrayFunctions

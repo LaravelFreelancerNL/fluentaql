@@ -202,7 +202,7 @@ trait HasDateFunctions
     public function dateUtcToLocal(
         int|string|object $date,
         string|object $timezone,
-        null|array|object $zoneInfo = null
+        array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [
             'date' => $date,
@@ -225,7 +225,7 @@ trait HasDateFunctions
     public function dateLocalToUtc(
         int|string|object $date,
         string|object $timezone,
-        null|array|object $zoneInfo = null
+        array|object $zoneInfo = null
     ): FunctionExpression {
         $arguments = [
             'date' => $date,

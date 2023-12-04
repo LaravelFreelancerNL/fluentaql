@@ -3,7 +3,7 @@
 namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasMiscellaneousFunctions
@@ -19,7 +19,7 @@ class MiscellaneousFunctionsTest extends TestCase
             ->return($qb->assert('doc.text', '==', 'bar', 'Text is not the same'));
 
         self::assertEquals(
-            'FOR doc IN viewName RETURN ASSERT(doc.text == "bar", @'.$qb->getQueryId().'_1)',
+            'FOR doc IN viewName RETURN ASSERT(doc.text == "bar", @' . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -35,7 +35,7 @@ class MiscellaneousFunctionsTest extends TestCase
 
         self::assertEquals(
             'FOR doc IN viewName RETURN ASSERT((doc.text == "foo" OR doc.text == "bar"), @'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -71,7 +71,7 @@ class MiscellaneousFunctionsTest extends TestCase
             ->return($qb->document('pages', 'variable'));
 
         self::assertEquals(
-            'LET variable = @'.$qb->getQueryId().'_1 RETURN DOCUMENT(pages, variable)',
+            'LET variable = @' . $qb->getQueryId() . '_1 RETURN DOCUMENT(pages, variable)',
             $qb->get()->query
         );
     }
@@ -94,7 +94,7 @@ class MiscellaneousFunctionsTest extends TestCase
     {
         $qb = new QueryBuilder();
         $qb->return($qb->firstDocument('users'));
-        self::assertEquals('RETURN FIRST_DOCUMENT(@'.$qb->getQueryId().'_1)', $qb->get()->query);
+        self::assertEquals('RETURN FIRST_DOCUMENT(@' . $qb->getQueryId() . '_1)', $qb->get()->query);
     }
 
     public function testWarn()
@@ -104,7 +104,7 @@ class MiscellaneousFunctionsTest extends TestCase
             ->return($qb->warn('doc.text', '==', 'bar', 'Text is not the same'));
 
         self::assertEquals(
-            'FOR doc IN viewName RETURN WARN(doc.text == "bar", @'.$qb->getQueryId().'_1)',
+            'FOR doc IN viewName RETURN WARN(doc.text == "bar", @' . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -120,7 +120,7 @@ class MiscellaneousFunctionsTest extends TestCase
 
         self::assertEquals(
             'FOR doc IN viewName RETURN WARN((doc.text == "foo" OR doc.text == "bar"), @'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
