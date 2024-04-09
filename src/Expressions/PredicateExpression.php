@@ -14,7 +14,7 @@ class PredicateExpression extends Expression implements ExpressionInterface
      */
     protected object|array|string|int|float|bool|null $leftOperand;
 
-    protected string|null $comparisonOperator;
+    protected ?string $comparisonOperator;
 
     /**
      * @var object|array<mixed>|string|int|float|bool|null
@@ -29,12 +29,11 @@ class PredicateExpression extends Expression implements ExpressionInterface
      * @param  object|array<mixed>|string|int|float|bool|null  $leftOperand
      * @param  ?string  $comparisonOperator
      * @param  object|array<mixed>|string|int|float|bool|null  $rightOperand
-     * @param  string  $logicalOperator
      */
     public function __construct(
         object|array|string|int|float|bool|null $leftOperand,
-        ?string $comparisonOperator = null,
-        object|array|string|int|float|bool|null $rightOperand = null,
+        string $comparisonOperator = null,
+        object|array|string|int|float|bool $rightOperand = null,
         string $logicalOperator = 'AND'
     ) {
         $this->leftOperand = $leftOperand;
@@ -54,11 +53,11 @@ class PredicateExpression extends Expression implements ExpressionInterface
 
         $compiledPredicate = $leftOperand->compile($queryBuilder);
         if (isset($this->comparisonOperator) && $this->comparisonOperator !== '') {
-            $compiledPredicate .= ' '.$this->comparisonOperator;
+            $compiledPredicate .= ' ' . $this->comparisonOperator;
 
             $rightOperand = $queryBuilder->normalizeArgument($this->rightOperand);
 
-            $compiledPredicate .= ' '.$rightOperand->compile($queryBuilder);
+            $compiledPredicate .= ' ' . $rightOperand->compile($queryBuilder);
         }
 
         return $compiledPredicate;

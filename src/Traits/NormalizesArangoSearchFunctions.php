@@ -17,8 +17,8 @@ trait NormalizesArangoSearchFunctions
     protected function normalizeAnalyzer(QueryBuilder $queryBuilder): void
     {
         if (
-            ! is_array($this->parameters['predicates'])
-            && ! $this->parameters['predicates'] instanceof PredicateExpression
+            !is_array($this->parameters['predicates'])
+            && !$this->parameters['predicates'] instanceof PredicateExpression
         ) {
             $this->parameters['predicates'] = [$this->parameters['predicates']];
         }
@@ -35,8 +35,8 @@ trait NormalizesArangoSearchFunctions
     protected function normalizeBoost(QueryBuilder $queryBuilder): void
     {
         if (
-            ! is_array($this->parameters['predicates'])
-            && ! $this->parameters['predicates'] instanceof PredicateExpression
+            !is_array($this->parameters['predicates'])
+            && !$this->parameters['predicates'] instanceof PredicateExpression
         ) {
             $this->parameters['predicates'] = [$this->parameters['predicates']];
         }

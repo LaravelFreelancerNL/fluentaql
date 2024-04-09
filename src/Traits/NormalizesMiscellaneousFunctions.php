@@ -17,8 +17,8 @@ trait NormalizesMiscellaneousFunctions
     protected function normalizeAssert(QueryBuilder $queryBuilder): void
     {
         if (
-            ! is_array($this->parameters['predicates'])
-            && ! $this->parameters['predicates'] instanceof PredicateExpression
+            !is_array($this->parameters['predicates'])
+            && !$this->parameters['predicates'] instanceof PredicateExpression
         ) {
             $this->parameters['predicates'] = [$this->parameters['predicates']];
         }

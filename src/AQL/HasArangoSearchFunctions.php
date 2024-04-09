@@ -28,7 +28,7 @@ trait HasArangoSearchFunctions
         $analyzer = array_pop($arguments);
 
         $predicates = $arguments;
-        if (! is_array($predicates[0])) {
+        if (!is_array($predicates[0])) {
             $predicates = [[
                 ...$predicates,
             ]];
@@ -54,7 +54,7 @@ trait HasArangoSearchFunctions
         $boost = array_pop($arguments);
 
         $predicates = $arguments;
-        if (! is_array($predicates[0])) {
+        if (!is_array($predicates[0])) {
             $predicates = [[
                 ...$predicates,
             ]];
@@ -110,14 +110,10 @@ trait HasArangoSearchFunctions
      * Match documents where the attribute at path is present and is of the specified data type.
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#exists
-     *
-     * @param  Expression|QueryBuilder|string  $path
-     * @param  Expression|QueryBuilder|null|string  $type
-     * @return FunctionExpression
      */
     public function exists(
         Expression|QueryBuilder|string $path,
-        Expression|null|string|QueryBuilder $type = null
+        Expression|string|QueryBuilder $type = null
     ): FunctionExpression {
         $arguments = [
             $path,
@@ -132,13 +128,6 @@ trait HasArangoSearchFunctions
      * Match documents where the attribute at path is present and is of the specified data type.
      *
      * https://www.arangodb.com/docs/stable/aql/functions-arangosearch.html#in_range
-     *
-     * @param  string|Expression  $path
-     * @param  int|float|string|Expression|QueryBuilder  $low
-     * @param  int|float|string|Expression|QueryBuilder  $high
-     * @param  bool|Expression|QueryBuilder|null  $includeLow
-     * @param  bool|Expression|QueryBuilder|null  $includeHigh
-     * @return FunctionExpression
      */
     public function inRange(
         string|Expression $path,
@@ -171,7 +160,6 @@ trait HasArangoSearchFunctions
      * @param  null|bool|object  $transpositions
      * @param  null|int|object  $maxTerms
      * @param  null|string|object  $prefix
-     * @return FunctionExpression
      */
     public function levenshteinMatch(
         mixed $path,
@@ -221,7 +209,6 @@ trait HasArangoSearchFunctions
      * @param  string|object  $target
      * @param  null|int|float|object  $threshold
      * @param  null|string|object  $analyzer
-     * @return FunctionExpression
      */
     public function nGramMatch(
         mixed $path,

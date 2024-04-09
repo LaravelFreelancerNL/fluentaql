@@ -4,7 +4,7 @@ namespace Tests\Unit\Expressions;
 
 use LaravelFreelancerNL\FluentAQL\Expressions\QueryExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * Class QueryExpressionTest

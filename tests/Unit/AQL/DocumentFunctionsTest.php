@@ -3,7 +3,7 @@
 namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasDocumentFunctions
@@ -120,7 +120,7 @@ class DocumentFunctionsTest extends TestCase
         $qb->return($qb->parseIdentifier('_users/my-user'));
 
         self::assertEquals('RETURN PARSE_IDENTIFIER(@'
-            .$qb->getQueryId().'_1)', $qb->get()->query);
+            . $qb->getQueryId() . '_1)', $qb->get()->query);
     }
 
     public function testUnset()

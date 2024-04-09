@@ -35,7 +35,7 @@ class EdgeCollectionsClause extends Clause
     {
         /** @var array<string|Expression> $edgeCollections */
         $edgeCollections = array_map(function ($edgeCollection) use ($queryBuilder) {
-            if (! $queryBuilder->grammar->isGraphDirection($edgeCollection)) {
+            if (!$queryBuilder->grammar->isGraphDirection($edgeCollection)) {
                 return $queryBuilder->normalizeArgument($edgeCollection, ['Collection', 'Query', 'Bind']);
             }
 
@@ -45,11 +45,11 @@ class EdgeCollectionsClause extends Clause
         $output = '';
         foreach ($edgeCollections as $value) {
             if ($value instanceof ExpressionInterface) {
-                $output .= $value->compile($queryBuilder).', ';
+                $output .= $value->compile($queryBuilder) . ', ';
             }
 
             if (is_string($value)) {
-                $output .= $value.' ';
+                $output .= $value . ' ';
             }
         }
 

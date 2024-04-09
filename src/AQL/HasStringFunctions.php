@@ -31,9 +31,7 @@ trait HasStringFunctions
      *
      * @link https://www.arangodb.com/docs/stable/aql/functions-string.html#concat_separator
      *
-     * @param  string|Expression|QueryBuilder  $separator
      * @param  array<int, string|array<string>|Expression|QueryBuilder>  ...$values
-     * @return FunctionExpression
      */
     public function concatSeparator(
         string|Expression|QueryBuilder $separator,
@@ -139,7 +137,7 @@ trait HasStringFunctions
      */
     public function ltrim(
         string|object $value,
-        null|string|object $char = null
+        string|object $char = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -227,7 +225,7 @@ trait HasStringFunctions
      */
     public function rtrim(
         string|object $value,
-        null|string|object $char = null
+        string|object $char = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,
@@ -339,7 +337,7 @@ trait HasStringFunctions
      */
     public function trim(
         string|object $value,
-        null|string|int|object $type = null
+        string|int|object $type = null
     ): FunctionExpression {
         $arguments = [
             'value' => $value,

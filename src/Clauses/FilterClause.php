@@ -35,7 +35,7 @@ class FilterClause extends Clause
 
         $compiledPredicates = $queryBuilder->compilePredicates($this->predicates);
 
-        return 'FILTER '.rtrim($compiledPredicates);
+        return 'FILTER ' . rtrim($compiledPredicates);
     }
 
     /**

@@ -6,7 +6,7 @@ use LaravelFreelancerNL\FluentAQL\Expressions\AttributeExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\BindExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * Class QueryExpressionTest

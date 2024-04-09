@@ -16,10 +16,6 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
 
     /**
      * Create predicate expression.
-     *
-     * @param  int|float|null|Expression|QueryBuilder  $leftOperand
-     * @param  string  $operator
-     * @param  int|float|null|Expression|QueryBuilder  $rightOperand
      */
     public function __construct(
         int|float|null|Expression|QueryBuilder $leftOperand,
@@ -32,8 +28,6 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
     /**
      * Compile calculation.
      *
-     * @param  QueryBuilder  $queryBuilder
-     * @return string
      *
      * @throws \Exception
      */
@@ -44,21 +38,20 @@ class ArithmeticExpression extends Expression implements ExpressionInterface
 
         $leftOperand = $normalizedCalculation['leftOperand']->compile($queryBuilder);
         if ($normalizedCalculation['leftOperand'] instanceof self) {
-            $leftOperand = '('.$leftOperand.')';
+            $leftOperand = '(' . $leftOperand . ')';
         }
 
         $arithmeticOperator = $normalizedCalculation['arithmeticOperator']->compile($queryBuilder);
 
         $rightOperand = $normalizedCalculation['rightOperand']->compile($queryBuilder);
         if ($normalizedCalculation['rightOperand'] instanceof self) {
-            $rightOperand = '('.$rightOperand.')';
+            $rightOperand = '(' . $rightOperand . ')';
         }
 
-        return $leftOperand.' '.$arithmeticOperator.' '.$rightOperand;
+        return $leftOperand . ' ' . $arithmeticOperator . ' ' . $rightOperand;
     }
 
     /**
-     * @param  QueryBuilder  $queryBuilder
      * @param  array<int|float|string|null|Expression|QueryBuilder>  $calculation
      * @return array<mixed>
      *

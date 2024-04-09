@@ -24,7 +24,6 @@ trait HasGeoFunctions
      * @param  mixed  $longitude1
      * @param  mixed  $latitude2
      * @param  mixed  $longitude2
-     * @return FunctionExpression
      */
     public function distance($latitude1, $longitude1, $latitude2, $longitude2): FunctionExpression
     {
@@ -83,7 +82,6 @@ trait HasGeoFunctions
      *
      * @param  string|array<mixed>|object  $geoJsonA
      * @param  string|array<mixed>|object  $geoJsonB
-     * @return FunctionExpression
      */
     public function geoEquals(
         string|array|object $geoJsonA,
@@ -99,7 +97,6 @@ trait HasGeoFunctions
      *
      * @param  string|array<mixed>|object|object  $geoJsonA
      * @param  string|array<mixed>|object|object  $geoJsonB
-     * @return FunctionExpression
      */
     public function geoIntersects(mixed $geoJsonA, mixed $geoJsonB): FunctionExpression
     {
@@ -142,7 +139,6 @@ trait HasGeoFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_linestring
      *
      * @param  array<mixed>|object  $points
-     * @return FunctionExpression
      */
     public function geoLineString(mixed $points): FunctionExpression
     {
@@ -156,7 +152,6 @@ trait HasGeoFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_multilinestring
      *
      * @param  array<mixed>|object  $points
-     * @return FunctionExpression
      */
     public function geoMultiLineString(mixed $points): FunctionExpression
     {
@@ -181,7 +176,6 @@ trait HasGeoFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_multipoint
      *
      * @param  array<mixed>|object  $points
-     * @return FunctionExpression
      */
     public function geoMultiPoint(mixed $points): FunctionExpression
     {
@@ -194,7 +188,6 @@ trait HasGeoFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_polygon
      *
      * @param  array<mixed>|object  $points
-     * @return FunctionExpression
      */
     public function geoPolygon(mixed $points): FunctionExpression
     {
@@ -207,7 +200,6 @@ trait HasGeoFunctions
      * @link https://www.arangodb.com/docs/stable/aql/functions-geo.html#geo_polygon
      *
      * @param  array<mixed>|object  $points
-     * @return FunctionExpression
      */
     public function geoMultiPolygon(mixed $points): FunctionExpression
     {

@@ -24,9 +24,6 @@ class BindExpression extends LiteralExpression implements ExpressionInterface
 
     /**
      * Compile expression output.
-     *
-     * @param  QueryBuilder  $queryBuilder
-     * @return string
      */
     public function compile(QueryBuilder $queryBuilder): string
     {

@@ -3,7 +3,7 @@
 namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasTypeFunctions
@@ -18,7 +18,7 @@ class TypeFunctionsTest extends TestCase
         $qb->return($qb->toArray('whatever'));
         self::assertEquals(
             'RETURN TO_ARRAY(@'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -29,7 +29,7 @@ class TypeFunctionsTest extends TestCase
         $qb->return($qb->toList('whatever'));
         self::assertEquals(
             'RETURN TO_ARRAY(@'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -40,7 +40,7 @@ class TypeFunctionsTest extends TestCase
         $qb->return($qb->toBool('whatever'));
         self::assertEquals(
             'RETURN TO_BOOL(@'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }
@@ -51,7 +51,7 @@ class TypeFunctionsTest extends TestCase
         $qb->return($qb->toNumber('whatever'));
         self::assertEquals(
             'RETURN TO_NUMBER(@'
-            .$qb->getQueryId().'_1)',
+            . $qb->getQueryId() . '_1)',
             $qb->get()->query
         );
     }

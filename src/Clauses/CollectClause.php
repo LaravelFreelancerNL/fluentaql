@@ -52,11 +52,11 @@ class CollectClause extends Clause
             if ($groupOutput !== '') {
                 $groupOutput .= ',';
             }
-            $groupOutput .= ' '.$group[0]->compile($queryBuilder);
+            $groupOutput .= ' ' . $group[0]->compile($queryBuilder);
             /** @psalm-suppress PossiblyUndefinedArrayOffset */
-            $groupOutput .= ' = '.$group[1]->compile($queryBuilder);
+            $groupOutput .= ' = ' . $group[1]->compile($queryBuilder);
         }
 
-        return $output.$groupOutput;
+        return $output . $groupOutput;
     }
 }

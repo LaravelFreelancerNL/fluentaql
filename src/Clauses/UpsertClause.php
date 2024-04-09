@@ -70,8 +70,8 @@ class UpsertClause extends Clause
             $withClause = 'REPLACE';
         }
 
-        return "UPSERT {$this->search->compile($queryBuilder)} ".
-            "INSERT {$this->insert->compile($queryBuilder)} $withClause {$this->update->compile($queryBuilder)} ".
+        return "UPSERT {$this->search->compile($queryBuilder)} " .
+            "INSERT {$this->insert->compile($queryBuilder)} $withClause {$this->update->compile($queryBuilder)} " .
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

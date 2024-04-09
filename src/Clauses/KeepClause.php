@@ -21,6 +21,6 @@ class KeepClause extends Clause
         $this->keepVariable = $queryBuilder->normalizeArgument($this->keepVariable, 'Variable');
         $queryBuilder->registerVariable($this->keepVariable);
 
-        return 'KEEP '.$this->keepVariable->compile($queryBuilder);
+        return 'KEEP ' . $this->keepVariable->compile($queryBuilder);
     }
 }

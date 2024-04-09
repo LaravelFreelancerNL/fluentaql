@@ -2,6 +2,4 @@
 
 namespace LaravelFreelancerNL\FluentAQL\Exceptions;
 
-class BindException extends \Exception
-{
-}
+class BindException extends \Exception {}

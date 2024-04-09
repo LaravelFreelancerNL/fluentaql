@@ -15,8 +15,6 @@ abstract class Expression extends QueryElement
 
     /**
      * Create an expression.
-     *
-     * @param  mixed  $expression
      */
     public function __construct(mixed $expression)
     {

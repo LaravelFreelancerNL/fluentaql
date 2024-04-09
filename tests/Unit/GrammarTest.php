@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use LaravelFreelancerNL\FluentAQL\Grammar;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 use stdClass;
 
 /**

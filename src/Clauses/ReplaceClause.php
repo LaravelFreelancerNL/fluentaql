@@ -49,8 +49,8 @@ class ReplaceClause extends Clause
         $this->collection = $queryBuilder->normalizeArgument($this->collection, ['Collection', 'Bind']);
         $queryBuilder->registerCollections($this->collection->compile($queryBuilder));
 
-        return "REPLACE {$this->document->compile($queryBuilder)} ".
-            "WITH {$this->with->compile($queryBuilder)} ".
+        return "REPLACE {$this->document->compile($queryBuilder)} " .
+            "WITH {$this->with->compile($queryBuilder)} " .
             "IN {$this->collection->compile($queryBuilder)}";
     }
 }

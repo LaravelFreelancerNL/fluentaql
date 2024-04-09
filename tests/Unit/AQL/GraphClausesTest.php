@@ -3,7 +3,7 @@
 namespace Tests\Unit\AQL;
 
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * @covers \LaravelFreelancerNL\FluentAQL\AQL\HasQueryClauses
@@ -140,8 +140,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE e.theTruth == true'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
@@ -157,8 +157,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE e.theTruth == true'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }
@@ -180,8 +180,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE e.active == true AND e.age > 18'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE e.active == true AND e.age > 18'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }
@@ -209,8 +209,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE pruneCondition = e.theTruth == true'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE pruneCondition = e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
@@ -233,8 +233,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE pruneCondition = e.theTruth == true'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE pruneCondition = e.theTruth == true'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
 
@@ -260,8 +260,8 @@ class GraphClausesTest extends TestCase
             ->get();
         self::assertEquals(
             'FOR v, e, p IN 1..5 OUTBOUND "circles/A" GRAPH "traversalGraph"'
-            .' PRUNE pruneCondition = e.theTruth == true AND e.theTruth != false'
-            .' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
+            . ' PRUNE pruneCondition = e.theTruth == true AND e.theTruth != false'
+            . ' RETURN {"vertices":p.vertices[*]._key,"edges":p.edges[*].label}',
             $qb->query
         );
     }

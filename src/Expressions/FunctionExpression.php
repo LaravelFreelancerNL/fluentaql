@@ -24,7 +24,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
     /**
      * FunctionExpression constructor.
      *
-     * @param  string  $functionName
      * @param  array<array-key, mixed>|object|scalar|null  $parameters
      */
     public function __construct(
@@ -33,7 +32,7 @@ class FunctionExpression extends Expression implements ExpressionInterface
     ) {
         $this->functionName = $functionName;
 
-        if (! is_array($parameters)) {
+        if (!is_array($parameters)) {
             $parameters = [$parameters];
         }
 
@@ -42,12 +41,12 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     public function compile(QueryBuilder $queryBuilder): string
     {
-        if (! empty($this->parameters)) {
+        if (!empty($this->parameters)) {
             $normalizeFunction = $this->getNormalizeFunctionName();
             $this->$normalizeFunction($queryBuilder);
         }
 
-        $output = strtoupper($this->functionName).'(';
+        $output = strtoupper($this->functionName) . '(';
         $output .= implode(', ', $this->compileParameters($this->parameters, $queryBuilder));
         $output .= ')';
 
@@ -56,7 +55,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
 
     /**
      * @param  array<mixed>  $parameters
-     * @param  QueryBuilder  $queryBuilder
      * @return array<string>
      */
     protected function compileParameters(
@@ -86,6 +84,6 @@ class FunctionExpression extends Expression implements ExpressionInterface
     {
         $value = ucwords(str_replace('_', ' ', strtolower($this->functionName)));
 
-        return 'normalize'.str_replace(' ', '', $value);
+        return 'normalize' . str_replace(' ', '', $value);
     }
 }

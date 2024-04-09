@@ -5,7 +5,7 @@ namespace Tests\Unit\Expressions;
 use LaravelFreelancerNL\FluentAQL\Expressions\LiteralExpression;
 use LaravelFreelancerNL\FluentAQL\Expressions\PredicateExpression;
 use LaravelFreelancerNL\FluentAQL\QueryBuilder;
-use LaravelFreelancerNL\FluentAQL\Tests\TestCase;
+use Tests\TestCase;
 
 /**
  * Class QueryExpressionTest
@@ -78,11 +78,11 @@ class PredicateExpressionTest extends TestCase
         );
 
         $result = $qb->for('u', 'users')
-        ->filter([$predicate1, $predicate2])
-        ->return('u');
+            ->filter([$predicate1, $predicate2])
+            ->return('u');
 
         self::assertEquals(
-            'FOR u IN users FILTER u.name == @'.$qb->getQueryId().'_1 AND u.age == 27 RETURN u',
+            'FOR u IN users FILTER u.name == @' . $qb->getQueryId() . '_1 AND u.age == 27 RETURN u',
             $result->get()->query
         );
     }

@@ -20,6 +20,6 @@ class GraphClause extends Clause
     {
         $this->graphName = $queryBuilder->normalizeArgument($this->graphName, 'Graph');
 
-        return 'GRAPH '.$this->graphName->compile($queryBuilder);
+        return 'GRAPH ' . $this->graphName->compile($queryBuilder);
     }
 }

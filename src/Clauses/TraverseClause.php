@@ -43,9 +43,9 @@ class TraverseClause extends Clause
 
         $output .= $this->traverseType();
 
-        $output .= ' '.$this->startVertex->compile($queryBuilder);
+        $output .= ' ' . $this->startVertex->compile($queryBuilder);
         if (isset($this->toVertex)) {
-            $output .= ' TO '.$this->toVertex->compile($queryBuilder);
+            $output .= ' TO ' . $this->toVertex->compile($queryBuilder);
         }
 
         return $output;
@@ -53,8 +53,6 @@ class TraverseClause extends Clause
 
     /**
      * Default path type
-     *
-     * @return string
      */
     protected function traverseType(): string
     {

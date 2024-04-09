@@ -49,7 +49,7 @@ trait ValidatesReferences
     public function isAttribute(mixed $value): bool
     {
         $pattern = '/^(@?[\d\w_]+|`@?[\d\w_]+`)(\[\`.+\`\]|\[[\d\w\*]*\])*'
-            .'(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
+            . '(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/';
         if (
             is_string($value) &&
             preg_match($pattern, $value)
@@ -69,14 +69,14 @@ trait ValidatesReferences
     ): bool {
         $variables = implode('|', $registeredVariables);
 
-        if (! is_string($value) || empty($value)) {
+        if (!is_string($value) || empty($value)) {
             return false;
         }
 
         return (bool) preg_match(
             '/^('
-            .$variables
-            .'|CURRENT|NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/',
+            . $variables
+            . '|CURRENT|NEW|OLD)(\[\`.+\`\]|\[[\d\w\*]*\])*(\.(\`.+\`|@?[\d\w]*)(\[\`.+\`\]|\[[\d\w\*]*\])*)*$/',
             $value
         );
     }

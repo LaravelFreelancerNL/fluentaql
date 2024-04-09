@@ -14,7 +14,7 @@ trait CompilesPredicates
     public function compilePredicates(
         array|PredicateExpression $predicates
     ): string {
-        if (! is_array($predicates)) {
+        if (!is_array($predicates)) {
             $predicates = [$predicates];
         }
 
@@ -37,16 +37,14 @@ trait CompilesPredicates
     {
         $compiledPredicate = '';
         if ($position > 0) {
-            $compiledPredicate = $predicate->logicalOperator.' ';
+            $compiledPredicate = $predicate->logicalOperator . ' ';
         }
 
-        return $compiledPredicate.$predicate->compile($this);
+        return $compiledPredicate . $predicate->compile($this);
     }
 
     /**
      * @param  array<mixed>  $predicates
-     * @param  int  $position
-     * @return string
      */
     protected function compilePredicateGroup(
         array $predicates,
@@ -66,9 +64,9 @@ trait CompilesPredicates
 
         $groupCompilation = '';
         if ($position > 0) {
-            $groupCompilation = $logicalOperator.' ';
+            $groupCompilation = $logicalOperator . ' ';
         }
 
-        return $groupCompilation.'('.implode(' ', $compiledPredicates).')';
+        return $groupCompilation . '(' . implode(' ', $compiledPredicates) . ')';
     }
 }

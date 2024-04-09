@@ -7,6 +7,4 @@ namespace LaravelFreelancerNL\FluentAQL\Expressions;
 /**
  * AQL literal expression.
  */
-class AttributeExpression extends LiteralExpression implements ExpressionInterface
-{
-}
+class AttributeExpression extends LiteralExpression implements ExpressionInterface {}
